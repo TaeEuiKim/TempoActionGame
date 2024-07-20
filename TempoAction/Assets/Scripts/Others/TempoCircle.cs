@@ -43,7 +43,7 @@ public class TempoCircle : MonoBehaviour
             }
             else
             {
-                if (InputManager.Instance.GetInpuState("PointTempo") == Define.InputState.DOWN)
+                if (Input.GetKeyDown(InputManager.Instance.FindKeyCode("PointTempo")))
                 {
                     CheckTiming();
                     Invoke("Finish", 0.5f);

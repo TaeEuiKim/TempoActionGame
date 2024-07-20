@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
 
         DashDirection = _facingRight ? 1 : -1;
 
-        if (InputManager.Instance.GetInpuState("Dash") == Define.InputState.DOWN)
+        if (Input.GetKeyDown(InputManager.Instance.FindKeyCode("Dash")))
         {
             Dash();
         }
@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
         {
             if (_player.Atk.Index != 4)
             {
-                if (InputManager.Instance.GetInpuState("MainTempo") == Define.InputState.DOWN)
+                if (Input.GetKeyDown(InputManager.Instance.FindKeyCode("MainTempo")))
                 {
                     _player.Atk.Execute();
                 }
@@ -89,11 +89,11 @@ public class PlayerController : MonoBehaviour
     {
         float moveInput = 0;
 
-        if (InputManager.Instance.GetInpuState("Left") == Define.InputState.STAY)
+        if (Input.GetKey(InputManager.Instance.FindKeyCode("Left")))
         {
             moveInput = -1f;
         }
-        else if (InputManager.Instance.GetInpuState("Right") == Define.InputState.STAY)
+        else if (Input.GetKey(InputManager.Instance.FindKeyCode("Right")))
         {
             moveInput = 1f;
         }
@@ -112,12 +112,12 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (InputManager.Instance.GetInpuState("Jump") == Define.InputState.DOWN && _isGrounded)
+        if(Input.GetKeyDown(InputManager.Instance.FindKeyCode("Jump")) && _isGrounded)
         {
             _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.Stat.JumpForce);
             _isGrounded = false;
         }
-        else if (InputManager.Instance.GetInpuState("Jump") == Define.InputState.UP)
+        else if (Input.GetKeyUp(InputManager.Instance.FindKeyCode("Jump")))
         {
 
             _player.Rb.velocity = new Vector3(_player.Rb.velocity.x, _player.Rb.velocity.y / 2, _player.Rb.velocity.z);

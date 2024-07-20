@@ -6,11 +6,6 @@ public class Define
     {
         ALL, BUTTON, IMAGE, CANVASGROUP, TMPRO, TOGGLE, SLIDER
     }
-    public enum InputState
-    {
-        DOWN, STAY, UP, NONE
-    }
-
     public enum TempoType
     {
         MAIN, POINT, NONE
