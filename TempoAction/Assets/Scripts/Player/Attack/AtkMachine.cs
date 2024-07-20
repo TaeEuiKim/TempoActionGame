@@ -158,14 +158,24 @@ public class AtkMachine : MonoBehaviour
             // 데미지 입히기
             enemy.GetComponent<Enemy>().Stat.TakeDamage(damage);
 
-            // 데미지 텍스트 생성
-            GameObject damageText = _pool.GetObject("DamageTextPrefab");
-            damageText.transform.position = enemy.transform.position;
-            damageText.GetComponent<DamageText>().DamageValue = damage;
+            /*  // 데미지 텍스트 생성
+              GameObject damageText = _pool.GetObject("DamageTextPrefab");
+              damageText.transform.position = enemy.transform.position;
+              damageText.GetComponent<DamageText>().DamageValue = damage;*/
 
             // 히트 파티클 생성
-            GameObject hitParticle = _pool.GetObject("HItParticlePrefab");
-            hitParticle.transform.position = enemy.ClosestPoint(_hitPoint.position);
+            GameObject hitParticle = null;
+            if (_index == 4)
+            {
+                hitParticle = _pool.GetObject("P_point_attack");              
+            }
+            else
+            {
+                hitParticle = _pool.GetObject("P_main_attack");
+            }
+
+            Vector3 hitPos = enemy.ClosestPoint(_hitPoint.position);
+            hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, -2);
 
             KnockBack(enemy.transform);
         }

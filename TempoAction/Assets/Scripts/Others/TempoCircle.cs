@@ -13,7 +13,8 @@ public class TempoCircle : MonoBehaviour
     [SerializeField] private float _shrinkDuration = 1f; // 원이 줄어드는데 걸리는 시간 (초)
     [SerializeField] private Vector2 _perfectTime; // 완벽한 타이밍 (초)
     [SerializeField] private Vector2 _goodTime; // 좋은 타이밍 (초)
-    [SerializeField] private TextMeshProUGUI checkText;
+    [SerializeField] private GameObject _perfectPrefab;
+    [SerializeField] private GameObject _goodPrefab;
 
     private float timer = 0f;
     private bool isShrinking = true;
@@ -35,7 +36,6 @@ public class TempoCircle : MonoBehaviour
             if (timer >= _shrinkDuration)
             {
                 _player.Atk.CircleState = Define.CircleState.BAD;
-                checkText.text = "Bad";
                 //Debug.Log("Bad!");
                 isShrinking = false;
                 _circleImage.gameObject.SetActive(false);
@@ -54,25 +54,27 @@ public class TempoCircle : MonoBehaviour
 
     private void CheckTiming()
     {
+        Vector2 playerPos = _player.transform.position;
         float timeLeft = _shrinkDuration - timer;
         if (_perfectTime.x <= timeLeft && timeLeft < _perfectTime.y)
         {
             _player.Atk.CircleState = Define.CircleState.PERFECT;
-            checkText.text = "Perfect";
             //Debug.Log("Perfect!");
+            GameObject temp = Instantiate(_perfectPrefab, new Vector3(playerPos.x, playerPos.y+1,-2), Quaternion.identity);
+            Destroy(temp, 1f);
             isShrinking = false;
         }
         else if (_goodTime.x <= timeLeft && timeLeft < _goodTime.y)
         {
             _player.Atk.CircleState = Define.CircleState.GOOD;
-            checkText.text = "Good";
+            GameObject temp = Instantiate(_goodPrefab, new Vector3(playerPos.x, playerPos.y + 1, -2), Quaternion.identity);
+            Destroy(temp, 1f);
             //Debug.Log("Good!");
             isShrinking = false;
         }
         else if(_goodTime.y < timeLeft || _perfectTime.x < timeLeft )
         {
             _player.Atk.CircleState = Define.CircleState.BAD;
-            checkText.text = "Bad";
             //Debug.Log("Bad!");
             isShrinking = false;
         }
@@ -88,7 +90,6 @@ public class TempoCircle : MonoBehaviour
         timer = 0.0f;
         _player.Atk.CircleState = Define.CircleState.NONE;
         _circleImage.gameObject.SetActive(true);
-        checkText.text = "";
         _circleImage.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         isShrinking = true;
     }
