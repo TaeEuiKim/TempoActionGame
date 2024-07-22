@@ -38,6 +38,7 @@ public class OverloadState : IPlayerState
         }
         else
         {
+            SoundManager.Instance.PlaySFX("SFX_Overload_Occurred");
             _player.CurState = Define.PlayerState.STUN;
         }
     }

@@ -23,7 +23,7 @@ public class AtkMachine : MonoBehaviour
         {
             _index = value;
             _index = _index % 5;
-
+            _player.Ani.SetInteger("AtkCount", _player.Atk.Index);
 
         }
     }
@@ -127,7 +127,7 @@ public class AtkMachine : MonoBehaviour
         {
             return;
         }
-
+        SoundManager.Instance.PlaySFX("SFX_PointTempo_Ready");
         _pointTempoCircle.gameObject.SetActive(true);
         _pointTempoCircle.ResetCircle();
     }
@@ -155,6 +155,8 @@ public class AtkMachine : MonoBehaviour
         {
             return;
         }
+
+        SoundManager.Instance.PlaySFX("SFX_RhythmCombo_Hit1");
 
         _isHit = true;
 

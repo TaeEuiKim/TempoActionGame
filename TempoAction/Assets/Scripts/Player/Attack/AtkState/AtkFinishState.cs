@@ -19,7 +19,7 @@ public class AtkFinishState : IAtkState
         //Debug.Log("³¡");
         _player.Atk.HitEnemyList.Clear();
         _player.Atk.Index = 0;
-        
+      
     }
 
     public void Exit()

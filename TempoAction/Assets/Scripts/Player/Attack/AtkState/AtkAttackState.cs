@@ -13,8 +13,8 @@ public class AtkAttackState : IAtkState
 
     public void Enter()
     {
+      
         _player.Ani.SetBool("AttackState", true);
-        _player.Ani.SetInteger("AtkCount", _player.Atk.Index);
 
         if (_player.Atk.CurAtkTempoData.type == Define.TempoType.POINT)
         {
@@ -27,6 +27,10 @@ public class AtkAttackState : IAtkState
                 _player.Ani.SetBool("IsUpgraded", false);
 
             }        
+        }
+        else
+        {
+            SoundManager.Instance.PlaySFX("SFX_RhythmCombo_Attack" + (_player.Atk.Index + 1));
         }
 
     }

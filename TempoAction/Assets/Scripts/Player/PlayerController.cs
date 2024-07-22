@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _groundCheckRadius = 0.2f;
     [SerializeField] private LayerMask _groundLayer;
 
+    private bool _isLanded = false;
     private bool _isGrounded = true;
     private bool _isDashing = false;
     private bool _facingRight = true;
@@ -36,6 +37,19 @@ public class PlayerController : MonoBehaviour
 
         _isGrounded = Physics.CheckSphere(_groundCheck.position, _groundCheckRadius, _groundLayer);
         _player.Ani.SetBool("isGrounded", _isGrounded);
+
+        if (_isGrounded)
+        {
+            if (!_isLanded)
+            {
+                SoundManager.Instance.PlaySFX("SFX_JumpLanding_1");
+                _isLanded = true;
+            }
+        }
+        else
+        {
+            _isLanded = false;
+        }
 
         if (!_isDashing)
         {
@@ -128,8 +142,18 @@ public class PlayerController : MonoBehaviour
     private void Flip()
     {
         _facingRight = !_facingRight;
-        float rotationY = _facingRight ? -180 : 0;
+        float rotationY = _facingRight ? 0 : -180;
         transform.DOLocalRotate(new Vector3(0, rotationY, 0), 0.2f);
+    }
+
+    private void RunSfx()
+    {
+        SoundManager.Instance.PlaySFX("SFX_Running_1");
+    }
+
+    private void JumpSfx()
+    {
+        SoundManager.Instance.PlaySFX("SFX_Jump_1");
     }
 
     private void OnDrawGizmos()
