@@ -232,7 +232,7 @@ public class AtkMachine : MonoBehaviour
     private void MoveToClosestEnemy(float duration) 
     {
         Vector3 rayOrigin = new Vector3(transform.parent.position.x, transform.parent.position.y+0.25f, transform.parent.position.z);
-        Vector3 rayDirection = -transform.right;
+        Vector3 rayDirection = transform.right;
 
         // 레이캐스트 히트 정보 저장
         RaycastHit hit;
@@ -249,57 +249,6 @@ public class AtkMachine : MonoBehaviour
         Debug.DrawRay(rayOrigin, rayDirection * CurAtkTempoData.distance, Color.red);
     }
 
-/*    void MoveToClosestEnemy(float duration)
-    {
-        if (HitEnemyList.Count == 0)
-            return;
-
-        Enemy closestEnemy = null;
-        float closestDistanceSqr = Mathf.Infinity;
-        Vector3 currentPosition = transform.position;
-
-        foreach (Enemy enemy in HitEnemyList)
-        {
-            Vector3 directionToEnemy = enemy.transform.position - currentPosition;
-            float dSqrToEnemy = directionToEnemy.sqrMagnitude;
-
-            if (dSqrToEnemy < closestDistanceSqr)
-            {
-                closestDistanceSqr = dSqrToEnemy;
-                closestEnemy = enemy;
-            }
-        }
-
-        if (closestEnemy != null)
-        {
-            float dirX = closestEnemy.moveToPoint.position.x - transform.position.x;
-
-            if (_player.Controller.DashDirection == Mathf.Sign(dirX))
-            {
-                transform.parent.DOMoveX(closestEnemy.moveToPoint.position.x, duration);
-            }
-            if (_index == 4)
-            {
-               
-            }
-            else
-            {               
-                if (Mathf.Abs(dirX) <= 1.5f)
-                {
-                    if (_player.Controller.DashDirection == Mathf.Sign(dirX))
-                    {
-                        transform.parent.DOMoveX(closestEnemy.moveToPoint.position.x, duration);
-                    }
-                }
-            }
-       
-        }
-    }*/
-
-    /*  private void DoAtkMove(float force)
-      {
-          transform.parent.DOMoveX(transform.parent.position.x + force * _player.Controller.DashDirection, 0.1f);
-      }*/
 
     private void Impact() // 공격시 임펙트
     {
@@ -333,6 +282,7 @@ public class AtkMachine : MonoBehaviour
             enemy.GetComponent<Rigidbody>().useGravity = (value == 0) ? false : true;
         }      
     }
+
 
     #endregion
 

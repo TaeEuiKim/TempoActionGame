@@ -23,6 +23,11 @@ public class Define
 
     public enum CircleState
     {
-        BAD, GOOD, PERFECT, NONE
+        MISS, BAD, GOOD, PERFECT, NONE
+    }
+
+    public enum PlayerSfxType
+    {
+        MAIN, POINT, DASH, RUN, JUMP, STUN, NONE
     }
 }

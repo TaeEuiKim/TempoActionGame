@@ -28,10 +28,6 @@ public class AtkAttackState : IAtkState
 
             }        
         }
-        else
-        {
-            SoundManager.Instance.PlaySFX("SFX_RhythmCombo_Attack" + (_player.Atk.Index + 1));
-        }
 
     }
 

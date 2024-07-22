@@ -146,15 +146,31 @@ public class PlayerController : MonoBehaviour
         transform.DOLocalRotate(new Vector3(0, rotationY, 0), 0.2f);
     }
 
-    private void RunSfx()
+    private void PlayerSfx(Define.PlayerSfxType type)
     {
-        SoundManager.Instance.PlaySFX("SFX_Running_1");
+        switch (type)
+        {
+            case Define.PlayerSfxType.MAIN:
+                SoundManager.Instance.PlaySFX("SFX_RhythmCombo_Attack" + (_player.Atk.Index + 1));
+                break;
+            case Define.PlayerSfxType.POINT:
+                SoundManager.Instance.PlaySFX("SFX_PointTempo_Hit");
+                break;
+            case Define.PlayerSfxType.DASH:
+                break;
+            case Define.PlayerSfxType.JUMP:
+                SoundManager.Instance.PlaySFX("SFX_Jump_1");
+                break;
+            case Define.PlayerSfxType.RUN:
+                SoundManager.Instance.PlaySFX("SFX_Running_1");
+                break;
+            case Define.PlayerSfxType.STUN:
+                SoundManager.Instance.PlaySFX("SFX_Overload_Occurred");
+                SoundManager.Instance.PlaySFX("SFX_Overload_Recovery");
+                break;
+        }
     }
 
-    private void JumpSfx()
-    {
-        SoundManager.Instance.PlaySFX("SFX_Jump_1");
-    }
 
     private void OnDrawGizmos()
     {

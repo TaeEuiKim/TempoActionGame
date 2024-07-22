@@ -33,9 +33,8 @@ public class AtkCheckState : IAtkState
 
         if (_player.Atk.CurAtkTempoData.type == Define.TempoType.POINT)
         {
-            if (_player.Atk.CircleState != Define.CircleState.NONE && _player.Atk.CircleState != Define.CircleState.BAD)
+            if (_player.Atk.CircleState == Define.CircleState.GOOD || _player.Atk.CircleState == Define.CircleState.PERFECT)
             {
-                SoundManager.Instance.PlaySFX("SFX_PointTempo_Hit");
                 _player.Atk.Execute();
                 _player.Atk.UpgradeCount++;
             }

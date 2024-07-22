@@ -16,7 +16,7 @@ public class StunState : IPlayerState
 
     public void Enter()
     {
-        SoundManager.Instance.PlaySFX("SFX_Overload_Recovery");
+        
         _player.Ani.SetBool("IsStunned", true);
         _player.CurAtkState = Define.AtkState.FINISH;
         _timer = 0;
