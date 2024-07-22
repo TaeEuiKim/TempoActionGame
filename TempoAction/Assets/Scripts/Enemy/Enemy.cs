@@ -5,6 +5,7 @@ using DG.Tweening;
 
 public class Enemy : MonoBehaviour
 {
+    public Transform moveToPoint;
    
     protected EnemyStat _stat;
     public EnemyStat Stat { get { return _stat; } }

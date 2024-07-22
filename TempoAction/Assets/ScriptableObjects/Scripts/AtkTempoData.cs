@@ -9,5 +9,5 @@ public class AtkTempoData : ScriptableObject
     public float damage;
     public float minStamina;
     public float maxStamina;
-    
+    public float distance;
 }

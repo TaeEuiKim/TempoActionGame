@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     private bool _isDashing = false;
     private bool _facingRight = true;
 
+    [SerializeField] private float _dashDelay = 5f;
+    private float _nextDashTime = 0f;
     public float DashDirection { get; set; } = 1;
 
     private void Start()
@@ -27,8 +29,8 @@ public class PlayerController : MonoBehaviour
         if (_player.CurAtkState == Define.AtkState.ATTACK)
         {
             _player.Rb.velocity = new Vector2(0, _player.Rb.velocity.y);
-            _player.Ani.SetFloat("Speed", 0);
-            _player.Ani.SetFloat("VerticalSpeed", 0);
+            //_player.Ani.SetFloat("Speed", 0);
+            //_player.Ani.SetFloat("VerticalSpeed", 0);
             return;
         }
 
@@ -43,38 +45,14 @@ public class PlayerController : MonoBehaviour
 
         DashDirection = _facingRight ? 1 : -1;
 
-        if (Input.GetKeyDown(InputManager.Instance.FindKeyCode("Dash")))
+        if (_nextDashTime <= Time.time)
         {
-            Dash();
+            if (Input.GetKeyDown(InputManager.Instance.FindKeyCode("Dash")))
+            {
+                Dash();
+            }
         }
 
-        if (_isGrounded)
-        {
-            if (_player.Atk.Index != 4)
-            {
-                if (Input.GetKeyDown(InputManager.Instance.FindKeyCode("MainTempo")))
-                {
-                    _player.Atk.Execute();
-                }
-               
-            }
-            else
-            {
-                if (_player.Atk.CircleState != Define.CircleState.NONE)
-                {
-                    if (_player.Atk.CircleState == Define.CircleState.BAD) // 포인트 템포 실패
-                    {
-                        _player.CurAtkState = Define.AtkState.FINISH;
-                    }
-                    else
-                    {
-                        _player.Atk.Execute();
-                        _player.Atk.UpgradeCount++;
-                    }
-                }
-            }
-
-        }
         // Update animator parameters
         _player.Ani.SetFloat("Speed", Mathf.Abs(_player.Rb.velocity.x));
 
@@ -112,8 +90,11 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if(Input.GetKeyDown(InputManager.Instance.FindKeyCode("Jump")) && _isGrounded)
+        
+
+        if (Input.GetKeyDown(InputManager.Instance.FindKeyCode("Jump")) && _isGrounded)
         {
+            _player.Ani.SetTrigger("isJumping");
             _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.Stat.JumpForce);
             _isGrounded = false;
         }
@@ -127,7 +108,7 @@ public class PlayerController : MonoBehaviour
 
     private void Dash()
     {
-        if (!_isGrounded) return;
+        //if (!_isGrounded) return;
 
         _isDashing = true;
 
@@ -140,12 +121,14 @@ public class PlayerController : MonoBehaviour
 
         // Trigger dash animation
         _player.Ani.SetTrigger("Dash");
+
+        _nextDashTime = Time.time + _dashDelay;
     }
 
     private void Flip()
     {
         _facingRight = !_facingRight;
-        float rotationY = _facingRight ? 0 : 180;
+        float rotationY = _facingRight ? -180 : 0;
         transform.DOLocalRotate(new Vector3(0, rotationY, 0), 0.2f);
     }
 

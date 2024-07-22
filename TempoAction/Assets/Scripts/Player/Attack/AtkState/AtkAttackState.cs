@@ -13,23 +13,28 @@ public class AtkAttackState : IAtkState
 
     public void Enter()
     {
-        _player.Ani.SetTrigger("IsAttacking");
+        _player.Ani.SetBool("AttackState", true);
         _player.Ani.SetInteger("AtkCount", _player.Atk.Index);
 
-        if (_player.Atk.UpgradeCount == 3) // 포인트 템포 강화 확인
+        if (_player.Atk.CurAtkTempoData.type == Define.TempoType.POINT)
         {
-            _player.Ani.SetBool("IsUpgraded", true);
+            if (_player.Atk.UpgradeCount == 3) // 포인트 템포 강화 확인
+            {
+                _player.Ani.SetBool("IsUpgraded", true);
+            }
+            else
+            {
+                _player.Ani.SetBool("IsUpgraded", false);
+
+            }        
         }
-        else
-        {
-            _player.Ani.SetBool("IsUpgraded", false);
-        }
+
     }
 
     public void Exit()
     {
-        _player.Atk.Index++;
-
+        _player.Ani.SetBool("AttackState", false);
+        _player.Atk.Index++; 
     }
 
     public void Stay()

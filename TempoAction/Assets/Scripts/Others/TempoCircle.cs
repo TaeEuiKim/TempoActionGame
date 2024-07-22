@@ -60,14 +60,14 @@ public class TempoCircle : MonoBehaviour
         {
             _player.Atk.CircleState = Define.CircleState.PERFECT;
             //Debug.Log("Perfect!");
-            GameObject temp = Instantiate(_perfectPrefab, new Vector3(playerPos.x, playerPos.y+1,-2), Quaternion.identity);
+            GameObject temp = Instantiate(_perfectPrefab, new Vector3(playerPos.x, playerPos.y+1,0), Quaternion.identity);
             Destroy(temp, 1f);
             isShrinking = false;
         }
         else if (_goodTime.x <= timeLeft && timeLeft < _goodTime.y)
         {
             _player.Atk.CircleState = Define.CircleState.GOOD;
-            GameObject temp = Instantiate(_goodPrefab, new Vector3(playerPos.x, playerPos.y + 1, -2), Quaternion.identity);
+            GameObject temp = Instantiate(_goodPrefab, new Vector3(playerPos.x, playerPos.y + 1, 0), Quaternion.identity);
             Destroy(temp, 1f);
             //Debug.Log("Good!");
             isShrinking = false;

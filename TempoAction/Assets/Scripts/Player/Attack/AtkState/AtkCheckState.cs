@@ -15,7 +15,9 @@ public class AtkCheckState : IAtkState
 
     public void Enter()
     {
-        if (_player.Atk.Index == 4)
+        _player.Ani.SetBool("CheckState", true);
+
+        if (_player.Atk.CurAtkTempoData.type == Define.TempoType.POINT)
         {
             _player.Atk.StartPointTempCircle();
         }
@@ -23,12 +25,39 @@ public class AtkCheckState : IAtkState
 
     public void Exit()
     {
+        _player.Ani.SetBool("CheckState", false);
     }
 
     public void Stay()
     {
 
-      
+        if (_player.Atk.CurAtkTempoData.type == Define.TempoType.POINT)
+        {
+            if (_player.Atk.CircleState != Define.CircleState.NONE && _player.Atk.CircleState != Define.CircleState.BAD)
+            {
+                _player.Atk.Execute();
+                _player.Atk.UpgradeCount++;
+            }
+        }
+        else
+        {
+            if (Input.GetKeyDown(InputManager.Instance.FindKeyCode("MainTempo")))
+            {
+                _player.Atk.Execute();
+            }
+
+        }
+
+
+        if (_player.Atk.CheckDelay <= 0)
+        {
+            _player.CurAtkState = Define.AtkState.FINISH;
+        }
+        else
+        {
+            _player.Atk.CheckDelay -= Time.deltaTime;
+        }
+
     }
 
 
