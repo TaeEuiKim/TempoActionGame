@@ -106,16 +106,16 @@ public class TempoCircle : MonoBehaviour
         switch (state)
         {
             case Define.CircleState.PERFECT:
-                temp = Instantiate(_perfectPrefab, new Vector3(playerPos.x, playerPos.y + 1, 0), Quaternion.identity);
+                temp = Instantiate(_perfectPrefab, new Vector3(playerPos.x, playerPos.y + 1, -0.1f), Quaternion.identity);
                 break;
             case Define.CircleState.GOOD:
-                temp = Instantiate(_goodPrefab, new Vector3(playerPos.x, playerPos.y + 1, 0), Quaternion.identity);
+                temp = Instantiate(_goodPrefab, new Vector3(playerPos.x, playerPos.y + 1, -0.1f), Quaternion.identity);
                 break;
             case Define.CircleState.BAD:
-                temp = Instantiate(_badPrefab, new Vector3(playerPos.x, playerPos.y + 1, 0), Quaternion.identity);
+                temp = Instantiate(_badPrefab, new Vector3(playerPos.x, playerPos.y + 1, -0.1f), Quaternion.identity);
                 break;
             case Define.CircleState.MISS:
-                temp = Instantiate(_missPrefab, new Vector3(playerPos.x, playerPos.y + 1, 0), Quaternion.identity);
+                temp = Instantiate(_missPrefab, new Vector3(playerPos.x, playerPos.y + 1, -0.1f), Quaternion.identity);
                 break;
         }
 

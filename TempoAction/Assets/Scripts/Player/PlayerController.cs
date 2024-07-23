@@ -18,7 +18,14 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float _dashDelay = 5f;
     private float _nextDashTime = 0f;
-    public float DashDirection { get; set; } = 1;
+    public float Direction 
+    {
+        get
+        {
+            return _facingRight ? 1 : -1; ;
+        }
+    }
+
 
     private void Start()
     {
@@ -57,7 +64,7 @@ public class PlayerController : MonoBehaviour
             Jump();
         }
 
-        DashDirection = _facingRight ? 1 : -1;
+
 
         if (_nextDashTime <= Time.time)
         {
@@ -126,7 +133,7 @@ public class PlayerController : MonoBehaviour
 
         _isDashing = true;
 
-        Vector2 dashPosition = (Vector2)_player.Rb.position + Vector2.right * DashDirection * _player.Stat.DashDistance;
+        Vector2 dashPosition = (Vector2)_player.Rb.position + Vector2.right * Direction * _player.Stat.DashDistance;
 
         _player.Rb.DOMove(dashPosition, _player.Stat.DashDuration).SetEase(Ease.OutQuad).OnComplete(() =>
         {
@@ -142,8 +149,10 @@ public class PlayerController : MonoBehaviour
     private void Flip()
     {
         _facingRight = !_facingRight;
-        float rotationY = _facingRight ? 0 : -180;
-        transform.DOLocalRotate(new Vector3(0, rotationY, 0), 0.2f);
+        float scaleX = _facingRight ? 1 : -1;
+        transform.localScale = new Vector3(scaleX, 1, 1);
+        //float rotationY = _facingRight ? 0 : -180;
+        //transform.DOLocalRotate(new Vector3(0, rotationY, 0), 0.2f);
     }
 
     private void PlayerSfx(Define.PlayerSfxType type)

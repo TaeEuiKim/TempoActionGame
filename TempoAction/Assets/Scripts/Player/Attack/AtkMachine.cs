@@ -184,7 +184,7 @@ public class AtkMachine : MonoBehaviour
             }
 
             Vector3 hitPos = enemy.ClosestPoint(_hitPoint.position);
-            hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, 0);
+            hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, -0.1f);
 
             KnockBack(enemy.transform);
             HitEnemyList.Add(enemy.GetComponent<Enemy>());
@@ -232,7 +232,7 @@ public class AtkMachine : MonoBehaviour
     private void MoveToClosestEnemy(float duration) 
     {
         Vector3 rayOrigin = new Vector3(transform.parent.position.x, transform.parent.position.y+0.25f, transform.parent.position.z);
-        Vector3 rayDirection = transform.right;
+        Vector3 rayDirection = transform.localScale.x > 0 ? transform.right : transform.right * -1;
 
         // 레이캐스트 히트 정보 저장
         RaycastHit hit;
