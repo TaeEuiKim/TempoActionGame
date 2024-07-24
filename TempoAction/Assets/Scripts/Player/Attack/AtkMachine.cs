@@ -72,7 +72,7 @@ public class AtkMachine : MonoBehaviour
 
     //[SerializeField] private GameObject _damageTextPrefab;
 
-    [SerializeField] private LayerMask _enemyLayer;
+    
 
 
 
@@ -136,20 +136,20 @@ public class AtkMachine : MonoBehaviour
 
     public List<Enemy> HitEnemyList { get; set; } = new List<Enemy>();
 
+    [Header(("충돌"))]
     [SerializeField] private Transform _endPoint;
-
     [SerializeField] private Transform _hitPoint;
+
+    [SerializeField] private Vector3 _colSize;
+    [SerializeField] private LayerMask _enemyLayer;
     public Transform HitPoint { get { return _hitPoint; } }
 
     private bool _isHit = false;
-
-    private float _attackRadius;
     public float CheckDelay { get; set; } = 0;
-
-    private void Hit(float attackRadius)
+    private void Hit()
     {
-        _attackRadius = attackRadius;
-        Collider[] hitEnemies = Physics.OverlapSphere(_hitPoint.position, _attackRadius, _enemyLayer);
+        //Collider[] hitEnemies = Physics.OverlapSphere(_hitPoint.position, _attackRadius, _enemyLayer);
+        Collider[] hitEnemies = Physics.OverlapBox(_hitPoint.position, _colSize, _hitPoint.rotation, _enemyLayer);
 
         if (hitEnemies.Length <= 0)
         {
@@ -164,10 +164,6 @@ public class AtkMachine : MonoBehaviour
 
         foreach (Collider enemy in hitEnemies)
         {
-            if (enemy.transform.localPosition.z < 0)
-            {
-                enemy.transform.DOLocalMoveZ(0f, 0.1f);
-            }
 
             // 데미지 입히기
             enemy.GetComponent<Enemy>().Stat.TakeDamage(damage);
@@ -286,9 +282,10 @@ public class AtkMachine : MonoBehaviour
 
     #endregion
 
-  /*  private void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(_hitPoint.position, _attackRadius);
-    }*/
-  
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(_hitPoint.position, _colSize);
+    }
+ 
 }
