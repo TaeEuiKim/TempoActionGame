@@ -16,7 +16,16 @@ public class StunState : IPlayerState
 
     public void Enter()
     {
+        if (_player.Controller.Direction > 0)
+        {
+            EffectManager.Instance.Pool.Spawn("spark_fung_main_R", 3, EffectManager.Instance.rightSparkPoint);
+        }
+        else
+        {
+            EffectManager.Instance.Pool.Spawn("spark_fung_main_L", 3, EffectManager.Instance.leftSparkPoint);
+        }
         
+
         _player.Ani.SetBool("IsStunned", true);
         _player.CurAtkState = Define.AtkState.FINISH;
         _timer = 0;

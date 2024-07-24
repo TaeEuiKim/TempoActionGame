@@ -5,9 +5,6 @@ using UnityEngine.UI;
 using DG.Tweening;
 public class AtkMachine : MonoBehaviour
 {
-
-    private ObjectPool _pool;
-
     private PlayerManager _player;
 
     [SerializeField] private List<AtkTempoData> _atkTempoDatas = new List<AtkTempoData>();
@@ -69,18 +66,9 @@ public class AtkMachine : MonoBehaviour
     public TempoCircle PointTempoCircle { get { return _pointTempoCircle; } }
     public Define.CircleState CircleState { get; set; } = Define.CircleState.GOOD;
 
-
-    //[SerializeField] private GameObject _damageTextPrefab;
-
-    
-
-
-
-
-
     private void Start()
     {
-        _pool = FindObjectOfType<ObjectPool>();
+
 
         _player = transform.parent.GetComponent<PlayerManager>();
 
@@ -172,11 +160,11 @@ public class AtkMachine : MonoBehaviour
             GameObject hitParticle = null;
             if (CurAtkTempoData.type == Define.TempoType.POINT)
             {
-                hitParticle = _pool.GetObject("P_point_attack");
+                hitParticle = EffectManager.Instance.Pool.Spawn("P_point_attack", 1);
             }
             else
             {
-                hitParticle = _pool.GetObject("P_main_attack");
+                hitParticle = EffectManager.Instance.Pool.Spawn("P_main_attack", 1);
             }
 
             Vector3 hitPos = enemy.ClosestPoint(_hitPoint.position);
