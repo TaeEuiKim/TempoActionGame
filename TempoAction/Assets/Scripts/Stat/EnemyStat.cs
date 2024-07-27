@@ -9,6 +9,16 @@ public class EnemyStat : Stat
     void Start()
     {
         _ani = GetComponentInChildren<Animator>();
+        _hp = _maxHp;
+    }
+
+    private void Update()
+    {
+        
+        if (_isDead)
+        {
+            print("Á×À½");
+        }
     }
 
     public void TakeDamage(float damage)

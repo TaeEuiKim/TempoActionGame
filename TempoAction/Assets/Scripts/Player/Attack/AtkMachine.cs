@@ -174,11 +174,6 @@ public class AtkMachine : MonoBehaviour
             HitEnemyList.Add(enemy.GetComponent<Enemy>());
         }
 
-        if (hitEnemies.Length > 0)
-        {
-            //Impact();
-        }
-
     }
 
     private void Check(float delay) // 공격이 끝난 시점 
