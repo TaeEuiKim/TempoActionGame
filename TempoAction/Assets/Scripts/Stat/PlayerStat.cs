@@ -53,7 +53,12 @@ public class PlayerStat : Stat
     [SerializeField] private float _stunTime; // 스턴 상태 시간
     public float StunTime { get => _stunTime; }// 스턴 상태 시간
 
-  
+
+    private void Start()
+    {
+        _hp = _maxHp;
+    }
+
     public bool CheckOverload()
     {
         if (_stamina == _maxStamina)
@@ -63,5 +68,14 @@ public class PlayerStat : Stat
         return false;
     }
 
+    public void TakeDamage(float value)
+    {
+        Hp += value;
+        ShowHp();
+    }
 
+    public void ShowHp()
+    {
+        UIManager.Instance.GetUI<Image>("Hpbar").fillAmount = _hp / MaxHp;
+    }
 }

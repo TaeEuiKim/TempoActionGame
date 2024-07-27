@@ -5,10 +5,10 @@ using UnityEngine;
 public class Stat : MonoBehaviour
 {
     [SerializeField] protected float _speed;
-    public float Speed { get { return _speed; } }
+    public float Speed { get => _speed; set => _speed = value; }
 
     [SerializeField] protected float _maxHp;
-    public float MaxHp { get { return _maxHp; } }
+    public float MaxHp { get => _maxHp; set => _maxHp = value; }
 
     protected float _hp;
     public float Hp
@@ -20,7 +20,6 @@ public class Stat : MonoBehaviour
         set
         {
             _hp = value;
-
             if (_hp <= 0)
             {
                 _hp = 0;
@@ -30,7 +29,7 @@ public class Stat : MonoBehaviour
     }
 
     [SerializeField] protected float _damage;
-    public float Damage { get { return _damage; } }
+    public float Damage { get => _damage; set => _damage = value; }
 
     protected bool _isDead = false;
    
