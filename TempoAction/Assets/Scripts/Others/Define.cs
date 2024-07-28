@@ -4,7 +4,7 @@ public class Define
 {
     public enum BuffType // ENTER : 범위에 들어가면 실행 , STAY : 범위에 들어가 있으면 실행, EXIT : 범위에서 나가면 실행 
     {
-        ENTER, STAY, EXIT
+        ENTER, STAY, EXIT, NONE
     }
 
     public enum BuffInfo

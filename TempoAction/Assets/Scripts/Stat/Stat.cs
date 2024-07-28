@@ -11,7 +11,7 @@ public class Stat : MonoBehaviour
     public float MaxHp { get => _maxHp; set => _maxHp = value; }
 
     protected float _hp;
-    public float Hp
+    public virtual float Hp
     {
         get
         {
@@ -24,6 +24,10 @@ public class Stat : MonoBehaviour
             {
                 _hp = 0;
                 _isDead = true;
+            }
+            else if (_hp > _maxHp)
+            {
+                _hp = _maxHp;
             }
         }
     }

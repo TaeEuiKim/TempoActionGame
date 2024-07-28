@@ -22,6 +22,6 @@ public class HealBuff : BuffData
 
     public override void Exit()
     {
-
+        Platform.Change(Define.BuffInfo.NONE);
     }
 }

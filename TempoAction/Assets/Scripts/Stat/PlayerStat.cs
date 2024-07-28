@@ -6,6 +6,28 @@ using UnityEngine.UI;
 public class PlayerStat : Stat
 {
 
+    public override float Hp
+    {
+        get
+        {
+            return _hp;
+        }
+        set
+        {
+            _hp = value;
+            if (_hp <= 0)
+            {
+                _hp = 0;
+                _isDead = true;
+            }
+            else if(_hp > _maxHp)
+            {
+                _hp = _maxHp;
+            }
+            ShowHp();
+        }
+    }
+
     [SerializeField] private float _jumpForce;// Á¡ÇÁ Èû
     public float JumpForce { get => _jumpForce; set => _jumpForce = value; }
    
@@ -66,12 +88,6 @@ public class PlayerStat : Stat
             return true;
         }
         return false;
-    }
-
-    public void TakeDamage(float value)
-    {
-        Hp += value;
-        ShowHp();
     }
 
     public void ShowHp()

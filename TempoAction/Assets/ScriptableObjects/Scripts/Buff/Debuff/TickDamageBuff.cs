@@ -25,7 +25,7 @@ public class TickDamageBuff : BuffData
     {
         if (_timer >= giveTime)
         {
-            _player.Stat.TakeDamage(value);
+            _player.Stat.Hp += value;
             _timer = 0;
         }
         else
@@ -36,7 +36,7 @@ public class TickDamageBuff : BuffData
 
     public override void Exit()
     {
-
+       // Debug.Log("틱 데미지 끝");
     }
 
 }
