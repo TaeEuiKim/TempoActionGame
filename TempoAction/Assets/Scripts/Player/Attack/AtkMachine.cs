@@ -115,7 +115,7 @@ public class AtkMachine : MonoBehaviour
         {
             return;
         }
-        SoundManager.Instance.PlaySFX("SFX_PointTempo_Ready");
+        //SoundManager.Instance.PlaySFX("SFX_PointTempo_Ready");
         _pointTempoCircle.gameObject.SetActive(true);
         _pointTempoCircle.ResetCircle();
     }
@@ -144,7 +144,7 @@ public class AtkMachine : MonoBehaviour
             return;
         }
 
-        SoundManager.Instance.PlaySFX("SFX_RhythmCombo_Hit1");
+        //SoundManager.Instance.PlaySFX("SFX_RhythmCombo_Hit1");
 
         _isHit = true;
 

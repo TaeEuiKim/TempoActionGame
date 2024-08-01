@@ -1,185 +1,124 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Audio;
+using FMODUnity;
+using FMOD.Studio;
 
 public class SoundManager : Singleton<SoundManager>
 {
-	// BGM용 오디오 소스
-	private AudioSource _bgmSource;
 
-	// SFX용 오디오 소스 풀
-	private List<AudioSource> _sfxSources;
-	private int _poolSize = 10; // 풀의 크기
+    private class SoundData
+    {
 
-	// 반복 재생용 오디오 소스
-	private Dictionary<AudioClip, AudioSource> _loopingSFXSources;
+        private EventInstance _eventInstance;
+        public EventInstance EventInstance { get => _eventInstance; }
 
-	[SerializeField] private AudioMixer _audioMixer;
+        private Transform _target;
 
-	[SerializeField] private List<AudioClip> _bgmClipsStorage = new List<AudioClip>();
-	[SerializeField] private List<AudioClip> _sfxClipsStorage = new List<AudioClip>();
+        private float _min;
+        private float _max;
 
+        private bool _is3D;
+        public bool Is3D { get => _is3D; }
 
-	private void Awake()
-	{
-		var objs = FindObjectsOfType<SoundManager>();
-		if (objs.Length != 1)
-		{
-			Destroy(gameObject);
-			print("싱글톤 삭제");
-			return;
-		}
+        public SoundData(EventInstance eventInstance, Transform target = null, float min = 0, float max = 0)
+        {
+            _eventInstance = eventInstance;
+            _target = target;
+            _min = min;
+            _max = max;
+            _is3D = target == null ? false : true;
+        }
 
-		DontDestroyOnLoad(gameObject);
+        public void UpdateSoundVolume()
+        {
+            // FMOD 이벤트 인스턴스에 3D 속성을 동적으로 설정
+            _eventInstance.set3DAttributes(RuntimeUtils.To3DAttributes(_target));
 
+            // 소리가 나는 오브젝트와의 거리
+            float dist = Vector3.Distance(_target.position, Camera.main.transform.position);
 
-		// BGM 오디오 소스 초기화
-		_bgmSource = gameObject.AddComponent<AudioSource>();
-		_bgmSource.loop = true; // BGM은 기본적으로 루프 설정
-		_bgmSource.outputAudioMixerGroup = _audioMixer.FindMatchingGroups("BGM")[0];
+            // 거리에 따른 Volume 값을 0 ~ 1로 계산
+            float normalizedVolume = Mathf.Clamp01((_max - dist) / (_max - _min));
 
-		// SFX 오디오 소스 풀 초기화
-		_sfxSources = new List<AudioSource>();
-		for (int i = 0; i < _poolSize; i++)
-		{
-			GameObject sfxObject = new GameObject("SFX_Source_" + i);
-			sfxObject.transform.parent = transform; // SoundManager 아래에 두기
-			AudioSource sfxSource = sfxObject.AddComponent<AudioSource>();
-			sfxSource.outputAudioMixerGroup = _audioMixer.FindMatchingGroups("SFX")[0];
-			_sfxSources.Add(sfxSource);
-		}
+            // 정규화 된 값으로 Volume 설정
+            _eventInstance.setVolume(normalizedVolume);
+        }
+    }
 
-		// 반복 재생용 오디오 소스 초기화
-		_loopingSFXSources = new Dictionary<AudioClip, AudioSource>();
-	}
+    private Dictionary<string, SoundData> _eventInstances = new Dictionary<string, SoundData>();
 
-	public void SetMasterVolume(float volume = 1.0f)
-	{
-		_audioMixer.SetFloat("Master", Mathf.Log10(volume) * 20);
-	}
+    private void Update()
+    {
+        foreach (var data in _eventInstances)
+        {
+            if (data.Value.Is3D)
+            {
+                data.Value.UpdateSoundVolume();
+            }
+        }
+    }
 
-	public void SetBGMVolume(float volume = 1.0f)
-	{
-		_audioMixer.SetFloat("BGM", Mathf.Log10(volume) * 20);
-	}
+    public void PlaySound(string path, Transform target = null, float min = 0, float max = 0)
+    {
+        if (!_eventInstances.ContainsKey(path))
+        {
+            EventInstance newEvent = RuntimeManager.CreateInstance(path);
 
-	public void SetSFXVolume(float volume = 1.0f)
-	{
-		_audioMixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
-	}
+            if (target == null)
+            {
+                _eventInstances[path] = new SoundData(newEvent);
+            }
+            else
+            {
+                _eventInstances[path] = new SoundData(newEvent, target, min, max);
+            }
 
+        }
 
-	private AudioClip FindBGMClip(string name)
-	{
-		foreach (AudioClip clip in _bgmClipsStorage)
-		{
-			if (clip.name == name)
-			{
-				return clip;
-			}
-		}
+        _eventInstances[path].EventInstance.start();
+    }
 
-		return null;
-	}
+    public void StopSound(string path)
+    {
+        if (_eventInstances.ContainsKey(path))
+        {
+            _eventInstances[path].EventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            _eventInstances[path].EventInstance.release(); // release the instance
+            _eventInstances.Remove(path);
+        }
+    }
 
+    public void StopAllSounds()
+    {
+        foreach (var eventInstance in _eventInstances.Values)
+        {
+            eventInstance.EventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            eventInstance.EventInstance.release();
+        }
+        _eventInstances.Clear();
+    }
 
-	private AudioClip FindSFXClip(string name)
-	{
-		foreach (AudioClip clip in _sfxClipsStorage)
-		{
-			if (clip.name == name)
-			{
-				return clip;
-			}
-		}
+    public void SetParameter(string path, string parameterName, float value) // FMOD Studio에 있는 파라미터 제어(파라미터 이름이 같아야 함)
+    {
+        if (_eventInstances.ContainsKey(path))
+        {
+            _eventInstances[path].EventInstance.setParameterByName(parameterName, value);
+        }
+    }
 
-		return null;
-	}
+    public void SetMasterVolume(float value = 0.5f)
+    {
+        Bus _masterBus = RuntimeManager.GetBus("bus:/");
+        _masterBus.setVolume(value);
+    }
 
-	// 사용 가능한 오디오 소스 찾기
-	private AudioSource GetAvailableSFXSource()
-	{
-		foreach (AudioSource source in _sfxSources)
-		{
-			if (!source.isPlaying)
-			{
-				return source;
-			}
-		}
-		// 모든 소스가 사용 중이면 null 반환
-		return null;
-	}
-
-	// 효과음 재생 메서드 (오브젝트 풀링 사용)
-	public void PlaySFX(string clipName)
-	{
-		AudioSource sfxSource = GetAvailableSFXSource();
-		if (sfxSource != null)
-		{
-			sfxSource.clip = FindSFXClip(clipName);
-			sfxSource.Play();
-		}
-		else
-		{
-			Debug.LogWarning("No available SFX source to play clip: " + clipName);
-		}
-	}
-
-	// 반복 재생 효과음 재생 메서드
-	public void PlayLoopingSFX(string clipName)
-	{
-		AudioClip clip = FindSFXClip(clipName);
-
-		if (!_loopingSFXSources.ContainsKey(clip))
-		{
-			AudioSource sfxSource = gameObject.AddComponent<AudioSource>();
-			sfxSource.outputAudioMixerGroup = _audioMixer.FindMatchingGroups("SFX")[0];
-			sfxSource.clip = clip;
-			sfxSource.loop = true;
-			sfxSource.Play();
-			_loopingSFXSources.Add(clip, sfxSource);
-		}
-	}
-
-	// 반복 재생 효과음 중지 메서드
-	public void StopLoopingSFX(string clipName)
-	{
-		AudioClip clip = FindSFXClip(clipName);
-
-		if (_loopingSFXSources.ContainsKey(clip))
-		{
-			AudioSource sfxSource = _loopingSFXSources[clip];
-			sfxSource.Stop();
-			Destroy(sfxSource);
-			_loopingSFXSources.Remove(clip);
-		}
-	}
-
-	// 배경 음악 재생 메서드
-	public void PlayBGM(string clipName, bool loop = true)
-	{
-		_bgmSource.clip = FindBGMClip(clipName);
-		_bgmSource.loop = loop;
-		_bgmSource.Play();
-	}
-
-	// 배경 음악 중지 메서드
-	public void StopBGM()
-	{
-		_bgmSource.Stop();
-	}
-
-	// 배경 음악 일시 정지 메서드
-	public void PauseBGM()
-	{
-		_bgmSource.Pause();
-	}
-
-	// 배경 음악 다시 재생 메서드
-	public void ResumeBGM()
-	{
-		_bgmSource.UnPause();
-	}
-
+    private void OnDestroy()
+    {
+        foreach (var eventInstance in _eventInstances.Values)
+        {
+            eventInstance.EventInstance.release();
+        }
+        _eventInstances.Clear();
+    }
 }

@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
         {
             if (!_isLanded)
             {
-                SoundManager.Instance.PlaySFX("SFX_JumpLanding_1");
+                //SoundManager.Instance.PlaySFX("SFX_JumpLanding_1");
                 _isLanded = true;
             }
         }
@@ -155,7 +155,7 @@ public class PlayerController : MonoBehaviour
         //transform.DOLocalRotate(new Vector3(0, rotationY, 0), 0.2f);
     }
 
-    private void PlayerSfx(Define.PlayerSfxType type)
+/*    private void PlayerSfx(Define.PlayerSfxType type)
     {
         switch (type)
         {
@@ -178,7 +178,7 @@ public class PlayerController : MonoBehaviour
                 SoundManager.Instance.PlaySFX("SFX_Overload_Recovery");
                 break;
         }
-    }
+    }*/
 
 
     private void OnDrawGizmos()
