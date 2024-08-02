@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "TickDamage", menuName = "ScriptableObjects/Buff Data/Tick Damage")]
+[CreateAssetMenu(fileName = "TickDamage", menuName = "ScriptableObjects/Buff Data/Tick Damage", order = int.MaxValue)]
 public class TickDamageBuff : BuffData
 {
     public float giveTime;

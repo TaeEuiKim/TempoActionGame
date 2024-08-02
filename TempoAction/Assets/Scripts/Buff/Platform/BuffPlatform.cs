@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class BuffPlatform : MonoBehaviour
 {
@@ -16,16 +17,28 @@ public class BuffPlatform : MonoBehaviour
 
         _info = info;
 
+        Material temp;
         if (_info == Define.BuffInfo.NONE)
         {
-            GetComponent<Renderer>().material.color = Color.white;
+            temp = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+            temp.color = Color.white;         
         }
         else
         {
             _buffData = BuffManager.Instance.FindBuff(_info);
             _buffData.Platform = this;
-            GetComponent<Renderer>().material.color = _buffData.color;
 
+            temp = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+            temp.color = _buffData.color;
+        }
+
+        if (Application.isPlaying)
+        {
+            GetComponent<Renderer>().material = temp;
+        }
+        else
+        {
+            GetComponent<Renderer>().sharedMaterial = temp;
         }
     }
 
