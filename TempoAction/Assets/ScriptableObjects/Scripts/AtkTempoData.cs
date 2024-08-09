@@ -6,8 +6,18 @@ using UnityEngine;
 public class AtkTempoData : ScriptableObject
 {
     public Define.TempoType type;
+
+    public AnimationClip clip;
+
     public float damage;
+    public float distance;
+
     public float minStamina;
     public float maxStamina;
-    public float distance;
+    
+    public float timeScale;
+    public float slowDelay;
+    public float slowDuration;
+
+    
 }

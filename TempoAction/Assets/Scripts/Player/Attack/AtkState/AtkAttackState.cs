@@ -6,6 +6,7 @@ public class AtkAttackState : IAtkState
 {
     private PlayerManager _player;
 
+
     public AtkAttackState(PlayerManager player)
     {
         _player = player;
@@ -34,13 +35,13 @@ public class AtkAttackState : IAtkState
     public void Exit()
     {
         _player.Ani.SetBool("AttackState", false);
-        _player.Atk.Index++; 
+        _player.Atk.Index++;
+ 
     }
 
     public void Stay()
     {
-  
+       
     }
 
-   
 }

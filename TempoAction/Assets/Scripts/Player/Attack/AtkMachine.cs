@@ -205,7 +205,7 @@ public class AtkMachine : MonoBehaviour
         }
 
         _player.CurAtkState = Define.AtkState.FINISH;
-
+        UpgradeCount++;
     }
 
     private void MoveToClosestEnemy(float duration) 
@@ -229,18 +229,18 @@ public class AtkMachine : MonoBehaviour
     }
 
 
-    private void Impact() // 공격시 임펙트
+    private void StartSlowMotion(float value)
     {
-        StartCoroutine(ChangeAnimatorSpeed(0.2f, 0.2f));
+        Time.timeScale = value;
+    }
+    private void EndSlowMotion()
+    {
+        Time.timeScale = 1;
     }
 
-    private IEnumerator ChangeAnimatorSpeed(float speed, float duration) // 애니메이터 스피드 조절
+    private void StartTimeline(string name)
     {
-        float last = _player.Ani.speed;
-
-        _player.Ani.speed = speed;
-        yield return new WaitForSeconds(duration);
-        _player.Ani.speed = last;
+        TimelineManager.Instance.PlayTimeline(name);
     }
 
     private void KnockBack(Transform target)

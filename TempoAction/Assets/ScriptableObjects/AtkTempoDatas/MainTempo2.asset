@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: MainTempo2
   m_EditorClassIdentifier: 
   type: 0
+  clip: {fileID: 7400000, guid: 05ba593d71a8c8e4fbde8f73d94afed9, type: 2}
   damage: 10
+  distance: 1.5
   minStamina: 0
   maxStamina: 20
-  distance: 1.5
+  timeScale: 1
+  slowDelay: 0
+  slowDuration: 0

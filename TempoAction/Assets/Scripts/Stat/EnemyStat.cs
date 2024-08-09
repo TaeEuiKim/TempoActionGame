@@ -17,7 +17,7 @@ public class EnemyStat : Stat
         
         if (_isDead)
         {
-            print("Á×À½");
+            //print("Á×À½");
         }
     }
 

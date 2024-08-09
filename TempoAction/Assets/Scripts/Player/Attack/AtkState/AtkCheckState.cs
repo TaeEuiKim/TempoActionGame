@@ -36,7 +36,6 @@ public class AtkCheckState : IAtkState
             if (_player.Atk.CircleState == Define.CircleState.GOOD || _player.Atk.CircleState == Define.CircleState.PERFECT)
             {
                 _player.Atk.Execute();
-                _player.Atk.UpgradeCount++;
             }
         }
         else

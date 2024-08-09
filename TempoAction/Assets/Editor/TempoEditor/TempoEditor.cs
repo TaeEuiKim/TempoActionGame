@@ -13,7 +13,8 @@ public class TempoEditor : EditorWindow
     
     private Dictionary<Button, AtkTempoData> _tempoList = new Dictionary<Button, AtkTempoData>();
 
- 
+    private AtkTempoData _curData;
+
     [MenuItem("Tools/Tempo Setting")]
     public static void ShowExample()
     {
@@ -65,24 +66,31 @@ public class TempoEditor : EditorWindow
 
     private void InitData()
     {
+        var slowSlider = rootVisualElement.Q<MinMaxSlider>("SlowRangth");
+
         foreach (var t in _tempoList)
         {
             
             t.Key.clickable.clicked += () =>
             {
-                UpdateData(t.Value);
+                _curData = t.Value;
+                UpdateData();
                 
             };
+
+          
         }
     }
  
-    private void UpdateData(AtkTempoData curData)
+    private void UpdateData()
     {
 
-        SerializedObject so = new SerializedObject(curData);
+        rootVisualElement.Q<Label>("TempoTitle").text = _curData.name;
+
+        SerializedObject so = new SerializedObject(_curData);
         _mainVisualElement.Bind(so);
         //바인딩해줍니다.
-        if (curData.type == Define.TempoType.MAIN)
+        if (_curData.type == Define.TempoType.MAIN)
         {
             rootVisualElement.Q<FloatField>("PerfectStamina").label = "스태미나";
             rootVisualElement.Q<FloatField>("GoodStamina").style.visibility = Visibility.Hidden;
@@ -92,8 +100,10 @@ public class TempoEditor : EditorWindow
             rootVisualElement.Q<FloatField>("PerfectStamina").label = "Perfect 스태미나";
             rootVisualElement.Q<FloatField>("GoodStamina").style.visibility = Visibility.Visible;
         }
-       
 
         _mainVisualElement.style.visibility = Visibility.Visible;
+
+
     }
+  
 }
