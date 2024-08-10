@@ -5,39 +5,35 @@ using UnityEngine.Playables;
 
 public class TimelineManager : Singleton<TimelineManager>
 {
-    [System.Serializable]
-    public class Timeline
-    {
-        public string name;
-        public PlayableAsset playable;
-        public PlayableDirector director;
-    }
-    
-    [SerializeField] private List<Timeline> _timelines;
+    private Dictionary<string, PlayableDirector> _timelineStorage = new Dictionary<string, PlayableDirector>();
     private PlayableDirector _currentDirector;
+
 
     void Start()
     {
-    
+        foreach (Transform timeline in transform)
+        {
+            Timeline temp = timeline.GetComponent<Timeline>();
+           _timelineStorage.Add(temp.Name, temp.Director);
+        }
     }
 
     public void PlayTimeline(string name)
     {
-        if (_timelines.Count <= 0)
+        if (_timelineStorage.Count <= 0)
         {
             return;
         }
 
-        foreach (Timeline timeline in _timelines)
+        foreach (var curTimeline in _timelineStorage)
         {
-            if (timeline.name == name)
+            if (curTimeline.Key == name)
             {
                 if (_currentDirector != null)
                 {
                     _currentDirector.Stop();
                 }
-                _currentDirector = timeline.director;
-                _currentDirector.playableAsset = timeline.playable;
+                _currentDirector = curTimeline.Value;
                 _currentDirector.Play();
                 return;
             }

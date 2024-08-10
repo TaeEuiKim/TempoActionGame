@@ -1,5 +1,10 @@
-﻿using UnityEditor;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using UnityEditor;
 using UnityEditor.UIElements;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 [CustomEditor(typeof(CreatePlatform))]
@@ -7,6 +12,13 @@ public class CreatePlatformEditor : Editor
 {
     public VisualTreeAsset TreeAsset;
     private CreatePlatform _createPlatform;
+
+    [MenuItem("Tools/Create Platform")]
+    public static void Create()
+    {
+        GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Buff/Platform/TempPlatform.prefab");
+        Instantiate(prefab);
+    }
 
     public override VisualElement CreateInspectorGUI()
     {

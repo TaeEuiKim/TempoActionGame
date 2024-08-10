@@ -37,7 +37,7 @@ public class AtkMachine : MonoBehaviour
             else
             {
                 return _atkTempoDatas[_index];
-            }       
+            }
         }
 
     }
@@ -86,7 +86,7 @@ public class AtkMachine : MonoBehaviour
         }
 
 
-      
+
     }
 
     public bool InputAtk()
@@ -111,7 +111,7 @@ public class AtkMachine : MonoBehaviour
 
     public void StartPointTempCircle() // 포인트 템포 원 생성
     {
-        if(CurAtkTempoData.type != Define.TempoType.POINT)
+        if (CurAtkTempoData.type != Define.TempoType.POINT)
         {
             return;
         }
@@ -176,39 +176,49 @@ public class AtkMachine : MonoBehaviour
 
     }
 
-    private void Check(float delay) // 공격이 끝난 시점 
+    private void KnockBack(Transform target) // 넉백
     {
-        if (_isHit)
-        {
-            float addStamina = CurAtkTempoData.maxStamina;
-            _player.Stat.Stamina += addStamina;
-            _isHit = false;
-        }
+        Vector2 distance = target.position - _hitPoint.position;
 
-        CheckDelay = delay;
-        _player.CurAtkState = Define.AtkState.CHECK;
+        Vector2 endPoint = (Vector2)_endPoint.position + distance;
+
+        target.DOMove(endPoint, 0.2f);
     }
 
-    private void Finish()
+    private void GravityActive(int value) // 중력 조절
+    {
+        foreach (Enemy enemy in HitEnemyList)
+        {
+            enemy.GetComponent<Rigidbody>().useGravity = (value == 0) ? false : true;
+        }
+    }
+
+    private void Finish(float delay) // 공격이 끝난 시점 
     {
         if (_isHit)
         {
             float addStamina = CurAtkTempoData.maxStamina;
 
-            if (CircleState == Define.CircleState.GOOD)
+            if (CurAtkTempoData.type == Define.TempoType.POINT) // 포인트 템포일 때
             {
-                addStamina = CurAtkTempoData.minStamina;
+                if (CircleState == Define.CircleState.GOOD) // 타이밍이 Good일 경우
+                {
+                    addStamina = CurAtkTempoData.minStamina;
+                }
+                
+                UpgradeCount++;
             }
 
             _player.Stat.Stamina += addStamina;
             _isHit = false;
         }
 
-        _player.CurAtkState = Define.AtkState.FINISH;
-        UpgradeCount++;
+        CheckDelay = delay;
+        _player.CurAtkState = Define.AtkState.CHECK;
+
     }
 
-    private void MoveToClosestEnemy(float duration) 
+    private void MoveToClosestEnemy(float duration) // 특정 거리에 적이 있으면 적 앞으로 이동
     {
         Vector3 rayOrigin = new Vector3(transform.parent.position.x, transform.parent.position.y+0.25f, transform.parent.position.z);
         Vector3 rayDirection = transform.localScale.x > 0 ? transform.right : transform.right * -1;
@@ -229,38 +239,21 @@ public class AtkMachine : MonoBehaviour
     }
 
 
-    private void StartSlowMotion(float value)
+    private void ChangeTimeScale(float value) // 시간 크기 변경
     {
         Time.timeScale = value;
     }
-    private void EndSlowMotion()
+    private void ReturnTimeScale() // 시간 크기 복구
     {
         Time.timeScale = 1;
     }
 
-    private void StartTimeline(string name)
+    private void StartTimeline(string name) //타임라인 실행 함수
     {
         TimelineManager.Instance.PlayTimeline(name);
     }
 
-    private void KnockBack(Transform target)
-    {
-        Vector2 distance = target.position - _hitPoint.position;
-
-        Vector2 endPoint = (Vector2)_endPoint.position + distance;
-
-        target.DOMove(endPoint, 0.2f);
-    }
   
-    
-
-    private void GravityActive(int value)
-    {
-        foreach(Enemy enemy in HitEnemyList)
-        {
-            enemy.GetComponent<Rigidbody>().useGravity = (value == 0) ? false : true;
-        }      
-    }
 
 
     #endregion
