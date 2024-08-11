@@ -77,7 +77,6 @@ public class PlayerManager : MonoBehaviour
         _atkStateStorage.Add(Define.AtkState.ATTACK, new AtkAttackState(this));
         _atkStateStorage.Add(Define.AtkState.CHECK, new AtkCheckState(this));
         _atkStateStorage.Add(Define.AtkState.FINISH, new AtkFinishState(this));
-
     }
 
     private void Update()

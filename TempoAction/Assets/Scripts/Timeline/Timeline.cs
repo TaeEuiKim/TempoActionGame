@@ -8,10 +8,11 @@ public class Timeline : MonoBehaviour
     [SerializeField] private string _name;
     public string Name { get => _name; }
 
-    public PlayableDirector Director { get; set; }
+    private PlayableDirector _director;
+    public PlayableDirector Director { get=>_director; }
 
-    private void Start()
+    private void Awake()
     {
-        Director = GetComponent<PlayableDirector>();
+        _director = GetComponent<PlayableDirector>();
     }
 }

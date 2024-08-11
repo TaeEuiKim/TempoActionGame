@@ -21,7 +21,7 @@ public class AtkMachine : MonoBehaviour
             _index = value;
             _index = _index % 5;
             _player.Ani.SetInteger("AtkCount", _player.Atk.Index);
-
+            //Debug.Log(_player.Atk.Index);
         }
     }
 
@@ -114,8 +114,9 @@ public class AtkMachine : MonoBehaviour
         if (CurAtkTempoData.type != Define.TempoType.POINT)
         {
             return;
-        }
-        //SoundManager.Instance.PlaySFX("SFX_PointTempo_Ready");
+       }
+        SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_PointTempo_Ready", transform);
+
         _pointTempoCircle.gameObject.SetActive(true);
         _pointTempoCircle.ResetCircle();
     }
@@ -144,7 +145,10 @@ public class AtkMachine : MonoBehaviour
             return;
         }
 
-        //SoundManager.Instance.PlaySFX("SFX_RhythmCombo_Hit1");
+        if (_isHit == false && CurAtkTempoData.type == Define.TempoType.MAIN)
+        {
+            SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_RhythmCombo_Hit_" + (_index + 1), transform);
+        }
 
         _isHit = true;
 
@@ -195,6 +199,7 @@ public class AtkMachine : MonoBehaviour
 
     private void Finish(float delay) // 공격이 끝난 시점 
     {
+        //while (!_isHit); // 공격하지 않았으면 대기
         if (_isHit)
         {
             float addStamina = CurAtkTempoData.maxStamina;
@@ -205,13 +210,13 @@ public class AtkMachine : MonoBehaviour
                 {
                     addStamina = CurAtkTempoData.minStamina;
                 }
-                
+
                 UpgradeCount++;
             }
 
             _player.Stat.Stamina += addStamina;
             _isHit = false;
-        }
+        }   
 
         CheckDelay = delay;
         _player.CurAtkState = Define.AtkState.CHECK;

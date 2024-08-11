@@ -18,16 +18,12 @@ public class SoundManager : Singleton<SoundManager>
         private float _min;
         private float _max;
 
-        private bool _is3D;
-        public bool Is3D { get => _is3D; }
-
         public SoundData(EventInstance eventInstance, Transform target = null, float min = 0, float max = 0)
         {
             _eventInstance = eventInstance;
             _target = target;
             _min = min;
             _max = max;
-            _is3D = target == null ? false : true;
         }
 
         public void UpdateSoundVolume()
@@ -52,10 +48,7 @@ public class SoundManager : Singleton<SoundManager>
     {
         foreach (var data in _eventInstances)
         {
-            if (data.Value.Is3D)
-            {
-                data.Value.UpdateSoundVolume();
-            }
+            data.Value.UpdateSoundVolume();
         }
     }
 
@@ -65,18 +58,24 @@ public class SoundManager : Singleton<SoundManager>
         {
             EventInstance newEvent = RuntimeManager.CreateInstance(path);
 
-            if (target == null)
-            {
-                _eventInstances[path] = new SoundData(newEvent);
-            }
-            else
-            {
-                _eventInstances[path] = new SoundData(newEvent, target, min, max);
-            }
+            _eventInstances[path] = new SoundData(newEvent, target, min, max);
 
         }
 
         _eventInstances[path].EventInstance.start();
+    }
+
+    public void PlayOneShot(string path, Transform target = null)
+    {
+        if (target == null)
+        {
+            RuntimeManager.PlayOneShot(path);
+        }
+        else
+        {
+            RuntimeManager.PlayOneShot(path, target.position);
+        }
+        
     }
 
     public void StopSound(string path)

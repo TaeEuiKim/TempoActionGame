@@ -15,9 +15,10 @@ public class PlayerController : MonoBehaviour
     private bool _isGrounded = true;
     private bool _isDashing = false;
     private bool _facingRight = true;
+    //private bool _isMoved = false;
 
-    [SerializeField] private float _dashDelay = 5f;
-    private float _nextDashTime = 0f;
+    
+    private float _dashTimer = 0f;
     public float Direction 
     {
         get
@@ -30,6 +31,8 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         _player = transform.parent.GetComponent<PlayerManager>();
+
+        _dashTimer = _player.Stat.DashDelay;
     }
 
     public void Stay()
@@ -37,8 +40,12 @@ public class PlayerController : MonoBehaviour
         if (_player.CurAtkState == Define.AtkState.ATTACK)
         {
             _player.Rb.velocity = new Vector2(0, _player.Rb.velocity.y);
-            //_player.Ani.SetFloat("Speed", 0);
-            //_player.Ani.SetFloat("VerticalSpeed", 0);
+
+            if (_player.Atk.CurAtkTempoData.type == Define.TempoType.POINT)
+            {
+                //_player.Ani.SetFloat("Speed", 0);
+                //_player.Ani.SetFloat("VerticalSpeed", 0);
+            }
             return;
         }
 
@@ -49,7 +56,7 @@ public class PlayerController : MonoBehaviour
         {
             if (!_isLanded)
             {
-                //SoundManager.Instance.PlaySFX("SFX_JumpLanding_1");
+                SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_JumpLanding", transform);
                 _isLanded = true;
             }
         }
@@ -58,30 +65,24 @@ public class PlayerController : MonoBehaviour
             _isLanded = false;
         }
 
-        if (!_isDashing)
-        {
-            Move();
-            Jump();
-        }
-
-
-
-        if (_nextDashTime <= Time.time)
+        if (_dashTimer >= _player.Stat.DashDelay)
         {
             if (Input.GetKeyDown(InputManager.Instance.FindKeyCode("Dash")))
             {
                 Dash();
             }
         }
-
-        // Update animator parameters
-        _player.Ani.SetFloat("Speed", Mathf.Abs(_player.Rb.velocity.x));
-
-        if (Mathf.Abs(_player.Rb.velocity.y) >= 0.1f)
+        else
         {
-            _player.Ani.SetFloat("VerticalSpeed", _player.Rb.velocity.y);
+            _dashTimer += Time.deltaTime;
         }
 
+
+        if (!_isDashing)
+        {
+            Move();
+            Jump();
+        }
     }
 
     private void Move()
@@ -97,7 +98,12 @@ public class PlayerController : MonoBehaviour
             moveInput = 1f;
         }
 
-        _player.Rb.velocity = new Vector2(moveInput * _player.Stat.Speed, _player.Rb.velocity.y);
+        Vector2 tempVelocity = new Vector2(moveInput * _player.Stat.Speed, _player.Rb.velocity.y);
+
+        _player.Ani.SetFloat("Speed", Mathf.Abs(tempVelocity.x));
+
+
+        _player.Rb.velocity = tempVelocity;
 
         if (moveInput > 0 && !_facingRight)
         {
@@ -109,9 +115,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
     private void Jump()
     {
-        
+      
 
         if (Input.GetKeyDown(InputManager.Instance.FindKeyCode("Jump")) && _isGrounded)
         {
@@ -124,6 +131,11 @@ public class PlayerController : MonoBehaviour
 
             _player.Rb.velocity = new Vector3(_player.Rb.velocity.x, _player.Rb.velocity.y / 2, _player.Rb.velocity.z);
 
+        }
+
+        if (Mathf.Abs(_player.Rb.velocity.y) >= 0.1f)
+        {
+            _player.Ani.SetFloat("VerticalSpeed", _player.Rb.velocity.y);
         }
     }
 
@@ -143,7 +155,7 @@ public class PlayerController : MonoBehaviour
         // Trigger dash animation
         _player.Ani.SetTrigger("Dash");
 
-        _nextDashTime = Time.time + _dashDelay;
+        _dashTimer = 0;
     }
 
     private void Flip()
@@ -155,30 +167,30 @@ public class PlayerController : MonoBehaviour
         //transform.DOLocalRotate(new Vector3(0, rotationY, 0), 0.2f);
     }
 
-    /*    private void PlayerSfx(Define.PlayerSfxType type)
+    private void PlayerSfx(Define.PlayerSfxType type)
+    {
+        switch (type)
         {
-            switch (type)
-            {
-                case Define.PlayerSfxType.MAIN:
-                    SoundManager.Instance.PlaySFX("SFX_RhythmCombo_Attack" + (_player.Atk.Index + 1));
-                    break;
-                case Define.PlayerSfxType.POINT:
-                    SoundManager.Instance.PlaySFX("SFX_PointTempo_Hit");
-                    break;
-                case Define.PlayerSfxType.DASH:
-                    break;
-                case Define.PlayerSfxType.JUMP:
-                    SoundManager.Instance.PlaySFX("SFX_Jump_1");
-                    break;
-                case Define.PlayerSfxType.RUN:
-                    SoundManager.Instance.PlaySFX("SFX_Running_1");
-                    break;
-                case Define.PlayerSfxType.STUN:
-                    SoundManager.Instance.PlaySFX("SFX_Overload_Occurred");
-                    SoundManager.Instance.PlaySFX("SFX_Overload_Recovery");
-                    break;
-            }
-        }*/
+            case Define.PlayerSfxType.MAIN:
+                SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_RhythmCombo_Attack_" + (_player.Atk.Index + 1), transform);
+                break;
+            case Define.PlayerSfxType.POINT:
+                SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_PointTempo_Hit", transform);
+                break;
+            case Define.PlayerSfxType.DASH:
+                break;
+            case Define.PlayerSfxType.JUMP:
+                SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_Jump", transform);
+                break;
+            case Define.PlayerSfxType.RUN:
+                SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_Running", transform);
+                break;
+            case Define.PlayerSfxType.STUN:
+                SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_Overload_Occurred", transform);
+                SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_Overload_Recovery", transform);
+                break;
+        }
+    }
 
 
     private void OnDrawGizmosSelected()

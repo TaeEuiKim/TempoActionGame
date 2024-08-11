@@ -36,7 +36,7 @@ public class AtkAttackState : IAtkState
     {
         _player.Ani.SetBool("AttackState", false);
         _player.Atk.Index++;
- 
+       
     }
 
     public void Stay()

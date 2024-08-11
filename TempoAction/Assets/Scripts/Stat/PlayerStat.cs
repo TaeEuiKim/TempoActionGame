@@ -31,6 +31,23 @@ public class PlayerStat : Stat
     [SerializeField] private float _jumpForce;// 점프 힘
     public float JumpForce { get => _jumpForce; set => _jumpForce = value; }
    
+ 
+
+
+    [Header("대쉬")]
+    [SerializeField] private float _dashDelay = 5f;
+    public float DashDelay { get => _dashDelay; }
+
+    [SerializeField] private float _dashDistance = 5f;
+    public float DashDistance { get => _dashDistance; }
+
+    [SerializeField] private float _dashDuration = 0.2f;
+    public float DashDuration { get => _dashDuration; }
+
+    [Header("스태미나")]
+    [SerializeField] private float _maxStamina;
+    public float MaxStamina { get => _maxStamina; }
+
     private float _stamina;
     public float Stamina
     {
@@ -50,24 +67,13 @@ public class PlayerStat : Stat
             {
                 _stamina = 0;
             }
-        
+
 
             UIManager.Instance.GetUI<Image>("StaminaImage").fillAmount = _stamina / _maxStamina;
         }
     }
 
-
-    [SerializeField] private float _dashDistance = 5f;
-    public float DashDistance { get => _dashDistance; }
-
-    [SerializeField] private float _dashDuration = 0.2f;
-    public float DashDuration { get => _dashDuration; }
-
-
-    [SerializeField] private float _maxStamina;
-    public float MaxStamina { get => _maxStamina; }
-
-
+    [Header("스턴")]
     [SerializeField] private float _stunDelay; // 과부화 시 스턴까지 걸리는 시간
     public float StunDelay { get => _stunDelay; }// 스턴 상태 시간
 
