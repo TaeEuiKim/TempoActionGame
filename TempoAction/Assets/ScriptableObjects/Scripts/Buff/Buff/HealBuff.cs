@@ -9,10 +9,13 @@ public class HealBuff : BuffData
     {
         if (_player == null)
         {
-            _player = FindObjectOfType<PlayerManager>();
+            _player = FindObjectOfType<Player>();
         }
 
+        Debug.Log("Èú");
         _player.Stat.Hp += value;
+
+        
     }
 
     public override void Stay()

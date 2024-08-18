@@ -6,13 +6,15 @@ using UnityEditor;
 public class BuffPlatform : MonoBehaviour
 {
     [SerializeField] private Define.BuffInfo _info = Define.BuffInfo.NONE;
+
     private BuffData _buffData;
 
-    private bool isEntered = false;
+    private bool _isEntered = false;
 
 
     public void Change(Define.BuffInfo info)
     {
+       
         Exit();
 
         _info = info;
@@ -42,9 +44,34 @@ public class BuffPlatform : MonoBehaviour
         }
     }
 
+    public void ChangeColor(Define.BuffInfo info)
+    {
+        Material temp;
+        if (info == Define.BuffInfo.NONE)
+        {
+            temp = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+            temp.color = Color.white;
+        }
+        else
+        {
+            temp = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+            temp.color = BuffManager.Instance.FindBuff(info).color;
+        }
+
+        if (Application.isPlaying)
+        {
+            GetComponent<Renderer>().material = temp;
+        }
+        else
+        {
+            GetComponent<Renderer>().sharedMaterial = temp;
+        }
+    }
+
+
     private void Enter()
     {
-        if (!isEntered)
+        if (!_isEntered)
         {
             if (_info == Define.BuffInfo.NONE) return;
 
@@ -53,13 +80,13 @@ public class BuffPlatform : MonoBehaviour
                 BuffManager.Instance.AddBuff(_info);
             }
             //print("들어감");
-            isEntered = true;
+            _isEntered = true;
         }
     }
 
     private void Exit()
     {
-        if (isEntered)
+        if (_isEntered)
         {
             if (_info == Define.BuffInfo.NONE) return;
 
@@ -72,7 +99,7 @@ public class BuffPlatform : MonoBehaviour
                 BuffManager.Instance.RemoveBuff(_info);
             }
             //print("나감");
-            isEntered = false;
+            _isEntered = false;
         }
     }
 
@@ -92,7 +119,6 @@ public class BuffPlatform : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Exit();
-
         }
 
     }

@@ -5,37 +5,31 @@ using UnityEngine;
 public class AtkFinishState : IAtkState
 {
 
-    private PlayerManager _player;
+    private Player _player;
 
-    public AtkFinishState(PlayerManager player)
+    public AtkFinishState(Player player)
     {
         _player = player;
+        
     }
 
     public void Enter()
     {
         _player.Ani.SetBool("FinishState", true);
 
-        //Debug.Log("끝");
-        _player.Atk.HitEnemyList.Clear();
-        _player.Atk.Index = 0;
+        _player.Atk.HitMonsterList.Clear();
+        _player.Atk.AttackIndex = 0; // 공격 인덱스 초기화
       
-    }
-
-    public void Exit()
-    {
-        _player.Ani.SetBool("FinishState", false);
     }
 
     public void Stay()
     {
 
-        if (Input.GetKeyDown(InputManager.Instance.FindKeyCode("MainTempo")))
-        {
-            _player.Atk.Execute();
-        }
+    }
 
-
+    public void Exit()
+    {
+        _player.Ani.SetBool("FinishState", false);
     }
 
 }

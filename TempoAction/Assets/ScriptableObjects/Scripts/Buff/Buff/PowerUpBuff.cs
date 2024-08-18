@@ -16,10 +16,10 @@ public class PowerUpBuff : BuffData
 
         if (_player == null)
         {
-            _player = FindObjectOfType<PlayerManager>();
+            _player = FindObjectOfType<Player>();
         }
-        _originValue = _player.Stat.Damage;
-        _player.Stat.Damage = value;
+        _originValue = _player.Stat.AttackDamage;
+        _player.Stat.AttackDamage = value;
     }
 
     public override void Stay()
@@ -36,6 +36,6 @@ public class PowerUpBuff : BuffData
 
     public override void Exit()
     {
-        _player.Stat.Damage = _originValue;
+        _player.Stat.AttackDamage = _originValue;
     }
 }

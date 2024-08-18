@@ -18,10 +18,10 @@ public class SpeedUpBuff : BuffData
 
         if (_player == null)
         {
-            _player = FindObjectOfType<PlayerManager>();
+            _player = FindObjectOfType<Player>();
         }
-        _originValue = _player.Stat.Speed;
-        _player.Stat.Speed = value;
+        _originValue = _player.Stat.SprintSpeed;
+        _player.Stat.SprintSpeed = value;
     }
 
     public override void Stay()
@@ -38,6 +38,6 @@ public class SpeedUpBuff : BuffData
 
     public override void Exit()
     {
-        _player.Stat.Speed = _originValue;
+        _player.Stat.SprintSpeed = _originValue;
     }
 }

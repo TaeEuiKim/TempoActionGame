@@ -7,9 +7,9 @@ public class StunState : IPlayerState
    
     private float _timer = 0;
 
-    private PlayerManager _player;
+    private Player _player;
 
-    public StunState(PlayerManager player)
+    public StunState(Player player)
     {
         _player = player;
     }
@@ -18,11 +18,11 @@ public class StunState : IPlayerState
     {
         if (_player.Controller.Direction > 0)
         {
-            EffectManager.Instance.Pool.Spawn("spark_fung_main_R", 3, EffectManager.Instance.rightSparkPoint);
+            ObjectPool.Instance.Spawn("spark_fung_main_R", 3, _player.RightSparkPoint);
         }
         else
         {
-            EffectManager.Instance.Pool.Spawn("spark_fung_main_L", 3, EffectManager.Instance.leftSparkPoint);
+            ObjectPool.Instance.Spawn("spark_fung_main_L", 3, _player.LeftSparkPoint);
         }
         
 

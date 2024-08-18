@@ -5,44 +5,40 @@ using UnityEngine.UI;
 using DG.Tweening;
 public class AtkMachine : MonoBehaviour
 {
-    private PlayerManager _player;
+    private Player _player;
 
     [SerializeField] private List<AtkTempoData> _atkTempoDatas = new List<AtkTempoData>();
 
-    [SerializeField] private int _index = 0;
-    public int Index
+    [SerializeField] private int _attackIndex = 0;
+    public int AttackIndex
     {
         get
         {
-            return _index;
+            return _attackIndex;
         }
         set
         {
-            _index = value;
-            _index = _index % 5;
-            _player.Ani.SetInteger("AtkCount", _player.Atk.Index);
-            //Debug.Log(_player.Atk.Index);
+            _attackIndex = value;
+
+            if (_attackIndex == 4)
+            {
+                CreateTempoCircle();
+            }
+
+            _player.Ani.SetInteger("AtkCount", _attackIndex);
+            
         }
     }
 
 
-    public AtkTempoData CurAtkTempoData
+    public AtkTempoData CurAtkTempoData // 현재 템포 데이터 
     {
         get
         {
-            if (_index == 4 && _player.Atk.UpgradeCount == 3) // 포인트 템포 강화 확인
-            {
-                return _atkTempoDatas[5];
-            }
-            else
-            {
-                return _atkTempoDatas[_index];
-            }
+            return _atkTempoDatas[_attackIndex];
         }
 
     }
-
-    public bool IsUpgraded { get; set; } = false;
 
     private int _upgradeCount = 0;
     public int UpgradeCount
@@ -62,15 +58,24 @@ public class AtkMachine : MonoBehaviour
         }
     }
 
-    [SerializeField] private TempoCircle _pointTempoCircle;
-    public TempoCircle PointTempoCircle { get { return _pointTempoCircle; } }
-    public Define.CircleState CircleState { get; set; } = Define.CircleState.GOOD;
+    private TempoCircle _pointTempoCircle = null;
+    public TempoCircle PointTempoCircle 
+    { 
+        get => _pointTempoCircle;
+        set 
+        {
+            _pointTempoCircle = value; 
+        }
+
+    }
+
+
+    private bool _isParrying;
+    public bool IsParrying { get => _isParrying; set => _isParrying = value; }
 
     private void Start()
     {
-
-
-        _player = transform.parent.GetComponent<PlayerManager>();
+        _player = transform.parent.GetComponent<Player>();
 
     }
 
@@ -85,157 +90,264 @@ public class AtkMachine : MonoBehaviour
             }
         }
 
-
-
-    }
-
-    public bool InputAtk()
-    {
-
-        if (Input.GetKeyDown(KeyCode.A))
+        if (_player.CurAtkState != Define.AtkState.ATTACK) // 공격 키 입력
         {
-            return true;
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                _player.Atk.AttackMainTempo();
+            }
         }
-
-        return false;
     }
 
-    public void Execute() // 공격 실행
+    #region 메인 템포
+    public void AttackMainTempo() // 공격 실행
     {
+        if (_pointTempoCircle != null) return;
+
         if (_player.Ani.GetBool("isGrounded"))
         {
             _player.CurAtkState = Define.AtkState.ATTACK;
         }
     }
 
+    #endregion
 
-    public void StartPointTempCircle() // 포인트 템포 원 생성
+    #region 포인트 템포
+
+    private void SuccessTempoCircle() // 포인트 템포 성공
     {
-        if (CurAtkTempoData.type != Define.TempoType.POINT)
+        if (_upgradeCount == 3) // 포인트 템포 업그레이트 확인
         {
-            return;
-       }
-        SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_PointTempo_Ready", transform);
+            AttackIndex = 5;
+            _player.Ani.SetBool("IsUpgraded", true);
+        }
+        else
+        {
+            AttackIndex = 4;
+            _player.Ani.SetBool("IsUpgraded", false);
+        }
 
-        _pointTempoCircle.gameObject.SetActive(true);
-        _pointTempoCircle.ResetCircle();
+        _player.Ani.SetTrigger("PointTempo");
+
+        _player.CurAtkState = Define.AtkState.ATTACK;
     }
+
+    private void FailureTempoCircle()
+    {
+        _pointTempoCircle = null;
+        _player.CurAtkState = Define.AtkState.FINISH;
+    }
+
+    private void FinishTempoCircle() // 템포 원 끝
+    {
+        
+    }
+
+    public void CreateTempoCircle(float duration = 1) // 템포 원 생성
+    {
+        //SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_PointTempo_Ready", transform);
+
+        if (_pointTempoCircle == null)
+        {
+            GameObject tempoCircle = ObjectPool.Instance.Spawn("TempoCircle", 0, transform.parent);
+            tempoCircle.transform.position = new Vector3(transform.position.x, transform.position.y + 2, -0.1f);
+
+            _pointTempoCircle = tempoCircle.GetComponent<TempoCircle>();
+            _pointTempoCircle.Init(transform.parent);
+
+            _pointTempoCircle.ShrinkDuration = duration;
+
+            _pointTempoCircle.OnSuccess += SuccessTempoCircle;
+            _pointTempoCircle.OnFailure += FailureTempoCircle;
+            _pointTempoCircle.OnFinish += FinishTempoCircle;
+        }
+
+    }
+
+
+    #endregion
+
+
+
 
     #region 애니메이션 이벤트 함수
 
-    public List<Enemy> HitEnemyList { get; set; } = new List<Enemy>();
+    public List<Monster> HitMonsterList { get; set; } = new List<Monster>();
 
     [Header(("충돌"))]
     [SerializeField] private Transform _endPoint;
     [SerializeField] private Transform _hitPoint;
 
     [SerializeField] private Vector3 _colSize;
-    [SerializeField] private LayerMask _enemyLayer;
+    [SerializeField] private LayerMask _monsterLayer;
     public Transform HitPoint { get { return _hitPoint; } }
 
     private bool _isHit = false;
     public float CheckDelay { get; set; } = 0;
     private void Hit()
     {
-        //Collider[] hitEnemies = Physics.OverlapSphere(_hitPoint.position, _attackRadius, _enemyLayer);
-        Collider[] hitEnemies = Physics.OverlapBox(_hitPoint.position, _colSize, _hitPoint.rotation, _enemyLayer);
+        Collider[] hitMonsters = Physics.OverlapBox(_hitPoint.position, _colSize/2, _hitPoint.rotation, _monsterLayer);
 
-        if (hitEnemies.Length <= 0)
+        if (hitMonsters.Length <= 0)
         {
             return;
         }
 
         if (_isHit == false && CurAtkTempoData.type == Define.TempoType.MAIN)
         {
-            SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_RhythmCombo_Hit_" + (_index + 1), transform);
+            SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_RhythmCombo_Hit_" + (_attackIndex + 1), transform);
         }
-
         _isHit = true;
 
-        float damage = _player.Stat.Damage + CurAtkTempoData.damage;
+        float damage = _player.Stat.AttackDamage + CurAtkTempoData.damage;
 
-        foreach (Collider enemy in hitEnemies)
+        foreach (Collider monster in hitMonsters)
         {
 
+            Monster m = monster.GetComponent<Monster>();
+
+
             // 데미지 입히기
-            enemy.GetComponent<Enemy>().Stat.TakeDamage(damage);
+            if (CurAtkTempoData.type == Define.TempoType.POINT)
+            {
+                m.Stat.TakeDamage(damage, true);
+            }
+            else
+            {
+                m.Stat.TakeDamage(damage);
+            }
+
+            if (m.CanKnockback)
+            {
+                KnockBack(m);
+            }
 
             // 히트 파티클 생성
             GameObject hitParticle = null;
             if (CurAtkTempoData.type == Define.TempoType.POINT)
             {
-                hitParticle = EffectManager.Instance.Pool.Spawn("P_point_attack", 1);
+         
+                hitParticle = ObjectPool.Instance.Spawn("P_point_attack", 1);
             }
             else
             {
-                hitParticle = EffectManager.Instance.Pool.Spawn("P_main_attack", 1);
+          
+                hitParticle = ObjectPool.Instance.Spawn("P_main_attack", 1);
             }
 
-            Vector3 hitPos = enemy.ClosestPoint(_hitPoint.position);
+            Vector3 hitPos = monster.ClosestPoint(_hitPoint.position);
             hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, -0.1f);
 
-            KnockBack(enemy.transform);
-            HitEnemyList.Add(enemy.GetComponent<Enemy>());
+            HitMonsterList.Add(monster.GetComponent<Monster>());
         }
 
     }
 
-    private void KnockBack(Transform target) // 넉백
+    private float _knockBackTimer = 0;
+
+    public void KnockBack(Monster monster) // 넉백
     {
-        Vector2 distance = target.position - _hitPoint.position;
+        Vector2 distance = monster.transform.position - _hitPoint.position;
 
-        Vector2 endPoint = (Vector2)_endPoint.position + distance;
+        Vector2 ep = (Vector2)_endPoint.position + distance;
 
-        target.DOMove(endPoint, 0.2f);
-    }
+        _knockBackTimer = 0;
+        monster.Stat.IsKnockBack = true;
 
-    private void GravityActive(int value) // 중력 조절
-    {
-        foreach (Enemy enemy in HitEnemyList)
+
+        monster.transform.DOMove(ep, 0.2f).OnComplete(() =>
         {
-            enemy.GetComponent<Rigidbody>().useGravity = (value == 0) ? false : true;
-        }
-    }
+            monster.Stat.IsKnockBack = false;
 
-    private void Finish(float delay) // 공격이 끝난 시점 
-    {
-        //while (!_isHit); // 공격하지 않았으면 대기
-        if (_isHit)
-        {
-            float addStamina = CurAtkTempoData.maxStamina;
-
-            if (CurAtkTempoData.type == Define.TempoType.POINT) // 포인트 템포일 때
+            if (!monster.Stat.IsStunned)
             {
-                if (CircleState == Define.CircleState.GOOD) // 타이밍이 Good일 경우
+                StartCoroutine(Stun(monster));
+
+            }
+
+        });
+
+
+    }
+
+    private IEnumerator Stun(Monster monster)
+    {
+        monster.Stat.IsStunned = true;
+        while (_knockBackTimer < 0.5f)
+        {
+            _knockBackTimer += Time.deltaTime;
+
+            yield return null;
+        }
+        monster.Stat.IsStunned = false;
+
+        monster.OnKnockback?.Invoke();
+    }
+
+    private void FinishPointTempo()
+    {
+        float addStamina = 0;
+
+        if (CurAtkTempoData.type == Define.TempoType.POINT) // 포인트 템포일 때
+        {
+            if (_isHit)
+            {
+                addStamina = CurAtkTempoData.maxStamina;
+
+                if (_pointTempoCircle.CircleState == Define.CircleState.GOOD) // 타이밍이 Good일 경우
                 {
                     addStamina = CurAtkTempoData.minStamina;
                 }
 
                 UpgradeCount++;
+
             }
 
-            _player.Stat.Stamina += addStamina;
-            _isHit = false;
-        }   
+        }
+
+        _player.Stat.Stamina += addStamina;
+        _isHit = false;
+
+        _pointTempoCircle = null;
+        _player.CurAtkState = Define.AtkState.FINISH;
+    }
+
+    private void Finish(float delay) // 공격이 끝난 시점 
+    {
+
+        float addStamina = 0;
+
+        if (_isHit)
+        {
+            addStamina = CurAtkTempoData.maxStamina;
+        }
+
+
+        _player.Stat.Stamina += addStamina;
+        _isHit = false;
 
         CheckDelay = delay;
         _player.CurAtkState = Define.AtkState.CHECK;
 
+      
+        AttackIndex++;
+        
+
     }
 
-    private void MoveToClosestEnemy(float duration) // 특정 거리에 적이 있으면 적 앞으로 이동
+    private void MoveToClosestMonster(float duration) // 특정 거리에 적이 있으면 적 앞으로 이동
     {
-        Vector3 rayOrigin = new Vector3(transform.parent.position.x, transform.parent.position.y+0.25f, transform.parent.position.z);
+        Vector3 rayOrigin = new Vector3(transform.parent.position.x, transform.parent.position.y, transform.parent.position.z);
         Vector3 rayDirection = transform.localScale.x > 0 ? transform.right : transform.right * -1;
 
         // 레이캐스트 히트 정보 저장
         RaycastHit hit;
 
         // 레이캐스트 실행
-        if (Physics.Raycast(rayOrigin, rayDirection, out hit, CurAtkTempoData.distance, _enemyLayer))
+        if (Physics.Raycast(rayOrigin, rayDirection, out hit, CurAtkTempoData.distance, _monsterLayer))
         {
-            Transform closestEnemy = hit.collider.GetComponent<Enemy>().moveToPoint;
-            transform.parent.DOMoveX(closestEnemy.position.x, duration);
+            float closestMonsterX = hit.transform.position.x + (-rayDirection.x * 0.75f);
+            transform.parent.DOMoveX(closestMonsterX, duration);
         }
  
 
@@ -258,8 +370,19 @@ public class AtkMachine : MonoBehaviour
         TimelineManager.Instance.PlayTimeline(name);
     }
 
-  
 
+    private void GravityActive(int value) // 중력 조절
+    {
+        foreach (Monster monster in HitMonsterList)
+        {
+            monster.Rb.useGravity = (value == 0) ? false : true;
+        }
+    }
+
+    private void SetColliderActive(int value) // 콜라이더 활성화/비활성화
+    {
+        _player.GetComponent<Collider>().enabled = (value == 0) ? false : true;
+    }
 
     #endregion
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,12 +8,20 @@ using DG.Tweening;
 
 public class TempoCircle : MonoBehaviour
 {
-    private PlayerManager _player;
+    private Transform _player;
 
-    [SerializeField] private Image _circleImage; // 원 스프라이트 이미지
+
+    [SerializeField] private GameObject _checkCircle; // 원 스프라이트 이미지
+    [SerializeField] private GameObject _perfectCircle; // 원 스프라이트 이미지
+    [SerializeField] private GameObject _goodCircle; // 원 스프라이트 이미지
     [SerializeField] private float _shrinkDuration = 1f; // 원이 줄어드는데 걸리는 시간 (초)
+    public float ShrinkDuration { get => _shrinkDuration; set => _shrinkDuration = value; }
+
     [SerializeField] private Vector2 _perfectTime; // 완벽한 타이밍 (초)
     [SerializeField] private Vector2 _goodTime; // 좋은 타이밍 (초)
+    private Vector2 _perfectScale; // 완벽한 타이밍 (초)
+    private Vector2 _goodScale; // 좋은 타이밍 (초)
+
     [Space]
     [SerializeField] private GameObject _perfectPrefab;
     [SerializeField] private GameObject _goodPrefab;
@@ -21,101 +30,122 @@ public class TempoCircle : MonoBehaviour
 
 
     private float timer = 0f;
-    private bool isShrinking = true;
+    [SerializeField] private bool isShrinking = true; //축소 중 확인
 
+    private Define.CircleState _circleState = Define.CircleState.NONE;
+    public Define.CircleState CircleState { get => _circleState; }
 
-    void Start()
-    {       
-        ResetCircle();
-    }
+    public Action OnSuccess;
+    public Action OnFailure;
+    public Action OnFinish;
 
     void Update()
     {
         if (isShrinking)
         {
-            timer += Time.deltaTime;
-            float scale = Mathf.Lerp(1.0f, 0.3f, timer / _shrinkDuration);
-            _circleImage.transform.localScale = new Vector3(scale, scale, 1.0f);
-
             if (timer >= _shrinkDuration)
             {
-                _player.Atk.CircleState = Define.CircleState.MISS;
-                SpawnFx(_player.Atk.CircleState);
-                //Debug.Log("Bad!");
+                //Debug.Log("Miss!");
+                _circleState = Define.CircleState.MISS;
+                
                 isShrinking = false;
-                _circleImage.gameObject.SetActive(false);
-                Invoke("Finish", 0.5f);
+
+                _checkCircle.SetActive(false);
+
+                SpawnFx(_circleState);
+                Invoke("Finish", 0.5f);              
             }
             else
             {
-                if (Input.GetKeyDown(InputManager.Instance.FindKeyCode("PointTempo")))
+                timer += Time.deltaTime;
+
+                float scale = Mathf.Lerp(1.0f, 0, timer / _shrinkDuration);
+                _checkCircle.transform.localScale = new Vector3(scale, scale, 1.0f);
+
+                if (_player.GetComponent<Player>().CurState != Define.PlayerState.STUN) // 스턴 상태면 입력 안되도록
                 {
-                    CheckTiming();
-                    Invoke("Finish", 0.5f);
+                    if (Input.GetKeyDown(KeyCode.F))
+                    {
+                        CheckTiming();
+
+                        isShrinking = false;
+
+                        Invoke("Finish", 0.5f);
+                    }
+
                 }
             }        
         }
     }
 
+    public void Init(Transform player = null)
+    {
+        //print("초기화");
+        timer = 0.0f;
+
+        _checkCircle.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        _checkCircle.SetActive(true);
+
+        _perfectScale.x = Mathf.Lerp(0, 1, _perfectTime.x / _shrinkDuration);
+        _perfectScale.y = Mathf.Lerp(0, 1, _perfectTime.y / _shrinkDuration);
+        _perfectCircle.transform.localScale = new Vector3(_perfectScale.x, _perfectScale.x, _perfectScale.x); ;
+
+        _goodScale.x = Mathf.Lerp(0, 1, _goodTime.x / _shrinkDuration);
+        _goodScale.y = Mathf.Lerp(0, 1, _goodTime.y / _shrinkDuration);
+        _goodCircle.transform.localScale = new Vector3(_goodScale.x, _goodScale.x, _goodScale.x); 
+
+        isShrinking = true;
+        _circleState = Define.CircleState.NONE;
+
+        _player = player;
+    }
+
     private void CheckTiming()
     {
-       
-        float timeLeft = _shrinkDuration - timer;
-        if (_perfectTime.x <= timeLeft && timeLeft < _perfectTime.y)
+        if (_perfectScale.x <= _checkCircle.transform.localScale.x && _checkCircle.transform.localScale.x < _perfectScale.y)
         {
-            _player.Atk.CircleState = Define.CircleState.PERFECT;
+            _circleState = Define.CircleState.PERFECT;
             //Debug.Log("Perfect!");
-
-            isShrinking = false;
         }
-        else if (_goodTime.x <= timeLeft && timeLeft < _goodTime.y)
+        else if (_goodScale.x <= _checkCircle.transform.localScale.x && _checkCircle.transform.localScale.x < _goodScale.y)
         {
-            _player.Atk.CircleState = Define.CircleState.GOOD;
+            _circleState = Define.CircleState.GOOD;
 
             //Debug.Log("Good!");
-            isShrinking = false;
         }
-        else if(_goodTime.y < timeLeft || _perfectTime.x < timeLeft )
+        else if(_goodTime.y < _checkCircle.transform.localScale.x || _perfectScale.x > _checkCircle.transform.localScale.x)
         {
-            _player.Atk.CircleState = Define.CircleState.BAD;
+            _circleState = Define.CircleState.BAD;
             //Debug.Log("Bad!");
-            isShrinking = false;
         }
-        SpawnFx(_player.Atk.CircleState);
+
+        SpawnFx(_circleState);
+       
     }
 
-    public void ResetCircle()
-    {
-        if (_player == null)
-        {
-            _player = FindObjectOfType<PlayerManager>();
-        }       
-
-        timer = 0.0f;
-        _player.Atk.CircleState = Define.CircleState.NONE;
-        _circleImage.gameObject.SetActive(true);
-        _circleImage.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-        isShrinking = true;
-    }
 
     private void SpawnFx(Define.CircleState state)
     {
+       
+        GameObject temp = null;
 
-        GameObject temp = null ;
-        Vector2 playerPos = _player.transform.position;
         switch (state)
         {
             case Define.CircleState.PERFECT:
-                temp = Instantiate(_perfectPrefab, new Vector3(playerPos.x, playerPos.y + 1, -0.1f), Quaternion.identity);
+                temp = Instantiate(_perfectPrefab, new Vector3(_player.position.x, _player.position.y + 1, -0.1f), Quaternion.identity, _player);
+                OnSuccess?.Invoke();
                 break;
             case Define.CircleState.GOOD:
-                temp = Instantiate(_goodPrefab, new Vector3(playerPos.x, playerPos.y + 1, -0.1f), Quaternion.identity);
+                temp = Instantiate(_goodPrefab, new Vector3(_player.position.x, _player.position.y + 1, -0.1f), Quaternion.identity, _player);
+                OnSuccess?.Invoke();
                 break;
             case Define.CircleState.BAD:
-                temp = Instantiate(_badPrefab, new Vector3(playerPos.x, playerPos.y + 1, -0.1f), Quaternion.identity);
+                temp = Instantiate(_badPrefab, new Vector3(_player.position.x, _player.position.y + 1, -0.1f), Quaternion.identity, _player);
+                OnFailure?.Invoke();
                 break;
             case Define.CircleState.MISS:
-                temp = Instantiate(_missPrefab, new Vector3(playerPos.x, playerPos.y + 1, -0.1f), Quaternion.identity);
+                temp = Instantiate(_missPrefab, new Vector3(_player.position.x, _player.position.y + 1, -0.1f), Quaternion.identity, _player);
+                OnFailure?.Invoke();
                 break;
         }
 
@@ -123,8 +153,14 @@ public class TempoCircle : MonoBehaviour
         Destroy(temp, 1f);
 
     }
+
     private void Finish()
-    {
-        gameObject.SetActive(false);
+    {      
+        ObjectPool.Instance.Remove(gameObject);
+        OnFinish?.Invoke();
+        
+        OnSuccess = null;
+        OnFailure = null;
+        OnFinish = null;
     }
 }

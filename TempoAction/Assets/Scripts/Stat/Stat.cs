@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class Stat : MonoBehaviour
 {
-    [SerializeField] protected float _speed;
-    public float Speed { get => _speed; set => _speed = value; }
 
     [SerializeField] protected float _maxHp;
     public float MaxHp { get => _maxHp; set => _maxHp = value; }
 
-    protected float _hp;
+    [SerializeField] protected float _hp;
     public virtual float Hp
     {
         get
@@ -32,8 +30,17 @@ public class Stat : MonoBehaviour
         }
     }
 
-    [SerializeField] protected float _damage;
-    public float Damage { get => _damage; set => _damage = value; }
+    [SerializeField] protected float _walkSpeed;
+    public float WalkSpeed { get => _walkSpeed; set => _walkSpeed = value; }
+
+    [SerializeField] protected float _sprintSpeed;
+    public float SprintSpeed { get => _sprintSpeed; set => _sprintSpeed = value; }
+
+
+  
+
+    [SerializeField] protected float _attackDamage;
+    public float AttackDamage { get => _attackDamage; set => _attackDamage = value; }
 
     protected bool _isDead = false;
    

@@ -48,6 +48,25 @@ public class CreatePlatformEditor : Editor
             _createPlatform.Delete();
         };
 
+        var autoToggle = root.Q<Toggle>("Auto");
+        var autoGroupBox = root.Q<VisualElement>("AutoGroupBox");
+        var notAutoGroupBox = root.Q<VisualElement>("NotAutoGroupBox");
+
+        autoToggle.RegisterValueChangedCallback((value) => 
+        {
+            if (value.newValue)
+            {
+                autoGroupBox.style.visibility = Visibility.Visible;
+                notAutoGroupBox.style.visibility = Visibility.Hidden;
+            }
+            else
+            {
+                autoGroupBox.style.visibility = Visibility.Hidden;
+                notAutoGroupBox.style.visibility = Visibility.Visible;
+            }
+        });
+
+       
 
         return root;
     }

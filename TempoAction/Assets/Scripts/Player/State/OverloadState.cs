@@ -5,9 +5,9 @@ using UnityEngine;
 public class OverloadState : IPlayerState
 {
     private float timer = 0;
-    private PlayerManager _player;
+    private Player _player;
 
-    public OverloadState(PlayerManager player)
+    public OverloadState(Player player)
     {
         _player = player;
     }

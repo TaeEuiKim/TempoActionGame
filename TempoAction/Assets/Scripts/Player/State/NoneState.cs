@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class NoneState : IPlayerState
 {
-    private PlayerManager _player;
+    private Player _player;
 
-    public NoneState(PlayerManager player = null)
+    public NoneState(Player player = null)
     {
         _player = player;
     }

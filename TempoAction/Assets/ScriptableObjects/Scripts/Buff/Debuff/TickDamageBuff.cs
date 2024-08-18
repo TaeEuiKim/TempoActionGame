@@ -16,7 +16,7 @@ public class TickDamageBuff : BuffData
 
         if (_player == null)
         {
-            _player = FindObjectOfType<PlayerManager>();
+            _player = FindObjectOfType<Player>();
         }
 
     }

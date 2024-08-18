@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class PlayerStat : Stat
 {
@@ -82,9 +83,37 @@ public class PlayerStat : Stat
     public float StunTime { get => _stunTime; }// 스턴 상태 시간
 
 
+    private bool _isKnockedBack = false;
+    public bool IsKnockedBack { get => _isKnockedBack; set => _isKnockedBack = value; }
+
     private void Start()
     {
         _hp = _maxHp;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        if (_isKnockedBack) return;
+
+        Hp -= damage;
+
+        
+    }
+
+    public void Knockback(Vector2 knockbackDirection, float t = 0)
+    {
+        StartCoroutine(StartKnockBack(knockbackDirection, t));
+    }
+
+    public IEnumerator StartKnockBack(Vector2 knockbackDirection, float t)
+    {
+        _isKnockedBack = true;
+        GetComponent<Rigidbody>().AddForce(knockbackDirection, ForceMode.Impulse);
+
+        yield return new WaitForSeconds(t);
+
+        GetComponent<Rigidbody>().velocity = Vector2.zero;
+        _isKnockedBack = false;
     }
 
     public bool CheckOverload()

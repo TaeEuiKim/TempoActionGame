@@ -5,7 +5,7 @@ using DG.Tweening;
 public class PlayerController : MonoBehaviour
 {
 
-    private PlayerManager _player;
+    private Player _player;
 
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private float _groundCheckRadius = 0.2f;
@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     private bool _facingRight = true;
     //private bool _isMoved = false;
 
-    
+    private float _moveInput = 0;
     private float _dashTimer = 0f;
     public float Direction 
     {
@@ -27,25 +27,22 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
     private void Start()
     {
-        _player = transform.parent.GetComponent<PlayerManager>();
+        _player = transform.parent.GetComponent<Player>();
 
         _dashTimer = _player.Stat.DashDelay;
     }
 
     public void Stay()
     {
+
+        if (_player.Stat.IsKnockedBack) return;
+
         if (_player.CurAtkState == Define.AtkState.ATTACK)
         {
             _player.Rb.velocity = new Vector2(0, _player.Rb.velocity.y);
 
-            if (_player.Atk.CurAtkTempoData.type == Define.TempoType.POINT)
-            {
-                //_player.Ani.SetFloat("Speed", 0);
-                //_player.Ani.SetFloat("VerticalSpeed", 0);
-            }
             return;
         }
 
@@ -67,7 +64,7 @@ public class PlayerController : MonoBehaviour
 
         if (_dashTimer >= _player.Stat.DashDelay)
         {
-            if (Input.GetKeyDown(InputManager.Instance.FindKeyCode("Dash")))
+            if (Input.GetKeyDown(KeyCode.D))
             {
                 Dash();
             }
@@ -87,29 +84,30 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        float moveInput = 0;
+        _moveInput = 0;
 
-        if (Input.GetKey(InputManager.Instance.FindKeyCode("Left")))
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
-            moveInput = -1f;
+            _moveInput = -1f;
         }
-        else if (Input.GetKey(InputManager.Instance.FindKeyCode("Right")))
+        if (Input.GetKey(KeyCode.RightArrow))
         {
-            moveInput = 1f;
+            _moveInput = 1f;
         }
 
-        Vector2 tempVelocity = new Vector2(moveInput * _player.Stat.Speed, _player.Rb.velocity.y);
+
+        Vector2 tempVelocity = new Vector2(_moveInput * _player.Stat.SprintSpeed, _player.Rb.velocity.y);
 
         _player.Ani.SetFloat("Speed", Mathf.Abs(tempVelocity.x));
 
 
         _player.Rb.velocity = tempVelocity;
 
-        if (moveInput > 0 && !_facingRight)
+        if (_moveInput > 0 && !_facingRight)
         {
             Flip();
         }
-        else if (moveInput < 0 && _facingRight)
+        else if (_moveInput < 0 && _facingRight)
         {
             Flip();
         }
@@ -118,19 +116,15 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-      
-
-        if (Input.GetKeyDown(InputManager.Instance.FindKeyCode("Jump")) && _isGrounded)
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             _player.Ani.SetTrigger("isJumping");
             _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.Stat.JumpForce);
             _isGrounded = false;
         }
-        else if (Input.GetKeyUp(InputManager.Instance.FindKeyCode("Jump")))
+        else if (Input.GetKeyUp(KeyCode.UpArrow))
         {
-
             _player.Rb.velocity = new Vector3(_player.Rb.velocity.x, _player.Rb.velocity.y / 2, _player.Rb.velocity.z);
-
         }
 
         if (Mathf.Abs(_player.Rb.velocity.y) >= 0.1f)
@@ -163,8 +157,6 @@ public class PlayerController : MonoBehaviour
         _facingRight = !_facingRight;
         float scaleX = _facingRight ? 1 : -1;
         transform.localScale = new Vector3(scaleX, 1, 1);
-        //float rotationY = _facingRight ? 0 : -180;
-        //transform.DOLocalRotate(new Vector3(0, rotationY, 0), 0.2f);
     }
 
     private void PlayerSfx(Define.PlayerSfxType type)
@@ -172,7 +164,7 @@ public class PlayerController : MonoBehaviour
         switch (type)
         {
             case Define.PlayerSfxType.MAIN:
-                SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_RhythmCombo_Attack_" + (_player.Atk.Index + 1), transform);
+                SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_RhythmCombo_Attack_" + (_player.Atk.AttackIndex + 1), transform);
                 break;
             case Define.PlayerSfxType.POINT:
                 SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_PointTempo_Hit", transform);

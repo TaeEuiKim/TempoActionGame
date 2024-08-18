@@ -2,6 +2,17 @@
 
 public class Define
 {
+
+    public enum UIType
+    {
+        ALL, BUTTON, IMAGE, CANVASGROUP, TMPRO, TOGGLE, SLIDER
+    }
+
+    public enum KeyType
+    {
+        DOWN, HOLD, UP
+    }
+
     public enum BuffType // ENTER : 범위에 들어가면 실행 , STAY : 범위에 들어가 있으면 실행, EXIT : 범위에서 나가면 실행 
     {
         ENTER, STAY, EXIT, NONE
@@ -9,6 +20,7 @@ public class Define
 
     public enum BuffInfo
     {
+        NONE,
         SUPERJUMP,
 
         #region buff
@@ -18,16 +30,16 @@ public class Define
         #endregion
 
         #region debuff
-        TICKDAMAGE,
+        TICKDAMAGE
 
         #endregion
-        NONE
+        
     }
 
-    public enum UIType
-    {
-        ALL, BUTTON, IMAGE, CANVASGROUP, TMPRO, TOGGLE, SLIDER
-    }
+   
+
+
+    #region 플레이어
     public enum TempoType
     {
         MAIN, POINT, NONE
@@ -52,4 +64,25 @@ public class Define
     {
         MAIN, POINT, DASH, RUN, JUMP, STUN, NONE
     }
+    #endregion
+
+    #region 몬스터
+    public enum PerceptionType
+    {
+        PATROL, BOUNDARY, DETECTIONM
+    }
+
+    #region 엘리트 몬스터
+    public enum EliteMonsterState
+    {
+        IDLE, USESKILL, GROGGY, NONE
+    }
+    public enum EliteMonsterSkill
+    {
+        FATTACK, SATTACK, LASER, LAUNCH, RUSH, SUPERPUNCH, BARRIER, THUNDERSTROKE, EXPLOSION, PLATFORM, NONE
+    }
+    #endregion
+
+    #endregion
+
 }

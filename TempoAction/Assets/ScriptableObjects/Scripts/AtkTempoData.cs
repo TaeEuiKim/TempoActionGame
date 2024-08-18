@@ -15,9 +15,7 @@ public class AtkTempoData : ScriptableObject
     public float minStamina;
     public float maxStamina;
     
-    public float timeScale;
-    public float slowDelay;
-    public float slowDuration;
+    
 
     
 }

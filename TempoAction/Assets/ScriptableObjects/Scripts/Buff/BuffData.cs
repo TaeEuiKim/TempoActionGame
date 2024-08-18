@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class BuffData : ScriptableObject
 {
-    protected PlayerManager _player;
+    protected Player _player;
 
     public Define.BuffType type;
     public Define.BuffInfo info;
