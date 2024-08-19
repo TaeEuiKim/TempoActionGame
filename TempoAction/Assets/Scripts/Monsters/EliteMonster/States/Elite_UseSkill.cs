@@ -15,6 +15,7 @@ public class Elite_UseSkill : Elite_State
     }
     public override void Stay()
     {
+        // 현재 조건 완료된 스킬 실행
         _monster.CurrentSkill?.Stay();
     }
     public override void Exit()

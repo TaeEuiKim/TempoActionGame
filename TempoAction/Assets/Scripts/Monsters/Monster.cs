@@ -6,23 +6,21 @@ using UnityEngine;
 public class Monster : MonoBehaviour
 {
     protected Rigidbody _rb;
-    public Rigidbody Rb { get { return _rb; } }
-
     protected Transform _player;
-    public Transform Player { get => _player; }
+    protected MonsterStat _stat;
 
     [SerializeField] protected LayerMask _playerLayer;
-    public LayerMask PlayerLayer { get => _playerLayer; }
+    
+    protected float _direction = 1; // 몬스터가 바라보는 방향
 
-    protected MonsterStat _stat;
-    public MonsterStat Stat { get { return _stat; } }
-
-    protected bool _canKnockback;
-    public bool CanKnockback { get => _canKnockback; }
-
+    protected bool _canKnockback; // true =  넉백 가능한 몬스터, false = 넉백 불가능한 몬스터
     public Action OnKnockback;
 
-    protected float _direction = 1;
+    public Rigidbody Rb { get { return _rb; } }
+    public Transform Player { get => _player; }
+    public MonsterStat Stat { get { return _stat; } }
+    public LayerMask PlayerLayer { get => _playerLayer; }
+    public bool CanKnockback { get => _canKnockback; }
     public float Direction
     {
         get => _direction;
@@ -46,9 +44,9 @@ public class Monster : MonoBehaviour
         }
     }
 
-    public void Flip(float value)
+    // 반전 함수
+    public void Flip(float value) 
     {
-
         transform.GetChild(0).localScale = new Vector3(value, 1, 1);
     }
 

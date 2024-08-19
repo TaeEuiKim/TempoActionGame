@@ -17,11 +17,6 @@ public class AtkCheckState : IAtkState
     public void Enter()
     {
         _player.Ani.SetBool("CheckState", true);
-
-       /* if (_player.Atk.CurAtkTempoData.type == Define.TempoType.POINT)
-        {
-            _player.Atk.StartTempCircle();
-        }*/
     }
 
     public void Stay()

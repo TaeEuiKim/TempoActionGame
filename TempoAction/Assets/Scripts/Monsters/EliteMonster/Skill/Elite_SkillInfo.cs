@@ -9,7 +9,6 @@ public class Elite_SkillInfo
     public float coolTime;
     public float totalTime;
     public float range;
-    //public float impairment; // ¼Õ»ó
     public float damage;
     public int priority;
 }

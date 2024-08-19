@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow) && _isGrounded)
         {
             _player.Ani.SetTrigger("isJumping");
             _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.Stat.JumpForce);

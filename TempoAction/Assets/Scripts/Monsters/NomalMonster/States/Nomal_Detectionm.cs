@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NomalMonster_Detectionm : NomalMonster_State
+public class Nomal_Detectionm : Nomal_State
 {
     private float _attackTimer = 0;
 
-    public NomalMonster_Detectionm(NomalMonster monster) : base(monster)
+    public Nomal_Detectionm(NomalMonster monster) : base(monster)
     {
 
     }

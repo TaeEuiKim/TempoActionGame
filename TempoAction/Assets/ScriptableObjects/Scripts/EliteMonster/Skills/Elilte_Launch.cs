@@ -5,12 +5,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Launch", menuName = "ScriptableObjects/EliteMonster/Skill/Launch", order = 1)]
 public class Elilte_Launch : Elite_Skill
 {
-    [SerializeField] private float _energyBallSpeed;
-    private GameObject _energyBall;
-
     private float _coolTime;
     private float _totalTime;
 
+    [SerializeField] private float _energyBallSpeed;
+    private GameObject _energyBall;
 
     public override void Init(EliteMonster monster)
     {
@@ -22,19 +21,15 @@ public class Elilte_Launch : Elite_Skill
 
     public override void Check()
     {
-
         if (_isCompleted) return;
 
-
-        if (_coolTime >= _info.coolTime)
+        if (_coolTime >= _info.coolTime) // 쿨타임 확인
         {
-            if (Vector2.Distance(_monster.Player.position, _monster.transform.position) <= _info.range)
+            if (Vector2.Distance(_monster.Player.position, _monster.transform.position) <= _info.range) // 거리 확인
             {
-
                 _coolTime = 0;
                 _isCompleted = true;
             }
-
         }
         else
         {
@@ -45,9 +40,7 @@ public class Elilte_Launch : Elite_Skill
     public override void Enter()
     {
         Debug.Log("투사체");
-        float dir = _monster.Player.transform.position.x - _monster.transform.position.x;
-
-        _monster.Direction = dir;
+        _monster.Direction = _monster.Player.transform.position.x - _monster.transform.position.x; // 플레이어 바라보기
 
         _energyBall = ObjectPool.Instance.Spawn("EnergyBall");
         _energyBall.transform.position = _monster.StartEnergyBallPoint.position;

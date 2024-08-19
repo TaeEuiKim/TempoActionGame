@@ -4,10 +4,36 @@ using UnityEngine;
 
 public class EliteMonster : Monster
 {
+    #region 변수
     // 상태
-    private Dictionary<Define.EliteMonsterState, Elite_State> _stateStroage = new Dictionary<Define.EliteMonsterState, Elite_State>();
+    private Dictionary<Define.EliteMonsterState, Elite_State> _stateStroage = new Dictionary<Define.EliteMonsterState, Elite_State>(); // 상태 저장소
+    [SerializeField] private Define.EliteMonsterState _currentState = Define.EliteMonsterState.NONE;                                   // 현재 상태
 
-    [SerializeField] private Define.EliteMonsterState _currentState = Define.EliteMonsterState.NONE;
+    // 스킬
+    [SerializeField] private List<Elite_Skill> _skillStorage = new List<Elite_Skill>();  // 스킬 저장소
+    [SerializeField] private Elite_Skill _currentSkill = null;                           // 현재 스킬
+    [SerializeField] private List<Elite_Skill> _readySkills = new List<Elite_Skill>();   // 준비된 스킬
+
+    [SerializeField] private float _idleDuration;                                        // 잠시 정지 시간
+
+    [Header("일반 공격1")]
+    [SerializeField] private Transform _hitPoint;   
+    [SerializeField] private Vector3 _colliderSize;
+
+    [Header("에너지볼")]
+    [SerializeField] private Transform _startEnergyBallPoint; // 레이저의 시작 지점
+
+    [Header("레이저")]
+    [SerializeField] private Transform _startLaserPoint; // 레이저의 시작 지점
+
+    [Header("돌진")]
+    [SerializeField] private Vector3 _rushColliderSize;
+
+    [Header("낙뢰")]
+    [SerializeField] private CreatePlatform _createPlatform;
+    #endregion;
+
+    #region 프로퍼티
     public Define.EliteMonsterState CurrentState
     {
         get => _currentState;
@@ -16,61 +42,35 @@ public class EliteMonster : Monster
             if (_currentState != Define.EliteMonsterState.NONE)
             {
                 _stateStroage[_currentState]?.Exit();
-            }           
+            }
             _currentState = value;
             _stateStroage[_currentState]?.Enter();
         }
     }
-
-    // 스킬
-    [SerializeField] private List<Elite_Skill> _phase1SkillStorage = new List<Elite_Skill>();
-    public List<Elite_Skill> Phase1SkillStorage { get => _phase1SkillStorage; }
-
-    [SerializeField] private List<Elite_Skill> _phase2SkillStorage = new List<Elite_Skill>();
-    public List<Elite_Skill> Phase2SkillStorage { get => _phase2SkillStorage; }
-
-    [SerializeField] private Elite_Skill _currentSkill = null;
+    public List<Elite_Skill> SkillStorage { get => _skillStorage; }
     public Elite_Skill CurrentSkill
     {
         get => _currentSkill;
         set
         {
             //print("Exit :" +_currentSkill);
-            _currentSkill?.Exit();     
+            _currentSkill?.Exit();
             _currentSkill = value;
 
             //print("Enter :" + _currentSkill);
             _currentSkill?.Enter();
         }
     }
-
-    [SerializeField] private List<Elite_Skill> _readySkills = new List<Elite_Skill>();
     public List<Elite_Skill> ReadySkills { get => _readySkills; set => _readySkills = value; }
-
-    [SerializeField] private float _idleDuration;
     public float IdleDuration { get => _idleDuration; }
-
-    [Header("일반 공격1")]
-    [SerializeField] private Transform _hitPoint;
     public Transform HitPoint { get => _hitPoint; }
-    [SerializeField] private Vector3 _colSize;
-    public Vector3 ColSize { get => _colSize; }
-
-    [Header("에너지볼")]
-    [SerializeField] private Transform _startEnergyBallPoint; // 레이저의 시작 지점
+    public Vector3 ColliderSize { get => _colliderSize; }
     public Transform StartEnergyBallPoint { get => _startEnergyBallPoint; }
-
-    [Header("레이저")]
-    [SerializeField] private Transform _startLaserPoint; // 레이저의 시작 지점
     public Transform StartLaserPoint { get => _startLaserPoint; }
-
-    [Header("돌진")]
-    [SerializeField] private Vector3 _rushColSize;
-    public Vector3 RushColSize { get => _rushColSize; }
-
-    [Header("낙뢰")]
-    [SerializeField] private CreatePlatform _createPlatform;
+    public Vector3 RushColliderSize { get => _rushColliderSize; }
     public CreatePlatform CreatePlatform { get => _createPlatform; }
+    #endregion
+
     private void Awake()
     {
         _stat = GetComponent<MonsterStat>();
@@ -84,8 +84,8 @@ public class EliteMonster : Monster
 
     private void Start()
     {
-
-        foreach (Elite_Skill s in _phase1SkillStorage)
+       
+        foreach (Elite_Skill s in _skillStorage)
         {
             s.Init(this);
         }
@@ -105,21 +105,23 @@ public class EliteMonster : Monster
     public void ResetSkill()
     {
         CurrentState = Define.EliteMonsterState.IDLE;
-        _phase1SkillStorage.Add(_currentSkill);
+        _skillStorage.Add(_currentSkill);
     }
 
 
     public void ChangeSkill(Define.EliteMonsterSkill skill) // 스킬 교체 함수
-    {       
-        _currentSkill = GetSkill(skill);      
+    {
+        _skillStorage.Add(CurrentSkill);
+        CurrentSkill = GetSkill(skill);      
     }
 
     public Elite_Skill GetSkill(Define.EliteMonsterSkill skill) // 스킬 찾는 함수
     {
-        foreach (Elite_Skill s in _phase1SkillStorage)
+        foreach (Elite_Skill s in _skillStorage)
         {
             if (s.Info.skill == skill)
             {
+                _skillStorage.Remove(s);
                 return s;
             }
         }
@@ -130,9 +132,9 @@ public class EliteMonster : Monster
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(_hitPoint.position, _colSize);
+        Gizmos.DrawWireCube(_hitPoint.position, _colliderSize);
 
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(transform.position, _rushColSize);
+        Gizmos.DrawWireCube(transform.position, _rushColliderSize);
     }
 }

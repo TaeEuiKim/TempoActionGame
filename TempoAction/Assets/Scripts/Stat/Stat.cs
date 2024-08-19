@@ -5,46 +5,40 @@ using UnityEngine;
 public class Stat : MonoBehaviour
 {
 
-    [SerializeField] protected float _maxHp;
-    public float MaxHp { get => _maxHp; set => _maxHp = value; }
+    [SerializeField] protected float _maxHealthPoints;
+    [SerializeField] protected float _healthPoints;
 
-    [SerializeField] protected float _hp;
-    public virtual float Hp
+    [SerializeField] protected float _walkSpeed;
+    [SerializeField] protected float _sprintSpeed;
+
+    [SerializeField] protected float _attackDamage;
+
+    protected bool _isDead = false;
+
+
+    public float MaxHealthPoints { get => _maxHealthPoints; set => _maxHealthPoints = value; }
+    public virtual float HealthPoints
     {
         get
         {
-            return _hp;
+            return _healthPoints;
         }
         set
         {
-            _hp = value;
-            if (_hp <= 0)
+            _healthPoints = value;
+            if (_healthPoints <= 0)
             {
-                _hp = 0;
+                _healthPoints = 0;
                 _isDead = true;
             }
-            else if (_hp > _maxHp)
+            else if (_healthPoints > _maxHealthPoints)
             {
-                _hp = _maxHp;
+                _healthPoints = _maxHealthPoints;
             }
         }
     }
-
-    [SerializeField] protected float _walkSpeed;
-    public float WalkSpeed { get => _walkSpeed; set => _walkSpeed = value; }
-
-    [SerializeField] protected float _sprintSpeed;
+    public float WalkSpeed { get => _walkSpeed; set => _walkSpeed = value; } 
     public float SprintSpeed { get => _sprintSpeed; set => _sprintSpeed = value; }
-
-
-  
-
-    [SerializeField] protected float _attackDamage;
     public float AttackDamage { get => _attackDamage; set => _attackDamage = value; }
 
-    protected bool _isDead = false;
-   
-    
-  
-    
 }

@@ -5,13 +5,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "FAttack", menuName = "ScriptableObjects/EliteMonster/Skill/FAttack", order = 1)]
 public class Elite_FAttack : Elite_Skill
 {
-    
-
     private float _coolTime;
     private float _totalTime;
 
     private TempoCircle _tempoCircle;
-    [SerializeField] private float _parringTime;
+    [SerializeField] private float _parringTime; // 패링 시간
 
     public override void Init(EliteMonster monster)
     {
@@ -25,15 +23,13 @@ public class Elite_FAttack : Elite_Skill
     {
         if (_isCompleted) return;
 
-        if (_coolTime >= _info.coolTime)
+        if (_coolTime >= _info.coolTime) // 쿨타임 확인
         {
-            if (Vector2.Distance(_monster.Player.position, _monster.transform.position) <= _info.range)
+            if (Vector2.Distance(_monster.Player.position, _monster.transform.position) <= _info.range) // 거리 확인
             {
-
                 _coolTime = 0;
                 _isCompleted = true;
             }
-
         }
         else
         {
@@ -52,13 +48,10 @@ public class Elite_FAttack : Elite_Skill
         if (_totalTime >= _info.totalTime)
         {
             Attack();
-
-
         }
         else
         {
             _totalTime += Time.deltaTime;
-
         }
 
     }
@@ -71,18 +64,17 @@ public class Elite_FAttack : Elite_Skill
         _isCompleted = false;
     }
 
+    // 공격 함수
     public void Attack()
     {
-
-        if (_tempoCircle.CircleState == Define.CircleState.GOOD || _tempoCircle.CircleState == Define.CircleState.PERFECT)
+        if (_tempoCircle.CircleState == Define.CircleState.GOOD || _tempoCircle.CircleState == Define.CircleState.PERFECT) // 패링 성공 확인
         {
             Debug.Log("패링");
-
             _monster.CurrentSkill = null;
             return;
         }
 
-        bool isHit = Physics.CheckBox(_monster.HitPoint.position, _monster.ColSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
+        bool isHit = Physics.CheckBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 
         if (isHit)
         {

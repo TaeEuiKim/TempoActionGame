@@ -4,6 +4,8 @@ using UnityEngine;
 
 public static class Extention
 {
+
+    //월드 좌표를 캔버스 좌표로 바꾸는 확장 함수
     public static Vector2 WorldToCanvasPosition(this RectTransform rectTransform, string canvasName, Vector3 worldPosition, bool worldCamera = false)
     {
         Canvas canvas = GameObject.Find(canvasName).GetComponent<Canvas>();

@@ -8,9 +8,9 @@ public class Elite_Barrier : Elite_Skill
     private float _coolTime;
     private float _totalTime;
 
-    [SerializeField] private float _damageReduction;
-    [SerializeField] private float _knockBackPower;
-    [SerializeField] private float _knockBackDuration;
+    [SerializeField] private float _damageReduction;   // 데미지 감소량
+    [SerializeField] private float _knockBackPower;    // 넉백 파워
+    [SerializeField] private float _knockBackDuration; // 넉백 시간
 
     private float _lastHp;
 
@@ -26,7 +26,7 @@ public class Elite_Barrier : Elite_Skill
     {
         if (_isCompleted) return;
 
-        if (_coolTime >= _info.coolTime)
+        if (_coolTime >= _info.coolTime) // 쿨타임 확인
         {
             _coolTime = 0;
             _isCompleted = true;
@@ -41,19 +41,23 @@ public class Elite_Barrier : Elite_Skill
     public override void Enter()
     {
         Debug.Log("가드");
-        _lastHp = _monster.Stat.Hp;
+        _lastHp = _monster.Stat.HealthPoints;
         _monster.Stat.DamageReduction = _damageReduction;
     }
     public override void Stay()
     {
         if (_totalTime >= _info.totalTime)
         {
-            if (_lastHp > _monster.Stat.Hp)
+            if (_lastHp > _monster.Stat.HealthPoints) // 플레이어가 가드 상태인 몬스터 공격 시(체력 변화가 있을 때)
             {
-                Attack();
+                _monster.ChangeSkill(Define.EliteMonsterSkill.SUPERPUNCH); // 멀리 치기 실행
+                _monster.CurrentSkill.IsCompleted = true;
+            }
+            else
+            {
+                _monster.CurrentSkill = null;
             }
             Debug.Log("가드 끝");
-            _monster.CurrentSkill = null;
         }
         else
         {
@@ -64,11 +68,16 @@ public class Elite_Barrier : Elite_Skill
     {
         _monster.Stat.DamageReduction = 0;
         _totalTime = 0;
-        _monster.ResetSkill();
+
+        if (_lastHp == _monster.Stat.HealthPoints) // 체력 변화가 없을 때
+        {
+            _monster.ResetSkill();
+        }
+
         _isCompleted = false;
     }
 
-    public void Attack()
+ /*   public void Attack()
     {
 
         bool isHit = Physics.CheckBox(_monster.HitPoint.position, _monster.ColSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
@@ -82,5 +91,5 @@ public class Elite_Barrier : Elite_Skill
 
         }
 
-    }
+    }*/
 }

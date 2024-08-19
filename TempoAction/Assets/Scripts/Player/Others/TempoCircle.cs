@@ -15,7 +15,7 @@ public class TempoCircle : MonoBehaviour
     [SerializeField] private GameObject _perfectCircle; // 원 스프라이트 이미지
     [SerializeField] private GameObject _goodCircle; // 원 스프라이트 이미지
     [SerializeField] private float _shrinkDuration = 1f; // 원이 줄어드는데 걸리는 시간 (초)
-    public float ShrinkDuration { get => _shrinkDuration; set => _shrinkDuration = value; }
+    
 
     [SerializeField] private Vector2 _perfectTime; // 완벽한 타이밍 (초)
     [SerializeField] private Vector2 _goodTime; // 좋은 타이밍 (초)
@@ -33,11 +33,14 @@ public class TempoCircle : MonoBehaviour
     [SerializeField] private bool isShrinking = true; //축소 중 확인
 
     private Define.CircleState _circleState = Define.CircleState.NONE;
-    public Define.CircleState CircleState { get => _circleState; }
 
     public Action OnSuccess;
     public Action OnFailure;
     public Action OnFinish;
+
+    public float ShrinkDuration { get => _shrinkDuration; set => _shrinkDuration = value; }
+    public Define.CircleState CircleState { get => _circleState; }
+
 
     void Update()
     {
@@ -78,9 +81,9 @@ public class TempoCircle : MonoBehaviour
         }
     }
 
+    // 초기화 함수
     public void Init(Transform player = null)
     {
-        //print("초기화");
         timer = 0.0f;
 
         _checkCircle.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
@@ -100,6 +103,7 @@ public class TempoCircle : MonoBehaviour
         _player = player;
     }
 
+    // 타이밍 확인 함수
     private void CheckTiming()
     {
         if (_perfectScale.x <= _checkCircle.transform.localScale.x && _checkCircle.transform.localScale.x < _perfectScale.y)
@@ -123,10 +127,9 @@ public class TempoCircle : MonoBehaviour
        
     }
 
-
+    // 이펙트 생성 함수
     private void SpawnFx(Define.CircleState state)
-    {
-       
+    {      
         GameObject temp = null;
 
         switch (state)
@@ -148,8 +151,7 @@ public class TempoCircle : MonoBehaviour
                 OnFailure?.Invoke();
                 break;
         }
-
-        
+      
         Destroy(temp, 1f);
 
     }

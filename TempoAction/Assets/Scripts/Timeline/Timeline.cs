@@ -6,9 +6,9 @@ using UnityEngine.Playables;
 public class Timeline : MonoBehaviour
 {
     [SerializeField] private string _name;
-    public string Name { get => _name; }
-
     private PlayableDirector _director;
+
+    public string Name { get => _name; }
     public PlayableDirector Director { get=>_director; }
 
     private void Awake()

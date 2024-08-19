@@ -5,8 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SuperJump", menuName = "ScriptableObjects/Buff Data/Super Jump")]
 public class SuperJumpBuff : BuffData
 {
-
-    private float _originValue;
+    private float _originValue; // 기존 공격력 값
 
     public override void Enter()
     {
@@ -15,6 +14,7 @@ public class SuperJumpBuff : BuffData
             _player = FindObjectOfType<Player>();
         }
 
+        // 점프력 증가
         _originValue = _player.Stat.JumpForce;
         _player.Stat.JumpForce = value;
     }
@@ -26,6 +26,6 @@ public class SuperJumpBuff : BuffData
 
     public override void Exit()
     {
-        _player.Stat.JumpForce = _originValue;
+        _player.Stat.JumpForce = _originValue; // 점프력 증가
     }
 }

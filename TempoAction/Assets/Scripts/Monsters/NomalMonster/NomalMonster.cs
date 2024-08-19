@@ -14,22 +14,53 @@ public class NomalMonster : Monster
         public Color color;
     }
 
-    [SerializeField] private float _moveRange;
+    #region 변수
+    [SerializeField] private float _moveRange; // Idle 이동 거리
+
+    [Space]
+    [SerializeField] private float _perceptionDistance;                                                                                    // 인식 거리
+    [SerializeField] private float _perceptionAngle;                                                                                       // 인식 각도
+    [SerializeField] private List<PerceptionRange> _perceptionRanges = new List<PerceptionRange>();                                        // 인식 범위
+    private Dictionary<Define.PerceptionType, Nomal_State> _perceptionStateStorage = new Dictionary<Define.PerceptionType, Nomal_State>(); // 인식 상태 저장소
+    private Define.PerceptionType _currentPerceptionState;                                                                                     // 현재 인색 상태 
+    
+    [SerializeField] private float _maxAggroGauge; // 최대 어그로 게이지
+    private float _aggroGauge = 0;                 // 현재 어그로 게이지
+
+    private Vector2 _spawnPoint;  
+
+    [Space]
+    [SerializeField] private Transform _hitPoint;
+    [SerializeField] private Vector3 _colliderSize;
+
+    [Header("UI")]
+    [SerializeField] private Canvas _nomalMonsterCanvas;
+    #endregion
+
+    #region 프로퍼티
     public float MoveRange { get => _moveRange; }
 
-    [SerializeField] private float _perceptionDistance;
     public float PerceptionDistance { get => _perceptionDistance; }
-
-    [SerializeField] private float _perceptionAngle;
     public float PerceptionAngle { get => _perceptionAngle; }
-
-    [SerializeField] private List<PerceptionRange> _perceptionRanges = new List<PerceptionRange>();
     public List<PerceptionRange> PerceptionRanges { get => _perceptionRanges; }
+    public Define.PerceptionType CurrentPerceptionState
+    {
+        get
+        {
+            return _currentPerceptionState;
+        }
+        set
+        {
+            if (_perceptionStateStorage.ContainsKey(_currentPerceptionState))
+            {
+                _perceptionStateStorage[_currentPerceptionState]?.Exit();
+            }
+            _currentPerceptionState = value;
+            _perceptionStateStorage[_currentPerceptionState]?.Enter();
+        }
+    }
 
-    [SerializeField] private float _maxAggroGauge;
     public float MaxAggroGauge { get => _maxAggroGauge; }
-
-    [SerializeField] private float _aggroGauge = 0;
     public float AggroGauge
     {
         get => _aggroGauge;
@@ -53,35 +84,9 @@ public class NomalMonster : Monster
 
         }
     }
-
-    private Vector2 _spawnPoint;
     public Vector2 SpawnPoint { get => _spawnPoint; set => _spawnPoint = value; }
-
-    [SerializeField] private Transform _hitPoint;
-    [SerializeField] private Vector3 _colSize;
-
-
-    private Define.PerceptionType _curPerceptionState;
-    public Define.PerceptionType CurPerceptionState
-    {
-        get
-        {
-            return _curPerceptionState;
-        }
-        set
-        {
-            if (_perceptionStateStorage.ContainsKey(_curPerceptionState))
-            {
-                _perceptionStateStorage[_curPerceptionState]?.Exit();
-            }
-            _curPerceptionState = value;
-            _perceptionStateStorage[_curPerceptionState]?.Enter();
-        }
-    }
-
-    private Dictionary<Define.PerceptionType, NomalMonster_State> _perceptionStateStorage = new Dictionary<Define.PerceptionType, NomalMonster_State>();
-
-    [SerializeField] private Canvas _nomalMonsterCanvas;
+ 
+    #endregion
 
     private void Awake()
     {
@@ -93,16 +98,17 @@ public class NomalMonster : Monster
     }
     private void Start()
     {
-        _perceptionStateStorage.Add(Define.PerceptionType.PATROL, new NomalMonster_Patrol(this));
-        _perceptionStateStorage.Add(Define.PerceptionType.BOUNDARY, new NomalMonster_Boundary(this));
-        _perceptionStateStorage.Add(Define.PerceptionType.DETECTIONM, new NomalMonster_Detectionm(this));
+        _perceptionStateStorage.Add(Define.PerceptionType.PATROL, new Nomal_Patrol(this));
+        _perceptionStateStorage.Add(Define.PerceptionType.BOUNDARY, new Nomal_Boundary(this));
+        _perceptionStateStorage.Add(Define.PerceptionType.DETECTIONM, new Nomal_Detectionm(this));
 
-        CurPerceptionState = Define.PerceptionType.PATROL;
+        CurrentPerceptionState = Define.PerceptionType.PATROL;
 
-        _canKnockback = true;
+        _canKnockback = true; // 넉백 활성화
 
-        _stat.Hp = _stat.MaxHp;
+        _stat.HealthPoints = _stat.MaxHealthPoints;
 
+        // 넉백 시 실행하는 이벤트
         OnKnockback += () =>
         {
             float dir = _player.position.x - transform.position.x;
@@ -118,16 +124,17 @@ public class NomalMonster : Monster
         CheckPerceptionState(); // 게이지 증가 시키는 함수
         UpdatePerceptionState(); // 게이지 확인 후 인식 상태 업데이트
 
-        if (_perceptionStateStorage[_curPerceptionState].IsEntered)
+        // 인식 범위 안에 들어왔을 때
+        if (_perceptionStateStorage[_currentPerceptionState].IsEntered)
         {
-            _perceptionStateStorage[_curPerceptionState]?.Stay();
+            _perceptionStateStorage[_currentPerceptionState]?.Stay();
         }
 
     }
 
 
-
-    private void CheckPerceptionState() // 부채꼴 안에 플레이어가 있는지 확인
+    // 부채꼴 안에 플레이어가 있는지 확인
+    private void CheckPerceptionState() 
     {
         // 기준점에서 플레이어로 향하는 벡터 계산
 
@@ -139,7 +146,7 @@ public class NomalMonster : Monster
         float distanceToPlayer = directionToPlayer.magnitude;
         float angleToPlayer = Vector3.Angle(new Vector3(_direction, 0, 0), directionToPlayer);
 
-        if (CurPerceptionState == Define.PerceptionType.DETECTIONM)
+        if (CurrentPerceptionState == Define.PerceptionType.DETECTIONM)
         {
             if (distanceToPlayer > _perceptionDistance)
             {
@@ -170,39 +177,38 @@ public class NomalMonster : Monster
 
             }
         }
-
-        //UIManager.Instance.GetUI<Image>("PerceptionGauge").fillAmount = _aggroGauge / _maxAggroGauge;
     }
 
-
+    // 인식 상태 변화 업데이트 함수
     private void UpdatePerceptionState()
     {
         if (_aggroGauge == 0)
         {
-            if (CurPerceptionState != Define.PerceptionType.PATROL)
+            if (CurrentPerceptionState != Define.PerceptionType.PATROL)
             {
-                CurPerceptionState = Define.PerceptionType.PATROL;
+                CurrentPerceptionState = Define.PerceptionType.PATROL;
             }
         }
         else if (_aggroGauge == 100)
         {
-            if (CurPerceptionState != Define.PerceptionType.DETECTIONM)
+            if (CurrentPerceptionState != Define.PerceptionType.DETECTIONM)
             {
-                CurPerceptionState = Define.PerceptionType.DETECTIONM;
+                CurrentPerceptionState = Define.PerceptionType.DETECTIONM;
             }
         }
         else
         {
-            if (CurPerceptionState != Define.PerceptionType.BOUNDARY)
+            if (CurrentPerceptionState != Define.PerceptionType.BOUNDARY)
             {
-                CurPerceptionState = Define.PerceptionType.BOUNDARY;
+                CurrentPerceptionState = Define.PerceptionType.BOUNDARY;
             }
         }
     }
 
+    // 공격 함수
     public void Attack()
     {
-        bool isHit = Physics.CheckBox(_hitPoint.position, _colSize/2, _hitPoint.rotation, _playerLayer);
+        bool isHit = Physics.CheckBox(_hitPoint.position, _colliderSize / 2, _hitPoint.rotation, _playerLayer);
 
         if (isHit)
         {
@@ -212,31 +218,11 @@ public class NomalMonster : Monster
 
     }
 
-  /*  public void Rotate()
-    {
-
-        print("dddd");
-        Vector3 direction = _player.transform.position - transform.position;
-
-        Vector3 cross = Vector3.Cross(Vector3.forward, direction);
-
-        if (cross.y > 0)
-        {
-            Direction = 1;
-        }
-        else if (cross.y < 0)
-        {
-            Direction = -1;
-        }
-    }*/
-
-
-   
-
+ 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(_hitPoint.position, _colSize);
+        Gizmos.DrawWireCube(_hitPoint.position, _colliderSize);
 
         if (_spawnPoint != Vector2.zero)
         {

@@ -2,18 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NomalMonster_Patrol : NomalMonster_State
+public class Nomal_Patrol : Nomal_State
 {
     private Vector2 _leftPoint;
     private Vector2 _rightPoint;
 
     private Vector2 _targetPosition;
 
-    private bool movingRight = true;     // 이동 방향
+    private bool _movingRight = true;     // 이동 방향
 
-    public NomalMonster_Patrol(NomalMonster monster) : base(monster)
+    public Nomal_Patrol(NomalMonster monster) : base(monster)
     {
-        movingRight = true;
+        _movingRight = true;
     }
 
     public override void Enter()
@@ -29,15 +29,13 @@ public class NomalMonster_Patrol : NomalMonster_State
 
     public override void Stay()
     {
-
-
         // Rigidbody2D를 사용하여 이동
         _monster.Rb.velocity = new Vector2(_monster.Direction * _monster.Stat.WalkSpeed, _monster.Rb.velocity.y);
 
         // 목표 지점에 도달하면 새로운 목표 지점 설정
         if (Mathf.Abs(_monster.transform.position.x - _targetPosition.x) <= 0.01f)
         {
-            movingRight = !movingRight;
+            _movingRight = !_movingRight;
             ChangeTarget();
         }
 
@@ -47,11 +45,12 @@ public class NomalMonster_Patrol : NomalMonster_State
         base.Exit();
     }
 
+    // Idle 상태일 때 좌우 타겟 변경 함수
     private void ChangeTarget()
     {
         if (_monster.MoveRange == 0) return;
 
-        if (movingRight)
+        if (_movingRight)
         {
             _targetPosition = _rightPoint;
             _monster.Direction = _rightPoint.x - _monster.transform.position.x;

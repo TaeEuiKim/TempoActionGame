@@ -2908,8 +2908,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3723d3ea085589478206f88db5b8190, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHp: 200
-  _hp: 0
+  _maxHealthPoints: 0
+  _healthPoints: 0
   _walkSpeed: 0
   _sprintSpeed: 5
   _attackDamage: 0
@@ -4420,8 +4420,8 @@ MonoBehaviour:
   _platformList:
   - infoList: 00000000000000000000000000000000000000000000000000000000000000000000000000000000
   _platformPrefab: {fileID: 3645185031378772784, guid: 69b546b10c134364faa1531578b48973, type: 3}
-  _changeTime: 2
   _isAutoMode: 0
+  _changeTime: 2
 --- !u!4 &1542010438
 Transform:
   m_ObjectHideFlags: 0
@@ -10541,10 +10541,11 @@ MonoBehaviour:
   _attackIndex: 0
   _endPoint: {fileID: 122366196}
   _hitPoint: {fileID: 922376579}
-  _colSize: {x: 0.5, y: 0.5, z: 0.5}
+  _colliderSize: {x: 0, y: 0, z: 0}
   _monsterLayer:
     serializedVersion: 2
     m_Bits: 1024
+  _checkDelay: 0
 --- !u!114 &7902310305612130155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11197,17 +11198,15 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   _currentState: 3
-  _phase1SkillStorage:
-  - {fileID: 11400000, guid: 224f5cde6a1d5e84da4c291368c21788, type: 2}
-  _phase2SkillStorage: []
+  _skillStorage: []
   _currentSkill: {fileID: 0}
   _readySkills: []
   _idleDuration: 1
   _hitPoint: {fileID: 8656697189538359822}
-  _colSize: {x: 1, y: 1, z: 1}
+  _colliderSize: {x: 0, y: 0, z: 0}
   _startEnergyBallPoint: {fileID: 549213574}
   _startLaserPoint: {fileID: 1483132646}
-  _rushColSize: {x: 1, y: 1, z: 1}
+  _rushColliderSize: {x: 0, y: 0, z: 0}
   _createPlatform: {fileID: 1542010437}
 --- !u!114 &8797296434080843155
 MonoBehaviour:
@@ -11221,8 +11220,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a19041a8802d80241a468d8f8fd3315e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHp: 4500
-  _hp: 4500
+  _maxHealthPoints: 0
+  _healthPoints: 0
   _walkSpeed: 0
   _sprintSpeed: 1
   _attackDamage: 0

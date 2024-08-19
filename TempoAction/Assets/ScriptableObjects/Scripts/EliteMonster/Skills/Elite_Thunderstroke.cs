@@ -17,18 +17,19 @@ public class Elite_Thunderstroke : Elite_Skill
 
     public override void Check()
     {
-
+        _isCompleted = true;
     }
-
 
     public override void Enter()
     {
         Debug.Log("³«·Ú");
-        
+        _monster.Stat.OnPointTempo += () =>
+        {
+            _monster.CurrentSkill = null;
+        };
     }
     public override void Stay()
     {
-
         if (_executeTime >= _executeDuration)
         {
             for (int i = 0; i < _lightningCount; i++)
@@ -42,16 +43,17 @@ public class Elite_Thunderstroke : Elite_Skill
         {
             _executeTime += Time.deltaTime;
         }
-
     }
     public override void Exit()
     {
         _executeTime = 0;
+        _monster.ResetSkill();
+        //_isCompleted = false;
     }
 
+    // ³«·Ú »ý¼º ÇÔ¼ö
     private void ExecuteLightning()
     {
-
         int randomIndex = Random.Range(0, _monster.CreatePlatform.CurPlatformList.Count);
         Vector3 executePosition = _monster.CreatePlatform.CurPlatformList[randomIndex].transform.position;
 
@@ -59,7 +61,5 @@ public class Elite_Thunderstroke : Elite_Skill
         lightning.transform.position = executePosition;
 
         lightning.GetComponent<Lightning>().totalDamage = _monster.Stat.AttackDamage * (_info.damage / 100);
-
-
     }
 }

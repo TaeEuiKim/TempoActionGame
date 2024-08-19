@@ -18,6 +18,7 @@ public class TimelineManager : Singleton<TimelineManager>
         }
     }
 
+    // 타임라인 실행 함수
     public void PlayTimeline(string name)
     {
         if (_timelineStorage.Count <= 0)
@@ -41,6 +42,7 @@ public class TimelineManager : Singleton<TimelineManager>
         Debug.LogWarning("Timeline not found: " + name);
     }
 
+    // 현재 타임라인 정지
     public void StopCurrentTimeline()
     {
         if (_currentDirector != null)
@@ -49,7 +51,7 @@ public class TimelineManager : Singleton<TimelineManager>
             _currentDirector = null;
         }
     }
-
+    // 현재 타임라인 일시정지
     public void PauseCurrentTimeline()
     {
         if (_currentDirector != null)
@@ -57,7 +59,7 @@ public class TimelineManager : Singleton<TimelineManager>
             _currentDirector.Pause();
         }
     }
-
+    // 일시 중지된 시점에서 다시 실행
     public void ResumeCurrentTimeline()
     {
         if (_currentDirector != null)

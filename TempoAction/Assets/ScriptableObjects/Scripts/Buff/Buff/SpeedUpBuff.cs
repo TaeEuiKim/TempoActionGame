@@ -5,12 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SpeedUp", menuName = "ScriptableObjects/Buff Data/Speed Up")]
 public class SpeedUpBuff : BuffData
 {
-   
-
-    public float duration;
+    [SerializeField] private float _duration;
     private float _timer = 0;
 
-    private float _originValue;
+    private float _originValue; // 기존 공격력 값
 
     public override void Enter()
     {
@@ -20,15 +18,17 @@ public class SpeedUpBuff : BuffData
         {
             _player = FindObjectOfType<Player>();
         }
+
+        // 이속 증가
         _originValue = _player.Stat.SprintSpeed;
         _player.Stat.SprintSpeed = value;
     }
 
     public override void Stay()
     {
-        if (_timer >= duration)
+        if (_timer >= _duration)
         {
-            BuffManager.Instance.RemoveBuff(Define.BuffInfo.SPEEDUP);
+            BuffManager.Instance.RemoveBuff(Define.BuffInfo.SPEEDUP); // 버프 제거
         }
         else
         {
@@ -38,6 +38,6 @@ public class SpeedUpBuff : BuffData
 
     public override void Exit()
     {
-        _player.Stat.SprintSpeed = _originValue;
+        _player.Stat.SprintSpeed = _originValue; // 공격력 복구
     }
 }

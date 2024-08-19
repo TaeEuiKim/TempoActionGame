@@ -13,18 +13,13 @@ public class AtkAttackState : IAtkState
     }
 
     public void Enter()
-    {
-      
-        _player.Ani.SetBool("AttackState", true);
-
-  
+    {    
+        _player.Ani.SetBool("AttackState", true); 
     }
 
     public void Exit()
     {
         _player.Ani.SetBool("AttackState", false);
-        //_player.Atk.Index++;
-       
     }
 
     public void Stay()

@@ -5,16 +5,15 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SuperPunch", menuName = "ScriptableObjects/EliteMonster/Skill/SuperPunch", order = 1)]
 public class Elite_SuperPunch : Elite_Skill
 {
-    private TempoCircle _tempoCircle;
-
     private float _coolTime;
     private float _totalTime;
-
-    //private bool _thisPointAttack = false;
 
     [SerializeField] private float _parringTime;
     [SerializeField] private float _knockBackPower;
     [SerializeField] private float _knockBackDuration;
+
+    private TempoCircle _tempoCircle;
+
     public override void Init(EliteMonster monster)
     {
         base.Init(monster);
@@ -31,11 +30,9 @@ public class Elite_SuperPunch : Elite_Skill
         {
             if (Vector2.Distance(_monster.Player.position, _monster.transform.position) <= _info.range)
             {
-
                 _coolTime = 0;
                 _isCompleted = true;
             }
-
         }
         else
         {
@@ -69,7 +66,10 @@ public class Elite_SuperPunch : Elite_Skill
     public override void Exit()
     {
         _tempoCircle = null;
+
+        _coolTime = 0;
         _totalTime = 0;
+
         _monster.ResetSkill();
         _isCompleted = false;
 
@@ -77,7 +77,7 @@ public class Elite_SuperPunch : Elite_Skill
 
     public void Attack()
     {
-        if (_tempoCircle.CircleState == Define.CircleState.GOOD || _tempoCircle.CircleState == Define.CircleState.PERFECT)
+        if (_tempoCircle.CircleState == Define.CircleState.GOOD || _tempoCircle.CircleState == Define.CircleState.PERFECT)// 패링 성공 확인
         {
             Debug.Log("패링");
 
@@ -85,8 +85,7 @@ public class Elite_SuperPunch : Elite_Skill
             return;
         }
 
-
-        bool isHit = Physics.CheckBox(_monster.HitPoint.position, _monster.ColSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
+        bool isHit = Physics.CheckBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 
         if (isHit)
         {
@@ -97,6 +96,5 @@ public class Elite_SuperPunch : Elite_Skill
         }
 
         _monster.CurrentSkill = null;
-
     }
 }

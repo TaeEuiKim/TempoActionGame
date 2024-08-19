@@ -5,11 +5,17 @@ using UnityEngine.UI;
 using DG.Tweening;
 public class AtkMachine : MonoBehaviour
 {
+    #region 변수
     private Player _player;
 
     [SerializeField] private List<AtkTempoData> _atkTempoDatas = new List<AtkTempoData>();
-
     [SerializeField] private int _attackIndex = 0;
+
+    private int _upgradeCount = 0;
+    private TempoCircle _pointTempoCircle = null;
+    #endregion
+
+    #region 프로퍼티
     public int AttackIndex
     {
         get
@@ -29,68 +35,39 @@ public class AtkMachine : MonoBehaviour
             
         }
     }
-
-
-    public AtkTempoData CurAtkTempoData // 현재 템포 데이터 
-    {
-        get
-        {
-            return _atkTempoDatas[_attackIndex];
-        }
-
-    }
-
-    private int _upgradeCount = 0;
+    public AtkTempoData CurAtkTempoData { get=> _atkTempoDatas[_attackIndex]; }// 현재 템포 데이터 
     public int UpgradeCount
     {
-        get
-        {
-            return _upgradeCount;
-        }
+        get => _upgradeCount;
         set
         {
             _upgradeCount = value;
             _upgradeCount = _upgradeCount % 4;
 
             UIManager.Instance.GetUI<Slider>("UpgradeCountSlider").value = _upgradeCount;
-
-
         }
-    }
-
-    private TempoCircle _pointTempoCircle = null;
-    public TempoCircle PointTempoCircle 
-    { 
-        get => _pointTempoCircle;
-        set 
-        {
-            _pointTempoCircle = value; 
-        }
-
-    }
-
-
-    private bool _isParrying;
-    public bool IsParrying { get => _isParrying; set => _isParrying = value; }
+    }  
+    public TempoCircle PointTempoCircle { get => _pointTempoCircle; set => _pointTempoCircle = value; }
+    #endregion
 
     private void Start()
     {
         _player = transform.parent.GetComponent<Player>();
-
     }
 
     private void Update()
     {
-        if (_player.Stat.CheckOverload()) // 과부화 체크
+        // 과부화 체크
+        if (_player.Stat.CheckOverload()) 
         {
-            //Debug.Log("과부화");
             if (_player.CurState == Define.PlayerState.NONE)
             {
                 _player.CurState = Define.PlayerState.OVERLOAD;
             }
         }
 
-        if (_player.CurAtkState != Define.AtkState.ATTACK) // 공격 키 입력
+        // 공격 키 입력
+        if (_player.CurAtkState != Define.AtkState.ATTACK) 
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
@@ -114,7 +91,8 @@ public class AtkMachine : MonoBehaviour
 
     #region 포인트 템포
 
-    private void SuccessTempoCircle() // 포인트 템포 성공
+    // 포인트 템포 성공
+    private void SuccessTempoCircle() 
     {
         if (_upgradeCount == 3) // 포인트 템포 업그레이트 확인
         {
@@ -132,20 +110,23 @@ public class AtkMachine : MonoBehaviour
         _player.CurAtkState = Define.AtkState.ATTACK;
     }
 
+    // 포인트 템포 실패
     private void FailureTempoCircle()
     {
         _pointTempoCircle = null;
         _player.CurAtkState = Define.AtkState.FINISH;
     }
 
-    private void FinishTempoCircle() // 템포 원 끝
+    // 템포 원 끝
+    private void FinishTempoCircle() 
     {
         
     }
 
-    public void CreateTempoCircle(float duration = 1) // 템포 원 생성
+    // 템포 원 생성
+    public void CreateTempoCircle(float duration = 1) 
     {
-        //SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_PointTempo_Ready", transform);
+        SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_PointTempo_Ready", transform);
 
         if (_pointTempoCircle == null)
         {
@@ -153,40 +134,45 @@ public class AtkMachine : MonoBehaviour
             tempoCircle.transform.position = new Vector3(transform.position.x, transform.position.y + 2, -0.1f);
 
             _pointTempoCircle = tempoCircle.GetComponent<TempoCircle>();
-            _pointTempoCircle.Init(transform.parent);
+            _pointTempoCircle.Init(transform.parent);           // 템포 원 초기화
 
-            _pointTempoCircle.ShrinkDuration = duration;
+            _pointTempoCircle.ShrinkDuration = duration;        // 탬포 원 시간 값 추가
 
+            // 템포 이벤트 추가
             _pointTempoCircle.OnSuccess += SuccessTempoCircle;
             _pointTempoCircle.OnFailure += FailureTempoCircle;
             _pointTempoCircle.OnFinish += FinishTempoCircle;
         }
 
     }
-
-
     #endregion
-
-
 
 
     #region 애니메이션 이벤트 함수
 
-    public List<Monster> HitMonsterList { get; set; } = new List<Monster>();
+    private List<Monster> _hitMonsterList = new List<Monster>();
+    public List<Monster> HitMonsterList { get => _hitMonsterList; set => _hitMonsterList = value; }
 
     [Header(("충돌"))]
-    [SerializeField] private Transform _endPoint;
-    [SerializeField] private Transform _hitPoint;
+    [SerializeField] private Transform _endPoint;    // 넉백 지점
+    [SerializeField] private Transform _hitPoint;    // 충돌 지점
 
-    [SerializeField] private Vector3 _colSize;
+    [SerializeField] private Vector3 _colliderSize;
     [SerializeField] private LayerMask _monsterLayer;
-    public Transform HitPoint { get { return _hitPoint; } }
-
+   
     private bool _isHit = false;
-    public float CheckDelay { get; set; } = 0;
+    public float _checkDelay = 0; // 체크 상태 유지 시간
+   
+    private float _knockBackTimer = 0;
+
+    public Transform HitPoint { get { return _hitPoint; } }
+    public float CheckDelay { get => _checkDelay; set => _checkDelay = value; }
+   
+
+    // 플레이어 타격 위치에 사용하는 이벤트 함수
     private void Hit()
     {
-        Collider[] hitMonsters = Physics.OverlapBox(_hitPoint.position, _colSize/2, _hitPoint.rotation, _monsterLayer);
+        Collider[] hitMonsters = Physics.OverlapBox(_hitPoint.position, _colliderSize / 2, _hitPoint.rotation, _monsterLayer);
 
         if (hitMonsters.Length <= 0)
         {
@@ -243,9 +229,9 @@ public class AtkMachine : MonoBehaviour
 
     }
 
-    private float _knockBackTimer = 0;
 
-    public void KnockBack(Monster monster) // 넉백
+    // 넉백 위치에 사용하는 이벤트 함수
+    public void KnockBack(Monster monster) 
     {
         Vector2 distance = monster.transform.position - _hitPoint.position;
 
@@ -270,6 +256,7 @@ public class AtkMachine : MonoBehaviour
 
     }
 
+    // 넉백 후 잠시 스턴 
     private IEnumerator Stun(Monster monster)
     {
         monster.Stat.IsStunned = true;
@@ -284,6 +271,7 @@ public class AtkMachine : MonoBehaviour
         monster.OnKnockback?.Invoke();
     }
 
+    // 포인트 템포 애니메이션 끝에 추가하는 이벤트 함수
     private void FinishPointTempo()
     {
         float addStamina = 0;
@@ -312,7 +300,8 @@ public class AtkMachine : MonoBehaviour
         _player.CurAtkState = Define.AtkState.FINISH;
     }
 
-    private void Finish(float delay) // 공격이 끝난 시점 
+    // 메인 템포 애니메이션 끝에 추가하는 이벤트 함수
+    private void Finish(float delay) 
     {
 
         float addStamina = 0;
@@ -335,7 +324,8 @@ public class AtkMachine : MonoBehaviour
 
     }
 
-    private void MoveToClosestMonster(float duration) // 특정 거리에 적이 있으면 적 앞으로 이동
+    // 공격 사거리 안에 적이 있으면 적 앞으로 이동하는 이벤트 함수
+    private void MoveToClosestMonster(float duration) 
     {
         Vector3 rayOrigin = new Vector3(transform.parent.position.x, transform.parent.position.y, transform.parent.position.z);
         Vector3 rayDirection = transform.localScale.x > 0 ? transform.right : transform.right * -1;
@@ -355,23 +345,24 @@ public class AtkMachine : MonoBehaviour
         Debug.DrawRay(rayOrigin, rayDirection * CurAtkTempoData.distance, Color.red);
     }
 
-
-    private void ChangeTimeScale(float value) // 시간 크기 변경
+    // 시간 크기 변경
+    private void ChangeTimeScale(float value) 
     {
         Time.timeScale = value;
     }
-    private void ReturnTimeScale() // 시간 크기 복구
+    // 시간 크기 복구
+    private void ReturnTimeScale() 
     {
         Time.timeScale = 1;
     }
-
-    private void StartTimeline(string name) //타임라인 실행 함수
+    //타임라인 실행 함수
+    private void StartTimeline(string name)
     {
         TimelineManager.Instance.PlayTimeline(name);
     }
 
-
-    private void GravityActive(int value) // 중력 조절
+    // 중력 조절
+    private void GravityActive(int value) 
     {
         foreach (Monster monster in HitMonsterList)
         {
@@ -379,7 +370,8 @@ public class AtkMachine : MonoBehaviour
         }
     }
 
-    private void SetColliderActive(int value) // 콜라이더 활성화/비활성화
+    // 콜라이더 활성화/비활성화
+    private void SetColliderActive(int value) 
     {
         _player.GetComponent<Collider>().enabled = (value == 0) ? false : true;
     }
@@ -389,7 +381,7 @@ public class AtkMachine : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(_hitPoint.position, _colSize);
+        Gizmos.DrawWireCube(_hitPoint.position, _colliderSize);
     }
  
 }

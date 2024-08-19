@@ -7,49 +7,52 @@ using UnityEngine.UI;
 public class BuffManager : Singleton<BuffManager>
 {
 
-    [SerializeField] private List<BuffData> _buffStorage = new List<BuffData>();
+    [SerializeField] private List<BuffData> _buffStorage = new List<BuffData>(); // 버프 저장소
 
-    private List<BuffData> _curBuffList = new List<BuffData>();
-    private List<BuffData> _removeBuffList = new List<BuffData>();
+    private List<BuffData> _currentBuffList = new List<BuffData>();              // 현재 버프 리스트
+    private List<BuffData> _removeBuffList = new List<BuffData>();               // 제거 버프 리스트
 
 
     private void Update()
     {
 
-        foreach (BuffData data in _curBuffList)
+        foreach (BuffData data in _currentBuffList)
         {
             data.Stay();
         }
-
+         
+        // 끝난 버프 제거
         if (_removeBuffList.Count <= 0) return;
 
         foreach (BuffData data in _removeBuffList)
         {
-            _curBuffList.Remove(data);
+            _currentBuffList.Remove(data);
         }
 
         _removeBuffList.Clear();
     }
 
-    public void AddBuff(Define.BuffInfo buff) // 버프 추가
+    // 버프 추가
+    public void AddBuff(Define.BuffInfo buff) 
     {
 
-        if (FindCurBuff(buff) != null) // 현재 같은 버프가 있는지 확인
+        if (GetCurretBuff(buff) != null) // 현재 같은 버프가 있는지 확인
         {
             RemoveBuff(buff); // 같은 버프 제거
         }
 
-        BuffData buffData = FindBuff(buff);
+        BuffData buffData = GetBuff(buff);
 
         if (buffData == null) return;
         
         buffData.Enter();
-        _curBuffList.Add(buffData);
+        _currentBuffList.Add(buffData);
     }
 
+    // 버프 제거
     public void RemoveBuff(Define.BuffInfo buff) // 버프 추가
     {
-        BuffData buffData = FindCurBuff(buff);
+        BuffData buffData = GetCurretBuff(buff);
 
         if (buffData == null) return;
 
@@ -57,8 +60,8 @@ public class BuffManager : Singleton<BuffManager>
         _removeBuffList.Add(buffData);
     }
 
-    // 버프 찾기
-    public BuffData FindBuff(Define.BuffInfo info) 
+    // 버프 저장소에서 찾기
+    public BuffData GetBuff(Define.BuffInfo info) 
     {
         foreach (BuffData buff in _buffStorage)
         {
@@ -71,10 +74,10 @@ public class BuffManager : Singleton<BuffManager>
         return null;
     }
 
-
-    private BuffData FindCurBuff(Define.BuffInfo info)
+    // 현재 버프 리스트에서 찾기
+    private BuffData GetCurretBuff(Define.BuffInfo info)
     {
-        foreach (BuffData buff in _curBuffList)
+        foreach (BuffData buff in _currentBuffList)
         {
             if (buff.info == info)
             {

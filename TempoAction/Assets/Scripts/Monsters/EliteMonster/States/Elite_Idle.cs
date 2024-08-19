@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Elite_Idle : Elite_State
 {
-    private float idleTime;
+    private float idleTime; // 시간 체크용
 
     public Elite_Idle(EliteMonster monster) : base(monster)
     {
@@ -25,7 +25,8 @@ public class Elite_Idle : Elite_State
         }
         else
         {
-            foreach (Elite_Skill s in _monster.Phase1SkillStorage)
+
+            foreach (Elite_Skill s in _monster.SkillStorage)
             {
                 s.Check(); // 조건 확인
 
@@ -38,7 +39,7 @@ public class Elite_Idle : Elite_State
             if (_monster.ReadySkills.Count <= 0) return;
 
             Elite_Skill prioritySkill = _monster.ReadySkills[0];
-            _monster.Phase1SkillStorage.Remove(prioritySkill);
+            _monster.SkillStorage.Remove(prioritySkill);
 
             if (_monster.ReadySkills.Count > 1) // 2개 이상일 때 우선순위 확인
             {
@@ -49,7 +50,7 @@ public class Elite_Idle : Elite_State
                         prioritySkill = _monster.ReadySkills[i];
                     }
 
-                    _monster.Phase1SkillStorage.Remove(_monster.ReadySkills[i]);
+                    _monster.SkillStorage.Remove(_monster.ReadySkills[i]);
                 }
             }
             _monster.CurrentState = Define.EliteMonsterState.USESKILL;
@@ -64,6 +65,7 @@ public class Elite_Idle : Elite_State
 
     }
 
+    // 플레이어 추적 함수
     private void Follow()
     {
         float direction = _monster.Player.transform.position.x - _monster.transform.position.x;

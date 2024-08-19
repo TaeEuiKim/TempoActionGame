@@ -13,18 +13,16 @@ public class HealBuff : BuffData
         }
 
         Debug.Log("힐");
-        _player.Stat.Hp += value;
-
-        
+        _player.Stat.HealthPoints += value;  // 체력 추가(힐)
     }
 
     public override void Stay()
     {
-        BuffManager.Instance.RemoveBuff(Define.BuffInfo.HEAL);
+        BuffManager.Instance.RemoveBuff(Define.BuffInfo.HEAL); // 버프 제거
     }
 
     public override void Exit()
     {
-        Platform.Change(Define.BuffInfo.NONE);
+        Platform.Change(Define.BuffInfo.NONE); // 버프 교체
     }
 }

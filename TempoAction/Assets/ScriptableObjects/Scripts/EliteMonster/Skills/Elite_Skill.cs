@@ -8,7 +8,7 @@ public abstract class Elite_Skill : ScriptableObject
     public Elite_SkillInfo Info { get => _info; }
 
     protected bool _isCompleted;
-    public bool IsCompleted { get => _isCompleted; }
+    public bool IsCompleted { get => _isCompleted; set => _isCompleted = value; }
 
     protected EliteMonster _monster;
 

@@ -32,7 +32,7 @@ public class Elite_Platform : Elite_Skill
         {
             if (!_isHitPointTempo)
             {
-                CoroutineRunner.Instance.StartCoroutine(StartExplosion());
+               
             }
         };
     }

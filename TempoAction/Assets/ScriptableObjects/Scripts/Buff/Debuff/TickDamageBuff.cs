@@ -5,10 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "TickDamage", menuName = "ScriptableObjects/Buff Data/Tick Damage", order = int.MaxValue)]
 public class TickDamageBuff : BuffData
 {
-    public float giveTime;
+    [SerializeField]private float _tickDamageDelay; // 平 单固瘤 掉饭捞
     private float _timer = 0;
-
-    private float _originValue;
 
     public override void Enter()
     {
@@ -23,9 +21,9 @@ public class TickDamageBuff : BuffData
 
     public override void Stay()
     {
-        if (_timer >= giveTime)
+        if (_timer >= _tickDamageDelay)
         {
-            _player.Stat.Hp += value;
+            _player.Stat.HealthPoints += value;
             _timer = 0;
         }
         else
@@ -36,7 +34,7 @@ public class TickDamageBuff : BuffData
 
     public override void Exit()
     {
-       // Debug.Log("平 单固瘤 场");
+
     }
 
 }
