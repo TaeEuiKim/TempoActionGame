@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &5125554574198006648
 Transform:
@@ -40,6 +40,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5125554574198006648}
     m_Modifications:
+    - target: {fileID: -8758816309781926755, guid: 5c1e03f2dde89ff47b72ba0be14b093d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5c1e03f2dde89ff47b72ba0be14b093d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -80,9 +84,69 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8183308894660888235, guid: 5c1e03f2dde89ff47b72ba0be14b093d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -6886653656737018983, guid: 5c1e03f2dde89ff47b72ba0be14b093d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -6747798365443859016, guid: 5c1e03f2dde89ff47b72ba0be14b093d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -5595279453337853231, guid: 5c1e03f2dde89ff47b72ba0be14b093d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -5490801160165710337, guid: 5c1e03f2dde89ff47b72ba0be14b093d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -4955528710891124654, guid: 5c1e03f2dde89ff47b72ba0be14b093d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -3367580520958959412, guid: 5c1e03f2dde89ff47b72ba0be14b093d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -2111255033201362932, guid: 5c1e03f2dde89ff47b72ba0be14b093d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 739579370718647110, guid: 5c1e03f2dde89ff47b72ba0be14b093d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5c1e03f2dde89ff47b72ba0be14b093d, type: 3}
       propertyPath: m_Name
       value: M_ChickenSkewerSET001
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5c1e03f2dde89ff47b72ba0be14b093d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2599392828565252657, guid: 5c1e03f2dde89ff47b72ba0be14b093d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3245586725562270571, guid: 5c1e03f2dde89ff47b72ba0be14b093d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3639332364161765982, guid: 5c1e03f2dde89ff47b72ba0be14b093d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4601048656516723700, guid: 5c1e03f2dde89ff47b72ba0be14b093d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8557424158291363012, guid: 5c1e03f2dde89ff47b72ba0be14b093d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

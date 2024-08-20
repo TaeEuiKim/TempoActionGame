@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4502974990916216004
 Transform:
@@ -83,6 +83,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 003e501c946b6f04d9b43f5f6f73d766, type: 3}
       propertyPath: m_Name
       value: M_SkewerEgg001_LMJ
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 003e501c946b6f04d9b43f5f6f73d766, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

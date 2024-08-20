@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4066349984390309938
 Transform:
@@ -92,6 +92,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: M_RoofLight
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d0d4555cbf9b24547afb9bc765697605, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -157,6 +161,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: f63d8380555ec8c469a724dea49d5f78, type: 3}
       propertyPath: m_Name
       value: M_RoofModule
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f63d8380555ec8c469a724dea49d5f78, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

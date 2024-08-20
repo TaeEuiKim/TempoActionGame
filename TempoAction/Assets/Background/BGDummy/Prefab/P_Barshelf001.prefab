@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &9211661843009019132
 Transform:
@@ -42,7 +42,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b41b096900477a245b3f589405d28e9b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.237
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b41b096900477a245b3f589405d28e9b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -80,9 +80,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6666008740792494549, guid: b41b096900477a245b3f589405d28e9b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -628942717241503356, guid: b41b096900477a245b3f589405d28e9b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b41b096900477a245b3f589405d28e9b, type: 3}
       propertyPath: m_Name
       value: M_Barshelf001
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b41b096900477a245b3f589405d28e9b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1055339381032099886, guid: b41b096900477a245b3f589405d28e9b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090087084864653437, guid: b41b096900477a245b3f589405d28e9b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2647084417518398515, guid: b41b096900477a245b3f589405d28e9b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

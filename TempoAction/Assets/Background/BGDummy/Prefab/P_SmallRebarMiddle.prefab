@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &7586999396371097680
 Transform:
@@ -87,6 +87,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: d00463075c4382a46a06be3930f1811a, type: 3}
       propertyPath: m_Name
       value: M_SmallRebarMiddle
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d00463075c4382a46a06be3930f1811a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

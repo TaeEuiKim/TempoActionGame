@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1474149227399565337
 Transform:
@@ -80,9 +80,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5711111154833470834, guid: 8bce83934de6c5d4688ca0f20cf5b0fb, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -3830690225365759503, guid: 8bce83934de6c5d4688ca0f20cf5b0fb, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 8bce83934de6c5d4688ca0f20cf5b0fb, type: 3}
       propertyPath: m_Name
       value: M_chineseSignboard001
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8bce83934de6c5d4688ca0f20cf5b0fb, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5753954010576982777, guid: 8bce83934de6c5d4688ca0f20cf5b0fb, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
