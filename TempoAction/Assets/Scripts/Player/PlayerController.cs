@@ -140,6 +140,8 @@ public class PlayerController
 
     private void Dash()
     {
+        _player.Rb.velocity = new Vector2(0, _player.Rb.velocity.y);
+
         _isDashing = true;
         _player.GetComponent<Collider>().enabled = false; 
         Vector3 dashPosition = Vector3.zero;

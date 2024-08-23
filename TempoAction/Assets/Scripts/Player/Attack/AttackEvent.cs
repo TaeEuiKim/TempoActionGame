@@ -118,7 +118,7 @@ public class AttackEvent : MonoBehaviour
 
         if (_player.Attack.IsHit)
         {
-            addStamina = _player.Attack.CurrentAttackTempoData.minStamina;
+            addStamina = _player.Attack.CurrentAttackTempoData.maxDamage;
         }
 
 

@@ -17,7 +17,6 @@ public class PlayerView : MonoBehaviour
     {
         _staminaBarImage.fillAmount = value;
     }
-
     public void UpdateUpgradeCountSlider(int value)
     {
         _upgradeCountSlider.value = value;
