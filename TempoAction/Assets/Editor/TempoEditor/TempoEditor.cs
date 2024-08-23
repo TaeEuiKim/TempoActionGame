@@ -11,9 +11,9 @@ public class TempoEditor : EditorWindow
 {
     private VisualElement _mainVisualElement;
     
-    private Dictionary<Button, AtkTempoData> _tempoList = new Dictionary<Button, AtkTempoData>();
+    private Dictionary<Button, TempoAttackData> _tempoList = new Dictionary<Button, TempoAttackData>();
 
-    private AtkTempoData _curData;
+    private TempoAttackData _currentData;
 
     [MenuItem("Tools/Tempo Setting")]
     public static void ShowExample()
@@ -51,15 +51,15 @@ public class TempoEditor : EditorWindow
     private void AddData(string name)
     {
 
-        string[] datas = Directory.GetFiles("Assets/ScriptableObjects/AtkTempoDatas", $"{name}.asset",
+        string[] datas = Directory.GetFiles("Assets/ScriptableObjects/TempoAttackDatas", $"{name}.asset",
             SearchOption.AllDirectories);
 
         foreach (string data in datas)
         {
             
             string cleanedPath = data.Replace("\\", "/"); // \\를 / 로 바꿔줍니다. Assets\\Data 가 아닌 Assets/Data 로 쓰기때문에
-            _tempoList.Add(rootVisualElement.Q<Button>(name), (AtkTempoData)AssetDatabase.LoadAssetAtPath(cleanedPath,
-                typeof(AtkTempoData)));
+            _tempoList.Add(rootVisualElement.Q<Button>(name), (TempoAttackData)AssetDatabase.LoadAssetAtPath(cleanedPath,
+                typeof(TempoAttackData)));
 
         }
     }
@@ -73,7 +73,7 @@ public class TempoEditor : EditorWindow
             
             t.Key.clickable.clicked += () =>
             {
-                _curData = t.Value;
+                _currentData = t.Value;
                 UpdateData();
                 
             };
@@ -85,20 +85,26 @@ public class TempoEditor : EditorWindow
     private void UpdateData()
     {
 
-        rootVisualElement.Q<Label>("TempoTitle").text = _curData.name;
+        rootVisualElement.Q<Label>("TempoTitle").text = _currentData.name;
 
-        SerializedObject so = new SerializedObject(_curData);
+        SerializedObject so = new SerializedObject(_currentData);
         _mainVisualElement.Bind(so);
         //바인딩해줍니다.
-        if (_curData.type == Define.TempoType.MAIN)
+        if (_currentData.type == Define.TempoType.MAIN)
         {
             rootVisualElement.Q<FloatField>("PerfectStamina").label = "스태미나";
             rootVisualElement.Q<FloatField>("GoodStamina").style.visibility = Visibility.Hidden;
+
+            rootVisualElement.Q<FloatField>("PerfectDamage").label = "데미지";
+            rootVisualElement.Q<FloatField>("GoodDamage").style.visibility = Visibility.Hidden;
         }
         else
         {
             rootVisualElement.Q<FloatField>("PerfectStamina").label = "Perfect 스태미나";
             rootVisualElement.Q<FloatField>("GoodStamina").style.visibility = Visibility.Visible;
+
+            rootVisualElement.Q<FloatField>("PerfectDamage").label = "Perfect 데미지";
+            rootVisualElement.Q<FloatField>("GoodDamage").style.visibility = Visibility.Visible;
         }
 
         _mainVisualElement.style.visibility = Visibility.Visible;

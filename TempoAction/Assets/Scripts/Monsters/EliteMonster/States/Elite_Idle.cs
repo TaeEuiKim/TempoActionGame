@@ -28,9 +28,7 @@ public class Elite_Idle : Elite_State
 
             foreach (Elite_Skill s in _monster.SkillStorage)
             {
-                s.Check(); // 조건 확인
-
-                if (s.IsCompleted) // 조건이 성립되었는지 확인
+                if (s.Check()) // 조건이 성립되었는지 확인
                 {
                     _monster.ReadySkills.Add(s);
                 }
@@ -53,8 +51,8 @@ public class Elite_Idle : Elite_State
                     _monster.SkillStorage.Remove(_monster.ReadySkills[i]);
                 }
             }
-            _monster.CurrentState = Define.EliteMonsterState.USESKILL;
-            _monster.CurrentSkill = prioritySkill;
+            _monster.ChangeCurrentState(Define.EliteMonsterState.USESKILL);
+            _monster.ChangeCurrentSkill(prioritySkill);
             _monster.ReadySkills.Remove(prioritySkill);
 
         }

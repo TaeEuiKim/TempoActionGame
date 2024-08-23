@@ -12,7 +12,7 @@ public class Explosion : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<Player>().Stat.TakeDamage(totalDamage);
+            other.GetComponent<Player>().TakeDamage(totalDamage);
         }
     }
 }

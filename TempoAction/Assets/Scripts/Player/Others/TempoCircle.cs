@@ -10,7 +10,6 @@ public class TempoCircle : MonoBehaviour
 {
     private Transform _player;
 
-
     [SerializeField] private GameObject _checkCircle; // 원 스프라이트 이미지
     [SerializeField] private GameObject _perfectCircle; // 원 스프라이트 이미지
     [SerializeField] private GameObject _goodCircle; // 원 스프라이트 이미지
@@ -65,7 +64,7 @@ public class TempoCircle : MonoBehaviour
                 float scale = Mathf.Lerp(1.0f, 0, timer / _shrinkDuration);
                 _checkCircle.transform.localScale = new Vector3(scale, scale, 1.0f);
 
-                if (_player.GetComponent<Player>().CurState != Define.PlayerState.STUN) // 스턴 상태면 입력 안되도록
+                if (_player.GetComponent<Player>().CurrentState != Define.PlayerState.STUN) // 스턴 상태면 입력 안되도록
                 {
                     if (Input.GetKeyDown(KeyCode.F))
                     {

@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Explosion", menuName = "ScriptableObjects/EliteMonster/Skill/Explosion", order = 1)]
 public class Elite_Explosion : Elite_Skill
 {
-    [SerializeField] private float _executeDuration; // 실행 시간
+   [SerializeField] private float _executeDuration; // 실행 시간
     private float _executeTime;
 
     [SerializeField] private float _executeMaxCount; // 실행 횟수
@@ -21,9 +21,9 @@ public class Elite_Explosion : Elite_Skill
         _executeCount = 0;
     }
 
-    public override void Check()
+    public override bool Check()
     {
-        _isCompleted = true;
+        return true;
     }
 
 
@@ -47,7 +47,7 @@ public class Elite_Explosion : Elite_Skill
         {
             if (_executeCount >= _executeMaxCount)
             {
-                _monster.CurrentSkill = null;
+                _monster.FinishSkill();
                 return;
             }
 
@@ -65,8 +65,6 @@ public class Elite_Explosion : Elite_Skill
     {
         _executeTime = _executeDuration;
         _executeCount = 0;
-        _monster.ResetSkill();
-        //_isCompleted = false;
     }
 
     // 공격 실행 코루틴
@@ -81,7 +79,7 @@ public class Elite_Explosion : Elite_Skill
             GameObject explosion = ObjectPool.Instance.Spawn("Explosion", 1);
             explosion.transform.position = executePosition;
 
-            explosion.GetComponent<Explosion>().totalDamage = _monster.Stat.AttackDamage * (_info.damage / 100);
+            explosion.GetComponent<Explosion>().totalDamage = _monster.Stat.Damage * (_info.damage / 100);
 
             if (_toRight)
             {

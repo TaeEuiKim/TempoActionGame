@@ -5,6 +5,7 @@ using UnityEngine;
 public class EliteMonster : Monster
 {
     #region 변수
+
     // 상태
     private Dictionary<Define.EliteMonsterState, Elite_State> _stateStroage = new Dictionary<Define.EliteMonsterState, Elite_State>(); // 상태 저장소
     [SerializeField] private Define.EliteMonsterState _currentState = Define.EliteMonsterState.NONE;                                   // 현재 상태
@@ -17,7 +18,7 @@ public class EliteMonster : Monster
     [SerializeField] private float _idleDuration;                                        // 잠시 정지 시간
 
     [Header("일반 공격1")]
-    [SerializeField] private Transform _hitPoint;   
+    [SerializeField] private Transform _hitPoint;
     [SerializeField] private Vector3 _colliderSize;
 
     [Header("에너지볼")]
@@ -34,33 +35,9 @@ public class EliteMonster : Monster
     #endregion;
 
     #region 프로퍼티
-    public Define.EliteMonsterState CurrentState
-    {
-        get => _currentState;
-        set
-        {
-            if (_currentState != Define.EliteMonsterState.NONE)
-            {
-                _stateStroage[_currentState]?.Exit();
-            }
-            _currentState = value;
-            _stateStroage[_currentState]?.Enter();
-        }
-    }
-    public List<Elite_Skill> SkillStorage { get => _skillStorage; }
-    public Elite_Skill CurrentSkill
-    {
-        get => _currentSkill;
-        set
-        {
-            //print("Exit :" +_currentSkill);
-            _currentSkill?.Exit();
-            _currentSkill = value;
 
-            //print("Enter :" + _currentSkill);
-            _currentSkill?.Enter();
-        }
-    }
+    public List<Elite_Skill> SkillStorage { get => _skillStorage; }
+    public Elite_Skill CurrentSkill { get => _currentSkill; }
     public List<Elite_Skill> ReadySkills { get => _readySkills; set => _readySkills = value; }
     public float IdleDuration { get => _idleDuration; }
     public Transform HitPoint { get => _hitPoint; }
@@ -71,26 +48,27 @@ public class EliteMonster : Monster
     public CreatePlatform CreatePlatform { get => _createPlatform; }
     #endregion
 
-    private void Awake()
+    protected override void Initialize()
     {
-        _stat = GetComponent<MonsterStat>();
         _rb = GetComponent<Rigidbody>();
         _player = FindObjectOfType<Player>().transform;
 
-        _stateStroage.Add(Define.EliteMonsterState.IDLE,new Elite_Idle(this));
+        _stateStroage.Add(Define.EliteMonsterState.IDLE, new Elite_Idle(this));
         _stateStroage.Add(Define.EliteMonsterState.USESKILL, new Elite_UseSkill(this));
         _stateStroage.Add(Define.EliteMonsterState.GROGGY, new Elite_Groggy(this));
+
+        _stat.Initialize();
     }
 
     private void Start()
     {
-       
+
         foreach (Elite_Skill s in _skillStorage)
         {
             s.Init(this);
         }
 
-        CurrentState = Define.EliteMonsterState.IDLE;
+        _currentState = Define.EliteMonsterState.NONE;
 
     }
 
@@ -99,23 +77,66 @@ public class EliteMonster : Monster
         if (_currentState != Define.EliteMonsterState.NONE)
         {
             _stateStroage[_currentState]?.Stay();
-        }      
+        }
     }
 
-    public void ResetSkill()
+    public void ChangeCurrentState(Define.EliteMonsterState state)
     {
-        CurrentState = Define.EliteMonsterState.IDLE;
-        _skillStorage.Add(_currentSkill);
+        if (_currentState != Define.EliteMonsterState.NONE)
+        {
+            _stateStroage[_currentState]?.Exit();
+        }
+        _currentState = state;
+        _stateStroage[_currentState]?.Enter();
     }
 
 
-    public void ChangeSkill(Define.EliteMonsterSkill skill) // 스킬 교체 함수
+    #region 스킬
+
+    // 스킬이 끝났을 때 사용하는 함수
+    public void FinishSkill()
     {
-        _skillStorage.Add(CurrentSkill);
-        CurrentSkill = GetSkill(skill);      
+        _skillStorage.Add(_currentSkill); // 원래 저장소로 이동
+        _currentSkill?.Exit();
+
+        _currentSkill = null;
+
+        ChangeCurrentState(Define.EliteMonsterState.IDLE);
     }
 
-    public Elite_Skill GetSkill(Define.EliteMonsterSkill skill) // 스킬 찾는 함수
+    // 현재 스킬 교체 함수
+    public void ChangeCurrentSkill(Define.EliteMonsterSkill skill)
+    {
+        if (_currentSkill != null)
+        {
+            _skillStorage.Add(_currentSkill); // 원래 저장소로 이동     
+            _currentSkill?.Exit();
+        }
+
+        if (skill == Define.EliteMonsterSkill.NONE)
+        {
+            _currentSkill = null;
+        }
+        else
+        {
+            _currentSkill = GetSkill(skill);
+            _currentSkill?.Enter();
+        }  
+    }
+    public void ChangeCurrentSkill(Elite_Skill skill)
+    {
+        if (_currentSkill != null)
+        {
+            _skillStorage.Add(_currentSkill); // 원래 저장소로 이동     
+            _currentSkill?.Exit();
+        }
+        _currentSkill = skill;
+        _currentSkill?.Enter();
+    }
+
+
+    // 스킬 찾는 함수
+    public Elite_Skill GetSkill(Define.EliteMonsterSkill skill) 
     {
         foreach (Elite_Skill s in _skillStorage)
         {
@@ -128,6 +149,10 @@ public class EliteMonster : Monster
 
         return null;
     }
+
+    #endregion
+
+   
 
     private void OnDrawGizmos()
     {

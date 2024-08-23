@@ -13,7 +13,7 @@ public class HealBuff : BuffData
         }
 
         Debug.Log("Èú");
-        _player.Stat.HealthPoints += value;  // Ã¼·Â Ãß°¡(Èú)
+        _player.Heal(value);  // Ã¼·Â Ãß°¡(Èú)
     }
 
     public override void Stay()

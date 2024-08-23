@@ -22,30 +22,28 @@ public class Elite_SuperPunch : Elite_Skill
         _totalTime = 0;
     }
 
-    public override void Check()
+    public override bool Check()
     {
-        if (_isCompleted) return;
-
         if (_coolTime >= _info.coolTime)
         {
             if (Vector2.Distance(_monster.Player.position, _monster.transform.position) <= _info.range)
             {
-                _coolTime = 0;
-                _isCompleted = true;
+                return true;
             }
         }
         else
         {
             _coolTime += Time.deltaTime;
         }
-    }
 
+        return false;
+    }
 
     public override void Enter()
     {
         Debug.Log("멀리 치기");
-        _monster.Player.GetComponent<Player>().Atk.CreateTempoCircle(_parringTime); // 포인트 템포 실행
-        _tempoCircle = _monster.Player.GetComponent<Player>().Atk.PointTempoCircle;
+        _monster.Player.GetComponent<Player>().Attack.CreateTempoCircle(_parringTime, _monster.transform, new Vector3(_monster.transform.position.x + _monster.Direction, _monster.transform.position.y + 1, -0.1f)); // 포인트 템포 실행
+        _tempoCircle = _monster.Player.GetComponent<Player>().Attack.PointTempoCircle;
     }
     public override void Stay()
     {
@@ -69,19 +67,14 @@ public class Elite_SuperPunch : Elite_Skill
 
         _coolTime = 0;
         _totalTime = 0;
-
-        _monster.ResetSkill();
-        _isCompleted = false;
-
     }
-
     public void Attack()
     {
         if (_tempoCircle.CircleState == Define.CircleState.GOOD || _tempoCircle.CircleState == Define.CircleState.PERFECT)// 패링 성공 확인
         {
             Debug.Log("패링");
 
-            _monster.CurrentSkill = null;
+            _monster.FinishSkill();
             return;
         }
 
@@ -90,11 +83,11 @@ public class Elite_SuperPunch : Elite_Skill
         if (isHit)
         {
             Debug.Log("멀리 치기 성공");
-            float damage = _monster.Stat.AttackDamage * (_info.damage / 100);
-            _monster.Player.GetComponent<Player>().Stat.TakeDamage(damage);
-            _monster.Player.GetComponent<Player>().Stat.Knockback(Vector2.right * _monster.Direction * _knockBackPower, _knockBackDuration);
+            float damage = _monster.Stat.Damage * (_info.damage / 100);
+            _monster.Player.GetComponent<Player>().TakeDamage(damage);
+            _monster.Player.GetComponent<Player>().Knockback(Vector2.right * _monster.Direction * _knockBackPower, _knockBackDuration);
         }
 
-        _monster.CurrentSkill = null;
+        _monster.FinishSkill();
     }
 }

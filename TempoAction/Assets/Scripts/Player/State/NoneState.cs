@@ -2,25 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NoneState : IPlayerState
+public class NoneState : PlayerState
 {
-    private Player _player;
-
-    public NoneState(Player player = null)
+    public NoneState(Player player) : base(player)
     {
         _player = player;
     }
 
-    public void Enter()
+    public override void Enter()
     {
 
     }
 
-    public void Stay()
+    public override void Stay()
     {
     }
 
-    public void Exit()
+    public override void Exit()
     {
 
     }

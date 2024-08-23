@@ -25,22 +25,22 @@ public class Elite_Laser : Elite_Skill
         _totalTime = 0;
     }
 
-    public override void Check()
+    public override bool Check()
     {
-        if (_isCompleted) return;
-
         if (_coolTime >= _info.coolTime) // 쿨타임 확인
         {
             if (Vector2.Distance(_monster.Player.position, _monster.transform.position) <= _info.range) // 거리 확인
             {
-                _coolTime = 0;
-                _isCompleted = true;
+               
+                return true;
             }
         }
         else
         {
             _coolTime += Time.deltaTime;
         }
+
+        return false;
     }
 
     public override void Enter()
@@ -59,7 +59,7 @@ public class Elite_Laser : Elite_Skill
     {
         if (_totalTime >= _info.totalTime)
         {
-            _monster.CurrentSkill = null;
+            _monster.FinishSkill();
         }
         else
         {
@@ -72,8 +72,7 @@ public class Elite_Laser : Elite_Skill
     {
         _lineRenderer.positionCount = 0;
         _totalTime = 0;
-        _monster.ResetSkill();
-        _isCompleted = false;
+        _coolTime = 0;
     }
 
     // 레이저 발사 함수
@@ -109,8 +108,8 @@ public class Elite_Laser : Elite_Skill
         foreach (Collider col in colliders)
         {
             Debug.Log("레이저 충돌");
-            float damage = _monster.Stat.AttackDamage * (_info.damage / 100);
-            _monster.Player.GetComponent<Player>().Stat.TakeDamage(damage);
+            float damage = _monster.Stat.Damage * (_info.damage / 100);
+            _monster.Player.GetComponent<Player>().TakeDamage(damage);
         }
     }
 }

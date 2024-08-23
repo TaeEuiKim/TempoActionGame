@@ -45,7 +45,7 @@ public class Define
         MAIN, POINT, NONE
     }
 
-    public enum AtkState
+    public enum AttackState
     {
         ATTACK, CHECK, FINISH
     }
@@ -73,6 +73,10 @@ public class Define
     }
 
     #region 엘리트 몬스터
+    public enum EliteStageState
+    {
+        PHASE1, PHASECHANGE, PHASE2, FINISH, NONE
+    }
     public enum EliteMonsterState
     {
         IDLE, USESKILL, GROGGY, NONE

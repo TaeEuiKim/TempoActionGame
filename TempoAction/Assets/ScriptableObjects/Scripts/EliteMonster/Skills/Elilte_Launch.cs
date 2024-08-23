@@ -19,22 +19,21 @@ public class Elilte_Launch : Elite_Skill
         _totalTime = 0;
     }
 
-    public override void Check()
+    public override bool Check()
     {
-        if (_isCompleted) return;
-
         if (_coolTime >= _info.coolTime) // 쿨타임 확인
         {
             if (Vector2.Distance(_monster.Player.position, _monster.transform.position) <= _info.range) // 거리 확인
-            {
-                _coolTime = 0;
-                _isCompleted = true;
+            {              
+                return true;
             }
         }
         else
         {
             _coolTime += Time.deltaTime;
         }
+
+        return false;
     }
 
     public override void Enter()
@@ -45,7 +44,7 @@ public class Elilte_Launch : Elite_Skill
         _energyBall = ObjectPool.Instance.Spawn("EnergyBall");
         _energyBall.transform.position = _monster.StartEnergyBallPoint.position;
 
-        _energyBall.GetComponent<EnergyBall>().totalDamage = _monster.Stat.AttackDamage * (_info.damage / 100);
+        _energyBall.GetComponent<EnergyBall>().totalDamage = _monster.Stat.Damage * (_info.damage / 100);
 
     }
     public override void Stay()
@@ -54,7 +53,7 @@ public class Elilte_Launch : Elite_Skill
 
         if (_totalTime >= _info.totalTime)
         {
-            _monster.CurrentSkill = null;
+            _monster.FinishSkill();
         }
         else
         {
@@ -66,7 +65,6 @@ public class Elilte_Launch : Elite_Skill
     {
         ObjectPool.Instance.Remove(_energyBall);
         _totalTime = 0;
-        _monster.ResetSkill();
-        _isCompleted = false;
+        _coolTime = 0;
     }
 }

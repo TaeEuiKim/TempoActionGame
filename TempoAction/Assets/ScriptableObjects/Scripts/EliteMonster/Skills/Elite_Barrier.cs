@@ -8,9 +8,7 @@ public class Elite_Barrier : Elite_Skill
     private float _coolTime;
     private float _totalTime;
 
-    [SerializeField] private float _damageReduction;   // 데미지 감소량
-    [SerializeField] private float _knockBackPower;    // 넉백 파워
-    [SerializeField] private float _knockBackDuration; // 넉백 시간
+    [SerializeField] private float _defense;   // 데미지 감소량
 
     private float _lastHp;
 
@@ -22,40 +20,38 @@ public class Elite_Barrier : Elite_Skill
         _totalTime = 0;
     }
 
-    public override void Check()
+    public override bool Check()
     {
-        if (_isCompleted) return;
-
         if (_coolTime >= _info.coolTime) // 쿨타임 확인
-        {
-            _coolTime = 0;
-            _isCompleted = true;
+        {          
+            return true;
         }
         else
         {
             _coolTime += Time.deltaTime;
         }
-    }
 
+        return false;
+    }
 
     public override void Enter()
     {
         Debug.Log("가드");
-        _lastHp = _monster.Stat.HealthPoints;
-        _monster.Stat.DamageReduction = _damageReduction;
+        _lastHp = _monster.Stat.Health;
+        _monster.Stat.Defense = _defense;
     }
     public override void Stay()
     {
         if (_totalTime >= _info.totalTime)
         {
-            if (_lastHp > _monster.Stat.HealthPoints) // 플레이어가 가드 상태인 몬스터 공격 시(체력 변화가 있을 때)
+            Debug.Log(_lastHp +" / "+ _monster.Stat.Health);
+            if (_lastHp > _monster.Stat.Health) // 플레이어가 가드 상태인 몬스터 공격 시(체력 변화가 있을 때)
             {
-                _monster.ChangeSkill(Define.EliteMonsterSkill.SUPERPUNCH); // 멀리 치기 실행
-                _monster.CurrentSkill.IsCompleted = true;
+                _monster.ChangeCurrentSkill(Define.EliteMonsterSkill.SUPERPUNCH); // 멀리 치기 실행
             }
             else
             {
-                _monster.CurrentSkill = null;
+                _monster.FinishSkill();
             }
             Debug.Log("가드 끝");
         }
@@ -66,30 +62,9 @@ public class Elite_Barrier : Elite_Skill
     }
     public override void Exit()
     {
-        _monster.Stat.DamageReduction = 0;
+        _monster.Stat.Defense = 0;
         _totalTime = 0;
-
-        if (_lastHp == _monster.Stat.HealthPoints) // 체력 변화가 없을 때
-        {
-            _monster.ResetSkill();
-        }
-
-        _isCompleted = false;
+        _coolTime = 0;
     }
 
- /*   public void Attack()
-    {
-
-        bool isHit = Physics.CheckBox(_monster.HitPoint.position, _monster.ColSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
-
-        if (isHit)
-        {
-            Debug.Log("멀리 치기 성공");
-            float damage = _monster.Stat.AttackDamage * (_info.damage / 100);
-            _monster.Player.GetComponent<Player>().Stat.TakeDamage(damage);
-            _monster.Player.GetComponent<Player>().Stat.Knockback(Vector2.right * _monster.Direction * _knockBackPower, _knockBackDuration);
-
-        }
-
-    }*/
 }

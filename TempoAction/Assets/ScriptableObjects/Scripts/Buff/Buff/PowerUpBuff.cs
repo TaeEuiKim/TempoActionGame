@@ -8,8 +8,6 @@ public class PowerUpBuff : BuffData
     [SerializeField] private float _duration;
     private float _timer = 0;
 
-    private float _originValue; // 기존 공격력 값
-
     public override void Enter()
     {
         _timer = 0;
@@ -20,8 +18,7 @@ public class PowerUpBuff : BuffData
         }
 
         // 공격력 상승
-        _originValue = _player.Stat.AttackDamage;
-        _player.Stat.AttackDamage = value;
+        _player.PowerUp(value);
     }
 
     public override void Stay()
@@ -38,6 +35,6 @@ public class PowerUpBuff : BuffData
 
     public override void Exit()
     {
-        _player.Stat.AttackDamage = _originValue; // 공격력 복구
+        _player.PowerUp(-value);
     }
 }

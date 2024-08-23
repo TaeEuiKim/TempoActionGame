@@ -2,58 +2,64 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-public class PlayerController : MonoBehaviour
+public class PlayerController
 {
-
     private Player _player;
 
-    [SerializeField] private Transform _groundCheck;
-    [SerializeField] private float _groundCheckRadius = 0.2f;
-    [SerializeField] private LayerMask _groundLayer;
+    private bool _isLanded;
+    private bool _isGrounded;
+    private bool _isDashing;
+    private bool _facingRight;
 
-    private bool _isLanded = false;
-    private bool _isGrounded = true;
-    private bool _isDashing = false;
-    private bool _facingRight = true;
-    //private bool _isMoved = false;
-
-    private float _moveInput = 0;
-    private float _dashTimer = 0f;
+    private float _moveInput;
+    private float _dashTimer;
+    
     public float Direction 
     {
         get
         {
-            return _facingRight ? 1 : -1; ;
+            return _facingRight ? 1 : -1; 
         }
     }
 
-    private void Start()
+    public PlayerController(Player player)
     {
-        _player = transform.parent.GetComponent<Player>();
+        _player = player;
+    }
+
+    public void Initialize()
+    {
+        _isLanded = false;
+        _isGrounded = true;
+        _isDashing = false;
+        _facingRight = true;
+
+        _moveInput = 0f;
+        _dashTimer = 0f;
 
         _dashTimer = _player.Stat.DashDelay;
     }
 
-    public void Stay()
+    public void Update()
     {
 
         if (_player.Stat.IsKnockedBack) return;
 
-        if (_player.CurAtkState == Define.AtkState.ATTACK)
+        if (_player.Attack.CurrentAttackkState == Define.AttackState.ATTACK)
         {
             _player.Rb.velocity = new Vector2(0, _player.Rb.velocity.y);
 
             return;
         }
 
-        _isGrounded = Physics.CheckSphere(_groundCheck.position, _groundCheckRadius, _groundLayer);
+        _isGrounded = Physics.CheckSphere(_player.GroundCheckPoint.position, _player.GroundCheckRadius, _player.GroundLayer);
         _player.Ani.SetBool("isGrounded", _isGrounded);
 
         if (_isGrounded)
         {
             if (!_isLanded)
             {
-                SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_JumpLanding", transform);
+                SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_JumpLanding", _player.transform);
                 _isLanded = true;
             }
         }
@@ -95,7 +101,6 @@ public class PlayerController : MonoBehaviour
             _moveInput = 1f;
         }
 
-
         Vector2 tempVelocity = new Vector2(_moveInput * _player.Stat.SprintSpeed, _player.Rb.velocity.y);
 
         _player.Ani.SetFloat("Speed", Mathf.Abs(tempVelocity.x));
@@ -135,18 +140,26 @@ public class PlayerController : MonoBehaviour
 
     private void Dash()
     {
-        //if (!_isGrounded) return;
-
         _isDashing = true;
+        _player.GetComponent<Collider>().enabled = false; 
+        Vector3 dashPosition = Vector3.zero;
 
-        Vector2 dashPosition = (Vector2)_player.Rb.position + Vector2.right * Direction * _player.Stat.DashDistance;
+        RaycastHit hit;
+        if (Physics.Raycast(_player.transform.position, Vector3.right * Direction, out hit, _player.Stat.DashDistance, _player.WallLayer)) // 벽이 있다면 벽과의 충돌 위치 바로 앞에서 멈추게 설정
+        {            
+            dashPosition = hit.point - (Vector3.right * Direction) * 0f;  // 곱하는 수 만큼 벽에서 떨어짐
+        }
+        else  // 벽이 없으면 대쉬 거리만큼 앞으로 이동
+        {      
+            dashPosition = _player.transform.position + (Vector3.right * Direction) * _player.Stat.DashDistance;
+        }
 
         _player.Rb.DOMove(dashPosition, _player.Stat.DashDuration).SetEase(Ease.OutQuad).OnComplete(() =>
         {
             _isDashing = false;
+            _player.GetComponent<Collider>().enabled = true;
         });
 
-        // Trigger dash animation
         _player.Ani.SetTrigger("Dash");
 
         _dashTimer = 0;
@@ -156,38 +169,7 @@ public class PlayerController : MonoBehaviour
     {
         _facingRight = !_facingRight;
         float scaleX = _facingRight ? 1 : -1;
-        transform.localScale = new Vector3(scaleX, 1, 1);
-    }
-
-    private void PlayerSfx(Define.PlayerSfxType type)
-    {
-        switch (type)
-        {
-            case Define.PlayerSfxType.MAIN:
-                SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_RhythmCombo_Attack_" + (_player.Atk.AttackIndex + 1), transform);
-                break;
-            case Define.PlayerSfxType.POINT:
-                SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_PointTempo_Hit", transform);
-                break;
-            case Define.PlayerSfxType.DASH:
-                break;
-            case Define.PlayerSfxType.JUMP:
-                SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_Jump", transform);
-                break;
-            case Define.PlayerSfxType.RUN:
-                SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_Running", transform);
-                break;
-            case Define.PlayerSfxType.STUN:
-                SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_Overload_Occurred", transform);
-                SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_Overload_Recovery", transform);
-                break;
-        }
-    }
-
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.DrawWireSphere(_groundCheck.position, _groundCheckRadius);
+        _player.PlayerModel.localScale = new Vector3(scaleX, 1, 1);
     }
 
 }

@@ -15,6 +15,8 @@ public class NomalMonster : Monster
     }
 
     #region 변수
+    private INomalMonsterView _nomalMonsterView;
+
     [SerializeField] private float _moveRange; // Idle 이동 거리
 
     [Space]
@@ -22,19 +24,18 @@ public class NomalMonster : Monster
     [SerializeField] private float _perceptionAngle;                                                                                       // 인식 각도
     [SerializeField] private List<PerceptionRange> _perceptionRanges = new List<PerceptionRange>();                                        // 인식 범위
     private Dictionary<Define.PerceptionType, Nomal_State> _perceptionStateStorage = new Dictionary<Define.PerceptionType, Nomal_State>(); // 인식 상태 저장소
-    private Define.PerceptionType _currentPerceptionState;                                                                                     // 현재 인색 상태 
+    private Define.PerceptionType _currentPerceptionState;                                                                                 // 현재 인색 상태 
     
     [SerializeField] private float _maxAggroGauge; // 최대 어그로 게이지
     private float _aggroGauge = 0;                 // 현재 어그로 게이지
 
-    private Vector2 _spawnPoint;  
+    public Vector2 SpawnPoint { get; set; }
 
     [Space]
     [SerializeField] private Transform _hitPoint;
     [SerializeField] private Vector3 _colliderSize;
 
-    [Header("UI")]
-    [SerializeField] private Canvas _nomalMonsterCanvas;
+
     #endregion
 
     #region 프로퍼티
@@ -84,17 +85,18 @@ public class NomalMonster : Monster
 
         }
     }
-    public Vector2 SpawnPoint { get => _spawnPoint; set => _spawnPoint = value; }
- 
+   
+
     #endregion
 
-    private void Awake()
+    protected override void Initialize()
     {
-        _stat = GetComponent<MonsterStat>();
+        _nomalMonsterView = GetComponent<INomalMonsterView>();
+
         _rb = GetComponent<Rigidbody>();
         _player = FindObjectOfType<Player>().transform;
 
-        _nomalMonsterCanvas.worldCamera = Camera.main;
+        _stat.Initialize();
     }
     private void Start()
     {
@@ -106,7 +108,7 @@ public class NomalMonster : Monster
 
         _canKnockback = true; // 넉백 활성화
 
-        _stat.HealthPoints = _stat.MaxHealthPoints;
+        _stat.Health = _stat.MaxHealth;
 
         // 넉백 시 실행하는 이벤트
         OnKnockback += () =>
@@ -138,7 +140,7 @@ public class NomalMonster : Monster
     {
         // 기준점에서 플레이어로 향하는 벡터 계산
 
-        Vector3 playerPos = new Vector3(_player.position.x, _player.position.y + 0.5f, _player.position.z);
+        Vector3 playerPos = new Vector3(_player.position.x, _player.position.y, _player.position.z);
         Vector3 directionToPlayer = playerPos - transform.position;
         directionToPlayer.z = 0; // 높이(z축)는 고려하지 않음
 
@@ -177,6 +179,8 @@ public class NomalMonster : Monster
 
             }
         }
+
+        UpdatePerceptionGauge();
     }
 
     // 인식 상태 변화 업데이트 함수
@@ -213,21 +217,29 @@ public class NomalMonster : Monster
         if (isHit)
         {
             print("공격");
-            _player.GetComponent<Player>().Stat.TakeDamage(_stat.AttackDamage);
+            _player.GetComponent<Player>().TakeDamage(_stat.Damage);
         }
 
     }
 
- 
+    #region View
+
+    public void UpdatePerceptionGauge()
+    {
+        _nomalMonsterView.UpdatePerceptionGaugeImage(_aggroGauge/_maxAggroGauge);
+    }
+
+    #endregion
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(_hitPoint.position, _colliderSize);
 
-        if (_spawnPoint != Vector2.zero)
+        if (SpawnPoint != Vector2.zero)
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawLine(new Vector3(_spawnPoint.x - _moveRange, transform.position.y, 0), new Vector3(_spawnPoint.x + _moveRange, transform.position.y, 0));
+            Gizmos.DrawLine(new Vector3(SpawnPoint.x - _moveRange, transform.position.y, 0), new Vector3(SpawnPoint.x + _moveRange, transform.position.y, 0));
         }
     }
 

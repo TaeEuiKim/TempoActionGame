@@ -22,16 +22,14 @@ public class Nomal_Detectionm : Nomal_State
     public override void Stay()
     {
 
-
-
-        if (_monster.Stat.IsKnockBack)
+        if (_monster.IsKnockBack)
         {
             _attackTimer = 0;
         }
 
         if (_monster.Stat.AttackRange < Vector3.Distance(_monster.Player.position, _monster.transform.position))
         {
-            if (!_monster.Stat.IsKnockBack && !_monster.Stat.IsStunned)
+            if (!_monster.IsKnockBack && !_monster.IsStunned)
             {
                 _monster.Direction = _monster.Player.position.x - _monster.transform.position.x;
                 _monster.Rb.velocity = new Vector3(_monster.Direction, 0, 0) * _monster.Stat.SprintSpeed;

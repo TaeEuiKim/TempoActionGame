@@ -4,104 +4,194 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private PlayerStat _stat;
-    public PlayerStat Stat { get { return _stat; } }
+    [SerializeField] private PlayerStat _stat;
+    private PlayerView _view;
 
-    private AtkMachine _atk;
-    public AtkMachine Atk { get { return _atk; } }
-
+    private PlayerAttack _attack;
     private PlayerController _controller;
-    public PlayerController Controller { get { return _controller; } }
 
     private Rigidbody _rb;
-    public Rigidbody Rb { get { return _rb; } }
-
     private Animator _ani;
-    public Animator Ani { get { return _ani; } }
 
-    // 플레이어 상태
-    [SerializeField] private Define.PlayerState _curState = Define.PlayerState.NONE;
-    public Define.PlayerState CurState
-    {
-        get
-        {
-            return _curState;
-        }
-        set
-        {
-            _stateStorage[_curState]?.Exit();
-            _curState = value;
-            _stateStorage[_curState]?.Enter();
-        }
-    }
+    [SerializeField] private Define.PlayerState _currentState = Define.PlayerState.NONE;
+    private Dictionary<Define.PlayerState, PlayerState> _stateStorage = new Dictionary<Define.PlayerState, PlayerState>();
 
-    private Dictionary<Define.PlayerState, IPlayerState> _stateStorage = new Dictionary<Define.PlayerState, IPlayerState>();
-
-    // 플레이어 공격 상태
-    [Space]
-    [SerializeField] private Define.AtkState _curAtkState = Define.AtkState.FINISH;
-    public Define.AtkState CurAtkState
-    {
-        get
-        {
-            return _curAtkState;
-        }
-        set
-        {
-            _atkStateStorage[_curAtkState]?.Exit();
-            _curAtkState = value;
-            _atkStateStorage[_curAtkState]?.Enter();
-        }
-    }
-
-    private Dictionary<Define.AtkState, IAtkState> _atkStateStorage = new Dictionary<Define.AtkState, IAtkState>();
+    [SerializeField] private Transform _playerModel;
 
     [SerializeField] private Transform _rightSparkPoint;
-    public Transform RightSparkPoint { get => _rightSparkPoint; }
-
     [SerializeField] private Transform _leftSparkPoint;
+
+    [Header("움직임")]
+    [SerializeField] private Transform _groundCheckPoint;
+    [SerializeField] private float _groundCheckRadius = 0.2f;
+    [SerializeField] private LayerMask _groundLayer;
+    [SerializeField] private LayerMask _wallLayer;
+
+    [Header("공격")]
+    [SerializeField] private Transform _hitPoint;
+    [SerializeField] private Transform _endPoint;    // 넉백 지점
+    [SerializeField] private Vector3 _colliderSize;
+    [SerializeField] private LayerMask _monsterLayer;
+
+    [SerializeField] private List<TempoAttackData> _tempoAttackDatas;
+
+    public PlayerStat Stat { get { return _stat; } }
+    public PlayerAttack Attack { get { return _attack; } }
+    public PlayerController Controller { get { return _controller; } }
+    public Rigidbody Rb { get { return _rb; } }
+    public Animator Ani { get { return _ani; } }
+    public Define.PlayerState CurrentState
+    {
+        get
+        {
+            return _currentState;
+        }
+        set
+        {
+            _stateStorage[_currentState]?.Exit();
+            _currentState = value;
+            _stateStorage[_currentState]?.Enter();
+        }
+    }
+   
+    public Transform PlayerModel { get => _playerModel; }
+    public Transform RightSparkPoint { get => _rightSparkPoint; }
     public Transform LeftSparkPoint { get => _leftSparkPoint; }
+    public Transform GroundCheckPoint { get => _groundCheckPoint; }
+    public float GroundCheckRadius { get => _groundCheckRadius; }
+    public LayerMask GroundLayer { get => _groundLayer; }
+    public LayerMask WallLayer { get => _wallLayer; }
+
+    public Transform HitPoint { get => _hitPoint; }
+    public Transform EndPoint { get => _endPoint; }
+    public Vector3 ColliderSize { get => _colliderSize; }
+    public LayerMask MonsterLayer { get => _monsterLayer; }
+    public List<TempoAttackData> TempoAttackDatas { get => _tempoAttackDatas; }
 
     private void Awake()
     {
-        _stat = GetComponent<PlayerStat>();
-        _atk = GetComponentInChildren<AtkMachine>();
-        _controller = GetComponentInChildren<PlayerController>();
+        _view = GetComponent<PlayerView>();
+
+        _attack = new PlayerAttack(this);
+        _controller = new PlayerController(this);
 
         _rb = GetComponent<Rigidbody>();
         _ani = GetComponentInChildren<Animator>();
+
+        _stat.Initialize();
     }
 
     private void Start()
     {
+        _attack.Initialize();
+        _controller.Initialize();
+
         //플레이어 상태
         _stateStorage.Add(Define.PlayerState.NONE, new NoneState(this));
         _stateStorage.Add(Define.PlayerState.OVERLOAD, new OverloadState(this));
         _stateStorage.Add(Define.PlayerState.STUN, new StunState(this));
-
-        //플레이어 공격 상태
-        _atkStateStorage.Add(Define.AtkState.ATTACK, new AtkAttackState(this));
-        _atkStateStorage.Add(Define.AtkState.CHECK, new AtkCheckState(this));
-        _atkStateStorage.Add(Define.AtkState.FINISH, new AtkFinishState(this));
     }
 
     private void Update()
     {
-        _stateStorage[_curState]?.Stay();
+        _stateStorage[_currentState]?.Stay();
 
-        switch (_curState)
+        switch (_currentState)
         {
             case Define.PlayerState.STUN:
-                CurAtkState = Define.AtkState.FINISH;
+                //_attack.ChangeCurrentAttackState(Define.AttackState.FINISH);
                 break;
             case Define.PlayerState.OVERLOAD:
             case Define.PlayerState.NONE:
-                _atkStateStorage[_curAtkState]?.Stay();
-
-                _controller.Stay();
+                //_atkStateStorage[_curAtkState]?.Stay();
+                _attack.Update();
+                _controller.Update();
 
                 break;
         }
 
+    }
+
+    public float GetTotalDamage(bool value = true)
+    {
+        if (value)
+        {
+            return _stat.Damage + _attack.CurrentAttackTempoData.maxDamage;
+        }
+        else
+        {
+            return _stat.Damage + _attack.CurrentAttackTempoData.minDamage;
+        }   
+    }
+
+    public void TakeDamage(float value)
+    {
+        if (_stat.IsKnockedBack) return;
+
+        _stat.Health -= value * ((100 - _stat.Defense) / 100);
+        UpdateHealth();
+    }
+
+    //넉백 함수
+    public void Knockback(Vector2 knockbackDirection, float t = 0)
+    {
+        StartCoroutine(StartKnockBack(knockbackDirection, t));
+    }
+    // 넉백 시작
+    public IEnumerator StartKnockBack(Vector2 knockbackDirection, float t)
+    {
+        _stat.IsKnockedBack = true;
+        GetComponent<Rigidbody>().AddForce(knockbackDirection, ForceMode.Impulse);
+
+        yield return new WaitForSeconds(t);
+
+        GetComponent<Rigidbody>().velocity = Vector2.zero;
+        _stat.IsKnockedBack = false;
+    }
+
+    public void Heal(float value)
+    {
+        _stat.Health += value;
+        UpdateHealth();
+    }
+
+    public void PowerUp(float value)
+    {
+        _stat.Damage += value;
+    }
+
+    // 과부화 상태인지 확인(스테미너가 최대 스테미나랑 같을 때)
+    public bool CheckOverload()
+    {
+        if (_stat.Stamina == _stat.MaxStamina)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    #region View
+    public void UpdateHealth()
+    {
+        _view.UpdateHpBar(_stat.Health / _stat.MaxHealth);
+    }
+    public void UpdateStamina()
+    {
+        _view.UpdateStaminaBar(_stat.Stamina / _stat.MaxStamina);
+    }
+    public void UpdateUpgradeCount()
+    {
+        _view.UpdateUpgradeCountSlider(_attack.UpgradeCount);
+    }
+    #endregion
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(_hitPoint.position, _colliderSize);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(_groundCheckPoint.position, _groundCheckRadius);
     }
 }

@@ -3,6 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Thunderstroke", menuName = "ScriptableObjects/EliteMonster/Skill/Thunderstroke", order = 1)]
 public class Elite_Thunderstroke : Elite_Skill
 {
+    private bool _isExecuted; // ½ÇÇà È®ÀÎ
+
     [SerializeField] private float _executeDuration;
     private float _executeTime;
 
@@ -15,17 +17,17 @@ public class Elite_Thunderstroke : Elite_Skill
         _executeTime = 0;
     }
 
-    public override void Check()
+    public override bool Check()
     {
-        _isCompleted = true;
+        return true;
     }
 
     public override void Enter()
     {
         Debug.Log("³«·Ú");
-        _monster.Stat.OnPointTempo += () =>
+        _monster.OnPointTempo += () =>
         {
-            _monster.CurrentSkill = null;
+            _monster.FinishSkill();
         };
     }
     public override void Stay()
@@ -47,8 +49,6 @@ public class Elite_Thunderstroke : Elite_Skill
     public override void Exit()
     {
         _executeTime = 0;
-        _monster.ResetSkill();
-        //_isCompleted = false;
     }
 
     // ³«·Ú »ý¼º ÇÔ¼ö
@@ -60,6 +60,6 @@ public class Elite_Thunderstroke : Elite_Skill
         GameObject lightning = ObjectPool.Instance.Spawn("Lightning", 2);
         lightning.transform.position = executePosition;
 
-        lightning.GetComponent<Lightning>().totalDamage = _monster.Stat.AttackDamage * (_info.damage / 100);
+        lightning.GetComponent<Lightning>().totalDamage = _monster.Stat.Damage * (_info.damage / 100);
     }
 }

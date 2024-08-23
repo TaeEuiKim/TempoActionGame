@@ -14,7 +14,8 @@
                 <ui:Label text="템포 정보" display-tooltip-when-elided="true" parse-escape-sequences="false" name="TempoTitle" style="font-size: 30px; margin-left: 10px; margin-right: 10px; margin-top: 5px; margin-bottom: 5px;" />
             </ui:VisualElement>
             <ui:GroupBox>
-                <ui:FloatField label="데미지" value="0" name="FloatField" binding-path="damage" />
+                <ui:FloatField label="Perfect 데미지" value="0" name="PerfectDamage" binding-path="maxDamage" />
+                <ui:FloatField label="Good 데미지" value="0" name="GoodDamage" binding-path="minDamage" />
                 <ui:Slider label="공격 거리" high-value="100" show-input-field="true" binding-path="distance" />
                 <ui:VisualElement style="flex-grow: 1; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px; border-left-color: rgb(42, 42, 42); border-right-color: rgb(42, 42, 42); border-top-color: rgb(42, 42, 42); border-bottom-color: rgb(42, 42, 42); border-top-width: 3px;" />
                 <uie:EnumField label="타입" binding-path="type" style="margin-top: 1px; border-top-width: 0; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); display: none;" />

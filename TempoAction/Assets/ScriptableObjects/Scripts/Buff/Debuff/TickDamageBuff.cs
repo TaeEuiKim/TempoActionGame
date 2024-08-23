@@ -23,7 +23,7 @@ public class TickDamageBuff : BuffData
     {
         if (_timer >= _tickDamageDelay)
         {
-            _player.Stat.HealthPoints += value;
+            _player.TakeDamage(value);
             _timer = 0;
         }
         else

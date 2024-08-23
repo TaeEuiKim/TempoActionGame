@@ -18,29 +18,28 @@ public class Elite_SAttack : Elite_Skill
         base.Init(monster);
 
         _totalTime = 0;
-        _lastHealthPoints = _monster.Stat.MaxHealthPoints;
+        _lastHealthPoints = _monster.Stat.MaxHealth;
     }
 
-    public override void Check()
+    public override bool Check()
     {
-        if (_isCompleted) return;
-
-        if (_monster.Stat.HealthPoints + _reductionHealthPoints <= _lastHealthPoints) // 체력 감소 확인
+        if (_monster.Stat.Health + _reductionHealthPoints <= _lastHealthPoints) // 체력 감소 확인
         {
             if (Vector2.Distance(_monster.Player.position, _monster.transform.position) <= _info.range) // 거리 확인
             {
-                _isCompleted = true;
-                _lastHealthPoints -= _reductionHealthPoints;
+                return true;
             }
         }
+
+        return false;
     }
 
 
     public override void Enter()
     {
         Debug.Log("일반 공격2");
-        _monster.Player.GetComponent<Player>().Atk.CreateTempoCircle(_parringTime); // 포인트 템포 실행
-        _tempoCircle = _monster.Player.GetComponent<Player>().Atk.PointTempoCircle;
+        _monster.Player.GetComponent<Player>().Attack.CreateTempoCircle(_parringTime, _monster.transform, new Vector3(_monster.transform.position.x + _monster.Direction, _monster.transform.position.y + 1, -0.1f)); // 포인트 템포 실행
+        _tempoCircle = _monster.Player.GetComponent<Player>().Attack.PointTempoCircle;
     }
     public override void Stay()
     {
@@ -55,10 +54,8 @@ public class Elite_SAttack : Elite_Skill
     }
     public override void Exit()
     {
+        _lastHealthPoints -= _reductionHealthPoints;
         _totalTime = 0;
-
-        _monster.ResetSkill();
-        _isCompleted = false;
     }
 
     public void Attack()
@@ -66,7 +63,7 @@ public class Elite_SAttack : Elite_Skill
         if (_tempoCircle.CircleState == Define.CircleState.GOOD || _tempoCircle.CircleState == Define.CircleState.PERFECT) // 패링 성공 확인
         {
             Debug.Log("패링");
-            _monster.CurrentSkill = null;
+            _monster.FinishSkill();
             return;
         }
 
@@ -75,10 +72,10 @@ public class Elite_SAttack : Elite_Skill
         if (isHit)
         {
             Debug.Log("일반 공격2 성공");
-            float damage = _monster.Stat.AttackDamage * (_info.damage / 100);
-            _monster.Player.GetComponent<Player>().Stat.TakeDamage(damage);
+            float damage = _monster.Stat.Damage * (_info.damage / 100);
+            _monster.Player.GetComponent<Player>().TakeDamage(damage);
         }
 
-        _monster.CurrentSkill = null;
+        _monster.FinishSkill();
     }
 }
