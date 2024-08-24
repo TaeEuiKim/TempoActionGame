@@ -17,12 +17,9 @@ public abstract class Monster : MonoBehaviour
     
     protected float _direction = 1; // 몬스터가 바라보는 방향
 
-    protected bool _canKnockback; // true =  넉백 가능한 몬스터, false = 넉백 불가능한 몬스터
-    private float _knockBackTimer = 0;
     public Action OnKnockback;
 
-    public bool IsKnockBack { get; set; } = false;
-    public bool IsStunned { get; set; } = false;
+    public bool IsGuarded { get; set; } = false;
 
     public Action OnPointTempo;
 
@@ -33,7 +30,6 @@ public abstract class Monster : MonoBehaviour
     public MonsterStat Stat { get { return _stat; } }
     public LayerMask PlayerLayer { get => _playerLayer; }
     public LayerMask WallLayer { get => _wallLayer; }
-    public bool CanKnockback { get => _canKnockback; }
     public float Direction
     {
         get => _direction;
@@ -76,8 +72,15 @@ public abstract class Monster : MonoBehaviour
 
     public void TakeDamage(float value, bool isPointTempo = false)
     {
-        _stat.Health -= value * ((100 - _stat.Defense) / 100);
-
+        if (IsGuarded)
+        {
+            _stat.Health -= value * ((100 - _stat.Defense) / 100);
+        }
+        else
+        {
+            _stat.Health -= value;
+        }
+        
         if (isPointTempo)
         {
             OnPointTempo?.Invoke();
@@ -86,45 +89,6 @@ public abstract class Monster : MonoBehaviour
         UpdateHealth();
     }
 
-    // 넉백 위치에 사용하는 이벤트 함수
-    public void KnockBack(Vector2 hitPoint, Vector2 endPoint)
-    {
-        Vector2 distance = (Vector2)transform.position - hitPoint;
-        Vector2 ep = endPoint + distance;
-
-        _knockBackTimer = 0;
-        IsKnockBack = true;
-
-
-        transform.DOMove(ep, 0.2f).OnComplete(() =>
-        {
-           IsKnockBack = false;
-
-            if (!IsStunned)
-            {
-                StartCoroutine(Stun());
-
-            }
-
-        });
-
-
-    }
-
-    // 넉백 후 잠시 스턴 
-    private IEnumerator Stun()
-    {
-        IsStunned = true;
-        while (_knockBackTimer < 0.5f)
-        {
-            _knockBackTimer += Time.deltaTime;
-
-            yield return null;
-        }
-        IsStunned = false;
-
-        OnKnockback?.Invoke();
-    }
 
     #region View
     public void UpdateHealth()

@@ -73,9 +73,9 @@ public class Define
     }
 
     #region 엘리트 몬스터
-    public enum EliteStageState
+    public enum ElitePhaseState
     {
-        PHASE1, PHASECHANGE, PHASE2, FINISH, NONE
+        START, PHASE1, PHASECHANGE, PHASE2, FINISH, NONE
     }
     public enum EliteMonsterState
     {

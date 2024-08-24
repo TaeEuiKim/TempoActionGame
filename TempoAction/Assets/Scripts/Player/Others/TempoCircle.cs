@@ -40,6 +40,7 @@ public class TempoCircle : MonoBehaviour
     public float ShrinkDuration { get => _shrinkDuration; set => _shrinkDuration = value; }
     public Define.CircleState CircleState { get => _circleState; }
 
+    public bool IsAvailable { get; set; } = true;
 
     void Update()
     {
@@ -55,7 +56,9 @@ public class TempoCircle : MonoBehaviour
                 _checkCircle.SetActive(false);
 
                 SpawnFx(_circleState);
-                Invoke("Finish", 0.5f);              
+
+                Finish();
+                //Invoke("Finish", 0.5f);              
             }
             else
             {
@@ -64,7 +67,7 @@ public class TempoCircle : MonoBehaviour
                 float scale = Mathf.Lerp(1.0f, 0, timer / _shrinkDuration);
                 _checkCircle.transform.localScale = new Vector3(scale, scale, 1.0f);
 
-                if (_player.GetComponent<Player>().CurrentState != Define.PlayerState.STUN) // 스턴 상태면 입력 안되도록
+                if (_player.GetComponent<Player>().CurrentState != Define.PlayerState.STUN && IsAvailable) // 스턴 상태면 입력 안되도록
                 {
                     if (Input.GetKeyDown(KeyCode.F))
                     {
@@ -72,7 +75,8 @@ public class TempoCircle : MonoBehaviour
 
                         isShrinking = false;
 
-                        Invoke("Finish", 0.5f);
+                        Finish();
+                        //Invoke("Finish", 0.5f);
                     }
 
                 }
@@ -100,6 +104,8 @@ public class TempoCircle : MonoBehaviour
         _circleState = Define.CircleState.NONE;
 
         _player = player;
+
+        IsAvailable = true;
     }
 
     // 타이밍 확인 함수
@@ -134,19 +140,19 @@ public class TempoCircle : MonoBehaviour
         switch (state)
         {
             case Define.CircleState.PERFECT:
-                temp = Instantiate(_perfectPrefab, new Vector3(_player.position.x, _player.position.y + 1, _player.position.y - 0.1f), Quaternion.identity, _player);
+                temp = Instantiate(_perfectPrefab, _player.position + new Vector3(0, 1, 0), Quaternion.identity);
                 OnSuccess?.Invoke();
                 break;
             case Define.CircleState.GOOD:
-                temp = Instantiate(_goodPrefab, new Vector3(_player.position.x, _player.position.y + 1, _player.position.y - 0.1f), Quaternion.identity, _player);
+                temp = Instantiate(_goodPrefab, _player.position + new Vector3(0, 1, 0), Quaternion.identity);
                 OnSuccess?.Invoke();
                 break;
             case Define.CircleState.BAD:
-                temp = Instantiate(_badPrefab, new Vector3(_player.position.x, _player.position.y + 1, _player.position.y - 0.1f), Quaternion.identity, _player);
+                temp = Instantiate(_badPrefab, _player.position + new Vector3(0, 1, 0), Quaternion.identity);
                 OnFailure?.Invoke();
                 break;
             case Define.CircleState.MISS:
-                temp = Instantiate(_missPrefab, new Vector3(_player.position.x, _player.position.y + 1, _player.position.y - 0.1f), Quaternion.identity, _player);
+                temp = Instantiate(_missPrefab, _player.position + new Vector3(0, 1, 0), Quaternion.identity);
                 OnFailure?.Invoke();
                 break;
         }

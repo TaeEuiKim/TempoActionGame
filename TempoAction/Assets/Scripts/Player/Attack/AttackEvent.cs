@@ -50,22 +50,28 @@ public class AttackEvent : MonoBehaviour
                 m.TakeDamage(_player.GetTotalDamage());
             }
 
-         /*   if (m.CanKnockback)
-            {
-                KnockBack(m);
-            }*/
-
             // 히트 파티클 생성
             GameObject hitParticle = null;
-            if (_player.Attack.CurrentAttackTempoData.type == Define.TempoType.POINT)
+            if (m.IsGuarded)
             {
+                float direction = transform.position.x - m.transform.position.x;
 
-                hitParticle = ObjectPool.Instance.Spawn("P_point_attack", 1);
+                direction = direction > 0 ? 1 : -1;
+
+                // 가드 충돌 이펙트 생성
+                hitParticle = ObjectPool.Instance.Spawn("FX_EliteHitGuard", 1);
+                hitParticle.transform.localScale = new Vector3(direction, 1,1);
             }
             else
             {
-
-                hitParticle = ObjectPool.Instance.Spawn("P_main_attack", 1);
+                if (_player.Attack.CurrentAttackTempoData.type == Define.TempoType.POINT)
+                {
+                    hitParticle = ObjectPool.Instance.Spawn("P_point_attack", 1);
+                }
+                else
+                {
+                    hitParticle = ObjectPool.Instance.Spawn("P_main_attack", 1);
+                }
             }
 
             Vector3 hitPos = monster.ClosestPoint(_player.HitPoint.position);
@@ -145,7 +151,7 @@ public class AttackEvent : MonoBehaviour
         // 레이캐스트 실행
         if (Physics.Raycast(rayOrigin, rayDirection, out hit, _player.Attack.CurrentAttackTempoData.distance, _player.MonsterLayer))
         {
-            float closestMonsterX = hit.transform.position.x + (-rayDirection.x * 0.75f);
+            float closestMonsterX = hit.point.x + (-rayDirection.x * 0.2f);
             transform.parent.DOMoveX(closestMonsterX, duration);
         }
 

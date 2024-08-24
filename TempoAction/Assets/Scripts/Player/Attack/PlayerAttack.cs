@@ -129,7 +129,7 @@ public class PlayerAttack
     #region 메인 템포
     public void AttackMainTempo() // 공격 실행
     {
-        if (_player.Attack.PointTempoCircle != null) return;
+        if (PointTempoCircle != null) return;
 
         if (_player.Ani.GetBool("isGrounded"))
         {
@@ -163,7 +163,7 @@ public class PlayerAttack
     // 포인트 템포 실패
     private void FailureTempoCircle()
     {
-        _player.Attack.PointTempoCircle = null;
+        PointTempoCircle = null;
         ChangeCurrentAttackState(Define.AttackState.FINISH);
     }
 
@@ -178,20 +178,20 @@ public class PlayerAttack
     {
         SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_PointTempo_Ready", _player.transform);
 
-        if (_player.Attack.PointTempoCircle == null)
+        if (PointTempoCircle == null)
         {
             GameObject tempoCircle = ObjectPool.Instance.Spawn("TempoCircle", 0, parent);
             tempoCircle.transform.position = new Vector3(position.x, position.y, position.z);
 
-            _player.Attack.PointTempoCircle = tempoCircle.GetComponent<TempoCircle>();
-            _player.Attack.PointTempoCircle.Init(_player.transform);           // 템포 원 초기화
+            PointTempoCircle = tempoCircle.GetComponent<TempoCircle>();
+            PointTempoCircle.Init(_player.transform);           // 템포 원 초기화
 
-            _player.Attack.PointTempoCircle.ShrinkDuration = duration;        // 탬포 원 시간 값 추가
+            PointTempoCircle.ShrinkDuration = duration;        // 탬포 원 시간 값 추가
 
             // 템포 이벤트 추가
-            _player.Attack.PointTempoCircle.OnSuccess += SuccessTempoCircle;
-            _player.Attack.PointTempoCircle.OnFailure += FailureTempoCircle;
-            _player.Attack.PointTempoCircle.OnFinish += FinishTempoCircle;
+            PointTempoCircle.OnSuccess += SuccessTempoCircle;
+            PointTempoCircle.OnFailure += FailureTempoCircle;
+            PointTempoCircle.OnFinish += FinishTempoCircle;
         }
 
     }
