@@ -67,13 +67,19 @@ public class Elite_SAttack : Elite_Skill
             return;
         }
 
-        bool isHit = Physics.CheckBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
+        Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 
-        if (isHit)
+        foreach (Collider player in hitPlayer)
         {
             Debug.Log("일반 공격2 성공");
             float damage = _monster.Stat.Damage * (_info.damage / 100);
             _monster.Player.GetComponent<Player>().TakeDamage(damage);
+
+            // 히트 파티클 생성
+            GameObject hitParticle = ObjectPool.Instance.Spawn("FX_EliteAttack", 1); ;
+
+            Vector3 hitPos = player.ClosestPoint(_monster.HitPoint.position);
+            hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z - 0.1f);
         }
 
         _monster.FinishSkill();

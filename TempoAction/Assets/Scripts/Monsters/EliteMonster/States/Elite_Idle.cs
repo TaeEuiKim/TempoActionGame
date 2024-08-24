@@ -17,8 +17,8 @@ public class Elite_Idle : Elite_State
     }
     public override void Stay()
     {
-        Follow();
 
+        Follow();
         if (idleTime < _monster.IdleDuration)
         {
             idleTime += Time.deltaTime;
@@ -71,7 +71,7 @@ public class Elite_Idle : Elite_State
 
         if (Mathf.Abs(direction) <= _monster.Stat.AttackRange)
         {
-
+            _monster.Rb.velocity = new Vector2(0, _monster.Rb.velocity.y);
         }
         else
         {

@@ -134,19 +134,19 @@ public class TempoCircle : MonoBehaviour
         switch (state)
         {
             case Define.CircleState.PERFECT:
-                temp = Instantiate(_perfectPrefab, new Vector3(_player.position.x, _player.position.y + 1, -0.1f), Quaternion.identity, _player);
+                temp = Instantiate(_perfectPrefab, new Vector3(_player.position.x, _player.position.y + 1, _player.position.y - 0.1f), Quaternion.identity, _player);
                 OnSuccess?.Invoke();
                 break;
             case Define.CircleState.GOOD:
-                temp = Instantiate(_goodPrefab, new Vector3(_player.position.x, _player.position.y + 1, -0.1f), Quaternion.identity, _player);
+                temp = Instantiate(_goodPrefab, new Vector3(_player.position.x, _player.position.y + 1, _player.position.y - 0.1f), Quaternion.identity, _player);
                 OnSuccess?.Invoke();
                 break;
             case Define.CircleState.BAD:
-                temp = Instantiate(_badPrefab, new Vector3(_player.position.x, _player.position.y + 1, -0.1f), Quaternion.identity, _player);
+                temp = Instantiate(_badPrefab, new Vector3(_player.position.x, _player.position.y + 1, _player.position.y - 0.1f), Quaternion.identity, _player);
                 OnFailure?.Invoke();
                 break;
             case Define.CircleState.MISS:
-                temp = Instantiate(_missPrefab, new Vector3(_player.position.x, _player.position.y + 1, -0.1f), Quaternion.identity, _player);
+                temp = Instantiate(_missPrefab, new Vector3(_player.position.x, _player.position.y + 1, _player.position.y - 0.1f), Quaternion.identity, _player);
                 OnFailure?.Invoke();
                 break;
         }

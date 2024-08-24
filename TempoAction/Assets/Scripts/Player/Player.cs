@@ -177,7 +177,6 @@ public class Player : MonoBehaviour
     }
     public void UpdateStamina()
     {
-        print(_stat.Stamina);
         _view.UpdateStaminaBar(_stat.Stamina / _stat.MaxStamina);
     }
     public void UpdateUpgradeCount()

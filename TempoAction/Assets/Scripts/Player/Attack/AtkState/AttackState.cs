@@ -27,7 +27,8 @@ public class AttackState : PlayerAttackState
         _player.Attack.AttackIndex++;
         if (_player.Attack.AttackIndex == 4)
         {
-            _player.Attack.CreateTempoCircle(1, _player.transform, new Vector3(_player.transform.position.x, _player.transform.position.y + 1, -0.1f));
+            _player.Attack.CreateTempoCircle(1, _player.transform,
+                new Vector3(_player.transform.position.x, _player.transform.position.y + 1, _player.transform.position.z - 1f));
         }
     }
 }

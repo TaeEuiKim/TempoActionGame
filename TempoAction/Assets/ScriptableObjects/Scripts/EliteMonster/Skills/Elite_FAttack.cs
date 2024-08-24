@@ -40,7 +40,8 @@ public class Elite_FAttack : Elite_Skill
     public override void Enter()
     {
         Debug.Log("일반 공격1");
-        _monster.Player.GetComponent<Player>().Attack.CreateTempoCircle(_parringTime, _monster.transform, new Vector3(_monster.transform.position.x + _monster.Direction, _monster.transform.position.y + 1, -0.1f)); // 포인트 템포 실행
+        _monster.Player.GetComponent<Player>().Attack.CreateTempoCircle(_parringTime, _monster.transform,
+            new Vector3(_monster.Player.transform.position.x, _monster.Player.transform.position.y + 1, _monster.Player.transform.position.z - 1f)); // 포인트 템포 실행
         _tempoCircle = _monster.Player.GetComponent<Player>().Attack.PointTempoCircle;
     }
     public override void Stay()
@@ -72,15 +73,21 @@ public class Elite_FAttack : Elite_Skill
             _monster.FinishSkill();
             return;
         }
+        Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 
-        bool isHit = Physics.CheckBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
-
-        if (isHit)
+        foreach (Collider player in hitPlayer)
         {
             Debug.Log("일반 공격1 성공");
             float damage = _monster.Stat.Damage * (_info.damage / 100);
             _monster.Player.GetComponent<Player>().TakeDamage(damage);
+
+            // 히트 파티클 생성
+            GameObject hitParticle = ObjectPool.Instance.Spawn("FX_EliteAttack", 1); ;
+
+            Vector3 hitPos = player.ClosestPoint(_monster.HitPoint.position);
+            hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z - 0.1f);
         }
+    
         _monster.FinishSkill();
     }
 }

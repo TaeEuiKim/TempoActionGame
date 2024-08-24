@@ -41,16 +41,31 @@ public class Elite_Rush : Elite_Skill
 
         _monster.Direction = _monster.Player.position.x - _monster.transform.position.x; // 플레이어 바라보기
 
+        GameObject rushEffect;
+        if (_monster.Direction == 1)
+        {
+            rushEffect = ObjectPool.Instance.Spawn("FX_EliteRush_R", 0, _monster.transform);
+        }
+        else
+        {
+            rushEffect = ObjectPool.Instance.Spawn("FX_EliteRush_L", 0, _monster.transform);
+        }
+
         // 돌진
         _rushTween = _monster.transform.DOMoveX(_monster.transform.position.x + _rushDistance * _monster.Direction, _rushDuration).SetEase(customCurve).OnUpdate(() =>
         {
             if (CheckHit()) // 플레이어와 충돌 시
             {
                 _monster.FinishSkill();
+                
+                ObjectPool.Instance.Remove(rushEffect);
+                GameObject rushAttackEffect = ObjectPool.Instance.Spawn("FX_EliteRushAttack", 1);
+                rushAttackEffect.transform.position = _monster.transform.position + new Vector3(_monster.Direction * 0.5f, 0, -0.1f);
+
                 _rushTween.Kill();
             }
 
-        }).OnComplete(() => { _monster.FinishSkill();  }); // 이동이 끝난 후
+        }).OnComplete(() => { ObjectPool.Instance.Remove(rushEffect); _monster.FinishSkill();  }); // 이동이 끝난 후
 
     }
     public override void Stay()

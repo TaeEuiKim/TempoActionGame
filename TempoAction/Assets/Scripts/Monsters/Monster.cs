@@ -26,6 +26,7 @@ public abstract class Monster : MonoBehaviour
 
     public Action OnPointTempo;
 
+    [SerializeField] protected Transform _monsterModel;
 
     public Rigidbody Rb { get { return _rb; } }
     public Transform Player { get => _player; }
@@ -55,6 +56,8 @@ public abstract class Monster : MonoBehaviour
             _direction = value;
         }
     }
+
+    public Transform MonsterModel { get => _monsterModel; }
 
     private void Awake()
     {

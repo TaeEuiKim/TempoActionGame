@@ -69,7 +69,7 @@ public class AttackEvent : MonoBehaviour
             }
 
             Vector3 hitPos = monster.ClosestPoint(_player.HitPoint.position);
-            hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, -0.1f);
+            hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z- 0.1f);
 
             _player.Attack.HitMonsterList.Add(monster.GetComponent<Monster>());
         }
