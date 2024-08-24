@@ -67,7 +67,15 @@ public abstract class Monster : MonoBehaviour
     // 반전 함수
     public void Flip(float value) 
     {
-        transform.GetChild(0).localScale = new Vector3(value, 1, 1);
+        Vector3 tempScale = transform.GetChild(0).localScale;
+
+        if (value * tempScale.x < 0)
+        {
+            tempScale.x *= -1;
+        }
+
+        transform.GetChild(0).localScale = tempScale;
+
     }
 
     public void TakeDamage(float value, bool isPointTempo = false)

@@ -9,16 +9,30 @@ public class PlayerController
     private bool _isLanded;
     private bool _isGrounded;
     private bool _isDashing;
-    private bool _facingRight;
 
-    private float _moveInput;
+
     private float _dashTimer;
-    
-    public float Direction 
+    protected float _direction;
+    public float Direction
     {
-        get
+        get => _direction;
+        set
         {
-            return _facingRight ? 1 : -1; 
+            if (value > 0)
+            {
+                value = 1;
+            }
+            else if (value < 0)
+            {
+                value = -1;
+            }
+
+            if (_direction != value)
+            {
+                Flip(value);
+            }
+
+            _direction = value;
         }
     }
 
@@ -32,9 +46,8 @@ public class PlayerController
         _isLanded = false;
         _isGrounded = true;
         _isDashing = false;
-        _facingRight = true;
+        _direction = 1;
 
-        _moveInput = 0f;
         _dashTimer = 0f;
 
         _dashTimer = _player.Stat.DashDelay;
@@ -90,32 +103,23 @@ public class PlayerController
 
     private void Move()
     {
-        _moveInput = 0;
+        _direction = 0;
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            _moveInput = -1f;
+            Direction = -1f;
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            _moveInput = 1f;
+            Direction = 1f;
         }
 
-        Vector2 tempVelocity = new Vector2(_moveInput * _player.Stat.SprintSpeed, _player.Rb.velocity.y);
+        Vector2 tempVelocity = new Vector2(_direction * _player.Stat.SprintSpeed, _player.Rb.velocity.y);
 
         _player.Ani.SetFloat("Speed", Mathf.Abs(tempVelocity.x));
 
 
         _player.Rb.velocity = tempVelocity;
-
-        if (_moveInput > 0 && !_facingRight)
-        {
-            Flip();
-        }
-        else if (_moveInput < 0 && _facingRight)
-        {
-            Flip();
-        }
     }
 
 
@@ -167,11 +171,16 @@ public class PlayerController
         _dashTimer = 0;
     }
 
-    private void Flip()
+    private void Flip(float value)
     {
-        _facingRight = !_facingRight;
-        float scaleX = _facingRight ? 1 : -1;
-        _player.PlayerModel.localScale = new Vector3(scaleX, 1, 1);
+        Vector3 tempScale = _player.PlayerModel.localScale;
+
+        if (value * tempScale.x < 0)
+        {
+            tempScale.x *= -1;
+        }
+
+        _player.PlayerModel.localScale = tempScale;
     }
 
 }
