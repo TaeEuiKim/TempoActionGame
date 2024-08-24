@@ -8,11 +8,9 @@ public class Elite_Laser : Elite_Skill
     private float _coolTime;
     private float _totalTime;
 
-    private LineRenderer _lineRenderer; // Line Renderer 컴포넌트
-
     [SerializeField] private float _laserLength = 50.0f; // 레이저의 최대 길이
     [SerializeField] private float _laserWidth; // 레이저의 시작 지점
-    private float _laserAngle; // 레이저의 각도 (0도는 오른쪽)
+    //private float _laserAngle; // 레이저의 각도 (0도는 오른쪽)
     private GameObject _laser;
     public float LaserLength { get => _laserLength; }
 
@@ -20,7 +18,6 @@ public class Elite_Laser : Elite_Skill
     {
         base.Init(monster);
 
-        _lineRenderer = _monster.StartLaserPoint.GetComponent<LineRenderer>();
         _coolTime = 0;
         _totalTime = 0;
     }
@@ -45,20 +42,13 @@ public class Elite_Laser : Elite_Skill
 
     public override void Enter()
     {
+       
+
         Debug.Log("레이저");
-        _lineRenderer.positionCount = 2;
-        _lineRenderer.startWidth = _laserWidth;
-        _lineRenderer.endWidth = _laserWidth;
 
         Vector2 direction = _monster.Player.position - _monster.transform.position;
         _monster.Direction = direction.x;
-        _laserAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-        _laser = ObjectPool.Instance.Spawn("Laser");
-        _laser.transform.position = _monster.StartLaserPoint.position;
-        _laser.transform.rotation = Quaternion.Euler(0, 0, _laserAngle);
-
-        _laser.GetComponent<Laser>().TotalDamage = _monster.Stat.Damage * (_info.damage / 100);
+        //_laserAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
         CoroutineRunner.Instance.StartCoroutine(StartLaser());
     }
@@ -77,15 +67,27 @@ public class Elite_Laser : Elite_Skill
 
     public override void Exit()
     {
-
-
-        _lineRenderer.positionCount = 0;
         _totalTime = 0;
         _coolTime = 0;
     }
 
     private IEnumerator StartLaser()
     {
+        _monster.Ani.SetBool("Laser", true);
+
+        yield return new WaitForSeconds(0.35f);
+
+        _laser = ObjectPool.Instance.Spawn("Laser");
+        _laser.transform.position = _monster.StartLaserPoint.position;
+
+        Vector3 tempVec = _laser.transform.localScale;
+        tempVec.x *= _monster.Direction;
+        _laser.transform.localScale = tempVec;
+
+        //_laser.transform.rotation = Quaternion.Euler(0, 0, _laserAngle);
+
+        _laser.GetComponent<Laser>().TotalDamage = _monster.Stat.Damage * (_info.damage / 100);
+
         yield return new WaitForSeconds(1f);
         _laser.GetComponent<Collider>().enabled = true;
 
@@ -93,6 +95,7 @@ public class Elite_Laser : Elite_Skill
 
         _laser.GetComponent<Collider>().enabled = false;
         ObjectPool.Instance.Remove(_laser);
+        _monster.Ani.SetBool("Laser", false);
     }
 
     /* // 레이저 발사 함수

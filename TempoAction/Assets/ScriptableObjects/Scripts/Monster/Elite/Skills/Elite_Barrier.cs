@@ -38,6 +38,8 @@ public class Elite_Barrier : Elite_Skill
 
     public override void Enter()
     {
+        _monster.Ani.SetBool("Guard", true);
+
         Debug.Log("가드");
         _lastHp = _monster.Stat.Health;
         _monster.Stat.Defense = _defense;
@@ -46,7 +48,7 @@ public class Elite_Barrier : Elite_Skill
         _guardEffect = ObjectPool.Instance.Spawn("FX_EliteGuard");
         _guardEffect.transform.position = _monster.transform.position;
 
-        _monster.GetComponent<BoxCollider>().size = new Vector3(2, 1, 1);
+        _monster.GetComponent<SphereCollider>().enabled = true;
 
         _monster.IsGuarded = true;
     }
@@ -71,7 +73,9 @@ public class Elite_Barrier : Elite_Skill
     }
     public override void Exit()
     {
-        _monster.GetComponent<BoxCollider>().size = new Vector3(1, 1, 1);
+        _monster.Ani.SetBool("Guard", false);
+
+        _monster.GetComponent<SphereCollider>().enabled = false;
 
         // 가드 이펙트 제거
         ObjectPool.Instance.Remove(_guardEffect);

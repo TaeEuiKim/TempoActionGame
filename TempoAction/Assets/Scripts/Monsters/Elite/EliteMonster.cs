@@ -30,6 +30,9 @@ public class EliteMonster : Monster
     [Header("µ¹Áø")]
     [SerializeField] private Vector3 _rushColliderSize;
 
+    [Header("¸Ö¸® Ä¡±â")]
+    [SerializeField] private Transform _startPunchPoint;
+    [SerializeField] private Vector3 _punchColliderSize;
     [Header("³«·Ú")]
     [SerializeField] private CreatePlatform _createPlatform;
     #endregion;
@@ -45,12 +48,13 @@ public class EliteMonster : Monster
     public Transform StartEnergyBallPoint { get => _startEnergyBallPoint; }
     public Transform StartLaserPoint { get => _startLaserPoint; }
     public Vector3 RushColliderSize { get => _rushColliderSize; }
+    public Transform StartPunchPoint { get => _startPunchPoint; }
+    public Vector3 PunchColliderSize { get => _punchColliderSize; }
     public CreatePlatform CreatePlatform { get => _createPlatform; }
     #endregion
 
     protected override void Initialize()
     {
-        _rb = GetComponent<Rigidbody>();
         _player = FindObjectOfType<Player>().transform;
 
         _stateStroage.Add(Define.EliteMonsterState.IDLE, new Elite_Idle(this));
@@ -72,7 +76,7 @@ public class EliteMonster : Monster
 
         ChangeCurrentState(Define.EliteMonsterState.IDLE);
 
-
+       
     }
 
     public void Stay()
@@ -161,6 +165,9 @@ public class EliteMonster : Monster
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(_hitPoint.position, _colliderSize);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(_startPunchPoint.position, _punchColliderSize);
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireCube(transform.position, _rushColliderSize);

@@ -27,6 +27,8 @@ public class Elite_SuperPunch : Elite_Skill
 
     public override bool Check()
     {
+        if (_monster.CurrentSkill == this) return false;
+
         if (_coolTime >= _info.coolTime)
         {
             if (Vector2.Distance(_monster.Player.position, _monster.transform.position) <= _info.range)
@@ -44,6 +46,9 @@ public class Elite_SuperPunch : Elite_Skill
 
     public override void Enter()
     {
+        Vector2 direction = _monster.Player.position - _monster.transform.position;
+        _monster.Direction = direction.x;
+
         Debug.Log("멀리 치기");
 
         // 멀리 치기 이펙트 생성
@@ -58,6 +63,8 @@ public class Elite_SuperPunch : Elite_Skill
     {
         if (_totalTime >= _info.totalTime)
         {
+            if (_monster.Ani.GetBool("SuperPunch")) return;
+
             Attack();
         }
         else
@@ -83,6 +90,8 @@ public class Elite_SuperPunch : Elite_Skill
     }
     public override void Exit()
     {
+        _monster.Ani.SetBool("SuperPunch", false);
+
         // 멀리 치기 이펙트 제거
         ObjectPool.Instance.Remove(_punchReadyEffect);
 
@@ -100,20 +109,28 @@ public class Elite_SuperPunch : Elite_Skill
             _monster.FinishSkill();
             return;
         }
+   
+        CoroutineRunner.Instance.StartCoroutine(FinishPunch());   
+    }
+
+    private IEnumerator FinishPunch()
+    {
+        _monster.Ani.SetBool("SuperPunch", true);
+
+        yield return new WaitForSeconds(0.3f);
 
         GameObject punchEffect;
 
         if (_monster.Direction == 1)
         {
-            punchEffect = ObjectPool.Instance.Spawn("FX_EliteSuperPunch_R", 1);     
+            punchEffect = ObjectPool.Instance.Spawn("FX_EliteSuperPunch_R", 1);
         }
         else
         {
             punchEffect = ObjectPool.Instance.Spawn("FX_EliteSuperPunch_L", 1);
         }
-        punchEffect.transform.position = _monster.HitPoint.position;
 
-        bool isHit = Physics.CheckBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
+        bool isHit = Physics.CheckBox(_monster.StartPunchPoint.position, _monster.PunchColliderSize / 2, _monster.StartPunchPoint.rotation, _monster.PlayerLayer);
 
         if (isHit)
         {
@@ -122,7 +139,9 @@ public class Elite_SuperPunch : Elite_Skill
             _monster.Player.GetComponent<Player>().TakeDamage(damage);
             _monster.Player.GetComponent<Player>().Knockback(Vector2.right * _monster.Direction * _knockBackPower, _knockBackDuration);
         }
-
+       
+        punchEffect.transform.position = _monster.StartPunchPoint.position;
+        yield return new WaitForSeconds(0.2f);
         _monster.FinishSkill();
     }
 }

@@ -13,6 +13,7 @@ public class PlayerController
 
     private float _dashTimer;
     protected float _direction;
+    protected float _dashDirection;
     public float Direction
     {
         get => _direction;
@@ -46,8 +47,8 @@ public class PlayerController
         _isLanded = false;
         _isGrounded = true;
         _isDashing = false;
-        _direction = 1;
 
+        _dashDirection = 1;
         _dashTimer = 0f;
 
         _dashTimer = _player.Stat.DashDelay;
@@ -108,10 +109,12 @@ public class PlayerController
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             Direction = -1f;
+            _dashDirection = -1f;
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
             Direction = 1f;
+            _dashDirection = 1f;
         }
 
         Vector2 tempVelocity = new Vector2(_direction * _player.Stat.SprintSpeed, _player.Rb.velocity.y);
@@ -151,13 +154,13 @@ public class PlayerController
         Vector3 dashPosition = Vector3.zero;
 
         RaycastHit hit;
-        if (Physics.Raycast(_player.transform.position, Vector3.right * Direction, out hit, _player.Stat.DashDistance, _player.WallLayer)) // 벽이 있다면 벽과의 충돌 위치 바로 앞에서 멈추게 설정
+        if (Physics.Raycast(_player.transform.position, Vector3.right * _dashDirection, out hit, _player.Stat.DashDistance, _player.WallLayer)) // 벽이 있다면 벽과의 충돌 위치 바로 앞에서 멈추게 설정
         {            
-            dashPosition = hit.point - (Vector3.right * Direction) * 0f;  // 곱하는 수 만큼 벽에서 떨어짐
+            dashPosition = hit.point - (Vector3.right * _dashDirection) * 0f;  // 곱하는 수 만큼 벽에서 떨어짐
         }
         else  // 벽이 없으면 대쉬 거리만큼 앞으로 이동
         {      
-            dashPosition = _player.transform.position + (Vector3.right * Direction) * _player.Stat.DashDistance;
+            dashPosition = _player.transform.position + (Vector3.right * _dashDirection) * _player.Stat.DashDistance;
         }
 
         _player.Rb.DOMove(dashPosition, _player.Stat.DashDuration).SetEase(Ease.OutQuad).OnComplete(() =>

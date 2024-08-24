@@ -6,7 +6,7 @@ using UnityEngine;
 public class Elilte_Launch : Elite_Skill
 {
     private float _coolTime;
-    private float _totalTime;
+    
 
     [SerializeField] private float _energyBallSpeed;
     private GameObject _energyBall;
@@ -16,7 +16,6 @@ public class Elilte_Launch : Elite_Skill
         base.Init(monster);
 
         _coolTime = 0;
-        _totalTime = 0;
     }
 
     public override bool Check()
@@ -41,24 +40,13 @@ public class Elilte_Launch : Elite_Skill
         Debug.Log("투사체");
         _monster.Direction = _monster.Player.transform.position.x - _monster.transform.position.x; // 플레이어 바라보기
 
-        _energyBall = ObjectPool.Instance.Spawn("ElectricBall");
-        _energyBall.transform.position = _monster.StartEnergyBallPoint.position;
+       
 
-        _energyBall.GetComponent<ElectricBall>().TotalDamage = _monster.Stat.Damage * (_info.damage / 100);
-
+        CoroutineRunner.Instance.StartCoroutine(ExcuteLaunch());
     }
     public override void Stay()
     {
-        _energyBall.transform.Translate(new Vector2(_monster.Direction, 0) * _energyBallSpeed * Time.deltaTime);
-
-        if (_totalTime >= _info.totalTime)
-        {
-            _monster.FinishSkill();
-        }
-        else
-        {
-            _totalTime += Time.deltaTime;
-        }
+       
 
     }
     public override void Exit()
@@ -71,9 +59,33 @@ public class Elilte_Launch : Elite_Skill
             ObjectPool.Instance.Remove(_energyBall);
         }
         
-        _totalTime = 0;
         _coolTime = 0;
     }
 
-  
+    private IEnumerator ExcuteLaunch()
+    {
+        _monster.Ani.SetBool("Launch", true);
+
+        yield return new WaitForSeconds(0.3f);
+
+        _energyBall = ObjectPool.Instance.Spawn("ElectricBall");
+        _energyBall.transform.SetParent(_monster.StartEnergyBallPoint);
+        _energyBall.transform.localPosition = Vector3.zero;
+        _energyBall.GetComponent<ElectricBall>().TotalDamage = _monster.Stat.Damage * (_info.damage / 100);
+
+        yield return new WaitForSeconds(0.5f);
+        _energyBall.transform.SetParent(null);
+
+        float totalTime = 0;
+        while (totalTime < _info.totalTime)
+        {
+            _energyBall.transform.Translate(new Vector2(_monster.Direction, 0) * _energyBallSpeed * Time.deltaTime);
+            totalTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        _monster.Ani.SetBool("Launch", false);
+        _monster.FinishSkill();
+    }
 }

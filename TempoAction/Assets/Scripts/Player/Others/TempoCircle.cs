@@ -88,6 +88,8 @@ public class TempoCircle : MonoBehaviour
     public void Init(Transform player = null)
     {
         timer = 0.0f;
+        _shrinkDuration = 1;
+
 
         _checkCircle.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         _checkCircle.SetActive(true);

@@ -8,6 +8,7 @@ public abstract class Monster : MonoBehaviour
 {
     private MonsterView _view;
 
+    protected Animator _ani;
     protected Rigidbody _rb;
     protected Transform _player;
     [SerializeField] protected MonsterStat _stat;
@@ -25,6 +26,7 @@ public abstract class Monster : MonoBehaviour
 
     [SerializeField] protected Transform _monsterModel;
 
+    public Animator Ani { get { return _ani; } }
     public Rigidbody Rb { get { return _rb; } }
     public Transform Player { get => _player; }
     public MonsterStat Stat { get { return _stat; } }
@@ -57,6 +59,9 @@ public abstract class Monster : MonoBehaviour
 
     private void Awake()
     {
+        _rb = GetComponent<Rigidbody>();
+        _ani = GetComponentInChildren<Animator>();
+
         _view = GetComponent<MonsterView>();
 
         Initialize();
