@@ -18038,8 +18038,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3723d3ea085589478206f88db5b8190, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 3
-  _maxHp: 200
+  _maxHealth: 0
+  _health: 0
+  _defense: 0
+  _walkSpeed: 0
+  _sprintSpeed: 0
   _damage: 0
   _jumpForce: 5
   _dashDelay: 3
@@ -45286,7 +45289,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38f24a285f1b5364480d2d018c98f56a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _circleImage: {fileID: 8616771601754084267}
+  _checkCircle: {fileID: 0}
+  _perfectCircle: {fileID: 0}
+  _goodCircle: {fileID: 0}
   _shrinkDuration: 1
   _perfectTime: {x: 0, y: 0.1}
   _goodTime: {x: 0.1, y: 0.3}
@@ -45294,6 +45299,7 @@ MonoBehaviour:
   _goodPrefab: {fileID: 714411703846849240, guid: ecc14bee3c59afd49b603f388ad6cb51, type: 3}
   _badPrefab: {fileID: 8060792441415648858, guid: f9498eca1e63f5a478766d54fb525025, type: 3}
   _missPrefab: {fileID: 1033109846334818092, guid: 11c314e2195681d40969187f12f2b7e2, type: 3}
+  isShrinking: 1
 --- !u!4 &8285538497775454732
 Transform:
   m_ObjectHideFlags: 0
