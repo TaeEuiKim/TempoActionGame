@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _info:
     skill: 0
-    coolTime: 7
-    totalTime: 3
+    coolTime: 1
+    totalTime: 0
     range: 2
     damage: 50
     priority: 50
-  _parringDistance: 2
+  _startDelay: 2
+  _parringDistance: 3
   _parringTime: 2

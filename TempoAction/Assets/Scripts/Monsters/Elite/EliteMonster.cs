@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,24 +18,15 @@ public class EliteMonster : Monster
 
     [SerializeField] private float _idleDuration;                                        // 잠시 정지 시간
 
-    [Header("일반 공격1")]
+    [Header("공격")]
     [SerializeField] private Transform _hitPoint;
     [SerializeField] private Vector3 _colliderSize;
 
-    [Header("에너지볼")]
-    [SerializeField] private Transform _startEnergyBallPoint; // 레이저의 시작 지점
-
-    [Header("레이저")]
-    [SerializeField] private Transform _startLaserPoint; // 레이저의 시작 지점
-
-    [Header("돌진")]
-    [SerializeField] private Vector3 _rushColliderSize;
-
-    [Header("멀리 치기")]
-    [SerializeField] private Transform _startPunchPoint;
-    [SerializeField] private Vector3 _punchColliderSize;
     [Header("낙뢰")]
     [SerializeField] private CreatePlatform _createPlatform;
+
+    public Action OnHitAction;
+    public Action OnFinishSkill;
     #endregion;
 
     #region 프로퍼티
@@ -45,11 +37,6 @@ public class EliteMonster : Monster
     public float IdleDuration { get => _idleDuration; }
     public Transform HitPoint { get => _hitPoint; }
     public Vector3 ColliderSize { get => _colliderSize; }
-    public Transform StartEnergyBallPoint { get => _startEnergyBallPoint; }
-    public Transform StartLaserPoint { get => _startLaserPoint; }
-    public Vector3 RushColliderSize { get => _rushColliderSize; }
-    public Transform StartPunchPoint { get => _startPunchPoint; }
-    public Vector3 PunchColliderSize { get => _punchColliderSize; }
     public CreatePlatform CreatePlatform { get => _createPlatform; }
     #endregion
 
@@ -107,6 +94,9 @@ public class EliteMonster : Monster
         _currentSkill?.Exit();
 
         _currentSkill = null;
+
+        OnFinishSkill = null;
+        OnHitAction = null;
 
         ChangeCurrentState(Define.EliteMonsterState.IDLE);
     }
@@ -166,10 +156,5 @@ public class EliteMonster : Monster
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(_hitPoint.position, _colliderSize);
 
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(_startPunchPoint.position, _punchColliderSize);
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(transform.position, _rushColliderSize);
     }
 }

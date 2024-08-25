@@ -38,7 +38,7 @@ public class Elite_Rush : Elite_Skill
     public override void Enter()
     {
         Debug.Log("돌진");
-
+        _monster.Ani.SetBool("Dash", true);
         _monster.Direction = _monster.Player.position.x - _monster.transform.position.x; // 플레이어 바라보기
 
         GameObject rushEffect;
@@ -60,7 +60,7 @@ public class Elite_Rush : Elite_Skill
                 
                 ObjectPool.Instance.Remove(rushEffect);
                 GameObject rushAttackEffect = ObjectPool.Instance.Spawn("FX_EliteRushAttack", 1);
-                rushAttackEffect.transform.position = _monster.transform.position + new Vector3(_monster.Direction * 0.5f, 0, -0.1f);
+                rushAttackEffect.transform.position = _monster.transform.position + new Vector3(_monster.Direction, 0, -0.1f);
 
                 _rushTween.Kill();
             }
@@ -74,20 +74,21 @@ public class Elite_Rush : Elite_Skill
 
     public override void Exit()
     {
+        _monster.Ani.SetBool("Dash", false);
         _coolTime = 0;
     }
 
     // 충돌 확인 함수
     private bool CheckHit()
     {
-        if (Physics.CheckBox(_monster.transform.position, _monster.RushColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer))
+        if (Physics.CheckBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer))
         {
             float damage = _monster.Stat.Damage * (_info.damage / 100);
             _monster.Player.GetComponent<Player>().TakeDamage(damage);
 
             return true;
         }
-        else if (Physics.CheckBox(_monster.transform.position, _monster.RushColliderSize / 2, _monster.HitPoint.rotation, _monster.WallLayer))
+        else if (Physics.CheckBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.WallLayer))
         {
             return true;
         }

@@ -5,7 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SAttack", menuName = "ScriptableObjects/EliteMonster/Skill/SAttack", order = 1)]
 public class Elite_SAttack : Elite_Skill
 {
-    private float _totalTime;
 
     private float _lastHealthPoints;                   // 마지막 체력 정보
     [SerializeField] private float _reductionHealthPoints; // 체력 감소량
@@ -18,7 +17,6 @@ public class Elite_SAttack : Elite_Skill
     {
         base.Init(monster);
 
-        _totalTime = 0;
         _lastHealthPoints = _monster.Stat.MaxHealth;
     }
 
@@ -42,17 +40,28 @@ public class Elite_SAttack : Elite_Skill
         Vector3 spawnPoint = _monster.transform.position + new Vector3(_monster.Direction, 1, -1);
         _monster.Player.GetComponent<Player>().Attack.CreateTempoCircle(_parringTime, _monster.transform, spawnPoint); // 포인트 템포 실행
         _tempoCircle = _monster.Player.GetComponent<Player>().Attack.PointTempoCircle;
+
+        _monster.OnHitAction += Attack;
+        _monster.OnFinishSkill += Finish;
     }
     public override void Stay()
     {
-        if (_totalTime >= _info.totalTime)
+        if (_tempoCircle.CircleState != Define.CircleState.NONE)
         {
-            Attack();
+            if (_monster.Ani.GetBool("SAttack")) return;
+
+            if (Parring())
+            {
+                Finish();
+                return;
+            }
+
+            _monster.Ani.SetBool("SAttack", true);
         }
         else
         {
-            _totalTime += Time.deltaTime;
-            float distance = _monster.transform.position.x - _monster.Player.position.x;
+            float distance = _monster.Player.position.x - _monster.transform.position.x;
+
             if (distance * _monster.Direction > 0 && Mathf.Abs(distance) <= _parringDistance)
             {
                 _tempoCircle.IsAvailable = true;
@@ -66,17 +75,19 @@ public class Elite_SAttack : Elite_Skill
     public override void Exit()
     {
         _lastHealthPoints -= _reductionHealthPoints;
-        _totalTime = 0;
     }
-
-    public void Attack()
+    private bool Parring()
     {
         if (_tempoCircle.CircleState == Define.CircleState.GOOD || _tempoCircle.CircleState == Define.CircleState.PERFECT) // 패링 성공 확인
         {
             Debug.Log("패링");
-            _monster.FinishSkill();
-            return;
+            return true;
         }
+
+        return false;
+    }
+    private void Attack()
+    {
 
         Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 
@@ -93,6 +104,11 @@ public class Elite_SAttack : Elite_Skill
             hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z - 0.1f);
         }
 
+    }
+
+    private void Finish()
+    {
+        _monster.Ani.SetBool("SAttack", false);
         _monster.FinishSkill();
     }
 }

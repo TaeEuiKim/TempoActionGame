@@ -17,14 +17,13 @@ public class Elite_Idle : Elite_State
     }
     public override void Stay()
     {
-
-        Follow();
         if (idleTime < _monster.IdleDuration)
         {
             idleTime += Time.deltaTime;
         }
         else
         {
+            Follow();
 
             foreach (Elite_Skill s in _monster.SkillStorage)
             {

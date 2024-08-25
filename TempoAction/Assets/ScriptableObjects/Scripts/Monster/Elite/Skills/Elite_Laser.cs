@@ -78,7 +78,7 @@ public class Elite_Laser : Elite_Skill
         yield return new WaitForSeconds(0.35f);
 
         _laser = ObjectPool.Instance.Spawn("Laser");
-        _laser.transform.position = _monster.StartLaserPoint.position;
+        _laser.transform.position = _monster.HitPoint.position;
 
         Vector3 tempVec = _laser.transform.localScale;
         tempVec.x *= _monster.Direction;

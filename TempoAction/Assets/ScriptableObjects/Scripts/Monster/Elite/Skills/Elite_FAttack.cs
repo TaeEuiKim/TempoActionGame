@@ -6,9 +6,9 @@ using UnityEngine;
 public class Elite_FAttack : Elite_Skill
 {
     private float _coolTime;
-    private float _totalTime;
 
     private TempoCircle _tempoCircle;
+
     [SerializeField] private float _parringDistance;
     [SerializeField] private float _parringTime; // 패링 시간
 
@@ -17,7 +17,6 @@ public class Elite_FAttack : Elite_Skill
         base.Init(monster);
 
         _coolTime = 0;
-        _totalTime = 0;
     }
 
     public override bool Check()
@@ -40,24 +39,37 @@ public class Elite_FAttack : Elite_Skill
 
     public override void Enter()
     {
+        
+
         Debug.Log("일반 공격1");
         Vector3 spawnPoint = _monster.transform.position + new Vector3(_monster.Direction, 1, -1);
         _monster.Player.GetComponent<Player>().Attack.CreateTempoCircle(_parringTime, _monster.transform, spawnPoint); // 포인트 템포 실행
         _tempoCircle = _monster.Player.GetComponent<Player>().Attack.PointTempoCircle;
+
+        _monster.OnHitAction += Attack;
+        _monster.OnFinishSkill += Finish;
     }
     public override void Stay()
     {
-        if (_totalTime >= _info.totalTime)
+
+        if (_tempoCircle.CircleState != Define.CircleState.NONE)
         {
-            Attack();
+            if (_monster.Ani.GetBool("FAttack")) return;
+
+            if (Parring())
+            {
+                Finish();
+                return;
+            }
+
+            _monster.Ani.SetBool("FAttack", true);
         }
         else
         {
-            _totalTime += Time.deltaTime;
+            float distance = _monster.Player.position.x - _monster.transform.position.x;
 
-            float distance = _monster.transform.position.x - _monster.Player.position.x;
             if (distance * _monster.Direction > 0 && Mathf.Abs(distance) <= _parringDistance)
-            {
+            {              
                 _tempoCircle.IsAvailable = true;
             }
             else
@@ -65,25 +77,29 @@ public class Elite_FAttack : Elite_Skill
                 _tempoCircle.IsAvailable = false;
             }
         }
-
     }
 
     public override void Exit()
     {
         _tempoCircle = null;
-        _totalTime = 0;
         _coolTime = 0;
     }
 
-    // 공격 함수
-    public void Attack()
+    private bool Parring()
     {
         if (_tempoCircle.CircleState == Define.CircleState.GOOD || _tempoCircle.CircleState == Define.CircleState.PERFECT) // 패링 성공 확인
         {
             Debug.Log("패링");
-            _monster.FinishSkill();
-            return;
+            return true;
         }
+
+        return false;
+    }
+
+    // 공격 함수
+    private void Attack()
+    {
+
         Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 
         foreach (Collider player in hitPlayer)
@@ -98,7 +114,13 @@ public class Elite_FAttack : Elite_Skill
             Vector3 hitPos = player.ClosestPoint(_monster.HitPoint.position);
             hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z - 0.1f);
         }
-    
+     
+    }
+
+    private void Finish()
+    {
+        _monster.Ani.SetBool("FAttack", false);
         _monster.FinishSkill();
     }
+
 }

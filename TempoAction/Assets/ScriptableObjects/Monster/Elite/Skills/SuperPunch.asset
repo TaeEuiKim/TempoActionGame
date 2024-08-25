@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _info:
     skill: 5
-    coolTime: 8
-    totalTime: 2
-    range: 1
+    coolTime: 1
+    totalTime: 0
+    range: 2
     damage: 150
     priority: 60
-  _parringDistance: 2
+  _parringDistance: 3
   _parringTime: 2
   _knockBackPower: 50
   _knockBackDuration: 0.2

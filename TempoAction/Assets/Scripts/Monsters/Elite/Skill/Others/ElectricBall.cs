@@ -4,7 +4,15 @@ using UnityEngine;
 
 public class ElectricBall : MonoBehaviour
 {
-    public float TotalDamage { get; set; }
+    public float TotalDamage { get; set; } = 0;
+    public float Speed { get; set; } = 0;
+    public float Direction { get; set; } = 0;
+
+
+    private void Update()
+    {
+        transform.Translate(new Vector2(Direction, 0) * Speed * Time.deltaTime);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
