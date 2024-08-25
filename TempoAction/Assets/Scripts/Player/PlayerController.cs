@@ -61,7 +61,7 @@ public class PlayerController
 
         if (_player.Attack.CurrentAttackkState == Define.AttackState.ATTACK)
         {
-            _player.Rb.velocity = new Vector2(0, _player.Rb.velocity.y);
+            Stop();
 
             return;
         }
@@ -104,6 +104,8 @@ public class PlayerController
 
     private void Move()
     {
+        
+
         _direction = 0;
 
         if (Input.GetKey(KeyCode.LeftArrow))
@@ -116,6 +118,17 @@ public class PlayerController
             Direction = 1f;
             _dashDirection = 1f;
         }
+
+        if (!CheckMovePath())
+        {
+            _player.Rb.velocity = new Vector2(0, _player.Rb.velocity.y);
+            if (_direction == 0)
+            {
+                _player.Ani.SetFloat("Speed", 0);
+            }
+            return;
+        }
+
 
         Vector2 tempVelocity = new Vector2(_direction * _player.Stat.SprintSpeed, _player.Rb.velocity.y);
 
@@ -147,7 +160,7 @@ public class PlayerController
 
     private void Dash()
     {
-        _player.Rb.velocity = new Vector2(0, _player.Rb.velocity.y);
+        _player.Rb.velocity = Vector2.zero;
 
         _isDashing = true;
         _player.GetComponent<Collider>().enabled = false; 
@@ -163,15 +176,22 @@ public class PlayerController
             dashPosition = _player.transform.position + (Vector3.right * _dashDirection) * _player.Stat.DashDistance;
         }
 
+
         _player.Rb.DOMove(dashPosition, _player.Stat.DashDuration).SetEase(Ease.OutQuad).OnComplete(() =>
         {
             _isDashing = false;
             _player.GetComponent<Collider>().enabled = true;
+           
         });
 
         _player.Ani.SetTrigger("Dash");
 
         _dashTimer = 0;
+    }
+
+    private void Stop()
+    {
+        _player.Rb.velocity = new Vector2(0, _player.Rb.velocity.y);
     }
 
     private void Flip(float value)
@@ -185,5 +205,18 @@ public class PlayerController
 
         _player.PlayerModel.localScale = tempScale;
     }
+    private bool CheckMovePath()
+    {
+        // 레이캐스트로 장애물 감지
+        RaycastHit hit;
+        if (Physics.Raycast(_player.transform.position, Vector2.right * _dashDirection, out hit, 0.5f, _player.BlockLayer))
+        {
+            // 장애물이 레이캐스트 범위 안에 있음
+            //Debug.Log("장애물 감지: " + hit.collider.name);
+            return false;
+        }
 
+        // 장애물이 없음
+        return true;
+    }
 }

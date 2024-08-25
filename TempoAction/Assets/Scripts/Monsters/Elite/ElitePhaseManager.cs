@@ -10,8 +10,16 @@ public class ElitePhaseManager : MonoBehaviour
     [SerializeField] private Define.ElitePhaseState _currentPhaseState = Define.ElitePhaseState.NONE;
     private Dictionary<Define.ElitePhaseState, Elite_PhaseState> _phaseStateStorage = new Dictionary<Define.ElitePhaseState, Elite_PhaseState>();
 
+    private List<float> _targetHealthList = new List<float>();
+    private int _targetHealthIndex = 0;
+
     public EliteMonster Phase1Monster { get => _phase1Monster; }
     public EliteMonster Phase2Monster { get => _phase2Monster; }
+    public List<float> TargetHealthList { get => _targetHealthList; }
+    public int TargetHealthIndex { get => _targetHealthIndex; set => _targetHealthIndex = value; }
+
+  
+
 
     private void Awake()
     {
@@ -24,23 +32,21 @@ public class ElitePhaseManager : MonoBehaviour
 
     private void Start()
     {
+        _targetHealthList.Add(_phase1Monster.Stat.MaxHealth * 0.5f);
+        _targetHealthList.Add(_phase1Monster.Stat.MaxHealth * 0.3f);
+        _targetHealthList.Add(_phase1Monster.Stat.MaxHealth * 0.1f);
+        _targetHealthList.Add(0);
+
+        _phase2Monster.gameObject.SetActive(false);
+
         ChangeStageState(Define.ElitePhaseState.PHASE1);
     }
 
     void Update()
     {
-        switch (_currentPhaseState)
+        if (_currentPhaseState != Define.ElitePhaseState.NONE)
         {
-            case Define.ElitePhaseState.PHASE1:
-                _phase1Monster.Stay();
-                break;
-            case Define.ElitePhaseState.PHASECHANGE:
-                break;
-            case Define.ElitePhaseState.PHASE2:
-                _phase2Monster.Stay();
-                break;
-            case Define.ElitePhaseState.FINISH:
-                break;
+            _phaseStateStorage[_currentPhaseState]?.Stay();
         }
     }
 

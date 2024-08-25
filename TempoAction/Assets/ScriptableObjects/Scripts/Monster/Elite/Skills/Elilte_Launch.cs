@@ -21,13 +21,15 @@ public class Elilte_Launch : Elite_Skill
         _startTime = 0;
     }
 
-    public override bool Check()
+    public override void Check()
     {
+        if (IsCompleted) return;
+
         if (_coolTime >= _info.coolTime) // 쿨타임 확인
         {
             if (Vector2.Distance(_monster.Player.position, _monster.transform.position) <= _info.range) // 거리 확인
-            {              
-                return true;
+            {
+                IsCompleted = true;
             }
         }
         else
@@ -35,7 +37,6 @@ public class Elilte_Launch : Elite_Skill
             _coolTime += Time.deltaTime;
         }
 
-        return false;
     }
 
     public override void Enter()

@@ -8,8 +8,6 @@ public class Elite_FAttack : Elite_Skill
     private float _coolTime;
 
     private TempoCircle _tempoCircle;
-
-    [SerializeField] private float _parringDistance;
     [SerializeField] private float _parringTime; // 패링 시간
 
     public override void Init(EliteMonster monster)
@@ -19,14 +17,16 @@ public class Elite_FAttack : Elite_Skill
         _coolTime = 0;
     }
 
-    public override bool Check()
+    public override void Check()
     {
+        if (IsCompleted) return;
+
         if (_coolTime >= _info.coolTime) // 쿨타임 확인
         {
             if (Vector2.Distance(_monster.Player.position, _monster.transform.position) <= _info.range) // 거리 확인
             {
-               
-                return true;
+
+                IsCompleted =  true;
             }
         }
         else
@@ -34,7 +34,6 @@ public class Elite_FAttack : Elite_Skill
             _coolTime += Time.deltaTime;
         }
 
-        return false;
     }
 
     public override void Enter()
@@ -51,7 +50,6 @@ public class Elite_FAttack : Elite_Skill
     }
     public override void Stay()
     {
-
         if (_tempoCircle.CircleState != Define.CircleState.NONE)
         {
             if (_monster.Ani.GetBool("FAttack")) return;
@@ -66,10 +64,8 @@ public class Elite_FAttack : Elite_Skill
         }
         else
         {
-            float distance = _monster.Player.position.x - _monster.transform.position.x;
-
-            if (distance * _monster.Direction > 0 && Mathf.Abs(distance) <= _parringDistance)
-            {              
+            if (CheckParringBox())
+            {
                 _tempoCircle.IsAvailable = true;
             }
             else
@@ -77,12 +73,18 @@ public class Elite_FAttack : Elite_Skill
                 _tempoCircle.IsAvailable = false;
             }
         }
+
     }
 
     public override void Exit()
     {
         _tempoCircle = null;
         _coolTime = 0;
+    }
+
+    private bool CheckParringBox()
+    {
+        return Physics.CheckBox(_monster.ParringPoint.position, _monster.ParringColliderSize / 2, _monster.ParringPoint.rotation, _monster.PlayerLayer);
     }
 
     private bool Parring()

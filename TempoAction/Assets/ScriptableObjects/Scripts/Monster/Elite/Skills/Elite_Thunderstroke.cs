@@ -7,6 +7,11 @@ using UnityEngine;
 public class Elite_Thunderstroke : Elite_Skill
 {
 
+    private float _totalTime;
+
+    [SerializeField] private float _startDelay;
+    private float _startTime;
+
     [SerializeField] private float _executeDuration;
     private float _executeTime;
 
@@ -16,53 +21,73 @@ public class Elite_Thunderstroke : Elite_Skill
     public override void Init(EliteMonster monster)
     {
         base.Init(monster);
-
-        _executeTime = 0;
-
+        _totalTime = 0;
+        _startTime = 0;
+        _executeTime = _executeDuration;
+       
     }
 
-    public override bool Check()
+    public override void Check()
     {
-
-        return false;
-
+        if (IsCompleted) return;
     }
 
     public override void Enter()
     {
         Debug.Log("≥´∑⁄");
-        _monster.OnPointTempo += () =>
-        {
-            _monster.FinishSkill();
-        };
+        _monster.Ani.SetBool("Thunder", true);
     }
     public override void Stay()
     {
-        if (_executeTime >= _executeDuration)
+        // Ω√¿€ µÙ∑π¿Ã
+        if (_startTime < _startDelay)
         {
-            
-            tempPlatforms = _monster.CreatePlatform.CurPlatformList.ToList();
+            _startTime += Time.deltaTime;
 
-            for (int i = 0; i < _lightningCount; i++)
-            {
-                int randomIndex = Random.Range(0, tempPlatforms.Count);
-                Vector3 executePosition = tempPlatforms[randomIndex].transform.position;
-                tempPlatforms.RemoveAt(randomIndex);
+            return;
+        }
 
-                CoroutineRunner.Instance.StartCoroutine(ExecuteLightning(executePosition));
-            }
-
-            
-            _executeTime = 0;
+        // Ω««‡ Ω√∞£
+        if (_totalTime >= _info.totalTime)
+        {
+            _monster.FinishSkill(Define.EliteMonsterState.GROGGY);
         }
         else
         {
-            _executeTime += Time.deltaTime;
+            // ªÁøÎ ∞£∞›
+            if (_executeTime >= _executeDuration)
+            {
+
+                tempPlatforms = _monster.CreatePlatform.CurPlatformList.ToList();
+
+                for (int i = 0; i < _lightningCount; i++)
+                {
+                    int randomIndex = Random.Range(0, tempPlatforms.Count);
+                    Vector3 executePosition = tempPlatforms[randomIndex].transform.position;
+                    tempPlatforms.RemoveAt(randomIndex);
+
+                    CoroutineRunner.Instance.StartCoroutine(ExecuteLightning(executePosition));
+                }
+
+
+                _executeTime = 0;
+            }
+            else
+            {
+                _executeTime += Time.deltaTime;
+            }
+
+            _totalTime += Time.deltaTime;
         }
+
+      
     }
     public override void Exit()
     {
-        _executeTime = 0;
+        _monster.Ani.SetBool("Thunder", false);
+        _totalTime = 0;
+        _startTime = 0;
+        _executeTime = _executeDuration;
     }
 
     // ≥´∑⁄ ª˝º∫ «‘ºˆ

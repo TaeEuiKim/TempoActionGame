@@ -7,7 +7,6 @@ public class Elite_SuperPunch : Elite_Skill
 {
     private float _coolTime;
 
-    [SerializeField] private float _parringDistance;
     [SerializeField] private float _parringTime;
     [SerializeField] private float _knockBackPower;
     [SerializeField] private float _knockBackDuration;
@@ -23,15 +22,16 @@ public class Elite_SuperPunch : Elite_Skill
         _coolTime = 0;
     }
 
-    public override bool Check()
+    public override void Check()
     {
-        if (_monster.CurrentSkill == this) return false;
+        if (IsCompleted) return;
 
         if (_coolTime >= _info.coolTime)
         {
             if (Vector2.Distance(_monster.Player.position, _monster.transform.position) <= _info.range)
             {
-                return true;
+
+                IsCompleted = true;
             }
         }
         else
@@ -39,7 +39,7 @@ public class Elite_SuperPunch : Elite_Skill
             _coolTime += Time.deltaTime;
         }
 
-        return false;
+
     }
 
     public override void Enter()
@@ -76,9 +76,7 @@ public class Elite_SuperPunch : Elite_Skill
         }
         else
         {
-            float distance = _monster.Player.position.x - _monster.transform.position.x;
-
-            if (distance * _monster.Direction > 0 && Mathf.Abs(distance) <= _parringDistance)
+            if (CheckParringBox())
             {
                 _tempoCircle.IsAvailable = true;
             }
@@ -101,6 +99,11 @@ public class Elite_SuperPunch : Elite_Skill
         _coolTime = 0;
     }
 
+    private bool CheckParringBox()
+    {
+        return Physics.CheckBox(_monster.ParringPoint.position, _monster.ParringColliderSize / 2, _monster.ParringPoint.rotation, _monster.PlayerLayer);
+    }
+
     private bool Parring()
     {
         if (_tempoCircle.CircleState == Define.CircleState.GOOD || _tempoCircle.CircleState == Define.CircleState.PERFECT) // 패링 성공 확인
@@ -113,16 +116,7 @@ public class Elite_SuperPunch : Elite_Skill
     }
     private void Attack()
     {
-        GameObject punchEffect;
-
-        if (_monster.Direction == 1)
-        {
-            punchEffect = ObjectPool.Instance.Spawn("FX_EliteSuperPunch_R", 1);
-        }
-        else
-        {
-            punchEffect = ObjectPool.Instance.Spawn("FX_EliteSuperPunch_L", 1);
-        }
+        
         Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 
         foreach (Collider player in hitPlayer)
@@ -137,9 +131,22 @@ public class Elite_SuperPunch : Elite_Skill
 
             Vector3 hitPos = player.ClosestPoint(_monster.HitPoint.position);
             hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z - 0.1f);
+
+            GameObject punchEffect;
+
+            if (_monster.Direction == 1)
+            {
+                punchEffect = ObjectPool.Instance.Spawn("FX_EliteSuperPunch_R", 1);
+            }
+            else
+            {
+                punchEffect = ObjectPool.Instance.Spawn("FX_EliteSuperPunch_L", 1);
+            }
+
+            punchEffect.transform.position = _monster.HitPoint.position;
         }
 
-        punchEffect.transform.position = _monster.HitPoint.position;
+        
     }
 
     private void Finish()

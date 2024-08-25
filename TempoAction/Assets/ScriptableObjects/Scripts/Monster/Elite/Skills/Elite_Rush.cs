@@ -21,18 +21,18 @@ public class Elite_Rush : Elite_Skill
         _coolTime = 0;
     }
 
-    public override bool Check()
+    public override void Check()
     {
+        if (IsCompleted) return;
+
         if (_coolTime >= _info.coolTime) // 쿨타임 확인
         {
-            return true;
+            IsCompleted = true;
         }
         else
         {
             _coolTime += Time.deltaTime;
         }
-
-        return false;
     }
 
     public override void Enter()

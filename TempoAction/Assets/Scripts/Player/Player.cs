@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _groundCheckRadius = 0.2f;
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private LayerMask _wallLayer;
+    [SerializeField] private LayerMask _blockLayer;
 
     [Header("АјАн")]
     [SerializeField] private Transform _hitPoint;
@@ -33,7 +34,8 @@ public class Player : MonoBehaviour
     [SerializeField] private Vector3 _colliderSize;
     [SerializeField] private LayerMask _monsterLayer;
 
-    [SerializeField] private List<TempoAttackData> _tempoAttackDatas;
+    [SerializeField] private List<TempoAttackData> _mainTempoAttackDatas;
+    [SerializeField] private List<TempoAttackData> _pointTempoAttackDatas;
 
     public PlayerStat Stat { get { return _stat; } }
     public PlayerAttack Attack { get { return _attack; } }
@@ -61,12 +63,14 @@ public class Player : MonoBehaviour
     public float GroundCheckRadius { get => _groundCheckRadius; }
     public LayerMask GroundLayer { get => _groundLayer; }
     public LayerMask WallLayer { get => _wallLayer; }
+    public LayerMask BlockLayer { get => _blockLayer; }
 
     public Transform HitPoint { get => _hitPoint; }
     public Transform EndPoint { get => _endPoint; }
     public Vector3 ColliderSize { get => _colliderSize; }
     public LayerMask MonsterLayer { get => _monsterLayer; }
-    public List<TempoAttackData> TempoAttackDatas { get => _tempoAttackDatas; }
+    public List<TempoAttackData> MainTempoAttackDatas { get => _mainTempoAttackDatas; }
+    public List<TempoAttackData> PointTempoAttackDatas { get => _pointTempoAttackDatas; }
 
     private void Awake()
     {
@@ -99,6 +103,7 @@ public class Player : MonoBehaviour
         switch (_currentState)
         {
             case Define.PlayerState.STUN:
+                _rb.velocity = new Vector2(0, _rb.velocity.y);
                 //_attack.ChangeCurrentAttackState(Define.AttackState.FINISH);
                 break;
             case Define.PlayerState.OVERLOAD:
@@ -116,11 +121,11 @@ public class Player : MonoBehaviour
     {
         if (value)
         {
-            return _stat.Damage + _attack.CurrentAttackTempoData.maxDamage;
+            return _stat.Damage + _attack.CurrentTempoData.maxDamage;
         }
         else
         {
-            return _stat.Damage + _attack.CurrentAttackTempoData.minDamage;
+            return _stat.Damage + _attack.CurrentTempoData.minDamage;
         }   
     }
 

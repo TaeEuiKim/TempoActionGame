@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayerStat", menuName = "ScriptableObjects/Stat/Player Stat")]
 public class PlayerStat : Stat
 {
+
     [Header("มกวม")]
     [SerializeField] private float _jumpForce;// มกวม ศ๛
 

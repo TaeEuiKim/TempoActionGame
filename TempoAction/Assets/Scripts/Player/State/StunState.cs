@@ -45,6 +45,7 @@ public class StunState : PlayerState
     {
         _player.Ani.SetBool("IsStunned", false);
         _player.Stat.Stamina = 0;
+        _player.UpdateStamina();
     }
 
   

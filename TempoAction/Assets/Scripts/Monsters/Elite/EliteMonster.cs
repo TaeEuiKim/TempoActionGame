@@ -21,7 +21,9 @@ public class EliteMonster : Monster
     [Header("공격")]
     [SerializeField] private Transform _hitPoint;
     [SerializeField] private Vector3 _colliderSize;
-
+    [Header("패링")]
+    [SerializeField] private Transform _parringPoint;
+    [SerializeField] private Vector3 _parringColliderSize;
     [Header("낙뢰")]
     [SerializeField] private CreatePlatform _createPlatform;
 
@@ -31,12 +33,15 @@ public class EliteMonster : Monster
 
     #region 프로퍼티
 
+    public Define.EliteMonsterState CurrentState { get => _currentState; }
     public List<Elite_Skill> SkillStorage { get => _skillStorage; }
     public Elite_Skill CurrentSkill { get => _currentSkill; }
     public List<Elite_Skill> ReadySkills { get => _readySkills; set => _readySkills = value; }
     public float IdleDuration { get => _idleDuration; }
     public Transform HitPoint { get => _hitPoint; }
     public Vector3 ColliderSize { get => _colliderSize; }
+    public Transform ParringPoint { get => _parringPoint; }
+    public Vector3 ParringColliderSize { get => _parringColliderSize; }
     public CreatePlatform CreatePlatform { get => _createPlatform; }
     #endregion
 
@@ -88,17 +93,18 @@ public class EliteMonster : Monster
     #region 스킬
 
     // 스킬이 끝났을 때 사용하는 함수
-    public void FinishSkill()
+    public void FinishSkill(Define.EliteMonsterState state = Define.EliteMonsterState.IDLE)
     {
         _skillStorage.Add(_currentSkill); // 원래 저장소로 이동
         _currentSkill?.Exit();
 
+        _currentSkill.IsCompleted = false;
         _currentSkill = null;
 
         OnFinishSkill = null;
         OnHitAction = null;
 
-        ChangeCurrentState(Define.EliteMonsterState.IDLE);
+        ChangeCurrentState(state);
     }
 
     // 현재 스킬 교체 함수
@@ -117,6 +123,15 @@ public class EliteMonster : Monster
         else
         {
             _currentSkill = GetSkill(skill);
+
+            if (_currentSkill == null)
+            {
+                Debug.Log("현재 스킬이 비어있음...");
+                _currentSkill = GetReadySkill(skill);
+            }
+
+            _skillStorage.Remove(_currentSkill);
+            _currentSkill.IsCompleted = true;
             _currentSkill?.Enter();
         }  
     }
@@ -131,6 +146,10 @@ public class EliteMonster : Monster
         _currentSkill?.Enter();
     }
 
+    public void ReadySkill(Define.EliteMonsterSkill skill)
+    {
+        GetSkill(skill).IsCompleted = true;
+    }
 
     // 스킬 찾는 함수
     public Elite_Skill GetSkill(Define.EliteMonsterSkill skill) 
@@ -138,8 +157,20 @@ public class EliteMonster : Monster
         foreach (Elite_Skill s in _skillStorage)
         {
             if (s.Info.skill == skill)
+            {              
+                return s;
+            }
+        }
+
+        return null;
+    }
+
+    public Elite_Skill GetReadySkill(Define.EliteMonsterSkill skill)
+    {
+        foreach (Elite_Skill s in _readySkills)
+        {
+            if (s.Info.skill == skill)
             {
-                _skillStorage.Remove(s);
                 return s;
             }
         }
@@ -149,12 +180,14 @@ public class EliteMonster : Monster
 
     #endregion
 
-   
+
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(_hitPoint.position, _colliderSize);
 
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(_parringPoint.position, _parringColliderSize);
     }
 }

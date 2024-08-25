@@ -66,9 +66,11 @@ public class TempoCircle : MonoBehaviour
 
                 float scale = Mathf.Lerp(1.0f, 0, timer / _shrinkDuration);
                 _checkCircle.transform.localScale = new Vector3(scale, scale, 1.0f);
+                Player player = _player.GetComponent<Player>();
 
-                if (_player.GetComponent<Player>().CurrentState != Define.PlayerState.STUN && IsAvailable) // 스턴 상태면 입력 안되도록
+                if (player.CurrentState != Define.PlayerState.STUN && player.Attack.CurrentAttackkState != Define.AttackState.ATTACK && IsAvailable) 
                 {
+                    
                     if (Input.GetKeyDown(KeyCode.F))
                     {
                         CheckTiming();
@@ -89,7 +91,6 @@ public class TempoCircle : MonoBehaviour
     {
         timer = 0.0f;
         _shrinkDuration = 1;
-
 
         _checkCircle.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         _checkCircle.SetActive(true);

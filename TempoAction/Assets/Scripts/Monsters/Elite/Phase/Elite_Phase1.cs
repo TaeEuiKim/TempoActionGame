@@ -15,7 +15,18 @@ public class Elite_Phase1 : Elite_PhaseState
     }
     public override void Stay()
     {
-        _manager.Phase1Monster.Stay();
+
+        if (_manager.Phase1Monster.Stat.Health <= _manager.TargetHealthList[_manager.TargetHealthIndex])
+        {
+            if (_manager.Phase1Monster.CurrentState == Define.EliteMonsterState.IDLE)
+            {
+                _manager.ChangeStageState(Define.ElitePhaseState.PHASECHANGE);
+            }
+        }
+        else
+        {
+            _manager.Phase1Monster.Stay();
+        }
     }
 
     public override void Exit()

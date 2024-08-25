@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a19041a8802d80241a468d8f8fd3315e, type: 3}
   m_Name: EliteMonsterStat
   m_EditorClassIdentifier: 
-  _maxHealth: 4500
-  _health: 4135
-  _defense: 70
+  _maxHealth: 1000
+  _health: 1000
+  _defense: 0
   _walkSpeed: 1
-  _sprintSpeed: 1
+  _sprintSpeed: 3
   _damage: 10
-  _attackRange: 2
+  _attackRange: 1.5
   _attackDelay: 0

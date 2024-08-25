@@ -6,7 +6,7 @@ public abstract class Stat : ScriptableObject
 {
 
     [SerializeField] protected float _maxHealth;
-    [SerializeField] protected float _health;
+    protected float _health;
     [SerializeField] protected float _defense;
 
     [SerializeField] protected float _walkSpeed;

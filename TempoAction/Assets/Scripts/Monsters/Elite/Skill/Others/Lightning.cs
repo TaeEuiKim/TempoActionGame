@@ -12,7 +12,6 @@ public class Lightning : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            print(TotalDamage);
             other.GetComponent<Player>().TakeDamage(TotalDamage);
         }
     }

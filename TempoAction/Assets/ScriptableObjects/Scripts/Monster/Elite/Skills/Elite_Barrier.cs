@@ -22,18 +22,18 @@ public class Elite_Barrier : Elite_Skill
         _totalTime = 0;
     }
 
-    public override bool Check()
+    public override void Check()
     {
+        if (IsCompleted) return;
+
         if (_coolTime >= _info.coolTime) // 쿨타임 확인
-        {          
-            return true;
+        {
+            IsCompleted = true;
         }
         else
         {
             _coolTime += Time.deltaTime;
         }
-
-        return false;
     }
 
     public override void Enter()
@@ -59,6 +59,7 @@ public class Elite_Barrier : Elite_Skill
             if (_lastHp > _monster.Stat.Health) // 플레이어가 가드 상태인 몬스터 공격 시(체력 변화가 있을 때)
             {
                 _monster.ChangeCurrentSkill(Define.EliteMonsterSkill.SUPERPUNCH); // 멀리 치기 실행
+                IsCompleted = false;
             }
             else
             {

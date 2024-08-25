@@ -21,9 +21,9 @@ public class Elite_Explosion : Elite_Skill
         _executeCount = 0;
     }
 
-    public override bool Check()
+    public override void Check()
     {
-        return true;
+        if (IsCompleted) return;
     }
 
 

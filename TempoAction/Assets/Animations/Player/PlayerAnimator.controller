@@ -1740,6 +1740,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: IsStunned
     m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: isGrounded
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6508778048616338746}
   m_Solo: 0
@@ -1884,7 +1887,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: c8f50619fcf36f547b249cb17c9371bd, type: 2}
+  m_Motion: {fileID: 7400000, guid: fe9f06fa75581d44f885c3c4b8eeacf9, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

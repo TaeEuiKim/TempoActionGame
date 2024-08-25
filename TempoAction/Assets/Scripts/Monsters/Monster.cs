@@ -22,14 +22,13 @@ public abstract class Monster : MonoBehaviour
 
     public bool IsGuarded { get; set; } = false;
 
-    public Action OnPointTempo;
 
     [SerializeField] protected Transform _monsterModel;
 
-    public Animator Ani { get { return _ani; } }
-    public Rigidbody Rb { get { return _rb; } }
+    public Animator Ani { get => _ani;  }
+    public Rigidbody Rb { get => _rb;  }
     public Transform Player { get => _player; }
-    public MonsterStat Stat { get { return _stat; } }
+    public MonsterStat Stat { get => _stat; set => _stat = value; }
     public LayerMask PlayerLayer { get => _playerLayer; }
     public LayerMask WallLayer { get => _wallLayer; }
     public float Direction
@@ -83,7 +82,7 @@ public abstract class Monster : MonoBehaviour
 
     }
 
-    public void TakeDamage(float value, bool isPointTempo = false)
+    public void TakeDamage(float value)
     {
         if (IsGuarded)
         {
@@ -94,10 +93,6 @@ public abstract class Monster : MonoBehaviour
             _stat.Health -= value;
         }
         
-        if (isPointTempo)
-        {
-            OnPointTempo?.Invoke();
-        }
 
         UpdateHealth();
     }

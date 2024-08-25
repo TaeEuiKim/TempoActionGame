@@ -14,11 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _info:
     skill: 1
-    coolTime: 0
+    coolTime: 2
     totalTime: 0
-    range: 2
+    range: 1.5
     damage: 150
     priority: 55
-  _reductionHealthPoints: 300
-  _parringDistance: 2
-  _parringTime: 2
+  _parringTime: 0.5

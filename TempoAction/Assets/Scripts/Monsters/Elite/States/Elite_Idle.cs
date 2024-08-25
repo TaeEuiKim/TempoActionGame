@@ -19,24 +19,28 @@ public class Elite_Idle : Elite_State
     {
         if (idleTime < _monster.IdleDuration)
         {
+            Stop();
             idleTime += Time.deltaTime;
         }
         else
         {
             Follow();
-
+           
             foreach (Elite_Skill s in _monster.SkillStorage)
             {
-                if (s.Check()) // 조건이 성립되었는지 확인
+                s.Check();
+
+                if (s.IsCompleted) // 조건이 성립되었는지 확인
                 {
+                    Debug.Log(s);
                     _monster.ReadySkills.Add(s);
                 }
             }
-
+           
             if (_monster.ReadySkills.Count <= 0) return;
 
             Elite_Skill prioritySkill = _monster.ReadySkills[0];
-            _monster.SkillStorage.Remove(prioritySkill);
+            //_monster.SkillStorage.Remove(prioritySkill);
 
             if (_monster.ReadySkills.Count > 1) // 2개 이상일 때 우선순위 확인
             {
@@ -47,19 +51,22 @@ public class Elite_Idle : Elite_State
                         prioritySkill = _monster.ReadySkills[i];
                     }
 
-                    _monster.SkillStorage.Remove(_monster.ReadySkills[i]);
+                    //_monster.SkillStorage.Remove(_monster.ReadySkills[i]);
                 }
             }
+         
             _monster.ChangeCurrentState(Define.EliteMonsterState.USESKILL);
+            _monster.SkillStorage.Remove(prioritySkill);
             _monster.ChangeCurrentSkill(prioritySkill);
-            _monster.ReadySkills.Remove(prioritySkill);
+            //_monster.ReadySkills.Remove(prioritySkill);
+            _monster.ReadySkills.Clear();
 
         }
 
     }
     public override void Exit()
     {
-        _monster.Rb.velocity = new Vector2(0, _monster.Rb.velocity.y);
+        Stop();
     }
 
     // 플레이어 추적 함수
@@ -71,10 +78,18 @@ public class Elite_Idle : Elite_State
         if (Mathf.Abs(direction) <= _monster.Stat.AttackRange)
         {
             _monster.Rb.velocity = new Vector2(0, _monster.Rb.velocity.y);
+            _monster.Ani.SetBool("Run", false);
         }
         else
         {
             _monster.Rb.velocity = new Vector2(_monster.Direction * _monster.Stat.SprintSpeed, _monster.Rb.velocity.y);
+            _monster.Ani.SetBool("Run", true);
         }
+    }
+
+    private void Stop()
+    {
+        _monster.Ani.SetBool("Run", false);
+        _monster.Rb.velocity = new Vector2(0, _monster.Rb.velocity.y);
     }
 }

@@ -15,9 +15,10 @@ MonoBehaviour:
   _info:
     skill: 7
     coolTime: 0
-    totalTime: 0
+    totalTime: 20
     range: 0
-    damage: 100
-    priority: 0
-  _executeDuration: 3
-  _lightningCount: 1
+    damage: 500
+    priority: 70
+  _startDelay: 1
+  _executeDuration: 2
+  _lightningCount: 2

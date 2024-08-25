@@ -6,36 +6,41 @@ using UnityEngine;
 public class Elite_SAttack : Elite_Skill
 {
 
-    private float _lastHealthPoints;                   // 마지막 체력 정보
-    [SerializeField] private float _reductionHealthPoints; // 체력 감소량
+    private float _coolTime;
 
     private TempoCircle _tempoCircle;
-    [SerializeField] private float _parringDistance;
-    [SerializeField] private float _parringTime;
+    [SerializeField] private float _parringTime; // 패링 시간
 
     public override void Init(EliteMonster monster)
     {
         base.Init(monster);
 
-        _lastHealthPoints = _monster.Stat.MaxHealth;
+        _coolTime = 0;
     }
 
-    public override bool Check()
+    public override void Check()
     {
-        if (_monster.Stat.Health + _reductionHealthPoints <= _lastHealthPoints) // 체력 감소 확인
+        if (IsCompleted) return;
+
+        if (_coolTime >= _info.coolTime) // 쿨타임 확인
         {
             if (Vector2.Distance(_monster.Player.position, _monster.transform.position) <= _info.range) // 거리 확인
             {
-                return true;
+
+                IsCompleted = true;
             }
         }
+        else
+        {
+            _coolTime += Time.deltaTime;
+        }
 
-        return false;
     }
-
 
     public override void Enter()
     {
+
+
         Debug.Log("일반 공격2");
         Vector3 spawnPoint = _monster.transform.position + new Vector3(_monster.Direction, 1, -1);
         _monster.Player.GetComponent<Player>().Attack.CreateTempoCircle(_parringTime, _monster.transform, spawnPoint); // 포인트 템포 실행
@@ -60,9 +65,7 @@ public class Elite_SAttack : Elite_Skill
         }
         else
         {
-            float distance = _monster.Player.position.x - _monster.transform.position.x;
-
-            if (distance * _monster.Direction > 0 && Mathf.Abs(distance) <= _parringDistance)
+            if (CheckParringBox())
             {
                 _tempoCircle.IsAvailable = true;
             }
@@ -71,11 +74,20 @@ public class Elite_SAttack : Elite_Skill
                 _tempoCircle.IsAvailable = false;
             }
         }
+
     }
+
     public override void Exit()
     {
-        _lastHealthPoints -= _reductionHealthPoints;
+        _tempoCircle = null;
+        _coolTime = 0;
     }
+
+    private bool CheckParringBox()
+    {
+        return Physics.CheckBox(_monster.ParringPoint.position, _monster.ParringColliderSize / 2, _monster.ParringPoint.rotation, _monster.PlayerLayer);
+    }
+
     private bool Parring()
     {
         if (_tempoCircle.CircleState == Define.CircleState.GOOD || _tempoCircle.CircleState == Define.CircleState.PERFECT) // 패링 성공 확인
@@ -86,6 +98,8 @@ public class Elite_SAttack : Elite_Skill
 
         return false;
     }
+
+    // 공격 함수
     private void Attack()
     {
 

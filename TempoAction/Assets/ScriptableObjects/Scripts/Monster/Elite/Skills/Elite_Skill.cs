@@ -8,12 +8,14 @@ public abstract class Elite_Skill : ScriptableObject
     public Elite_SkillInfo Info { get => _info; }
 
     protected EliteMonster _monster;
+    public bool IsCompleted { get; set; }
 
     public virtual void Init(EliteMonster monster)
     {
         _monster = monster;
+        IsCompleted = false;
     }
-    public abstract bool Check();
+    public abstract void Check();
     public abstract void Enter();
     public abstract void Stay();
     public abstract void Exit();

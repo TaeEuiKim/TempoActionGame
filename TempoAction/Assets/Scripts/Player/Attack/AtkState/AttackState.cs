@@ -16,6 +16,12 @@ public class AttackState : PlayerAttackState
     public override void Enter()
     {
         _player.Ani.SetBool("AttackState", true);
+
+        if (_player.Attack.CurrentTempoData.type == Define.TempoType.MAIN)
+        {
+            _player.Ani.SetInteger("AtkCount", _player.Attack.CurrentTempoData.attackNumber);
+        }
+    
     }
     public override void Stay()
     {
@@ -23,12 +29,15 @@ public class AttackState : PlayerAttackState
     }
     public override void Exit()
     {
-        _player.Ani.SetBool("AttackState", false);
-        _player.Attack.AttackIndex++;
-        if (_player.Attack.AttackIndex == 4)
+        if (_player.Attack.CurrentTempoData.type == Define.TempoType.MAIN)
         {
-            _player.Attack.CreateTempoCircle(1, _player.transform,
-                _player.transform.position + new Vector3(0, 1, -1)); 
+            if (_player.Attack.CurrentTempoData.attackNumber == 3)
+            {
+                _player.Attack.CreateTempoCircle(1, _player.transform, _player.transform.position + new Vector3(0, 1, 0));
+            }
+
         }
+    
+        _player.Ani.SetBool("AttackState", false);
     }
 }

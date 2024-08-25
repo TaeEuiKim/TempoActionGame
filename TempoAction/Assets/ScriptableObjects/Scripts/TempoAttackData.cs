@@ -4,6 +4,7 @@ using UnityEngine;
 public class TempoAttackData : ScriptableObject
 {
     public Define.TempoType type;
+    public int attackNumber;
 
     public float minDamage;
     public float maxDamage;

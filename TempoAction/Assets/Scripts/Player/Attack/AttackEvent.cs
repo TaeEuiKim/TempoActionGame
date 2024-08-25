@@ -12,6 +12,8 @@ public class AttackEvent : MonoBehaviour
     // 플레이어 타격 위치에 사용하는 이벤트 함수
     private void Hit()
     {
+        //Debug.Log(_player.Attack.CurrentTempoData.type);
+
         Collider[] hitMonsters = Physics.OverlapBox(_player.HitPoint.position, _player.ColliderSize / 2, _player.HitPoint.rotation, _player.MonsterLayer);
 
         if (hitMonsters.Length <= 0)
@@ -19,9 +21,9 @@ public class AttackEvent : MonoBehaviour
             return;
         }
 
-        if (_player.Attack.IsHit == false && _player.Attack.CurrentAttackTempoData.type == Define.TempoType.MAIN)
+        if (_player.Attack.IsHit == false && _player.Attack.CurrentTempoData.type == Define.TempoType.MAIN)
         {
-            SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_RhythmCombo_Hit_" + (_player.Attack.AttackIndex + 1), transform);
+            SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_RhythmCombo_Hit_" + (_player.Attack.CurrentTempoData.attackNumber + 1), transform);
         }
         _player.Attack.IsHit = true;
 
@@ -33,16 +35,16 @@ public class AttackEvent : MonoBehaviour
 
 
             // 데미지 입히기
-            if (_player.Attack.CurrentAttackTempoData.type == Define.TempoType.POINT)
+            if (_player.Attack.CurrentTempoData.type == Define.TempoType.POINT)
             {
                 if (_player.Attack.PointTempoCircle.CircleState == Define.CircleState.GOOD) // 타이밍이 Good일 경우
                 {
-                    m.TakeDamage(_player.GetTotalDamage(false), true);
+                    m.TakeDamage(_player.GetTotalDamage(false));
                 }
                 else if (_player.Attack.PointTempoCircle.CircleState == Define.CircleState.PERFECT)
                 {
 
-                    m.TakeDamage(_player.GetTotalDamage(), true);
+                    m.TakeDamage(_player.GetTotalDamage());
                 }
             }
             else
@@ -64,7 +66,7 @@ public class AttackEvent : MonoBehaviour
             }
             else
             {
-                if (_player.Attack.CurrentAttackTempoData.type == Define.TempoType.POINT)
+                if (_player.Attack.CurrentTempoData.type == Define.TempoType.POINT)
                 {
                     hitParticle = ObjectPool.Instance.Spawn("P_point_attack", 1);
                 }
@@ -90,20 +92,16 @@ public class AttackEvent : MonoBehaviour
     {
         float addStamina = 0;
 
-        if (_player.Attack.CurrentAttackTempoData.type == Define.TempoType.POINT) // 포인트 템포일 때
+        if (_player.Attack.IsHit)
         {
-            if (_player.Attack.IsHit)
+            addStamina = _player.Attack.CurrentTempoData.maxStamina;
+
+            if (_player.Attack.PointTempoCircle.CircleState == Define.CircleState.GOOD) // 타이밍이 Good일 경우
             {
-                addStamina = _player.Attack.CurrentAttackTempoData.maxStamina;
-
-                if (_player.Attack.PointTempoCircle.CircleState == Define.CircleState.GOOD) // 타이밍이 Good일 경우
-                {
-                    addStamina = _player.Attack.CurrentAttackTempoData.minStamina;
-                }
-
-                _player.Attack.UpgradeCount++;
-
+                addStamina = _player.Attack.CurrentTempoData.minStamina;
             }
+
+            _player.Attack.UpgradeCount++;
 
         }
 
@@ -113,6 +111,7 @@ public class AttackEvent : MonoBehaviour
         _player.Attack.IsHit = false;
 
         _player.Attack.PointTempoCircle = null;
+
         _player.Attack.ChangeCurrentAttackState(Define.AttackState.FINISH);
     }
 
@@ -124,7 +123,7 @@ public class AttackEvent : MonoBehaviour
 
         if (_player.Attack.IsHit)
         {
-            addStamina = _player.Attack.CurrentAttackTempoData.maxDamage;
+            addStamina = _player.Attack.CurrentTempoData.maxDamage;
         }
 
 
@@ -149,7 +148,7 @@ public class AttackEvent : MonoBehaviour
         RaycastHit hit;
 
         // 레이캐스트 실행
-        if (Physics.Raycast(rayOrigin, rayDirection, out hit, _player.Attack.CurrentAttackTempoData.distance, _player.MonsterLayer))
+        if (Physics.Raycast(rayOrigin, rayDirection, out hit, _player.Attack.CurrentTempoData.distance, _player.MonsterLayer))
         {
             float closestMonsterX = hit.point.x + (-rayDirection.x * 0.2f);
             transform.parent.DOMoveX(closestMonsterX, duration);
@@ -157,7 +156,7 @@ public class AttackEvent : MonoBehaviour
 
 
         // 디버그용 레이 그리기
-        Debug.DrawRay(rayOrigin, rayDirection * _player.Attack.CurrentAttackTempoData.distance, Color.red);
+        Debug.DrawRay(rayOrigin, rayDirection * _player.Attack.CurrentTempoData.distance, Color.red);
     }
 
     // 시간 크기 변경
@@ -196,7 +195,7 @@ public class AttackEvent : MonoBehaviour
         switch (type)
         {
             case Define.PlayerSfxType.MAIN:
-                SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_RhythmCombo_Attack_" + (_player.Attack.AttackIndex + 1), transform);
+                SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_RhythmCombo_Attack_" + (_player.Attack.CurrentTempoData.attackNumber + 1), transform);
                 break;
             case Define.PlayerSfxType.POINT:
                 SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_PointTempo_Hit", transform);
