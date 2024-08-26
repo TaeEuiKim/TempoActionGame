@@ -17,7 +17,7 @@ public class Elite_Groggy : Elite_State
     }
     public override void Stay()
     {
-        if (timer >= 5)
+        if (timer >= _monster.GroggyTime)
         {
             _monster.ChangeCurrentState(Define.EliteMonsterState.IDLE);
         }

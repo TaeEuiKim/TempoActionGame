@@ -85,7 +85,11 @@ public class AttackEvent : MonoBehaviour
     }
 
 
-  
+    private void StartPointTempo()
+    {
+        _player.Rb.useGravity = false;
+        SetColliderActive(0);
+    }
 
     // 포인트 템포 애니메이션 끝에 추가하는 이벤트 함수
     private void FinishPointTempo()
@@ -111,6 +115,9 @@ public class AttackEvent : MonoBehaviour
         _player.Attack.IsHit = false;
 
         _player.Attack.PointTempoCircle = null;
+
+        _player.Rb.useGravity = true;
+        SetColliderActive(1);
 
         _player.Attack.ChangeCurrentAttackState(Define.AttackState.FINISH);
     }
@@ -157,6 +164,12 @@ public class AttackEvent : MonoBehaviour
 
         // 디버그용 레이 그리기
         Debug.DrawRay(rayOrigin, rayDirection * _player.Attack.CurrentTempoData.distance, Color.red);
+    }
+
+    private void DOMoveX(float value)
+    {
+        Vector3 moveDirection = transform.localScale.x > 0 ? transform.right : transform.right * -1;
+        _player.transform.DOMoveX(_player.transform.position.x + value * moveDirection.x, 0.1f);
     }
 
     // 시간 크기 변경

@@ -36,6 +36,9 @@ public class Elite_Thunderstroke : Elite_Skill
     {
         Debug.Log("³«·Ú");
         _monster.Ani.SetBool("Thunder", true);
+
+        _monster.GetComponent<CapsuleCollider>().enabled = false;
+        _monster.Rb.useGravity = false;
     }
     public override void Stay()
     {
@@ -50,6 +53,7 @@ public class Elite_Thunderstroke : Elite_Skill
         // ½ÇÇà ½Ã°£
         if (_totalTime >= _info.totalTime)
         {
+            _monster.GroggyTime = 5;
             _monster.FinishSkill(Define.EliteMonsterState.GROGGY);
         }
         else
@@ -88,6 +92,9 @@ public class Elite_Thunderstroke : Elite_Skill
         _totalTime = 0;
         _startTime = 0;
         _executeTime = _executeDuration;
+
+        _monster.GetComponent<CapsuleCollider>().enabled = true;
+        _monster.Rb.useGravity = true;
     }
 
     // ³«·Ú »ý¼º ÇÔ¼ö

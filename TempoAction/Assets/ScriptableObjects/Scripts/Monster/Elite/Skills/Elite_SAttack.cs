@@ -39,39 +39,37 @@ public class Elite_SAttack : Elite_Skill
 
     public override void Enter()
     {
-
+        _monster.Ani.SetBool("SAttack", true);
 
         Debug.Log("일반 공격2");
-        Vector3 spawnPoint = _monster.transform.position + new Vector3(_monster.Direction, 1, -1);
-        _monster.Player.GetComponent<Player>().Attack.CreateTempoCircle(_parringTime, _monster.transform, spawnPoint); // 포인트 템포 실행
-        _tempoCircle = _monster.Player.GetComponent<Player>().Attack.PointTempoCircle;
+        CreateTempoCircle();
 
         _monster.OnHitAction += Attack;
         _monster.OnFinishSkill += Finish;
     }
     public override void Stay()
     {
-        if (_tempoCircle.CircleState != Define.CircleState.NONE)
-        {
-            if (_monster.Ani.GetBool("SAttack")) return;
+        if (_tempoCircle == null) return;
 
-            if (Parring())
-            {
-                Finish();
-                return;
-            }
-
-            _monster.Ani.SetBool("SAttack", true);
-        }
-        else
+        if (_tempoCircle.CircleState == Define.CircleState.NONE)
         {
-            if (CheckParringBox())
+            if (CheckParringBox() && _monster.Player.GetComponent<Player>().Attack.PointTempoCircle == null)
             {
                 _tempoCircle.IsAvailable = true;
             }
             else
             {
                 _tempoCircle.IsAvailable = false;
+            }
+        }
+        else
+        {
+            if (Parring())
+            {
+                _monster.Ani.SetBool("SAttack", false);
+
+                _monster.FailTime = 2;
+                _monster.FinishSkill(Define.EliteMonsterState.FAIL);
             }
         }
 
@@ -81,6 +79,25 @@ public class Elite_SAttack : Elite_Skill
     {
         _tempoCircle = null;
         _coolTime = 0;
+    }
+
+    private void CreateTempoCircle()
+    {
+        if (_tempoCircle != null) return;
+
+        //SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_PointTempo_Ready", _player.transform);
+
+        GameObject tempoCircle = ObjectPool.Instance.Spawn("TempoCircle", 0, _monster.transform);
+
+        Vector3 spawnPoint = _monster.transform.position + new Vector3(0, 1, -0.1f);
+        tempoCircle.transform.position = spawnPoint;
+
+        _tempoCircle = tempoCircle.GetComponent<TempoCircle>();
+        _tempoCircle.Init(_monster.Player);           // 템포 원 초기화
+
+        _tempoCircle.ShrinkDuration = _parringTime;        // 탬포 원 시간 값 추가
+
+        _tempoCircle.SetTempoCircleAction(() => { _monster.Player.GetComponent<Player>().Ani.SetTrigger("Parring"); });
     }
 
     private bool CheckParringBox()

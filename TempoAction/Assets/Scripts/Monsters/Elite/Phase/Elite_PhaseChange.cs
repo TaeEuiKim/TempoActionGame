@@ -14,7 +14,6 @@ public class Elite_PhaseChange : Elite_PhaseState
         _manager.Phase2Monster.Stat = _manager.Phase1Monster.Stat;
         _manager.Phase2Monster.Stat = _manager.Phase1Monster.Stat;
 
-        Debug.Log(_manager.Phase2Monster.Stat.Health);
         _manager.Phase2Monster.gameObject.SetActive(true);
         _manager.ChangeStageState(Define.ElitePhaseState.PHASE2);
     }

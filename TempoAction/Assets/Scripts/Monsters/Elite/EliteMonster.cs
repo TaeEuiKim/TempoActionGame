@@ -11,6 +11,13 @@ public class EliteMonster : Monster
     private Dictionary<Define.EliteMonsterState, Elite_State> _stateStroage = new Dictionary<Define.EliteMonsterState, Elite_State>(); // 상태 저장소
     [SerializeField] private Define.EliteMonsterState _currentState = Define.EliteMonsterState.NONE;                                   // 현재 상태
 
+    [Header("그로기")]
+    [SerializeField] private float _groggyTime;
+    [Header("실패")]
+    [SerializeField] private float _failTime;
+    [Header("죽음")]
+    [SerializeField] private float _dieTime;
+
     // 스킬
     [SerializeField] private List<Elite_Skill> _skillStorage = new List<Elite_Skill>();  // 스킬 저장소
     [SerializeField] private Elite_Skill _currentSkill = null;                           // 현재 스킬
@@ -34,6 +41,9 @@ public class EliteMonster : Monster
     #region 프로퍼티
 
     public Define.EliteMonsterState CurrentState { get => _currentState; }
+    public float GroggyTime { get => _groggyTime; set => _groggyTime = value; }
+    public float FailTime { get => _failTime; set => _failTime = value; }
+    public float DieTime { get => _dieTime; set => _dieTime = value; }
     public List<Elite_Skill> SkillStorage { get => _skillStorage; }
     public Elite_Skill CurrentSkill { get => _currentSkill; }
     public List<Elite_Skill> ReadySkills { get => _readySkills; set => _readySkills = value; }
@@ -52,6 +62,8 @@ public class EliteMonster : Monster
         _stateStroage.Add(Define.EliteMonsterState.IDLE, new Elite_Idle(this));
         _stateStroage.Add(Define.EliteMonsterState.USESKILL, new Elite_UseSkill(this));
         _stateStroage.Add(Define.EliteMonsterState.GROGGY, new Elite_Groggy(this));
+        _stateStroage.Add(Define.EliteMonsterState.FAIL, new Elite_Fail(this));
+        _stateStroage.Add(Define.EliteMonsterState.DIE, new Elite_Die(this));
 
         _stat.Initialize();
     }
@@ -73,6 +85,7 @@ public class EliteMonster : Monster
 
     public void Stay()
     {
+        
         if (_currentState != Define.EliteMonsterState.NONE)
         {
             _stateStroage[_currentState]?.Stay();
@@ -83,10 +96,19 @@ public class EliteMonster : Monster
     {
         if (_currentState != Define.EliteMonsterState.NONE)
         {
+            if (_currentState == Define.EliteMonsterState.USESKILL)
+            {
+                ChangeCurrentSkill(Define.EliteMonsterSkill.NONE);
+            }
+
             _stateStroage[_currentState]?.Exit();
         }
         _currentState = state;
-        _stateStroage[_currentState]?.Enter();
+
+        if (_currentState != Define.EliteMonsterState.NONE)
+        {
+            _stateStroage[_currentState]?.Enter();
+        }
     }
 
 

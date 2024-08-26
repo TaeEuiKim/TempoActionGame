@@ -15,6 +15,10 @@ public class Elite_PhaseFinish : Elite_PhaseState
     }
     public override void Stay()
     {
+        if (_manager.Phase2Monster.gameObject.activeSelf)
+        {
+            _manager.Phase2Monster.Stay();
+        }
 
     }
 

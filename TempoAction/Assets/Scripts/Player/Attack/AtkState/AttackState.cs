@@ -33,7 +33,7 @@ public class AttackState : PlayerAttackState
         {
             if (_player.Attack.CurrentTempoData.attackNumber == 3)
             {
-                _player.Attack.CreateTempoCircle(1, _player.transform, _player.transform.position + new Vector3(0, 1, 0));
+                _player.Attack.CreateTempoCircle();
             }
 
         }

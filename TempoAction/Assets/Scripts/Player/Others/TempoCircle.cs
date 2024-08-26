@@ -44,46 +44,48 @@ public class TempoCircle : MonoBehaviour
 
     void Update()
     {
-        if (isShrinking)
+        if (timer >= _shrinkDuration)
         {
-            if (timer >= _shrinkDuration)
+            if (isShrinking)
             {
                 //Debug.Log("Miss!");
                 _circleState = Define.CircleState.MISS;
-                
-                isShrinking = false;
+                OnFailure?.Invoke();
 
+                isShrinking = false;
                 _checkCircle.SetActive(false);
 
                 SpawnFx(_circleState);
-
-                Finish();
-                //Invoke("Finish", 0.5f);              
             }
-            else
-            {
-                timer += Time.deltaTime;
 
+            Finish();
+        }
+        else
+        {
+            timer += Time.deltaTime;
+
+            if (isShrinking)
+            {
                 float scale = Mathf.Lerp(1.0f, 0, timer / _shrinkDuration);
                 _checkCircle.transform.localScale = new Vector3(scale, scale, 1.0f);
                 Player player = _player.GetComponent<Player>();
 
-                if (player.CurrentState != Define.PlayerState.STUN && player.Attack.CurrentAttackkState != Define.AttackState.ATTACK && IsAvailable) 
+                if (player.CurrentState != Define.PlayerState.STUN && player.Attack.CurrentAttackkState != Define.AttackState.ATTACK && IsAvailable)
                 {
-                    
-                    if (Input.GetKeyDown(KeyCode.F))
+
+                    if (_circleState == Define.CircleState.NONE)
                     {
-                        CheckTiming();
+                        if (Input.GetKeyDown(KeyCode.F))
+                        {
+                            CheckTiming();
 
-                        isShrinking = false;
-
-                        Finish();
-                        //Invoke("Finish", 0.5f);
+                            isShrinking = false;
+                        }
                     }
-
                 }
-            }        
+            }
         }
+
     }
 
     // 초기화 함수
@@ -97,11 +99,11 @@ public class TempoCircle : MonoBehaviour
 
         _perfectScale.x = Mathf.Lerp(0, 1, _perfectTime.x / _shrinkDuration);
         _perfectScale.y = Mathf.Lerp(0, 1, _perfectTime.y / _shrinkDuration);
-        _perfectCircle.transform.localScale = new Vector3(_perfectScale.x, _perfectScale.x, _perfectScale.x); ;
+        _perfectCircle.transform.localScale = new Vector3(_perfectScale.x + 0.02f, _perfectScale.x + 0.02f, _perfectScale.x); ;
 
         _goodScale.x = Mathf.Lerp(0, 1, _goodTime.x / _shrinkDuration);
         _goodScale.y = Mathf.Lerp(0, 1, _goodTime.y / _shrinkDuration);
-        _goodCircle.transform.localScale = new Vector3(_goodScale.x, _goodScale.x, _goodScale.x); 
+        _goodCircle.transform.localScale = new Vector3(_goodScale.x + 0.02f, _goodScale.x + 0.02f, _goodScale.x); 
 
         isShrinking = true;
         _circleState = Define.CircleState.NONE;
@@ -117,18 +119,17 @@ public class TempoCircle : MonoBehaviour
         if (_perfectScale.x <= _checkCircle.transform.localScale.x && _checkCircle.transform.localScale.x < _perfectScale.y)
         {
             _circleState = Define.CircleState.PERFECT;
-            //Debug.Log("Perfect!");
+            OnSuccess?.Invoke();
         }
         else if (_goodScale.x <= _checkCircle.transform.localScale.x && _checkCircle.transform.localScale.x < _goodScale.y)
         {
             _circleState = Define.CircleState.GOOD;
-
-            //Debug.Log("Good!");
+            OnSuccess?.Invoke();
         }
         else if(_goodTime.y < _checkCircle.transform.localScale.x || _perfectScale.x > _checkCircle.transform.localScale.x)
         {
             _circleState = Define.CircleState.BAD;
-            //Debug.Log("Bad!");
+            OnFailure?.Invoke();
         }
 
         SpawnFx(_circleState);
@@ -143,20 +144,16 @@ public class TempoCircle : MonoBehaviour
         switch (state)
         {
             case Define.CircleState.PERFECT:
-                temp = Instantiate(_perfectPrefab, _player.position + new Vector3(0, 1, 0), Quaternion.identity);
-                OnSuccess?.Invoke();
+                temp = Instantiate(_perfectPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity);              
                 break;
             case Define.CircleState.GOOD:
-                temp = Instantiate(_goodPrefab, _player.position + new Vector3(0, 1, 0), Quaternion.identity);
-                OnSuccess?.Invoke();
+                temp = Instantiate(_goodPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
                 break;
             case Define.CircleState.BAD:
-                temp = Instantiate(_badPrefab, _player.position + new Vector3(0, 1, 0), Quaternion.identity);
-                OnFailure?.Invoke();
+                temp = Instantiate(_badPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
                 break;
             case Define.CircleState.MISS:
-                temp = Instantiate(_missPrefab, _player.position + new Vector3(0, 1, 0), Quaternion.identity);
-                OnFailure?.Invoke();
+                temp = Instantiate(_missPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
                 break;
         }
       
@@ -172,5 +169,13 @@ public class TempoCircle : MonoBehaviour
         OnSuccess = null;
         OnFailure = null;
         OnFinish = null;
+    }
+
+    public void SetTempoCircleAction(Action success = null, Action Fail = null, Action Finish = null)
+    {
+        // 템포 이벤트 추가
+        OnSuccess += success;
+        OnFailure += Fail;
+        OnFinish += Finish;
     }
 }

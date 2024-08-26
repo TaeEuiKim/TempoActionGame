@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -169,25 +170,25 @@ public class PlayerAttack
     #region 템포 서클
 
     // 템포 원 생성
-    public void CreateTempoCircle(float duration = 1, Transform parent = null, Vector3 position = new Vector3())
+    public void CreateTempoCircle()
     {
         if (PointTempoCircle != null) return;
 
         SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_PointTempo_Ready", _player.transform);
 
-        GameObject tempoCircle = ObjectPool.Instance.Spawn("TempoCircle", 0, parent);
-        tempoCircle.transform.position = new Vector3(position.x, position.y, position.z);
+        GameObject tempoCircle = ObjectPool.Instance.Spawn("TempoCircle", 0, _player.transform);
+        tempoCircle.transform.position = _player.transform.position + new Vector3(0, 1, -0.1f);
 
         PointTempoCircle = tempoCircle.GetComponent<TempoCircle>();
         PointTempoCircle.Init(_player.transform);           // 템포 원 초기화
 
-        PointTempoCircle.ShrinkDuration = duration;        // 탬포 원 시간 값 추가
+        PointTempoCircle.ShrinkDuration = 1;        // 탬포 원 시간 값 추가
 
-        // 템포 이벤트 추가
-        PointTempoCircle.OnSuccess += SuccessTempoCircle;
-        PointTempoCircle.OnFailure += FailureTempoCircle;
-        PointTempoCircle.OnFinish += FinishTempoCircle;
+        PointTempoCircle.SetTempoCircleAction(SuccessTempoCircle, FailureTempoCircle, FinishTempoCircle);
     }
+
+
+   
 
     // 템포 서클 성공
     private void SuccessTempoCircle()

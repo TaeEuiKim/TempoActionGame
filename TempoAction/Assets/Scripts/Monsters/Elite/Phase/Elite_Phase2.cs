@@ -16,7 +16,6 @@ public class Elite_Phase2 : Elite_PhaseState
     }
     public override void Stay()
     {
-        _manager.Phase2Monster.Stay();
 
         if (_manager.Phase2Monster.Stat.Health > 0)
         {
@@ -29,16 +28,18 @@ public class Elite_Phase2 : Elite_PhaseState
                 }
 
             }
+
+            _manager.Phase2Monster.Stay();
         }
         else
         {
             _manager.ChangeStageState(Define.ElitePhaseState.FINISH);
+            _manager.Phase2Monster.ChangeCurrentState(Define.EliteMonsterState.DIE);
         }     
     }
 
     public override void Exit()
     {
-        _manager.Phase2Monster.gameObject.SetActive(false);
     }
 
    

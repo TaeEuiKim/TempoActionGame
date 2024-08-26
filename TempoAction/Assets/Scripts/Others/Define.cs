@@ -79,7 +79,7 @@ public class Define
     }
     public enum EliteMonsterState
     {
-        IDLE, USESKILL, GROGGY, NONE
+        IDLE, USESKILL, GROGGY, FAIL, DIE, NONE
     }
     public enum EliteMonsterSkill
     {

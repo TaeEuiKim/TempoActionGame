@@ -6,10 +6,11 @@ public class EliteMonsterAttack : MonoBehaviour
 {
     [SerializeField] private EliteMonster _monster;
 
-    private void Attack()
+    private void Hit()
     {
         _monster.OnHitAction?.Invoke();
     }
+
 
     private void Finish()
     {

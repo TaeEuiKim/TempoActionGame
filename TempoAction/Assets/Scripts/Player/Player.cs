@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Player : MonoBehaviour
 {
@@ -138,21 +139,12 @@ public class Player : MonoBehaviour
     }
 
     //³Ë¹é ÇÔ¼ö
-    public void Knockback(Vector2 knockbackDirection, float t = 0)
+    public void Knockback(Vector3 point, float t = 0)
     {
-        StartCoroutine(StartKnockBack(knockbackDirection, t));
+        transform.DOMove(point,t);
     }
     // ³Ë¹é ½ÃÀÛ
-    public IEnumerator StartKnockBack(Vector2 knockbackDirection, float t)
-    {
-        _stat.IsKnockedBack = true;
-        GetComponent<Rigidbody>().AddForce(knockbackDirection, ForceMode.Impulse);
-
-        yield return new WaitForSeconds(t);
-
-        GetComponent<Rigidbody>().velocity = Vector2.zero;
-        _stat.IsKnockedBack = false;
-    }
+ 
 
     public void Heal(float value)
     {
