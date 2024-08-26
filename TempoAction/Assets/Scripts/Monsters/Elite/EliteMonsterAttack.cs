@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+
 
 public class EliteMonsterAttack : MonoBehaviour
 {
@@ -15,5 +17,10 @@ public class EliteMonsterAttack : MonoBehaviour
     private void Finish()
     {
         _monster.OnFinishSkill?.Invoke();
+    }
+
+    private void DoMoveX(float value)
+    {
+
     }
 }
