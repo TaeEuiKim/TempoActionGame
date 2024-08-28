@@ -17,9 +17,9 @@ public class Elite_Phase2 : Elite_PhaseState
     public override void Stay()
     {
 
-        if (_manager.Phase2Monster.Stat.Health > 0)
+        if (_manager.Phase2Monster.Stat.Hp > 0)
         {
-            if (_manager.Phase2Monster.Stat.Health <= _manager.TargetHealthList[_manager.TargetHealthIndex])
+            if (_manager.Phase2Monster.Stat.Hp <= _manager.TargetHealthList[_manager.TargetHealthIndex])
             {
                 if (_manager.Phase2Monster.CurrentState == Define.EliteMonsterState.IDLE)
                 {

@@ -13,7 +13,9 @@ public abstract class Elite_State
 
     public abstract void Enter();
 
+
     public abstract void Stay();
 
     public abstract void Exit();
+
 }

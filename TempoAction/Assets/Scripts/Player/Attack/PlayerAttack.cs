@@ -22,7 +22,6 @@ public class PlayerAttack
 
     // 이벤트
     public bool IsHit { get; set; }
-    public List<Monster> HitMonsterList { get; set; }
     public float CheckDelay { get; set; } // 체크 상태 유지 시간
     #endregion
 
@@ -70,7 +69,7 @@ public class PlayerAttack
         PointTempoCircle = null;
 
         IsHit = false;
-        HitMonsterList = new List<Monster>();
+
         CheckDelay = 0;
 
         //플레이어 공격 상태

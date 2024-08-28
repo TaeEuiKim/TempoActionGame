@@ -34,7 +34,7 @@ public class EliteMonster : Monster
     [Header("낙뢰")]
     [SerializeField] private CreatePlatform _createPlatform;
 
-    public Action OnHitAction;
+    public Action OnAttackAction;
     public Action OnFinishSkill;
     #endregion;
 
@@ -55,7 +55,7 @@ public class EliteMonster : Monster
     public CreatePlatform CreatePlatform { get => _createPlatform; }
     #endregion
 
-    protected override void Initialize()
+    protected override void Init()
     {
         _player = FindObjectOfType<Player>().transform;
 
@@ -65,7 +65,7 @@ public class EliteMonster : Monster
         _stateStroage.Add(Define.EliteMonsterState.FAIL, new Elite_Fail(this));
         _stateStroage.Add(Define.EliteMonsterState.DIE, new Elite_Die(this));
 
-        _stat.Initialize();
+        _stat.Init();
     }
 
     public void Enter()
@@ -88,19 +88,15 @@ public class EliteMonster : Monster
         
         if (_currentState != Define.EliteMonsterState.NONE)
         {
-            _stateStroage[_currentState]?.Stay();
+                _stateStroage[_currentState]?.Stay();
         }
     }
 
     public void ChangeCurrentState(Define.EliteMonsterState state)
     {
+
         if (_currentState != Define.EliteMonsterState.NONE)
         {
-            if (_currentState == Define.EliteMonsterState.USESKILL)
-            {
-                ChangeCurrentSkill(Define.EliteMonsterSkill.NONE);
-            }
-
             _stateStroage[_currentState]?.Exit();
         }
         _currentState = state;
@@ -109,6 +105,7 @@ public class EliteMonster : Monster
         {
             _stateStroage[_currentState]?.Enter();
         }
+
     }
 
 
@@ -117,16 +114,10 @@ public class EliteMonster : Monster
     // 스킬이 끝났을 때 사용하는 함수
     public void FinishSkill(Define.EliteMonsterState state = Define.EliteMonsterState.IDLE)
     {
-        _skillStorage.Add(_currentSkill); // 원래 저장소로 이동
-        _currentSkill?.Exit();
-
-        _currentSkill.IsCompleted = false;
-        _currentSkill = null;
+        ChangeCurrentState(state);
 
         OnFinishSkill = null;
-        OnHitAction = null;
-
-        ChangeCurrentState(state);
+        OnAttackAction = null;
     }
 
     // 현재 스킬 교체 함수

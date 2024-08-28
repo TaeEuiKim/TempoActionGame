@@ -6,16 +6,17 @@ using DG.Tweening;
 
 public abstract class Monster : MonoBehaviour
 {
-    private MonsterView _view;
 
-    protected Animator _ani;
-    protected Rigidbody _rb;
-    protected Transform _player;
     [SerializeField] protected MonsterStat _stat;
-
     [SerializeField] protected LayerMask _playerLayer;
     [SerializeField] protected LayerMask _wallLayer;
-    
+    [SerializeField] protected Transform _monsterModel;
+
+    protected Transform _player;
+    private MonsterView _view;
+    protected Animator _ani;
+    protected Rigidbody _rb;
+
     protected float _direction = 1; // 몬스터가 바라보는 방향
 
     public Action OnKnockback;
@@ -23,8 +24,7 @@ public abstract class Monster : MonoBehaviour
     public bool IsGuarded { get; set; } = false;
 
 
-    [SerializeField] protected Transform _monsterModel;
-
+    #region 프로퍼티
     public Animator Ani { get => _ani;  }
     public Rigidbody Rb { get => _rb;  }
     public Transform Player { get => _player; }
@@ -55,6 +55,7 @@ public abstract class Monster : MonoBehaviour
     }
 
     public Transform MonsterModel { get => _monsterModel; }
+    #endregion
 
     private void Awake()
     {
@@ -63,10 +64,10 @@ public abstract class Monster : MonoBehaviour
 
         _view = GetComponent<MonsterView>();
 
-        Initialize();
+        Init();
     }
 
-    protected abstract void Initialize();
+    protected abstract void Init();
 
     // 반전 함수
     public void Flip(float value) 
@@ -86,11 +87,11 @@ public abstract class Monster : MonoBehaviour
     {
         if (IsGuarded)
         {
-            _stat.Health -= value * ((100 - _stat.Defense) / 100);
+            _stat.Hp -= value * ((100 - _stat.Defense) / 100);
         }
         else
         {
-            _stat.Health -= value;
+            _stat.Hp -= value;
         }
         
 
@@ -101,7 +102,7 @@ public abstract class Monster : MonoBehaviour
     #region View
     public void UpdateHealth()
     {
-        _view.UpdateHpBar(_stat.Health / _stat.MaxHealth);
+        _view.UpdateHpBar(_stat.Hp / _stat.MaxHp);
     }
     #endregion
 

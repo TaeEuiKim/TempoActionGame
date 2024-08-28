@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
 
     [SerializeField] private Transform _playerModel;
 
+    public bool IsInvincible { get; set; } = false;
+
     [SerializeField] private Transform _rightSparkPoint;
     [SerializeField] private Transform _leftSparkPoint;
 
@@ -37,6 +39,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] private List<TempoAttackData> _mainTempoAttackDatas;
     [SerializeField] private List<TempoAttackData> _pointTempoAttackDatas;
+
 
     public PlayerStat Stat { get { return _stat; } }
     public PlayerAttack Attack { get { return _attack; } }
@@ -83,7 +86,7 @@ public class Player : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _ani = GetComponentInChildren<Animator>();
 
-        _stat.Initialize();
+        _stat.Init();
     }
 
     private void Start()
@@ -134,7 +137,7 @@ public class Player : MonoBehaviour
     {
         if (_stat.IsKnockedBack) return;
 
-        _stat.Health -= value * ((100 - _stat.Defense) / 100);
+        _stat.Hp -= value * ((100 - _stat.Defense) / 100);
         UpdateHealth();
     }
 
@@ -148,7 +151,7 @@ public class Player : MonoBehaviour
 
     public void Heal(float value)
     {
-        _stat.Health += value;
+        _stat.Hp += value;
         UpdateHealth();
     }
 
@@ -170,7 +173,7 @@ public class Player : MonoBehaviour
     #region View
     public void UpdateHealth()
     {
-        _view.UpdateHpBar(_stat.Health / _stat.MaxHealth);
+        _view.UpdateHpBar(_stat.Hp / _stat.MaxHp);
     }
     public void UpdateStamina()
     {

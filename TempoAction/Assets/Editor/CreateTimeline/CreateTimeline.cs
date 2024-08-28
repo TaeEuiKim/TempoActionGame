@@ -9,11 +9,11 @@ using UnityEngine.UIElements;
 
 public class CreateTimeline : EditorWindow
 {
-    [MenuItem("Tools/Create Timeline")]
+    [MenuItem("Tools/Create Player Timeline")]
     public static void Create()
     {
         Transform spawnPoint = FindObjectOfType<TimelineManager>().transform;
-        GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Timeline/TempTimeline.prefab");
+        GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Prefabs/Timeline/TempTimeline.prefab");
         Instantiate(prefab, spawnPoint);
     }
 }

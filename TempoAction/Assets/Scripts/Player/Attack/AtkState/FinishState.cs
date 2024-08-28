@@ -18,8 +18,6 @@ public class FinishState : PlayerAttackState
     {
         _player.Ani.SetBool("FinishState", true);
 
-        _player.Attack.HitMonsterList.Clear(); // 공격 받은 적 리스트 비우기
-
         _player.Attack.ResetMainTempoQueue(); // 메인 템포 큐 초기화
 
     }

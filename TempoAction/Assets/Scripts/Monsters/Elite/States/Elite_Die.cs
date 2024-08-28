@@ -31,7 +31,6 @@ public class Elite_Die : Elite_State
     }
     public override void Exit()
     {
-        
         _monster.Ani.SetBool("Die", false);
         timer = 0;
     }

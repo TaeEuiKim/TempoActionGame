@@ -18,6 +18,8 @@ public class ElectricBall : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            if (other.GetComponent<Player>().IsInvincible) return;
+
             other.GetComponent<Player>().TakeDamage(TotalDamage);
 
             GameObject explosion = ObjectPool.Instance.Spawn("ElectricBallExplosion");

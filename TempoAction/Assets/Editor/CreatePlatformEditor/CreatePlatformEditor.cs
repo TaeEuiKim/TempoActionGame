@@ -16,7 +16,8 @@ public class CreatePlatformEditor : Editor
     [MenuItem("Tools/Create Platform")]
     public static void Create()
     {
-        GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Buff/Platform/TempPlatform.prefab");
+        
+        GameObject prefab = Resources.Load<GameObject>("Prefabs/Buff/Platform/TempPlatform");
         Instantiate(prefab);
     }
 

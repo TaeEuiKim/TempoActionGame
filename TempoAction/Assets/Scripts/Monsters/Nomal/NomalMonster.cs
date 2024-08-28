@@ -89,14 +89,14 @@ public class NomalMonster : Monster
 
     #endregion
 
-    protected override void Initialize()
+    protected override void Init()
     {
         _nomalMonsterView = GetComponent<INomalMonsterView>();
 
         _rb = GetComponent<Rigidbody>();
         _player = FindObjectOfType<Player>().transform;
 
-        _stat.Initialize();
+        _stat.Init();
     }
     private void Start()
     {
@@ -106,7 +106,7 @@ public class NomalMonster : Monster
 
         CurrentPerceptionState = Define.PerceptionType.PATROL;
 
-        _stat.Health = _stat.MaxHealth;
+        _stat.Hp = _stat.MaxHp;
 
         // 넉백 시 실행하는 이벤트
         OnKnockback += () =>

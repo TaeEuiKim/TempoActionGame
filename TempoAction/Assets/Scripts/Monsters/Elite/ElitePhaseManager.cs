@@ -32,9 +32,9 @@ public class ElitePhaseManager : MonoBehaviour
 
     private void Start()
     {
-        _targetHealthList.Add(_phase1Monster.Stat.MaxHealth * 0.5f);
-        _targetHealthList.Add(_phase1Monster.Stat.MaxHealth * 0.3f);
-        _targetHealthList.Add(_phase1Monster.Stat.MaxHealth * 0.1f);
+        _targetHealthList.Add(_phase1Monster.Stat.MaxHp * 0.5f);
+        _targetHealthList.Add(_phase1Monster.Stat.MaxHp * 0.3f);
+        _targetHealthList.Add(_phase1Monster.Stat.MaxHp * 0.1f);
         _targetHealthList.Add(0);
 
         _phase2Monster.gameObject.SetActive(false);

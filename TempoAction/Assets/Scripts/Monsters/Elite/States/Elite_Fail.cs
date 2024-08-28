@@ -14,7 +14,6 @@ public class Elite_Fail : Elite_State
     public override void Enter()
     {
         _monster.Ani.SetBool("Fail", true);
-        //CoroutineRunner.Instance.StartCoroutine(StartFailAnimation());
     }
     public override void Stay()
     {

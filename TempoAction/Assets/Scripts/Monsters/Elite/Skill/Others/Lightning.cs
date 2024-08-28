@@ -12,6 +12,8 @@ public class Lightning : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            if (other.GetComponent<Player>().IsInvincible) return;
+
             other.GetComponent<Player>().TakeDamage(TotalDamage);
         }
     }
