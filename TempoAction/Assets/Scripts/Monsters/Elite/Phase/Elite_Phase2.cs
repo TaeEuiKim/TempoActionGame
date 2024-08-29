@@ -33,6 +33,8 @@ public class Elite_Phase2 : Elite_PhaseState
         }
         else
         {
+            _manager.Phase2Monster.FinishSkill();
+
             _manager.ChangeStageState(Define.ElitePhaseState.FINISH);
             _manager.Phase2Monster.ChangeCurrentState(Define.EliteMonsterState.DIE);
         }     

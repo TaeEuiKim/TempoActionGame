@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
-
+/// <summary>
+/// ±¸Çö X
+/// </summary>
 [CreateAssetMenu(fileName = "Explosion", menuName = "ScriptableObjects/EliteMonster/Skill/Explosion", order = 1)]
 public class Elite_Explosion : Elite_Skill
 {
