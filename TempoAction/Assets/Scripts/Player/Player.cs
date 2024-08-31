@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Player : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class Player : MonoBehaviour
 
     [SerializeField] private Transform _playerModel;
 
+    public bool IsInvincible { get; set; } = false;
+
     [SerializeField] private Transform _rightSparkPoint;
     [SerializeField] private Transform _leftSparkPoint;
 
@@ -26,6 +29,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _groundCheckRadius = 0.2f;
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private LayerMask _wallLayer;
+    [SerializeField] private LayerMask _blockLayer;
 
     [Header("°ø°Ý")]
     [SerializeField] private Transform _hitPoint;
@@ -33,7 +37,9 @@ public class Player : MonoBehaviour
     [SerializeField] private Vector3 _colliderSize;
     [SerializeField] private LayerMask _monsterLayer;
 
-    [SerializeField] private List<TempoAttackData> _tempoAttackDatas;
+    [SerializeField] private List<TempoAttackData> _mainTempoAttackDatas;
+    [SerializeField] private List<TempoAttackData> _pointTempoAttackDatas;
+
 
     public PlayerStat Stat { get { return _stat; } }
     public PlayerAttack Attack { get { return _attack; } }
@@ -61,12 +67,14 @@ public class Player : MonoBehaviour
     public float GroundCheckRadius { get => _groundCheckRadius; }
     public LayerMask GroundLayer { get => _groundLayer; }
     public LayerMask WallLayer { get => _wallLayer; }
+    public LayerMask BlockLayer { get => _blockLayer; }
 
     public Transform HitPoint { get => _hitPoint; }
     public Transform EndPoint { get => _endPoint; }
     public Vector3 ColliderSize { get => _colliderSize; }
     public LayerMask MonsterLayer { get => _monsterLayer; }
-    public List<TempoAttackData> TempoAttackDatas { get => _tempoAttackDatas; }
+    public List<TempoAttackData> MainTempoAttackDatas { get => _mainTempoAttackDatas; }
+    public List<TempoAttackData> PointTempoAttackDatas { get => _pointTempoAttackDatas; }
 
     private void Awake()
     {
@@ -78,7 +86,7 @@ public class Player : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _ani = GetComponentInChildren<Animator>();
 
-        _stat.Initialize();
+        _stat.Init();
     }
 
     private void Start()
@@ -99,6 +107,7 @@ public class Player : MonoBehaviour
         switch (_currentState)
         {
             case Define.PlayerState.STUN:
+                _rb.velocity = new Vector2(0, _rb.velocity.y);
                 //_attack.ChangeCurrentAttackState(Define.AttackState.FINISH);
                 break;
             case Define.PlayerState.OVERLOAD:
@@ -116,11 +125,11 @@ public class Player : MonoBehaviour
     {
         if (value)
         {
-            return _stat.Damage + _attack.CurrentAttackTempoData.maxDamage;
+            return _stat.Damage + _attack.CurrentTempoData.maxDamage;
         }
         else
         {
-            return _stat.Damage + _attack.CurrentAttackTempoData.minDamage;
+            return _stat.Damage + _attack.CurrentTempoData.minDamage;
         }   
     }
 
@@ -128,30 +137,21 @@ public class Player : MonoBehaviour
     {
         if (_stat.IsKnockedBack) return;
 
-        _stat.Health -= value * ((100 - _stat.Defense) / 100);
+        _stat.Hp -= value * ((100 - _stat.Defense) / 100);
         UpdateHealth();
     }
 
     //³Ë¹é ÇÔ¼ö
-    public void Knockback(Vector2 knockbackDirection, float t = 0)
+    public void Knockback(Vector3 point, float t = 0)
     {
-        StartCoroutine(StartKnockBack(knockbackDirection, t));
+        transform.DOMove(point,t);
     }
     // ³Ë¹é ½ÃÀÛ
-    public IEnumerator StartKnockBack(Vector2 knockbackDirection, float t)
-    {
-        _stat.IsKnockedBack = true;
-        GetComponent<Rigidbody>().AddForce(knockbackDirection, ForceMode.Impulse);
-
-        yield return new WaitForSeconds(t);
-
-        GetComponent<Rigidbody>().velocity = Vector2.zero;
-        _stat.IsKnockedBack = false;
-    }
+ 
 
     public void Heal(float value)
     {
-        _stat.Health += value;
+        _stat.Hp += value;
         UpdateHealth();
     }
 
@@ -173,7 +173,7 @@ public class Player : MonoBehaviour
     #region View
     public void UpdateHealth()
     {
-        _view.UpdateHpBar(_stat.Health / _stat.MaxHealth);
+        _view.UpdateHpBar(_stat.Hp / _stat.MaxHp);
     }
     public void UpdateStamina()
     {

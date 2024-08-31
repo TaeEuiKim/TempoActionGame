@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,37 +13,23 @@ public class PlayerAttack
     private Define.AttackState _currentAttackState;
     private Dictionary<Define.AttackState, PlayerAttackState> _attackStateStorage;
 
-    private int _attackIndex;
+    private Queue<TempoAttackData> _mainTempoQueue;
+    private TempoAttackData _currentTempoData;
 
     private int _upgradeCount;
+
     public TempoCircle PointTempoCircle { get; set; }
 
     // 이벤트
     public bool IsHit { get; set; }
-    public List<Monster> HitMonsterList { get; set; }
     public float CheckDelay { get; set; } // 체크 상태 유지 시간
     #endregion
 
     #region 프로퍼티
 
     public Define.AttackState CurrentAttackkState { get => _currentAttackState; }
-    public int AttackIndex
-    {
-        get
-        {
-            return _attackIndex;
-        }
-        set
-        {
-            _attackIndex = value;
-
-           
-
-            _player.Ani.SetInteger("AtkCount", _attackIndex);
-            
-        }
-    }
-    public TempoAttackData CurrentAttackTempoData { get=> _player.TempoAttackDatas[_attackIndex]; }// 현재 템포 데이터 
+  
+    public TempoAttackData CurrentTempoData { get=> _currentTempoData; }// 현재 템포 데이터 
     public int UpgradeCount
     {
         get => _upgradeCount;
@@ -50,6 +37,15 @@ public class PlayerAttack
         {
             _upgradeCount = value;
             _upgradeCount = _upgradeCount % 4;
+
+            if (_upgradeCount == 3)
+            {
+                _player.Ani.SetBool("IsUpgraded", true);
+            }
+            else
+            {
+                _player.Ani.SetBool("IsUpgraded", false);
+            }
 
             _player.UpdateUpgradeCount();
         }
@@ -65,13 +61,15 @@ public class PlayerAttack
     {
         _currentAttackState = Define.AttackState.FINISH;
         _attackStateStorage = new Dictionary<Define.AttackState, PlayerAttackState>();
-        
-        _attackIndex = 0;
+
+        _mainTempoQueue = new Queue<TempoAttackData>();
+        _currentTempoData = null;
+
         _upgradeCount = 0;
         PointTempoCircle = null;
 
         IsHit = false;
-        HitMonsterList = new List<Monster>();
+
         CheckDelay = 0;
 
         //플레이어 공격 상태
@@ -83,6 +81,8 @@ public class PlayerAttack
         {
             storage.Value.Initialize();
         }
+
+        ResetMainTempoQueue();
     }
 
     public void Update()
@@ -96,9 +96,10 @@ public class PlayerAttack
             }
         }
 
-        // 공격 키 입력
-        if (_currentAttackState != Define.AttackState.ATTACK) 
-        {
+       
+        if (_currentAttackState != Define.AttackState.ATTACK)
+        { 
+            // 공격 키 입력
             if (Input.GetKeyDown(KeyCode.A))
             {
                 AttackMainTempo();
@@ -115,25 +116,31 @@ public class PlayerAttack
         _attackStateStorage[_currentAttackState]?.Enter();
     }
 
-    public bool CheckCurrentTempoType(Define.TempoType type)
-    {
-        if (CurrentAttackTempoData.type == type)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
 
     #region 메인 템포
     public void AttackMainTempo() // 공격 실행
     {
-        if (_player.Attack.PointTempoCircle != null) return;
-
         if (_player.Ani.GetBool("isGrounded"))
-        {
+        {         
+            _currentTempoData = _mainTempoQueue.Dequeue();
+
             ChangeCurrentAttackState(Define.AttackState.ATTACK);
+
+            // 큐가 비어있으면 초기화
+            if (_mainTempoQueue.Count == 0)
+            {
+                ResetMainTempoQueue();
+            }
+        }
+    }
+
+    public void ResetMainTempoQueue()
+    {
+        _mainTempoQueue.Clear();
+
+        foreach (TempoAttackData data in _player.MainTempoAttackDatas)
+        {
+            _mainTempoQueue.Enqueue(data);
         }
     }
 
@@ -141,64 +148,68 @@ public class PlayerAttack
 
     #region 포인트 템포
 
-    // 포인트 템포 성공
-    private void SuccessTempoCircle() 
+    // 포인트 템포 실행
+    public void AttackPointTempo()
     {
-        if (_upgradeCount == 3) // 포인트 템포 업그레이트 확인
+        // 포인트 템포 업그레이드 상태 확인
+        if (_player.Ani.GetBool("IsUpgraded"))
         {
-            AttackIndex = 5;
-            _player.Ani.SetBool("IsUpgraded", true);
+            _currentTempoData = _player.PointTempoAttackDatas[1];
         }
         else
         {
-            AttackIndex = 4;
-            _player.Ani.SetBool("IsUpgraded", false);
+            _currentTempoData = _player.PointTempoAttackDatas[0];
         }
 
         _player.Ani.SetTrigger("PointTempo");
-
         ChangeCurrentAttackState(Define.AttackState.ATTACK);
     }
+    #endregion
 
-    // 포인트 템포 실패
-    private void FailureTempoCircle()
-    {
-        _player.Attack.PointTempoCircle = null;
-        ChangeCurrentAttackState(Define.AttackState.FINISH);
-    }
-
-    // 템포 원 끝
-    private void FinishTempoCircle() 
-    {
-        
-    }
+    #region 템포 서클
 
     // 템포 원 생성
-    public void CreateTempoCircle(float duration = 1, Transform parent = null, Vector3 position = new Vector3()) 
+    public void CreateTempoCircle()
     {
+        if (PointTempoCircle != null) return;
+
         SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_PointTempo_Ready", _player.transform);
 
-        if (_player.Attack.PointTempoCircle == null)
-        {
-            GameObject tempoCircle = ObjectPool.Instance.Spawn("TempoCircle", 0, parent);
-            tempoCircle.transform.position = new Vector3(position.x, position.y, position.z);
+        GameObject tempoCircle = ObjectPool.Instance.Spawn("TempoCircle", 0, _player.transform);
+        tempoCircle.transform.position = _player.transform.position + new Vector3(0, 1, -0.1f);
 
-            _player.Attack.PointTempoCircle = tempoCircle.GetComponent<TempoCircle>();
-            _player.Attack.PointTempoCircle.Init(_player.transform);           // 템포 원 초기화
+        PointTempoCircle = tempoCircle.GetComponent<TempoCircle>();
+        PointTempoCircle.Init(_player.transform);           // 템포 원 초기화
 
-            _player.Attack.PointTempoCircle.ShrinkDuration = duration;        // 탬포 원 시간 값 추가
+        PointTempoCircle.ShrinkDuration = 1;        // 탬포 원 시간 값 추가
 
-            // 템포 이벤트 추가
-            _player.Attack.PointTempoCircle.OnSuccess += SuccessTempoCircle;
-            _player.Attack.PointTempoCircle.OnFailure += FailureTempoCircle;
-            _player.Attack.PointTempoCircle.OnFinish += FinishTempoCircle;
-        }
+        PointTempoCircle.SetTempoCircleAction(SuccessTempoCircle, FailureTempoCircle, FinishTempoCircle);
+    }
+
+
+   
+
+    // 템포 서클 성공
+    private void SuccessTempoCircle()
+    {
+        AttackPointTempo();
+        ResetMainTempoQueue();
+    }
+
+    // 템포 서클 실패
+    private void FailureTempoCircle()
+    {
+        PointTempoCircle = null;
+        _player.Attack.ChangeCurrentAttackState(Define.AttackState.FINISH);
+    }
+
+    // 템포 서클 끝
+    private void FinishTempoCircle()
+    {
 
     }
     #endregion
 
 
-    
 
-   
 }

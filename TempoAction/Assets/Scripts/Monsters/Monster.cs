@@ -6,33 +6,31 @@ using DG.Tweening;
 
 public abstract class Monster : MonoBehaviour
 {
-    private MonsterView _view;
 
-    protected Rigidbody _rb;
-    protected Transform _player;
     [SerializeField] protected MonsterStat _stat;
-
     [SerializeField] protected LayerMask _playerLayer;
     [SerializeField] protected LayerMask _wallLayer;
-    
+    [SerializeField] protected Transform _monsterModel;
+
+    protected Transform _player;
+    private MonsterView _view;
+    protected Animator _ani;
+    protected Rigidbody _rb;
+
     protected float _direction = 1; // 몬스터가 바라보는 방향
 
-    protected bool _canKnockback; // true =  넉백 가능한 몬스터, false = 넉백 불가능한 몬스터
-    private float _knockBackTimer = 0;
     public Action OnKnockback;
 
-    public bool IsKnockBack { get; set; } = false;
-    public bool IsStunned { get; set; } = false;
-
-    public Action OnPointTempo;
+    public bool IsGuarded { get; set; } = false;
 
 
-    public Rigidbody Rb { get { return _rb; } }
+    #region 프로퍼티
+    public Animator Ani { get => _ani;  }
+    public Rigidbody Rb { get => _rb;  }
     public Transform Player { get => _player; }
-    public MonsterStat Stat { get { return _stat; } }
+    public MonsterStat Stat { get => _stat; set => _stat = value; }
     public LayerMask PlayerLayer { get => _playerLayer; }
     public LayerMask WallLayer { get => _wallLayer; }
-    public bool CanKnockback { get => _canKnockback; }
     public float Direction
     {
         get => _direction;
@@ -56,77 +54,55 @@ public abstract class Monster : MonoBehaviour
         }
     }
 
+    public Transform MonsterModel { get => _monsterModel; }
+    #endregion
+
     private void Awake()
     {
+        _rb = GetComponent<Rigidbody>();
+        _ani = GetComponentInChildren<Animator>();
+
         _view = GetComponent<MonsterView>();
 
-        Initialize();
+        Init();
     }
 
-    protected abstract void Initialize();
+    protected abstract void Init();
 
     // 반전 함수
     public void Flip(float value) 
     {
-        transform.GetChild(0).localScale = new Vector3(value, 1, 1);
+        Vector3 tempScale = transform.GetChild(0).localScale;
+
+        if (value * tempScale.x < 0)
+        {
+            tempScale.x *= -1;
+        }
+
+        transform.GetChild(0).localScale = tempScale;
+
     }
 
-    public void TakeDamage(float value, bool isPointTempo = false)
+    public void TakeDamage(float value)
     {
-        _stat.Health -= value * ((100 - _stat.Defense) / 100);
-
-        if (isPointTempo)
+        if (IsGuarded)
         {
-            OnPointTempo?.Invoke();
+            _stat.Hp -= value * ((100 - _stat.Defense) / 100);
         }
+        else
+        {
+            _stat.Hp -= value;
+        }
+        
 
         UpdateHealth();
     }
 
-    // 넉백 위치에 사용하는 이벤트 함수
-    public void KnockBack(Vector2 hitPoint, Vector2 endPoint)
-    {
-        Vector2 distance = (Vector2)transform.position - hitPoint;
-        Vector2 ep = endPoint + distance;
-
-        _knockBackTimer = 0;
-        IsKnockBack = true;
-
-
-        transform.DOMove(ep, 0.2f).OnComplete(() =>
-        {
-           IsKnockBack = false;
-
-            if (!IsStunned)
-            {
-                StartCoroutine(Stun());
-
-            }
-
-        });
-
-
-    }
-
-    // 넉백 후 잠시 스턴 
-    private IEnumerator Stun()
-    {
-        IsStunned = true;
-        while (_knockBackTimer < 0.5f)
-        {
-            _knockBackTimer += Time.deltaTime;
-
-            yield return null;
-        }
-        IsStunned = false;
-
-        OnKnockback?.Invoke();
-    }
 
     #region View
     public void UpdateHealth()
     {
-        _view.UpdateHpBar(_stat.Health / _stat.MaxHealth);
+        _view.UpdateHpBar(_stat.Hp / _stat.MaxHp);
     }
     #endregion
 

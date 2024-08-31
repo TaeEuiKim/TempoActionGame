@@ -83,6 +83,7 @@ public class CreatePlatform : MonoBehaviour
        
     }
 
+#if UNITY_EDITOR
     // 초기 플랫폼 생성 함수(에디터 상에서 사용)
     public void Create()
     {
@@ -116,6 +117,7 @@ public class CreatePlatform : MonoBehaviour
             Undo.DestroyObjectImmediate(transform.GetChild(i).gameObject);
         }
     }
+#endif
 
     // 다음 플랫폼 정보로 교체 함수
     private void ChangeToNext() 

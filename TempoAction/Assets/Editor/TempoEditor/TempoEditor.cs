@@ -51,7 +51,7 @@ public class TempoEditor : EditorWindow
     private void AddData(string name)
     {
 
-        string[] datas = Directory.GetFiles("Assets/ScriptableObjects/TempoAttackDatas", $"{name}.asset",
+        string[] datas = Directory.GetFiles("Assets/Resources/ScriptableObjects/TempoAttackDatas", $"{name}.asset",
             SearchOption.AllDirectories);
 
         foreach (string data in datas)

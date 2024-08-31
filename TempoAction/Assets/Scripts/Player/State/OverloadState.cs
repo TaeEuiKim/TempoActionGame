@@ -20,9 +20,8 @@ public class OverloadState : PlayerState
     {      
         if (timer < _player.Stat.StunDelay)
         {
-            if (!_player.Attack.CheckCurrentTempoType(Define.TempoType.POINT))
-            {
-                
+            if (_player.Attack.CurrentTempoData.type == Define.TempoType.MAIN)
+            {               
                // Debug.Log("과부화 시간 측정중.....");
                 timer += Time.deltaTime;
             }

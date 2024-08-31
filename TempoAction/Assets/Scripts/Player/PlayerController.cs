@@ -9,16 +9,31 @@ public class PlayerController
     private bool _isLanded;
     private bool _isGrounded;
     private bool _isDashing;
-    private bool _facingRight;
 
-    private float _moveInput;
+
     private float _dashTimer;
-    
-    public float Direction 
+    protected float _direction;
+    protected float _dashDirection;
+    public float Direction
     {
-        get
+        get => _direction;
+        set
         {
-            return _facingRight ? 1 : -1; 
+            if (value > 0)
+            {
+                value = 1;
+            }
+            else if (value < 0)
+            {
+                value = -1;
+            }
+
+            if (_direction != value)
+            {
+                Flip(value);
+            }
+
+            _direction = value;
         }
     }
 
@@ -32,9 +47,8 @@ public class PlayerController
         _isLanded = false;
         _isGrounded = true;
         _isDashing = false;
-        _facingRight = true;
 
-        _moveInput = 0f;
+        _dashDirection = 1;
         _dashTimer = 0f;
 
         _dashTimer = _player.Stat.DashDelay;
@@ -47,7 +61,7 @@ public class PlayerController
 
         if (_player.Attack.CurrentAttackkState == Define.AttackState.ATTACK)
         {
-            _player.Rb.velocity = new Vector2(0, _player.Rb.velocity.y);
+            Stop();
 
             return;
         }
@@ -90,32 +104,38 @@ public class PlayerController
 
     private void Move()
     {
-        _moveInput = 0;
+        
+
+        _direction = 0;
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            _moveInput = -1f;
+            Direction = -1f;
+            _dashDirection = -1f;
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            _moveInput = 1f;
+            Direction = 1f;
+            _dashDirection = 1f;
         }
 
-        Vector2 tempVelocity = new Vector2(_moveInput * _player.Stat.SprintSpeed, _player.Rb.velocity.y);
+        if (!CheckMovePath())
+        {
+            _player.Rb.velocity = new Vector2(0, _player.Rb.velocity.y);
+            if (_direction == 0)
+            {
+                _player.Ani.SetFloat("Speed", 0);
+            }
+            return;
+        }
+
+
+        Vector2 tempVelocity = new Vector2(_direction * _player.Stat.SprintSpeed, _player.Rb.velocity.y);
 
         _player.Ani.SetFloat("Speed", Mathf.Abs(tempVelocity.x));
 
 
         _player.Rb.velocity = tempVelocity;
-
-        if (_moveInput > 0 && !_facingRight)
-        {
-            Flip();
-        }
-        else if (_moveInput < 0 && _facingRight)
-        {
-            Flip();
-        }
     }
 
 
@@ -140,24 +160,28 @@ public class PlayerController
 
     private void Dash()
     {
+        _player.Rb.velocity = Vector2.zero;
+
         _isDashing = true;
         _player.GetComponent<Collider>().enabled = false; 
         Vector3 dashPosition = Vector3.zero;
 
         RaycastHit hit;
-        if (Physics.Raycast(_player.transform.position, Vector3.right * Direction, out hit, _player.Stat.DashDistance, _player.WallLayer)) // 벽이 있다면 벽과의 충돌 위치 바로 앞에서 멈추게 설정
+        if (Physics.Raycast(_player.transform.position, Vector3.right * _dashDirection, out hit, _player.Stat.DashDistance, _player.WallLayer)) // 벽이 있다면 벽과의 충돌 위치 바로 앞에서 멈추게 설정
         {            
-            dashPosition = hit.point - (Vector3.right * Direction) * 0f;  // 곱하는 수 만큼 벽에서 떨어짐
+            dashPosition = hit.point - (Vector3.right * _dashDirection) * 0f;  // 곱하는 수 만큼 벽에서 떨어짐
         }
         else  // 벽이 없으면 대쉬 거리만큼 앞으로 이동
         {      
-            dashPosition = _player.transform.position + (Vector3.right * Direction) * _player.Stat.DashDistance;
+            dashPosition = _player.transform.position + (Vector3.right * _dashDirection) * _player.Stat.DashDistance;
         }
+
 
         _player.Rb.DOMove(dashPosition, _player.Stat.DashDuration).SetEase(Ease.OutQuad).OnComplete(() =>
         {
             _isDashing = false;
             _player.GetComponent<Collider>().enabled = true;
+           
         });
 
         _player.Ani.SetTrigger("Dash");
@@ -165,11 +189,34 @@ public class PlayerController
         _dashTimer = 0;
     }
 
-    private void Flip()
+    private void Stop()
     {
-        _facingRight = !_facingRight;
-        float scaleX = _facingRight ? 1 : -1;
-        _player.PlayerModel.localScale = new Vector3(scaleX, 1, 1);
+        _player.Rb.velocity = new Vector2(0, _player.Rb.velocity.y);
     }
 
+    private void Flip(float value)
+    {
+        Vector3 tempScale = _player.PlayerModel.localScale;
+
+        if (value * tempScale.x < 0)
+        {
+            tempScale.x *= -1;
+        }
+
+        _player.PlayerModel.localScale = tempScale;
+    }
+    private bool CheckMovePath()
+    {
+        // 레이캐스트로 장애물 감지
+        RaycastHit hit;
+        if (Physics.Raycast(_player.transform.position, Vector2.right * _dashDirection, out hit, 0.5f, _player.BlockLayer))
+        {
+            // 장애물이 레이캐스트 범위 안에 있음
+            //Debug.Log("장애물 감지: " + hit.collider.name);
+            return false;
+        }
+
+        // 장애물이 없음
+        return true;
+    }
 }
