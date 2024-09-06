@@ -11,6 +11,7 @@ public class CameraController : MonoBehaviour
     public GameObject player;
     public GameObject doorObj;
     public Image fadePanel;
+    public GameObject spawnPoint;
 
     private Quaternion saveCameraRotation;
 
@@ -47,12 +48,11 @@ public class CameraController : MonoBehaviour
             fadePanel.color = new Color(0, 0, 0, Mathf.Lerp(1f, 0f, elapsedTime / fadedTime));
             elapsedTime += Time.deltaTime;
 
-            Debug.Log("FadeIn Áß...");
             yield return null;
         }
 
+        camera.LookAt = player.transform;
         fadePanel.color = new Color(0, 0, 0, 0);
-        Debug.Log("FadeIn ³¡");
         yield break;
     }
 
@@ -71,7 +71,21 @@ public class CameraController : MonoBehaviour
         }
 
         fadePanel.color = new Color(0, 0, 0, 1);
-        Debug.Log("FadeOut ³¡");
+
+        camera.LookAt = null;
+        player.transform.position = spawnPoint.transform.position;
+
+        elapsedTime = 0;
+        while (elapsedTime <= fadedTime)
+        {
+
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        StartCoroutine(FadeIn());
+
         yield break;
     }
 

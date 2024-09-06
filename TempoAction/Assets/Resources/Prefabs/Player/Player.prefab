@@ -3484,6 +3484,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4898430924445477382}
+  - component: {fileID: 4430779658894787962}
   - component: {fileID: 1821627459735449073}
   - component: {fileID: 7657217239667461207}
   - component: {fileID: 2794289016763969858}
@@ -3514,6 +3515,21 @@ Transform:
   - {fileID: 2644814315565159814}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4430779658894787962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5513155559230452658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cef376f3053372d4d98d9461d0e0b06c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hpBarImage: {fileID: 0}
+  _staminaBarImage: {fileID: 0}
+  _upgradeCountSlider: {fileID: 0}
 --- !u!114 &1821627459735449073
 MonoBehaviour:
   m_ObjectHideFlags: 0
