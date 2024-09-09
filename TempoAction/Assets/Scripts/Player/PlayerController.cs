@@ -104,8 +104,6 @@ public class PlayerController
 
     private void Move()
     {
-        
-
         _direction = 0;
 
         if (Input.GetKey(KeyCode.LeftArrow))
@@ -122,6 +120,7 @@ public class PlayerController
         if (!CheckMovePath())
         {
             _player.Rb.velocity = new Vector2(0, _player.Rb.velocity.y);
+
             if (_direction == 0)
             {
                 _player.Ani.SetFloat("Speed", 0);
@@ -129,11 +128,18 @@ public class PlayerController
             return;
         }
 
+        Vector3 tempVelocity = new Vector3();
 
-        Vector2 tempVelocity = new Vector2(_direction * _player.Stat.SprintSpeed, _player.Rb.velocity.y);
-
-        _player.Ani.SetFloat("Speed", Mathf.Abs(tempVelocity.x));
-
+        if (_player.isTurn)
+        {
+            tempVelocity = new Vector3(0, _player.Rb.velocity.y, _direction * _player.Stat.SprintSpeed);
+            _player.Ani.SetFloat("Speed", Mathf.Abs(tempVelocity.z));
+        }
+        else
+        {
+            tempVelocity = new Vector2(_direction * _player.Stat.SprintSpeed, _player.Rb.velocity.y);
+            _player.Ani.SetFloat("Speed", Mathf.Abs(tempVelocity.x));
+        }
 
         _player.Rb.velocity = tempVelocity;
     }

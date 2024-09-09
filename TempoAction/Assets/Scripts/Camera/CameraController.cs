@@ -7,13 +7,30 @@ using Unity.VisualScripting;
 
 public class CameraController : MonoBehaviour
 {
-    public CinemachineVirtualCamera camera;
     public GameObject player;
     public GameObject doorObj;
     public Image fadePanel;
     public GameObject spawnPoint;
 
+    [Header("카메라")]
+    [SerializeField] CinemachineVirtualCamera camera;
+    [SerializeField] CinemachineVirtualCamera playerCamera;
+
+    [Header("카메라 관련 변수")]
+    [SerializeField] Vector3 startFollowOffset;
+    [SerializeField] Vector3 startTrackObjectOffset;
+
+    [Header("카메라 쉐이킹 변수")]
+    [SerializeField] float shakeTime = 0f;
+    [SerializeField] float Impulse;
+    [SerializeField] float Frequency;
+
     private Quaternion saveCameraRotation;
+
+    private void Start()
+    {
+        //SetStartCameraSetting();
+    }
 
     public void TurnOnFadeOut()
     {
@@ -27,14 +44,24 @@ public class CameraController : MonoBehaviour
             StartCoroutine(FadeIn());
         }
 
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            RepairCamera();
+        }
+
         if (Input.GetKeyDown(KeyCode.V))
         {
-            SetFollowObject(doorObj);
+            SetFollowLookObject(doorObj);
         }
 
         if (Input.GetKeyDown(KeyCode.B))
         {
-            SetFollowPlayer();
+            SetFollowLookPlayer();
+        }
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            VibrateForTime(0.5f);
         }
     }
 
@@ -89,17 +116,52 @@ public class CameraController : MonoBehaviour
         yield break;
     }
 
-    private void SetFollowObject(GameObject obj)
+    private void SetFollowLookObject(GameObject obj)
     {
         saveCameraRotation = camera.transform.rotation;
         camera.m_LookAt = obj.transform;
         camera.m_Lens.FieldOfView = 70;
     }
 
-    private void SetFollowPlayer()
+    private void SetFollowLookPlayer()
     {
         camera.m_LookAt = player.transform;
         camera.transform.rotation = saveCameraRotation;
         camera.m_Lens.FieldOfView = 57;
+    }
+
+    private void SetStartCameraSetting()
+    {
+        camera.gameObject.SetActive(false);
+        playerCamera.gameObject.SetActive(true);
+    }
+
+    private void RepairCamera()
+    {
+        playerCamera.gameObject.SetActive(false);
+        camera.gameObject.SetActive(true);
+    }
+
+    // 카메라 쉐이킹
+    public void VibrateForTime(float times)
+    {
+        camera.m_LookAt = null;
+        shakeTime = times;
+        StartCoroutine(CameraShaking());
+    }
+
+    IEnumerator CameraShaking()
+    {
+        while (shakeTime > 0)
+        {
+            shakeTime -= Time.deltaTime;
+            camera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = Frequency;
+            camera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = Impulse;
+            yield return 0;
+        }
+        camera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = 0;
+        camera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0;
+        camera.m_LookAt = player.transform;
+        yield return 0;
     }
 }

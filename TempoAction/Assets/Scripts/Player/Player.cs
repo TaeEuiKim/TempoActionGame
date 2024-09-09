@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 public class Player : MonoBehaviour
 {
@@ -75,6 +76,8 @@ public class Player : MonoBehaviour
     public LayerMask MonsterLayer { get => _monsterLayer; }
     public List<TempoAttackData> MainTempoAttackDatas { get => _mainTempoAttackDatas; }
     public List<TempoAttackData> PointTempoAttackDatas { get => _pointTempoAttackDatas; }
+
+    public bool isTurn = false;
 
     private void Awake()
     {
