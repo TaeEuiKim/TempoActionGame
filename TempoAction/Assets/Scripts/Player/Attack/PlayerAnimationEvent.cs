@@ -2,10 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Cinemachine;
 
 public class PlayerAnimationEvent : MonoBehaviour
 {
     [SerializeField] private Player _player;
+    private CameraController _cameraController;
+
+    private void Start()
+    {
+        _cameraController = FindObjectOfType<CameraController>();
+    }
 
     #region Hit
     // 플레이어 타격 위치에 사용하는 이벤트 함수
@@ -75,6 +82,15 @@ public class PlayerAnimationEvent : MonoBehaviour
         }
 
         return hitParticle;
+    }
+    private void CameraShaking(float shakeTime)
+    {
+        if (!_cameraController)
+        {
+            Debug.LogWarning("카메라 컨트롤러 없음");
+        }
+
+        _cameraController.VibrateForTime(shakeTime);
     }
 
     #endregion
