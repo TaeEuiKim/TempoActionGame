@@ -26,8 +26,6 @@ public class ReversePlayer : MonoBehaviour
         {
             tempAngle = player.Ani.GetFloat("Speed");
 
-
-
             // Left
             if (player.transform.rotation.y <= 0 && player.Controller.Direction == -1)
             {

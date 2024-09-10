@@ -21,7 +21,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] Vector3 startTrackObjectOffset;
 
     [Header("카메라 쉐이킹 변수")]
-    [SerializeField] float shakeTime = 0f;
+    float shakeTime = 0f;
     [SerializeField] float Impulse;
     [SerializeField] float Frequency;
 

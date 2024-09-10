@@ -24,7 +24,7 @@ public class NomalMonster : Monster
     [SerializeField] private float _perceptionAngle;                                                                                       // 인식 각도
     [SerializeField] private List<PerceptionRange> _perceptionRanges = new List<PerceptionRange>();                                        // 인식 범위
     private Dictionary<Define.PerceptionType, Nomal_State> _perceptionStateStorage = new Dictionary<Define.PerceptionType, Nomal_State>(); // 인식 상태 저장소
-    private Define.PerceptionType _currentPerceptionState;                                                                                 // 현재 인색 상태 
+    [SerializeField] private Define.PerceptionType _currentPerceptionState;                                                                                 // 현재 인색 상태 
     
     [SerializeField] private float _maxAggroGauge; // 최대 어그로 게이지
     private float _aggroGauge = 0;                 // 현재 어그로 게이지
@@ -191,7 +191,7 @@ public class NomalMonster : Monster
                 CurrentPerceptionState = Define.PerceptionType.PATROL;
             }
         }
-        else if (_aggroGauge == 100)
+        else if (_aggroGauge == 10)
         {
             if (CurrentPerceptionState != Define.PerceptionType.DETECTIONM)
             {
