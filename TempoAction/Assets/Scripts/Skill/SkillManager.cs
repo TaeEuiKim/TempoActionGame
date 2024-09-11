@@ -3,22 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class TS : ISkill
-{
-    string name;
-    public TS(string name)
-    {
-        this.name = name;
-    }   
-}
-
 public class SkillManager : MonoBehaviour
 {
     [SerializeField] private int MaxSkillSlot;
     [SerializeField] private int MaxReserveSlot;
 
     [SerializeField] private SkillSlot[] skillSlots;
-    private Queue<ISkill> reserveSlots;
+    private Queue<SkillBase> reserveSlots;
 
     private void Start()
     {
@@ -43,7 +34,7 @@ public class SkillManager : MonoBehaviour
         if (reserveSlots != null && reserveSlots?.Count != MaxReserveSlot)
         {
             var oldSlots = reserveSlots;
-            reserveSlots = new Queue<ISkill>(MaxReserveSlot);
+            reserveSlots = new Queue<SkillBase>(MaxReserveSlot);
 
             int oldSlotSize = oldSlots.Count;
             for (int i = 0; i < oldSlotSize; i++)
@@ -56,10 +47,21 @@ public class SkillManager : MonoBehaviour
             return;
         }
 
-        reserveSlots = new Queue<ISkill>(MaxReserveSlot); 
+        reserveSlots = new Queue<SkillBase>(MaxReserveSlot); 
     }
 
-    public void AddSkill(ISkill newSkill)
+    private void Update()
+    {
+        foreach (var slot in skillSlots)
+        {
+            if (slot.skill is NormalSkill normalSkill)
+            {
+                normalSkill.UpdateTime(Time.deltaTime);
+            }
+        }
+    }
+
+    public void AddSkill(SkillBase newSkill)
     {
         // 스킬 슬롯에서 빈 자리 탐색
         for(int i = 0; i < skillSlots.Length; i++)
@@ -79,13 +81,13 @@ public class SkillManager : MonoBehaviour
     }
 
     // 스킬 제거
-    private void RemoveSkill(ISkill removedSkill)
+    private void RemoveSkill(SkillBase removedSkill)
     {
         // removedSkill 제거 과정
         int index = -1;
         for (index = 0; index < skillSlots.Length; index++)
         {
-            if (skillSlots[index] == removedSkill)
+            if (skillSlots[index].skill == removedSkill)
             {
                 skillSlots[index].OnRemoved.RemoveListener(RemoveSkill);
                 skillSlots[index].RemoveSkill();
@@ -95,7 +97,7 @@ public class SkillManager : MonoBehaviour
         // 예비 스킬 장착
         if (reserveSlots.Count == 0) { return; }
         
-        ISkill nextSkill = reserveSlots.Dequeue();
+        SkillBase nextSkill = reserveSlots.Dequeue();
         AddSkill(nextSkill);
     }
 }
