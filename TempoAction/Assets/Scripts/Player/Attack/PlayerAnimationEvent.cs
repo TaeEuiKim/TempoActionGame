@@ -51,8 +51,8 @@ public class PlayerAnimationEvent : MonoBehaviour
     }
     private void HitPointTempo(Monster monster)
     {
-        Define.CircleState state = _player.Attack.PointTempoCircle.CircleState;
-        float damage = (state == Define.CircleState.GOOD) ? _player.GetTotalDamage(false) : _player.GetTotalDamage();
+        //Define.CircleState state = _player.Attack.PointTempoCircle.CircleState;
+        float damage = _player.GetTotalDamage();
         monster.TakeDamage(damage);
     }
     private GameObject SpawnHitParticle(Monster monster)
@@ -103,27 +103,11 @@ public class PlayerAnimationEvent : MonoBehaviour
     // 포인트 템포 애니메이션 끝에 추가하는 이벤트 함수
     private void FinishPointTempo()
     {
-        float addStamina = 0;
-
         if (_player.Attack.IsHit)
         {
-            addStamina = _player.Attack.CurrentTempoData.maxStamina;
-
-            if (_player.Attack.PointTempoCircle.CircleState == Define.CircleState.GOOD) // 타이밍이 Good일 경우
-            {
-                addStamina = _player.Attack.CurrentTempoData.minStamina;
-            }
-
-            _player.Attack.UpgradeCount++;
-
         }
 
-        _player.Stat.Stamina += addStamina;
-        _player.UpdateStamina();
-
         _player.Attack.IsHit = false;
-
-        _player.Attack.PointTempoCircle = null;
 
         _player.IsInvincible = false;
         _player.Attack.ChangeCurrentAttackState(Define.AttackState.FINISH);
@@ -132,11 +116,6 @@ public class PlayerAnimationEvent : MonoBehaviour
     // 메인 템포 애니메이션 끝에 추가하는 이벤트 함수
     private void Finish(float delay)
     {
-        float addStamina = _player.Attack.IsHit ? _player.Attack.CurrentTempoData.maxDamage : 0;
-
-        _player.Stat.Stamina += addStamina;
-        _player.UpdateStamina();
-
         _player.Attack.IsHit = false;
         _player.Attack.CheckDelay = delay;
         _player.Attack.ChangeCurrentAttackState(Define.AttackState.CHECK);
