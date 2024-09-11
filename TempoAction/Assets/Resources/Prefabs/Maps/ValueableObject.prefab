@@ -76,8 +76,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 564f6e33063be6a4487b997ce0d38d3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 0}
   player: {fileID: 0}
   doorObj: {fileID: 0}
   fadePanel: {fileID: 0}
   spawnPoint: {fileID: 0}
+  camera: {fileID: 0}
+  playerCamera: {fileID: 0}
+  startFollowOffset: {x: 0, y: 0, z: 0}
+  startTrackObjectOffset: {x: 0, y: 0, z: 0}
+  Impulse: 2
+  Frequency: 7

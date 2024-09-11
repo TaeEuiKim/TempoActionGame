@@ -56,7 +56,7 @@ public class PlayerController
 
     public void Update()
     {
-
+        Debug.LogWarning(_player.Ani.GetFloat("Speed"));
         if (_player.Stat.IsKnockedBack) return;
 
         if (_player.Attack.CurrentAttackkState == Define.AttackState.ATTACK)

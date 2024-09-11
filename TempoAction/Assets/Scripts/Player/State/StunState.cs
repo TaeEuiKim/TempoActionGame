@@ -44,8 +44,6 @@ public class StunState : PlayerState
     public override void Exit()
     {
         _player.Ani.SetBool("IsStunned", false);
-        _player.Stat.Stamina = 0;
-        _player.UpdateStamina();
     }
 
   
