@@ -16,9 +16,9 @@ public class WarpPlayer : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            cameraController.TurnOnFadeOut();
             if (warpType == Define.WarpType.MIDDLEBOSS)
             {
+                cameraController.TurnOnFadeOut(false);
                 cameraController.ChangeCamera(Define.MiddlePhaseState.START);
             }
         }

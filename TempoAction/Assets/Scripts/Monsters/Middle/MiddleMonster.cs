@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,9 +14,23 @@ public class MiddleMonster : Monster
     [SerializeField] private Middle_Skill _currentSkill = null;                           // 현재 스킬
     [SerializeField] private List<Middle_Skill> _readySkills = new List<Middle_Skill>();   // 준비된 스킬
 
+    [Header("공격")]
+    [SerializeField] private Transform _hitPoint;
+    [SerializeField] private Vector3 _colliderSize;
+
+    [Header("패링")]
+    [SerializeField] private Transform _parringPoint;
+    [SerializeField] private Vector3 _parringColliderSize;
+
+    [Header("Idle 대기시간")]
     [SerializeField] private float _idleDuration;                                        // 잠시 정지 시간
 
     public Define.MiddleMonsterState CurrentState { get => _currentState; }
+
+    public Middle_Skill CurrentSkill { get => _currentSkill; }
+
+    public Action OnAttackAction;
+    public Action OnFinishSkill;
 
     protected override void Init()
     {
@@ -62,5 +77,22 @@ public class MiddleMonster : Monster
             _stateStroage[_currentState]?.Enter();
         }
 
+    }
+
+    public void FinishSkill(Define.MiddleMonsterState state = Define.MiddleMonsterState.IDLE)
+    {
+        ChangeCurrentState(state);
+
+        OnFinishSkill = null;
+        OnAttackAction = null;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(_hitPoint.position, _colliderSize);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(_parringPoint.position, _parringColliderSize);
     }
 }

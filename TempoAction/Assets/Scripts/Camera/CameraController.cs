@@ -7,9 +7,11 @@ using Unity.VisualScripting;
 
 public class CameraController : MonoBehaviour
 {
+    [Header("Component")]
     public GameObject player;
     public GameObject spawnPoint;
     public Image fadePanel;
+    private bool isLook = false;
 
     private GameObject doorObj;
 
@@ -32,8 +34,9 @@ public class CameraController : MonoBehaviour
         middlePhaseManager = FindObjectOfType<MiddlePhaseManager>();
     }
 
-    public void TurnOnFadeOut()
+    public void TurnOnFadeOut(bool islook)
     {
+        isLook = islook;
         _CurCamera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
         StartCoroutine(FadeOut());
     }
@@ -75,8 +78,12 @@ public class CameraController : MonoBehaviour
             yield return null;
         }
 
-        _CurCamera.LookAt = player.transform;
+        if (isLook)
+        {
+            _CurCamera.LookAt = player.transform;
+        }
         fadePanel.color = new Color(0, 0, 0, 0);
+        isLook = false;
         yield break;
     }
 
@@ -95,7 +102,10 @@ public class CameraController : MonoBehaviour
 
         fadePanel.color = new Color(0, 0, 0, 1);
 
-        _CurCamera.LookAt = null;
+        if (isLook)
+        {
+            _CurCamera.LookAt = null;
+        }
         player.transform.position = spawnPoint.transform.position;
 
         elapsedTime = 0;
