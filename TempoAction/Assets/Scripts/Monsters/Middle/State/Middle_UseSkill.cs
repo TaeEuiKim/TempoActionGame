@@ -15,9 +15,12 @@ public class Middle_UseSkill : Middle_State
 
     public override void Stay()
     {
+        _monster.CurrentSkill?.Stay();
     }
 
     public override void Exit()
     {
+        _monster.ChangeCurrentSkill(Define.MiddleMonsterSkill.NONE);
+        Debug.Log("Skill ³ª°¨");
     }
 }

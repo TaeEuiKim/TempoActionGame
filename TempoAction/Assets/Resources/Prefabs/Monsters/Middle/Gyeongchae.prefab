@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1582246313906119450}
   - component: {fileID: 3696055884598120238}
   - component: {fileID: 2925388396760720453}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Gyeongchae
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,9 @@ MonoBehaviour:
     m_Bits: 8192
   _monsterModel: {fileID: 8267878504855142255}
   _currentState: 5
-  _skillStorage: []
+  _skillStorage:
+  - {fileID: 11400000, guid: 1bd3717cbd2cf264d9dc5984b6a99a4d, type: 2}
+  - {fileID: 11400000, guid: 6f6ae2134a10bb54aaa684c0fba22b22, type: 2}
   _currentSkill: {fileID: 0}
   _readySkills: []
   _hitPoint: {fileID: 1941828484115224897}

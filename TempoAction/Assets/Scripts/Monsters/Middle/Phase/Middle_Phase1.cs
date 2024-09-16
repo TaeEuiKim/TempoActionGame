@@ -17,6 +17,8 @@ public class Middle_Phase1 : Middle_PhaseState
 
     public override void Stay()
     {
+        _manager.Monster.Stay();
+        _manager.Monster2.Stay();
     }
 
     public override void Exit()

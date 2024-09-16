@@ -7,8 +7,11 @@ public class MiddlePhaseManager : MonoBehaviour
 {
     [SerializeField] private MiddleMonster _monster;          // Gyeongchae
     [SerializeField] private MiddleMonster _monster2;         // Cheong
-    [SerializeField] public Transform _monsterSpawnPoint;
-    [SerializeField] public Transform _monster2SpawnPoint;
+
+    [Header("패턴용 위치 포인트")]
+    [SerializeField] public Define.MiddleMonsterPoint[] _monsterPointName;
+    [SerializeField] public Transform[] _monsterPointTrans;
+    public Dictionary<Define.MiddleMonsterPoint, Transform> _middlePoint = new Dictionary<Define.MiddleMonsterPoint, Transform>();
 
     [SerializeField] private Define.MiddlePhaseState _currentPhaseState = Define.MiddlePhaseState.NONE;
     private Dictionary<Define.MiddlePhaseState, Middle_PhaseState> _phaseStateStorage = new Dictionary<Define.MiddlePhaseState, Middle_PhaseState>();
@@ -25,12 +28,20 @@ public class MiddlePhaseManager : MonoBehaviour
     {
         _phaseStateStorage.Add(Define.MiddlePhaseState.START, new Middle_PhaseStart(this));
         _phaseStateStorage.Add(Define.MiddlePhaseState.PHASE1, new Middle_Phase1(this));
+
+        for (int i = 0; i < _monsterPointName.Length; ++i)
+        {
+            _middlePoint.Add(_monsterPointName[i], _monsterPointTrans[i]);
+        }
     }
 
     private void Start()
     {
         _targetHealthList.Add(Monster2.Stat.MaxHp * 0.5f);
         _targetHealthList.Add(0);
+
+        _monster.middlePoint = _middlePoint;
+        _monster2.middlePoint = _middlePoint;
     }
 
     private void Update()

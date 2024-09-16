@@ -25,9 +25,19 @@ public class MiddleMonster : Monster
     [Header("Idle 대기시간")]
     [SerializeField] private float _idleDuration;                                        // 잠시 정지 시간
 
+    [Header("패턴용 포인트")]
+    public Dictionary<Define.MiddleMonsterPoint, Transform> middlePoint;
+
     public Define.MiddleMonsterState CurrentState { get => _currentState; }
 
     public Middle_Skill CurrentSkill { get => _currentSkill; }
+
+    public List<Middle_Skill> ReadySkills { get => _readySkills; set => _readySkills = value; }
+
+    public Transform HitPoint { get =>  _hitPoint; }
+
+    public List<Middle_Skill> SkillStorage { get => _skillStorage; }
+
 
     public Action OnAttackAction;
     public Action OnFinishSkill;
@@ -76,7 +86,77 @@ public class MiddleMonster : Monster
         {
             _stateStroage[_currentState]?.Enter();
         }
+    }
 
+    #region 스킬
+
+    public void ReadySkill(Define.MiddleMonsterSkill skill)
+    {
+        GetSkill(skill).IsCompleted = true;
+    }
+
+    public void ChangeCurrentSkill(Define.MiddleMonsterSkill skill)
+    {
+        if (_currentSkill != null)
+        {
+            _skillStorage.Add(_currentSkill); // 원래 저장소로 이동     
+            _currentSkill?.Exit();
+        }
+
+        if (skill == Define.MiddleMonsterSkill.NONE)
+        {
+            _currentSkill = null;
+        }
+        else
+        {
+            _currentSkill = GetSkill(skill);
+
+            if (_currentSkill == null)
+            {
+                Debug.Log("현재 스킬이 비어있음...");
+                _currentSkill = GetReadySkill(skill);
+            }
+
+            _skillStorage.Remove(_currentSkill);
+            _currentSkill.IsCompleted = true;
+            _currentSkill?.Enter();
+        }
+    }
+    public void ChangeCurrentSkill(Middle_Skill skill)
+    {
+        if (_currentSkill != null)
+        {
+            _skillStorage.Add(_currentSkill); // 원래 저장소로 이동     
+            _currentSkill?.Exit();
+        }
+        _currentSkill = skill;
+        _currentSkill?.Enter();
+    }
+
+    public Middle_Skill GetSkill(Define.MiddleMonsterSkill skill)
+    {
+        foreach (Middle_Skill s in _skillStorage)
+        {
+            if (s.Info.skill == skill)
+            {
+                return s;
+            }
+        }
+
+        return null;
+    }
+
+    public Middle_Skill GetReadySkill(Define.MiddleMonsterSkill skill)
+    {
+        foreach (Middle_Skill s in _readySkills)
+        {
+            if (s.Info.skill == skill)
+            {
+                return s;
+            }
+        }
+
+        return null;
     }
 
     public void FinishSkill(Define.MiddleMonsterState state = Define.MiddleMonsterState.IDLE)
@@ -86,6 +166,8 @@ public class MiddleMonster : Monster
         OnFinishSkill = null;
         OnAttackAction = null;
     }
+
+    #endregion 스킬
 
     private void OnDrawGizmos()
     {

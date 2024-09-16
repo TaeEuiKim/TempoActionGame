@@ -103,7 +103,7 @@ public abstract class Monster : MonoBehaviour
     #region View
     public void UpdateHealth()
     {
-        _view.UpdateHpBar(_stat.Hp / _stat.MaxHp);
+        //_view.UpdateHpBar(_stat.Hp / _stat.MaxHp);
     }
     #endregion
 

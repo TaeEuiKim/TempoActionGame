@@ -18,8 +18,8 @@ public class Middle_PhaseStart : Middle_PhaseState
         _manager.Monster.Enter();
         _manager.Monster2.Enter();
 
-        _manager.Monster.transform.DOMoveX(_manager._monsterSpawnPoint.position.x, 5f);
-        _manager.Monster2.transform.DOMoveX(_manager._monster2SpawnPoint.position.x, 5f);
+        _manager.Monster.transform.DOMoveX(_manager._middlePoint[Define.MiddleMonsterPoint.GSPAWNPOINT].position.x, 5f);
+        _manager.Monster2.transform.DOMoveX(_manager._middlePoint[Define.MiddleMonsterPoint.CSPAWNPOINT].position.x, 5f);
     }
 
     public override void Stay()
