@@ -32,7 +32,6 @@ public class Middle_Idle : Middle_State
 
             if (s.IsCompleted) // 조건이 성립되었는지 확인
             {
-                Debug.Log(s);
                 _monster.ReadySkills.Add(s);
             }
         }

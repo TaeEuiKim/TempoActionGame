@@ -25,6 +25,7 @@ public class Middle_Dropbomb : Middle_Skill
         _startTime = 0f;
         _dropTimer = 10f;
         _bombCount = 0;
+        _coolTime = 0;
     }
 
     public override void Check()
@@ -45,6 +46,7 @@ public class Middle_Dropbomb : Middle_Skill
     {
         Debug.Log("∆¯≈∫ ≈ı«œ");
 
+        _coolTime = 0;
         _monster.transform.DOMoveX(_monster.middlePoint[Define.MiddleMonsterPoint.BOMBLEFTPOINT].position.x, dropEndTime);
 }
     public override void Stay()
@@ -89,6 +91,11 @@ public class Middle_Dropbomb : Middle_Skill
 
             _dropTimer += Time.deltaTime;
             _startTime += Time.deltaTime;
+        }
+        else
+        {
+            IsCompleted = false;
+            _monster.FinishSkill();
         }
     }
 

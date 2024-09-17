@@ -37,8 +37,11 @@ public class Dropbomb : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.transform.GetComponent<Player>().TakeDamage(TotalDamage);
             ObjectPool.Instance.Remove(this.gameObject);
+
+            if (collision.gameObject.GetComponent<Player>().IsInvincible) return;
+
+            collision.transform.GetComponent<Player>().TakeDamage(TotalDamage);
         }
     }
 }
