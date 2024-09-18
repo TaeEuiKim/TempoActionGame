@@ -52,12 +52,7 @@ public class Define
 
     public enum PlayerState
     {
-        OVERLOAD, STUN, NONE
-    }
-
-    public enum CircleState
-    {
-        MISS, BAD, GOOD, PERFECT, NONE
+        STUN, NONE
     }
 
     public enum PlayerSfxType
