@@ -54,6 +54,7 @@ public class SkillManager : MonoBehaviour
     {
         foreach (var slot in skillSlots)
         {
+            slot.UseSkillKeyDown();
             if (slot.skill is NormalSkill normalSkill)
             {
                 normalSkill.UpdateTime(Time.deltaTime);
