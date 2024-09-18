@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InstantSkill : SkillBase
 {
-    public InstantSkill(int id) : base(id)
+    public InstantSkill(int id, string name) : base(id, name)
     {
         OnSkillAttack.AddListener(() => { Debug.Log("Invoke Instant Skill"); });
     }

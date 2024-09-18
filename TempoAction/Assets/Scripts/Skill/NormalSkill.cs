@@ -10,7 +10,7 @@ public class NormalSkill : SkillBase
 
     private float curTime;
 
-    public NormalSkill(int id) : base(id)
+    public NormalSkill(int id, string name) : base(id, name)
     {
         OnSkillAttack.AddListener(() => { Debug.Log("Invoke Normal Skill"); });
     }
