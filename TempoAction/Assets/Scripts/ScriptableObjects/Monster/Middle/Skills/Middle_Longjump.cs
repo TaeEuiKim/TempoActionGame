@@ -1,30 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Homerun", menuName = "ScriptableObjects/MiddleMonster/Skill/Homerun", order = 1)]
-public class Middle_Homerun : Middle_Skill
+public class Middle_Longjump : Middle_Skill
 {
-    private float _coolTime;
+    private float _coolTime = 0f;
 
     [SerializeField] private float _knockBackPower;
     [SerializeField] private float _knockBackDuration;
+    [SerializeField] float _finishDamage;                   // 피니쉬 공격 데미지
 
     public override void Init(MiddleMonster monster)
     {
         base.Init(monster);
 
-        _coolTime = 0;
+        _coolTime = 0f;
     }
 
     public override void Check()
     {
         if (IsCompleted) return;
 
-        if (_coolTime >= _info.coolTime)
+        if (_coolTime >= _info.coolTime) // 쿨타임 확인
         {
-            if (Vector2.Distance(_monster.Player.position, _monster.transform.position) <= _info.range)
+            if (Vector2.Distance(_monster.Player.position, _monster.transform.position) <= _info.range) // 거리 확인
             {
                 IsCompleted = true;
             }
@@ -37,8 +36,8 @@ public class Middle_Homerun : Middle_Skill
 
     public override void Enter()
     {
-        Debug.Log("홈런");
-        _monster.ColliderSize = new Vector3(_monster.ColliderSize.x * 4f, _monster.ColliderSize.y * 2f, _monster.ColliderSize.z);
+        Debug.Log("멀리뛰기");
+        _monster.ColliderSize = new Vector3(_monster.ColliderSize.x * 2f, _monster.ColliderSize.y * 3f, _monster.ColliderSize.z);
 
         _monster.OnAttackAction += Attack;
         _monster.OnFinishSkill += Finish;
@@ -46,15 +45,15 @@ public class Middle_Homerun : Middle_Skill
 
     public override void Stay()
     {
-        if (!_monster.Ani.GetBool("Homerun"))
+        if (!_monster.Ani.GetBool("Longjump"))
         {
-            _monster.Ani.SetBool("Homerun", true);
+            _monster.Ani.SetBool("Longjump", true);
         }
     }
 
     public override void Exit()
     {
-        _monster.Ani.SetBool("Homerun", false);
+        _monster.Ani.SetBool("Longjump", false);
         _monster.ColliderSize = new Vector3(1, 1.5f, 1);
         _coolTime = 0;
 
@@ -69,10 +68,8 @@ public class Middle_Homerun : Middle_Skill
         {
             if (player.GetComponent<Player>().IsInvincible) return;
 
-            Debug.Log("홈런 성공");
+            Debug.Log("멀리뛰기 성공");
             _monster.Player.GetComponent<Player>().TakeDamage(_info.damage, true);
-            _monster.Player.GetComponent<Player>().Knockback(GetKnockBackPosition(), _knockBackDuration);
-            _monster.Player.GetComponent<Player>().TakeStun(1f);
 
             // 히트 파티클 생성
             //GameObject hitParticle = ObjectPool.Instance.Spawn("FX_EliteAttack", 1); ;

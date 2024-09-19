@@ -79,9 +79,10 @@ public class Middle_Shelling : Middle_Skill
         rocket.transform.position = new Vector3(_monster.Player.position.x, _y, _monster.Player.position.z);
         GameObject mark = ObjectPool.Instance.Spawn("RocketMark");
         mark.transform.position = new Vector3(rocket.transform.position.x, 0.6f, -8f);
+        mark.transform.rotation = Quaternion.Euler(90, 0, 0);
         mark.GetComponent<Mark>().rocket = rocket;
 
-        rocket.transform.DOMoveY(0, 3);
+        rocket.transform.DOMoveY(-10, 3);
 
         for (int i = 0; i < 3; ++i)
         {
@@ -91,9 +92,10 @@ public class Middle_Shelling : Middle_Skill
             rocket.transform.position = new Vector3(_x, _y, _monster.middlePoint[Define.MiddleMonsterPoint.BOMBLEFTPOINT].position.z);
             mark = ObjectPool.Instance.Spawn("RocketMark");
             mark.transform.position = new Vector3(_x, 0.6f, -8f);
+            mark.transform.rotation = Quaternion.Euler(90, 0, 0);
             mark.GetComponent<Mark>().rocket = rocket;
 
-            rocket.transform.DOMoveY(0, 3);
+            rocket.transform.DOMoveY(-10, 3);
         }
     }
 

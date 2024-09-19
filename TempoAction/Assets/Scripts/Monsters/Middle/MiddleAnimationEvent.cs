@@ -12,7 +12,6 @@ public class MiddleAnimationEvent : MonoBehaviour
         _monster.OnAttackAction?.Invoke();
     }
 
-
     private void Finish()
     {
         _monster.OnFinishSkill?.Invoke();

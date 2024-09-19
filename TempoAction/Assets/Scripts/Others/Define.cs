@@ -104,6 +104,10 @@ public class Define
     {
         BOMBLEFTPOINT, BOMBRIGHTPOINT, CSPAWNPOINT, GSPAWNPOINT, SHELLINGPOINT, NONE
     }
+    public enum MiddleMonsterName
+    {
+        CHEONG, GYEONGCHAE, NONE
+    }
     #endregion
 
     #endregion

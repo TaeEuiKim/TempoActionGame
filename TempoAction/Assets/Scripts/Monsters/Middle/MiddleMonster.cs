@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class MiddleMonster : Monster
 {
+    [Header("종류")]
+    [SerializeField] private Define.MiddleMonsterName _monsterName = Define.MiddleMonsterName.NONE;
+
     [Header("상태")]
     [SerializeField] private Define.MiddleMonsterState _currentState = Define.MiddleMonsterState.NONE;                                   // 현재 상태
     private Dictionary<Define.MiddleMonsterState, Middle_State> _stateStroage = new Dictionary<Define.MiddleMonsterState, Middle_State>(); // 상태 저장소
@@ -29,14 +32,15 @@ public class MiddleMonster : Monster
     public Dictionary<Define.MiddleMonsterPoint, Transform> middlePoint;
 
     public Define.MiddleMonsterState CurrentState { get => _currentState; }
-
+    public Define.MiddleMonsterName monsterName { get => _monsterName; }
     public Middle_Skill CurrentSkill { get => _currentSkill; }
-
     public List<Middle_Skill> ReadySkills { get => _readySkills; set => _readySkills = value; }
-
     public Transform HitPoint { get =>  _hitPoint; }
-
     public List<Middle_Skill> SkillStorage { get => _skillStorage; }
+    public Vector3 ColliderSize { get => _colliderSize; set => _colliderSize = value; }
+    public float IdleDuration { get => _idleDuration; }
+
+
 
 
     public Action OnAttackAction;
@@ -46,7 +50,15 @@ public class MiddleMonster : Monster
     {
         _player = FindObjectOfType<Player>().transform;
 
-        _stateStroage.Add(Define.MiddleMonsterState.IDLE, new Middle_Idle(this));
+        if (_monsterName == Define.MiddleMonsterName.CHEONG)
+        {
+            _stateStroage.Add(Define.MiddleMonsterState.IDLE, new Cheong_Idle(this));
+        }
+        else if (_monsterName == Define.MiddleMonsterName.GYEONGCHAE)
+        {
+            _stateStroage.Add(Define.MiddleMonsterState.IDLE, new Gyeongchae_Idle(this));
+        }
+
         _stateStroage.Add(Define.MiddleMonsterState.USESKILL, new Middle_UseSkill(this));
         _stateStroage.Add(Define.MiddleMonsterState.GROGGY, new Middle_Groggy(this));
         _stateStroage.Add(Define.MiddleMonsterState.DIE, new Middle_Die(this));
