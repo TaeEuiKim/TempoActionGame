@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Takedown", menuName = "ScriptableObjects/MiddleMonster/Skill/Takedown", order = 1)]
@@ -70,7 +71,7 @@ public class Middle_Takedown : Middle_Skill
 
     private void Attack()
     {
-        Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize, _monster.HitPoint.rotation, _monster.PlayerLayer);
+        Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 
         foreach (Collider player in hitPlayer)
         {
@@ -79,14 +80,14 @@ public class Middle_Takedown : Middle_Skill
             if (count < _attackCount)
             {
                 Debug.Log("내려찍기 성공");
-                _monster.Player.GetComponent<Player>().TakeDamage(_info.damage, true);
+                player.GetComponent<Player>().TakeDamage(_info.damage, true);
             }
             else
             {
                 Debug.Log("내려찍기 피니쉬 성공");
-                _monster.Player.GetComponent<Player>().TakeDamage(_finishDamage, true);
-                _monster.Player.GetComponent<Player>().Knockback(GetKnockBackPosition(), _knockBackDuration);
-                _monster.Player.GetComponent<Player>().TakeStun(1f);
+                player.GetComponent<Player>().TakeDamage(_finishDamage, true);
+                player.GetComponent<Player>().Knockback(GetKnockBackPosition(), _knockBackDuration);
+                player.GetComponent<Player>().TakeStun(1f);
                 _isHit = true;
 
                 // 히트 파티클 생성

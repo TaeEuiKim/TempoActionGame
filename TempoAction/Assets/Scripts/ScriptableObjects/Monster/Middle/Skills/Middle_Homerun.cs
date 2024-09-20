@@ -63,16 +63,16 @@ public class Middle_Homerun : Middle_Skill
 
     private void Attack()
     {
-        Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize, _monster.HitPoint.rotation, _monster.PlayerLayer);
+        Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 
         foreach (Collider player in hitPlayer)
         {
             if (player.GetComponent<Player>().IsInvincible) return;
 
             Debug.Log("홈런 성공");
-            _monster.Player.GetComponent<Player>().TakeDamage(_info.damage, true);
-            _monster.Player.GetComponent<Player>().Knockback(GetKnockBackPosition(), _knockBackDuration);
-            _monster.Player.GetComponent<Player>().TakeStun(1f);
+            player.GetComponent<Player>().TakeDamage(_info.damage, true);
+            player.GetComponent<Player>().Knockback(GetKnockBackPosition(), _knockBackDuration);
+            player.GetComponent<Player>().TakeStun(1f);
 
             // 히트 파티클 생성
             //GameObject hitParticle = ObjectPool.Instance.Spawn("FX_EliteAttack", 1); ;

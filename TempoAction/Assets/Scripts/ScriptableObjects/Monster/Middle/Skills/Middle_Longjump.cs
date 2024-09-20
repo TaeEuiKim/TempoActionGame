@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "Longjump", menuName = "ScriptableObjects/MiddleMonster/Skill/Longjump", order = 1)]
 public class Middle_Longjump : Middle_Skill
 {
     private float _coolTime = 0f;
+    private bool isHit = false;
+    private bool isFlying = false;
 
     [SerializeField] private float _knockBackPower;
     [SerializeField] private float _knockBackDuration;
@@ -15,6 +19,8 @@ public class Middle_Longjump : Middle_Skill
         base.Init(monster);
 
         _coolTime = 0f;
+        isHit = false;
+        isFlying = false;
     }
 
     public override void Check()
@@ -37,7 +43,6 @@ public class Middle_Longjump : Middle_Skill
     public override void Enter()
     {
         Debug.Log("멀리뛰기");
-        _monster.ColliderSize = new Vector3(_monster.ColliderSize.x * 2f, _monster.ColliderSize.y * 3f, _monster.ColliderSize.z);
 
         _monster.OnAttackAction += Attack;
         _monster.OnFinishSkill += Finish;
@@ -49,6 +54,26 @@ public class Middle_Longjump : Middle_Skill
         {
             _monster.Ani.SetBool("Longjump", true);
         }
+
+        if (!isHit && isFlying)
+        {
+            Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
+
+            foreach (Collider player in hitPlayer)
+            {
+                if (player.GetComponent<Player>().IsInvincible) return;
+
+                Debug.Log("멀리뛰기 성공");
+                player.GetComponent<Player>().TakeDamage(_info.damage, true);
+                isHit = true;
+
+                // 히트 파티클 생성
+                //GameObject hitParticle = ObjectPool.Instance.Spawn("FX_EliteAttack", 1); ;
+
+                //Vector3 hitPos = player.ClosestPoint(_monster.HitPoint.position);
+                //hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z - 0.1f);
+            }
+        }
     }
 
     public override void Exit()
@@ -57,26 +82,16 @@ public class Middle_Longjump : Middle_Skill
         _monster.ColliderSize = new Vector3(1, 1.5f, 1);
         _coolTime = 0;
 
+        isHit = false;
+        isFlying = false;
         IsCompleted = false;
     }
 
     private void Attack()
     {
-        Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize, _monster.HitPoint.rotation, _monster.PlayerLayer);
+        _monster.transform.DOMoveX(_monster.Player.position.x, 1f);
 
-        foreach (Collider player in hitPlayer)
-        {
-            if (player.GetComponent<Player>().IsInvincible) return;
-
-            Debug.Log("멀리뛰기 성공");
-            _monster.Player.GetComponent<Player>().TakeDamage(_info.damage, true);
-
-            // 히트 파티클 생성
-            //GameObject hitParticle = ObjectPool.Instance.Spawn("FX_EliteAttack", 1); ;
-
-            //Vector3 hitPos = player.ClosestPoint(_monster.HitPoint.position);
-            //hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z - 0.1f);
-        }
+        isFlying = true;
     }
 
     private Vector3 GetKnockBackPosition()
@@ -93,6 +108,25 @@ public class Middle_Longjump : Middle_Skill
 
     private void Finish()
     {
+        _monster.ColliderSize = new Vector3(_monster.ColliderSize.x * 4.5f, _monster.ColliderSize.y * 2f, _monster.ColliderSize.z);
+
+        Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
+
+        foreach (Collider player in hitPlayer)
+        {
+            if (player.GetComponent<Player>().IsInvincible) return;
+
+            Debug.Log("멀리뛰기 피니쉬 성공");
+            player.GetComponent<Player>().TakeDamage(_finishDamage, true);
+            player.GetComponent<Player>().TakeStun(1f);
+
+            // 히트 파티클 생성
+            //GameObject hitParticle = ObjectPool.Instance.Spawn("FX_EliteAttack", 1); ;
+
+            //Vector3 hitPos = player.ClosestPoint(_monster.HitPoint.position);
+            //hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z - 0.1f);
+        }
+
         _monster.FinishSkill();
     }
 }

@@ -2308,6 +2308,22 @@ PrefabInstance:
       propertyPath: _idleDuration
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 5084343532810798280, guid: c4d7dfe1fbda57e4fa98b63d373bc5bf, type: 3}
+      propertyPath: _skillStorage.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5084343532810798280, guid: c4d7dfe1fbda57e4fa98b63d373bc5bf, type: 3}
+      propertyPath: _skillStorage.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: e9f5ab8d91bfb12419040f9bc26ee2ff, type: 2}
+    - target: {fileID: 5084343532810798280, guid: c4d7dfe1fbda57e4fa98b63d373bc5bf, type: 3}
+      propertyPath: _skillStorage.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: e9f5ab8d91bfb12419040f9bc26ee2ff, type: 2}
+    - target: {fileID: 5084343532810798280, guid: c4d7dfe1fbda57e4fa98b63d373bc5bf, type: 3}
+      propertyPath: _skillStorage.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: e9f5ab8d91bfb12419040f9bc26ee2ff, type: 2}
     - target: {fileID: 6838630384099963468, guid: c4d7dfe1fbda57e4fa98b63d373bc5bf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 13
