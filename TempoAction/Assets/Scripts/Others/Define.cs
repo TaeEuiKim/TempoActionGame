@@ -35,7 +35,12 @@ public class Define
         #endregion
         
     }
-
+    
+    public enum WarpType
+    {
+        NONE,
+        MIDDLEBOSS
+    }
    
 
 
@@ -79,6 +84,29 @@ public class Define
     public enum EliteMonsterSkill
     {
         FATTACK, SATTACK, LASER, LAUNCH, RUSH, SUPERPUNCH, BARRIER, THUNDERSTROKE, EXPLOSION, PLATFORM, NONE
+    }
+    #endregion
+
+    #region 중간 보스
+    public enum MiddlePhaseState
+    {
+        START, PHASE1, PHASECHANGE, PHASE2, FINISH, NONE
+    }
+    public enum MiddleMonsterState
+    {
+        IDLE, USESKILL, GROGGY, FAIL, DIE, NONE
+    }
+    public enum MiddleMonsterSkill
+    {
+        HOMERUN, SHELLING, TAKEDOWN, DROPBOMB, NONE
+    }
+    public enum MiddleMonsterPoint
+    {
+        BOMBLEFTPOINT, BOMBRIGHTPOINT, CSPAWNPOINT, GSPAWNPOINT, SHELLINGPOINT, NONE
+    }
+    public enum MiddleMonsterName
+    {
+        CHEONG, GYEONGCHAE, NONE
     }
     #endregion
 

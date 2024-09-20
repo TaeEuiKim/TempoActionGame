@@ -79,6 +79,7 @@ public class Player : MonoBehaviour
     public List<TempoAttackData> PointTempoAttackDatas { get => _pointTempoAttackDatas; }
 
     public bool isTurn = false;
+    public float stunTime = 0f;
 
     private void Awake()
     {
@@ -143,13 +144,25 @@ public class Player : MonoBehaviour
         UpdateHealth();
     }
 
+    public void TakeDamage(float value, bool isHpDamage)
+    {
+        if (_stat.IsKnockedBack || !isHpDamage) return;
+
+        _stat.Hp -= (_stat.MaxHp * (value / 100));
+        UpdateHealth();
+    }
+
     //³Ë¹é ÇÔ¼ö
     public void Knockback(Vector3 point, float t = 0)
     {
         transform.DOMove(point,t);
     }
-    // ³Ë¹é ½ÃÀÛ
- 
+    
+    public void TakeStun(float t)
+    {
+        CurrentState = Define.PlayerState.STUN;
+        stunTime = t;
+    }
 
     public void Heal(float value)
     {

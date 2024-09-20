@@ -66,7 +66,6 @@ public class Elite_SAttack : Elite_Skill
     // 공격 함수
     private void Attack()
     {
-
         Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 
         foreach (Collider player in hitPlayer)

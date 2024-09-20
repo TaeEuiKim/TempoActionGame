@@ -35,8 +35,6 @@ public class Elite_SuperPunch : Elite_Skill
         {
             _coolTime += Time.deltaTime;
         }
-
-
     }
 
     public override void Enter()

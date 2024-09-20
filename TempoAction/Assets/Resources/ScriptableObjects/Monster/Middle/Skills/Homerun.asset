@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 731ba7caf00ef4d45a57267af5bfa1ee, type: 3}
+  m_Name: Homerun
+  m_EditorClassIdentifier: 
+  _info:
+    skill: 0
+    coolTime: 4
+    totalTime: 0
+    range: 3
+    damage: 50
+    priority: 0
+  _knockBackPower: 500
+  _knockBackDuration: 0.4

@@ -7,61 +7,61 @@ using Unity.VisualScripting;
 
 public class CameraController : MonoBehaviour
 {
+    [Header("Component")]
     public GameObject player;
-    public GameObject doorObj;
-    public Image fadePanel;
     public GameObject spawnPoint;
+    public Image fadePanel;
+    private bool isLook = false;
 
-    [Header("카메라")]
-    [SerializeField] CinemachineVirtualCamera camera;
-    [SerializeField] CinemachineVirtualCamera playerCamera;
+    private GameObject doorObj;
 
-    [Header("카메라 관련 변수")]
-    [SerializeField] Vector3 startFollowOffset;
-    [SerializeField] Vector3 startTrackObjectOffset;
+    [Header("Cameras")]
+    [SerializeField] private CinemachineVirtualCamera _SceneCamera;
+    [SerializeField] private CinemachineVirtualCamera _PlayerCamera;
+    private CinemachineVirtualCamera _CurCamera;
 
-    [Header("카메라 쉐이킹 변수")]
-    float shakeTime = 0f;
-    [SerializeField] float Impulse;
-    [SerializeField] float Frequency;
+    [Header("Camera Shaking")]
+    [SerializeField] private float Impulse;
+    [SerializeField] private float Frequency;
+    private float shakeTime = 0f;
 
     private Quaternion saveCameraRotation;
 
-    private void Start()
+    private MiddlePhaseManager middlePhaseManager;
+
+    private void Awake()
     {
-        //SetStartCameraSetting();
+        middlePhaseManager = FindObjectOfType<MiddlePhaseManager>();
     }
 
-    public void TurnOnFadeOut()
+    public void TurnOnFadeOut(bool islook)
     {
+        isLook = islook;
+        _CurCamera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
         StartCoroutine(FadeOut());
     }
 
-    private void LateUpdate()
+    public void ChangeCamera(Define.MiddlePhaseState state)
     {
-        if (Input.GetKeyDown(KeyCode.K))
+        switch (state)
         {
-            StartCoroutine(FadeIn());
-        }
-
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            RepairCamera();
-        }
-
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            SetFollowLookObject(doorObj);
-        }
-
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            SetFollowLookPlayer();
-        }
-
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            VibrateForTime(0.5f);
+            case Define.MiddlePhaseState.START:
+                _PlayerCamera.gameObject.SetActive(false);
+                _SceneCamera.gameObject.SetActive(true);
+                middlePhaseManager.ChangeStageState(state);
+                break;
+            case Define.MiddlePhaseState.PHASE1:
+                break;
+            case Define.MiddlePhaseState.PHASECHANGE:
+                break;
+            case Define.MiddlePhaseState.PHASE2:
+                break;
+            case Define.MiddlePhaseState.FINISH:
+                break;
+            case Define.MiddlePhaseState.NONE:
+                break;
+            default:
+                break;
         }
     }
 
@@ -78,8 +78,12 @@ public class CameraController : MonoBehaviour
             yield return null;
         }
 
-        camera.LookAt = player.transform;
+        if (isLook)
+        {
+            _CurCamera.LookAt = player.transform;
+        }
         fadePanel.color = new Color(0, 0, 0, 0);
+        isLook = false;
         yield break;
     }
 
@@ -93,13 +97,15 @@ public class CameraController : MonoBehaviour
             fadePanel.color = new Color(0, 0, 0, Mathf.Lerp(0f, 1f, elapsedTime / fadedTime));
             elapsedTime += Time.deltaTime;
 
-            Debug.Log("FadeOut 중...");
             yield return null;
         }
 
         fadePanel.color = new Color(0, 0, 0, 1);
 
-        camera.LookAt = null;
+        if (isLook)
+        {
+            _CurCamera.LookAt = null;
+        }
         player.transform.position = spawnPoint.transform.position;
 
         elapsedTime = 0;
@@ -118,34 +124,35 @@ public class CameraController : MonoBehaviour
 
     private void SetFollowLookObject(GameObject obj)
     {
-        saveCameraRotation = camera.transform.rotation;
-        camera.m_LookAt = obj.transform;
-        camera.m_Lens.FieldOfView = 70;
+        saveCameraRotation = _SceneCamera.transform.rotation;
+        _SceneCamera.m_LookAt = obj.transform;
+        _SceneCamera.m_Lens.FieldOfView = 70;
     }
 
     private void SetFollowLookPlayer()
     {
-        camera.m_LookAt = player.transform;
-        camera.transform.rotation = saveCameraRotation;
-        camera.m_Lens.FieldOfView = 57;
+        _SceneCamera.m_LookAt = player.transform;
+        _SceneCamera.transform.rotation = saveCameraRotation;
+        _SceneCamera.m_Lens.FieldOfView = 57;
     }
 
     private void SetStartCameraSetting()
     {
-        camera.gameObject.SetActive(false);
-        playerCamera.gameObject.SetActive(true);
+        _SceneCamera.gameObject.SetActive(false);
+        _PlayerCamera.gameObject.SetActive(true);
     }
 
     private void RepairCamera()
     {
-        playerCamera.gameObject.SetActive(false);
-        camera.gameObject.SetActive(true);
+        _PlayerCamera.gameObject.SetActive(false);
+        _SceneCamera.gameObject.SetActive(true);
     }
 
-    // 카메라 쉐이킹
+    // Camera Shaking
     public void VibrateForTime(float times)
     {
-        camera.m_LookAt = null;
+        _CurCamera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
+        _CurCamera.m_LookAt = null;
         shakeTime = times;
         StartCoroutine(CameraShaking());
     }
@@ -155,13 +162,13 @@ public class CameraController : MonoBehaviour
         while (shakeTime > 0)
         {
             shakeTime -= Time.deltaTime;
-            camera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = Frequency;
-            camera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = Impulse;
+            _CurCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = Frequency;
+            _CurCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = Impulse;
             yield return 0;
         }
-        camera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = 0;
-        camera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0;
-        camera.m_LookAt = player.transform;
+        _CurCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = 0;
+        _CurCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0;
+        _CurCamera.m_LookAt = player.transform;
         yield return 0;
     }
 }
