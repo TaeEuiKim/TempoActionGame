@@ -11,8 +11,29 @@ public class SkillManager : MonoBehaviour
     [SerializeField] private SkillSlot[] skillSlots;
     private Queue<SkillBase> reserveSlots;
 
+    private SkillObject interatedObject;
+
+    // temp
+    public Collider hitbox;
+    public GameObject offingHitbox;
+    public Collider offingHitbox2;
+    public Transform target;
+    [SerializeField] private GameObject[] effects; // 0: ready, 1: rush, 2: attack
+    [HideInInspector]public GameObject[] instiatedEffects; // 0: ready, 1: rush, 2: attack
+    [HideInInspector] public GameObject effectsParent;
+
     private void Start()
     {
+        instiatedEffects = new GameObject[effects.Length];
+        effectsParent = new GameObject("Effects");
+        effectsParent.transform.parent = transform;
+        effectsParent.transform.localPosition = Vector3.zero;
+        for (int i = 0; i < effects.Length; i++)
+        {
+            instiatedEffects[i] = Instantiate(effects[i], effectsParent.transform);
+            instiatedEffects[i].SetActive(false);
+        }
+
         Initialize();
     }
 
@@ -50,25 +71,44 @@ public class SkillManager : MonoBehaviour
         reserveSlots = new Queue<SkillBase>(MaxReserveSlot); 
     }
 
+    public void InteractObject(SkillObject skillObject)
+    {
+        interatedObject = skillObject;
+    }
+
+    public void DeInteractObject()
+    {
+        interatedObject = null;
+    }
+
     private void Update()
     {
+       Debug.Log(GetComponent<Rigidbody>().velocity);
+
         foreach (var slot in skillSlots)
         {
-            slot.UseSkillKeyDown();
+            slot.UseSkillKeyDown(this);
             if (slot.skill is NormalSkill normalSkill)
             {
                 normalSkill.UpdateTime(Time.deltaTime);
             }
         }
+
+        if (interatedObject != null && Input.GetKeyDown(KeyCode.X))
+        {
+            AddSkill(interatedObject.GetSkill());
+        }
     }
 
     public void AddSkill(SkillBase newSkill)
     {
+        if(newSkill == null) { return; }
+
         // 스킬 슬롯에서 빈 자리 탐색
         for(int i = 0; i < skillSlots.Length; i++)
         {
             // 빈 곳이 있을 경우
-            if (skillSlots[i] == null)
+            if (skillSlots[i].skill == null)
             {
                 // 등록
                 skillSlots[i].OnRemoved.AddListener(RemoveSkill);
@@ -84,6 +124,8 @@ public class SkillManager : MonoBehaviour
     // 스킬 제거
     private void RemoveSkill(SkillBase removedSkill)
     {
+        if (removedSkill == null) { return; }
+
         // removedSkill 제거 과정
         int index = -1;
         for (index = 0; index < skillSlots.Length; index++)
