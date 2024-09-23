@@ -44,7 +44,7 @@ public class Middle_Takedown : Middle_Skill
     public override void Enter()
     {
         Debug.Log("내려찍기");
-        _monster.ColliderSize = new Vector3(_monster.ColliderSize.x * 2f, _monster.ColliderSize.y * 3f, _monster.ColliderSize.z);
+        _monster.ColliderSize = new Vector3(_monster.ColliderSize.x * 3f, _monster.ColliderSize.y * 3f, _monster.ColliderSize.z);
 
         _monster.OnAttackAction += Attack;
         _monster.OnFinishSkill += Finish;
@@ -73,6 +73,20 @@ public class Middle_Takedown : Middle_Skill
     {
         Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 
+        if (count < _attackCount)
+        {
+            GameObject hitParticle = ObjectPool.Instance.Spawn("P_Slash", 1); ;
+
+            hitParticle.transform.position = _monster.transform.position - new Vector3(1f, -2f);
+        }
+        else
+        {
+            GameObject hitParticle = ObjectPool.Instance.Spawn("P_SlashCharge", 1); ;
+
+            Debug.Log("피니쉬");
+            hitParticle.transform.position = _monster.transform.position - new Vector3(1f, -2f);
+        }
+
         foreach (Collider player in hitPlayer)
         {
             if (player.GetComponent<Player>().IsInvincible) return;
@@ -89,12 +103,6 @@ public class Middle_Takedown : Middle_Skill
                 player.GetComponent<Player>().Knockback(GetKnockBackPosition(), _knockBackDuration);
                 player.GetComponent<Player>().TakeStun(1f);
                 _isHit = true;
-
-                // 히트 파티클 생성
-                //GameObject hitParticle = ObjectPool.Instance.Spawn("FX_EliteAttack", 1); ;
-
-                //Vector3 hitPos = player.ClosestPoint(_monster.HitPoint.position);
-                //hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z - 0.1f);
             }
         }
 
