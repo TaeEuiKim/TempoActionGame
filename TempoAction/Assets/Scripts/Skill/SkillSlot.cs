@@ -15,21 +15,23 @@ public class SkillSlot
         skill = newSkill;
     }
 
-    public void UseSkillInstnat()
+    public void UseSkillInstant(SkillManager sm)
     {
-        if (skill.UseSkill())
+        if(skill == null) { return; }
+
+        if (skill.UseSkill(sm))
         {
             RemoveSkill();
         }
     }
 
-    public void UseSkillKeyDown()
+    public void UseSkillKeyDown(SkillManager sm)
     {
         if(slotKey == KeyCode.None) { return; }
 
         if (Input.GetKeyDown(slotKey))
         {
-            UseSkillKeyDown();
+            UseSkillInstant(sm);
         }
     }
 
