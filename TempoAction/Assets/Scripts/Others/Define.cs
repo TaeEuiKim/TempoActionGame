@@ -64,6 +64,20 @@ public class Define
     {
         MAIN, POINT, DASH, RUN, JUMP, STUN, NONE
     }
+
+    #region Skill
+    public enum SkillColliderType
+    {
+        FORWARD,
+        CENTER
+    }
+
+    public enum SkillEffectType
+    {
+        NONE,
+        RUSH
+    }
+    #endregion
     #endregion
 
     #region ∏ÛΩ∫≈Õ
