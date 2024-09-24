@@ -84,13 +84,20 @@ public class Middle_Longjump : Middle_Skill
     private void Attack()
     {
         Debug.Log(_monster.Direction);
-        _monster.transform.DOMoveX(_monster.Player.position.x - _monster.Direction, 1f);
+        _monster.transform.DOMoveX(_monster.Player.position.x - _monster.Direction, 1.2f);
 
         GameObject hitParticle = ObjectPool.Instance.Spawn("FX_ChungJump@P", 1); ;
 
         hitParticle.transform.position = new Vector3(_monster.transform.position.x, 0.6f, _monster.transform.position.z);
 
         isFlying = true;
+    }
+
+    IEnumerator FinishTimer()
+    {
+        yield return new WaitForSeconds(2.2f);
+
+        _monster.FinishSkill();
     }
 
     private void Finish()
@@ -112,6 +119,6 @@ public class Middle_Longjump : Middle_Skill
             player.GetComponent<Player>().TakeStun(1f);
         }
 
-        _monster.FinishSkill();
+        CoroutineRunner.Instance.StartCoroutine(FinishTimer());
     }
 }
