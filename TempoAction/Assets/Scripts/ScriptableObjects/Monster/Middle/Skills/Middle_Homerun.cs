@@ -86,7 +86,8 @@ public class Middle_Homerun : Middle_Skill
     {
         RaycastHit hit;
         Vector3 pos = _monster.transform.position;
-        pos.y = _monster.Player.position.y;
+        pos.y = 1.54f;
+
         if (Physics.Raycast(pos, Vector2.right * _monster.Direction, out hit, _knockBackPower * _knockBackDuration, _monster.WallLayer))
         {
             return hit.point;

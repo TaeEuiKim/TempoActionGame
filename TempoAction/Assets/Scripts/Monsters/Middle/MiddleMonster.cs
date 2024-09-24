@@ -100,13 +100,6 @@ public class MiddleMonster : Monster
         }
     }
 
-    public void Flip(float value)
-    {
-        Vector3 tempScale = MonsterModel.localScale;
-
-        MonsterModel.localScale = tempScale;
-    }
-
     #region ½ºÅ³
 
     public void ReadySkill(Define.MiddleMonsterSkill skill)

@@ -3718,6 +3718,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7a03431a6bcbd784d945942c42dafebe, type: 2}
   - {fileID: 11400000, guid: 15c0161abab7bd547b1e4805f2af793b, type: 2}
   isTurn: 0
+  stunTime: 0
 --- !u!54 &7657217239667461207
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3743,7 +3744,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 120
   m_CollisionDetection: 1
 --- !u!136 &2794289016763969858
 CapsuleCollider:

@@ -80,19 +80,19 @@ public class Middle_Shelling : Middle_Skill
 
         rocket.transform.DOMoveY(-10, 3);
 
-        for (int i = 0; i < 3; ++i)
-        {
-            rocket = ObjectPool.Instance.Spawn("Rocket");
-            float _x = Random.Range(_monster.middlePoint[Define.MiddleMonsterPoint.BOMBLEFTPOINT].position.x,
-                         _monster.middlePoint[Define.MiddleMonsterPoint.BOMBRIGHTPOINT].position.x);
-            rocket.transform.position = new Vector3(_x, _y, _monster.middlePoint[Define.MiddleMonsterPoint.BOMBLEFTPOINT].position.z);
-            mark = ObjectPool.Instance.Spawn("RocketMark");
-            mark.transform.position = new Vector3(_x, 0.6f, -8f);
-            mark.transform.rotation = Quaternion.Euler(90, 0, 0);
-            mark.GetComponent<Mark>().rocket = rocket;
+        //for (int i = 0; i < 3; ++i)
+        //{
+        //    rocket = ObjectPool.Instance.Spawn("Rocket");
+        //    float _x = Random.Range(_monster.middlePoint[Define.MiddleMonsterPoint.BOMBLEFTPOINT].position.x,
+        //                 _monster.middlePoint[Define.MiddleMonsterPoint.BOMBRIGHTPOINT].position.x);
+        //    rocket.transform.position = new Vector3(_x, _y, _monster.middlePoint[Define.MiddleMonsterPoint.BOMBLEFTPOINT].position.z);
+        //    mark = ObjectPool.Instance.Spawn("RocketMark");
+        //    mark.transform.position = new Vector3(_x, 0.6f, -8f);
+        //    mark.transform.rotation = Quaternion.Euler(90, 0, 0);
+        //    mark.GetComponent<Mark>().rocket = rocket;
 
-            rocket.transform.DOMoveY(-10, 3);
-        }
+        //    rocket.transform.DOMoveY(-10, 3);
+        //}
     }
 
     IEnumerator OnRocketCamera()
@@ -101,10 +101,12 @@ public class Middle_Shelling : Middle_Skill
         SpawnCameraRocket();
 
         yield return new WaitForSeconds(2f);
-        SpawnRocket();
 
-        yield return new WaitForSeconds(5f);
-        SpawnRocket();
+        for (int i = 0; i < 4; ++i)
+        {
+            SpawnRocket();
+            yield return new WaitForSeconds(1.5f);
+        }
 
         yield return new WaitForSeconds(3f);
         _monster.transform.DOMove(_monster.middlePoint[Define.MiddleMonsterPoint.GSPAWNPOINT].position, 2f);
