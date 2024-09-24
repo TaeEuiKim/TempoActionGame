@@ -77,16 +77,13 @@ public class Middle_Takedown : Middle_Skill
         {
             GameObject hitParticle = ObjectPool.Instance.Spawn("P_Slash", 1); ;
 
-            hitParticle.transform.position = _monster.transform.position - new Vector3(1f, -2f);
-            hitParticle.transform.localScale = _monster.MonsterModel.localScale;
+            OnFlipEffect(hitParticle);
         }
         else
         {
             GameObject hitParticle = ObjectPool.Instance.Spawn("P_SlashCharge", 1); ;
 
-            Debug.Log("ÇÇ´Ï½¬");
-            hitParticle.transform.position = _monster.transform.position - new Vector3(1f, -2f);
-            hitParticle.transform.localScale = _monster.MonsterModel.localScale;
+            OnFlipEffect(hitParticle);
         }
 
         foreach (Collider player in hitPlayer)
@@ -127,6 +124,20 @@ public class Middle_Takedown : Middle_Skill
         }
 
         return (Vector2.right * _monster.Direction) * (_knockBackPower * _knockBackDuration);
+    }
+
+    private void OnFlipEffect(GameObject obj)
+    {
+        if (_monster.MonsterModel.localScale.x > 0)
+        {
+            obj.transform.position = _monster.transform.position - new Vector3(1f, -2f);
+        }
+        else if (_monster.MonsterModel.localScale.x < 0)
+        {
+            obj.transform.position = _monster.transform.position - new Vector3(-1f, -2f);
+        }
+
+        obj.GetComponent<FlipSlash>().OnFlip(_monster.MonsterModel.localScale);
     }
 
     private void Finish()
