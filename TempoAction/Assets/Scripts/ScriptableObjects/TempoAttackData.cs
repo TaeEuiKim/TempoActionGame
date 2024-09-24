@@ -9,4 +9,7 @@ public class TempoAttackData : ScriptableObject
     public float minDamage;
     public float maxDamage;
     public float distance;
+
+    public float minStamina;
+    public float maxStamina;
 }

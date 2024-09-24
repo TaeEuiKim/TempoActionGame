@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class WarpPlayer : MonoBehaviour
 {
-    [SerializeField] Define.WarpType warpType;
     private CameraController cameraController;
 
     private void Awake()
@@ -16,11 +15,7 @@ public class WarpPlayer : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            if (warpType == Define.WarpType.MIDDLEBOSS)
-            {
-                cameraController.TurnOnFadeOut(false);
-                cameraController.ChangeCamera(Define.MiddlePhaseState.START);
-            }
+            cameraController.TurnOnFadeOut();
         }
     }
 }

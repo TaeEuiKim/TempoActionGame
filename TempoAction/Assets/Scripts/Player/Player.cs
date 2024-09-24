@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using Unity.VisualScripting;
 
 public class Player : MonoBehaviour
 {
@@ -21,7 +20,6 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform _playerModel;
 
     public bool IsInvincible { get; set; } = false;
-    public bool IsParrying { get; set; } = false;
 
     [SerializeField] private Transform _rightSparkPoint;
     [SerializeField] private Transform _leftSparkPoint;
@@ -78,9 +76,6 @@ public class Player : MonoBehaviour
     public List<TempoAttackData> MainTempoAttackDatas { get => _mainTempoAttackDatas; }
     public List<TempoAttackData> PointTempoAttackDatas { get => _pointTempoAttackDatas; }
 
-    public bool isTurn = false;
-    public float stunTime = 0f;
-
     private void Awake()
     {
         _view = GetComponent<PlayerView>();
@@ -101,6 +96,7 @@ public class Player : MonoBehaviour
 
         //플레이어 상태
         _stateStorage.Add(Define.PlayerState.NONE, new NoneState(this));
+        _stateStorage.Add(Define.PlayerState.OVERLOAD, new OverloadState(this));
         _stateStorage.Add(Define.PlayerState.STUN, new StunState(this));
     }
 
@@ -114,6 +110,7 @@ public class Player : MonoBehaviour
                 _rb.velocity = new Vector2(0, _rb.velocity.y);
                 //_attack.ChangeCurrentAttackState(Define.AttackState.FINISH);
                 break;
+            case Define.PlayerState.OVERLOAD:
             case Define.PlayerState.NONE:
                 //_atkStateStorage[_curAtkState]?.Stay();
                 _attack.Update();
@@ -144,25 +141,13 @@ public class Player : MonoBehaviour
         UpdateHealth();
     }
 
-    public void TakeDamage(float value, bool isHpDamage)
-    {
-        if (_stat.IsKnockedBack || !isHpDamage) return;
-
-        _stat.Hp -= (_stat.MaxHp * (value / 100));
-        UpdateHealth();
-    }
-
     //넉백 함수
     public void Knockback(Vector3 point, float t = 0)
     {
         transform.DOMove(point,t);
     }
-    
-    public void TakeStun(float t)
-    {
-        CurrentState = Define.PlayerState.STUN;
-        stunTime = t;
-    }
+    // 넉백 시작
+ 
 
     public void Heal(float value)
     {
@@ -176,24 +161,28 @@ public class Player : MonoBehaviour
     }
 
     // 과부화 상태인지 확인(스테미너가 최대 스테미나랑 같을 때)
-    //public bool CheckOverload()
-    //{
-    //    if (_stat.Stamina == _stat.MaxStamina)
-    //    {
-    //        return true;
-    //    }
-    //    return false;
-    //}
+    public bool CheckOverload()
+    {
+        if (_stat.Stamina == _stat.MaxStamina)
+        {
+            return true;
+        }
+        return false;
+    }
 
     #region View
     public void UpdateHealth()
     {
         _view.UpdateHpBar(_stat.Hp / _stat.MaxHp);
     }
-    //public void UpdateStamina()
-    //{
-    //    _view.UpdateStaminaBar(_stat.Stamina / _stat.MaxStamina);
-    //}
+    public void UpdateStamina()
+    {
+        _view.UpdateStaminaBar(_stat.Stamina / _stat.MaxStamina);
+    }
+    public void UpdateUpgradeCount()
+    {
+        _view.UpdateUpgradeCountSlider(_attack.UpgradeCount);
+    }
     #endregion
     private void OnDrawGizmos()
     {

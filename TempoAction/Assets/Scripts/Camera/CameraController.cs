@@ -7,61 +7,33 @@ using Unity.VisualScripting;
 
 public class CameraController : MonoBehaviour
 {
-    [Header("Component")]
+    public CinemachineVirtualCamera camera;
     public GameObject player;
-    public GameObject spawnPoint;
+    public GameObject doorObj;
     public Image fadePanel;
-    private bool isLook = false;
-
-    private GameObject doorObj;
-
-    [Header("Cameras")]
-    [SerializeField] private CinemachineVirtualCamera _SceneCamera;
-    [SerializeField] private CinemachineVirtualCamera _PlayerCamera;
-    private CinemachineVirtualCamera _CurCamera;
-
-    [Header("Camera Shaking")]
-    [SerializeField] private float Impulse;
-    [SerializeField] private float Frequency;
-    private float shakeTime = 0f;
 
     private Quaternion saveCameraRotation;
 
-    private MiddlePhaseManager middlePhaseManager;
-
-    private void Awake()
+    public void TurnOnFadeOut()
     {
-        middlePhaseManager = FindObjectOfType<MiddlePhaseManager>();
-    }
-
-    public void TurnOnFadeOut(bool islook)
-    {
-        isLook = islook;
-        _CurCamera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
         StartCoroutine(FadeOut());
     }
 
-    public void ChangeCamera(Define.MiddlePhaseState state)
+    private void LateUpdate()
     {
-        switch (state)
+        if (Input.GetKeyDown(KeyCode.K))
         {
-            case Define.MiddlePhaseState.START:
-                _PlayerCamera.gameObject.SetActive(false);
-                _SceneCamera.gameObject.SetActive(true);
-                middlePhaseManager.ChangeStageState(state);
-                break;
-            case Define.MiddlePhaseState.PHASE1:
-                break;
-            case Define.MiddlePhaseState.PHASECHANGE:
-                break;
-            case Define.MiddlePhaseState.PHASE2:
-                break;
-            case Define.MiddlePhaseState.FINISH:
-                break;
-            case Define.MiddlePhaseState.NONE:
-                break;
-            default:
-                break;
+            StartCoroutine(FadeIn());
+        }
+
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            SetFollowObject(doorObj);
+        }
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            SetFollowPlayer();
         }
     }
 
@@ -75,15 +47,12 @@ public class CameraController : MonoBehaviour
             fadePanel.color = new Color(0, 0, 0, Mathf.Lerp(1f, 0f, elapsedTime / fadedTime));
             elapsedTime += Time.deltaTime;
 
+            Debug.Log("FadeIn 중...");
             yield return null;
         }
 
-        if (isLook)
-        {
-            _CurCamera.LookAt = player.transform;
-        }
         fadePanel.color = new Color(0, 0, 0, 0);
-        isLook = false;
+        Debug.Log("FadeIn 끝");
         yield break;
     }
 
@@ -97,78 +66,26 @@ public class CameraController : MonoBehaviour
             fadePanel.color = new Color(0, 0, 0, Mathf.Lerp(0f, 1f, elapsedTime / fadedTime));
             elapsedTime += Time.deltaTime;
 
+            Debug.Log("FadeOut 중...");
             yield return null;
         }
 
         fadePanel.color = new Color(0, 0, 0, 1);
-
-        if (isLook)
-        {
-            _CurCamera.LookAt = null;
-        }
-        player.transform.position = spawnPoint.transform.position;
-
-        elapsedTime = 0;
-        while (elapsedTime <= fadedTime)
-        {
-
-            elapsedTime += Time.deltaTime;
-
-            yield return null;
-        }
-
-        StartCoroutine(FadeIn());
-
+        Debug.Log("FadeOut 끝");
         yield break;
     }
 
-    private void SetFollowLookObject(GameObject obj)
+    private void SetFollowObject(GameObject obj)
     {
-        saveCameraRotation = _SceneCamera.transform.rotation;
-        _SceneCamera.m_LookAt = obj.transform;
-        _SceneCamera.m_Lens.FieldOfView = 70;
+        saveCameraRotation = camera.transform.rotation;
+        camera.m_LookAt = obj.transform;
+        camera.m_Lens.FieldOfView = 70;
     }
 
-    private void SetFollowLookPlayer()
+    private void SetFollowPlayer()
     {
-        _SceneCamera.m_LookAt = player.transform;
-        _SceneCamera.transform.rotation = saveCameraRotation;
-        _SceneCamera.m_Lens.FieldOfView = 57;
-    }
-
-    private void SetStartCameraSetting()
-    {
-        _SceneCamera.gameObject.SetActive(false);
-        _PlayerCamera.gameObject.SetActive(true);
-    }
-
-    private void RepairCamera()
-    {
-        _PlayerCamera.gameObject.SetActive(false);
-        _SceneCamera.gameObject.SetActive(true);
-    }
-
-    // Camera Shaking
-    public void VibrateForTime(float times)
-    {
-        _CurCamera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
-        _CurCamera.m_LookAt = null;
-        shakeTime = times;
-        StartCoroutine(CameraShaking());
-    }
-
-    IEnumerator CameraShaking()
-    {
-        while (shakeTime > 0)
-        {
-            shakeTime -= Time.deltaTime;
-            _CurCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = Frequency;
-            _CurCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = Impulse;
-            yield return 0;
-        }
-        _CurCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = 0;
-        _CurCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0;
-        _CurCamera.m_LookAt = player.transform;
-        yield return 0;
+        camera.m_LookAt = player.transform;
+        camera.transform.rotation = saveCameraRotation;
+        camera.m_Lens.FieldOfView = 57;
     }
 }

@@ -22,7 +22,6 @@ public abstract class Monster : MonoBehaviour
     public Action OnKnockback;
 
     public bool IsGuarded { get; set; } = false;
-    public bool IsParrying { get; set; } = false;
 
 
     #region 프로퍼티
@@ -103,7 +102,7 @@ public abstract class Monster : MonoBehaviour
     #region View
     public void UpdateHealth()
     {
-        //_view.UpdateHpBar(_stat.Hp / _stat.MaxHp);
+        _view.UpdateHpBar(_stat.Hp / _stat.MaxHp);
     }
     #endregion
 
