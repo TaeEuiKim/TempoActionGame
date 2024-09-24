@@ -95,7 +95,7 @@ public class Middle_Longjump : Middle_Skill
 
     IEnumerator FinishTimer()
     {
-        yield return new WaitForSeconds(2.2f);
+        yield return new WaitForSeconds(3f);
 
         _monster.FinishSkill();
     }
@@ -106,7 +106,7 @@ public class Middle_Longjump : Middle_Skill
 
         GameObject hitParticle = ObjectPool.Instance.Spawn("FX_ChungLanding@P", 1); ;
 
-        hitParticle.transform.position = new Vector3(_monster.transform.position.x, 0.6f, _monster.transform.position.z);
+        hitParticle.transform.position = new Vector3(_monster.transform.position.x + (_monster.Direction * 1.5f), 0.6f, _monster.transform.position.z);
 
         Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 
