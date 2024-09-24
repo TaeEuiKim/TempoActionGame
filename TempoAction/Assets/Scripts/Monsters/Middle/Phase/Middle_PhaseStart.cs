@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 public class Middle_PhaseStart : Middle_PhaseState
 {
@@ -15,11 +16,13 @@ public class Middle_PhaseStart : Middle_PhaseState
 
     public override void Enter()
     {
-        //_manager.Monster.Enter();
+        _manager.Monster.Enter();
         _manager.Monster2.Enter();
 
-        _manager.Monster.transform.DOMoveX(_manager._middlePoint[Define.MiddleMonsterPoint.GSPAWNPOINT].position.x, 5f);
-        _manager.Monster2.transform.DOMoveX(_manager._middlePoint[Define.MiddleMonsterPoint.CSPAWNPOINT].position.x, 5f);
+        _manager.Monster2.Ani.SetBool("Walk", true);
+
+        _manager.Monster.transform.DOMoveX(_manager._middlePoint[Define.MiddleMonsterPoint.GSPAWNPOINT].position.x, 3f);
+        _manager.Monster2.transform.DOMoveX(_manager._middlePoint[Define.MiddleMonsterPoint.CSPAWNPOINT].position.x, 3f);
     }
 
     public override void Stay()
@@ -28,6 +31,7 @@ public class Middle_PhaseStart : Middle_PhaseState
 
         if (timer >= 3f)
         {
+            _manager.Monster2.Ani.SetBool("Walk", false);
             _manager.ChangeStageState(Define.MiddlePhaseState.PHASE1);
         }
     }

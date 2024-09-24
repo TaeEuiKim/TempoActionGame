@@ -77,14 +77,13 @@ public class Middle_Takedown : Middle_Skill
         {
             GameObject hitParticle = ObjectPool.Instance.Spawn("P_Slash", 1); ;
 
-            hitParticle.transform.position = _monster.transform.position - new Vector3(1f, -2f);
+            OnFlipEffect(hitParticle);
         }
         else
         {
             GameObject hitParticle = ObjectPool.Instance.Spawn("P_SlashCharge", 1); ;
 
-            Debug.Log("ÇÇ´Ï½¬");
-            hitParticle.transform.position = _monster.transform.position - new Vector3(1f, -2f);
+            OnFlipEffect(hitParticle);
         }
 
         foreach (Collider player in hitPlayer)
@@ -117,13 +116,28 @@ public class Middle_Takedown : Middle_Skill
     private Vector3 GetKnockBackPosition()
     {
         RaycastHit hit;
-
-        if (Physics.Raycast(_monster.transform.position, Vector2.right * _monster.Direction, out hit, _knockBackPower * _knockBackDuration, _monster.WallLayer))
+        Vector3 pos = _monster.transform.position;
+        pos.y = _monster.Player.position.y;
+        if (Physics.Raycast(pos, Vector2.right * _monster.Direction, out hit, _knockBackPower * _knockBackDuration, _monster.WallLayer))
         {
             return hit.point;
         }
 
         return (Vector2.right * _monster.Direction) * (_knockBackPower * _knockBackDuration);
+    }
+
+    private void OnFlipEffect(GameObject obj)
+    {
+        if (_monster.MonsterModel.localScale.x > 0)
+        {
+            obj.transform.position = _monster.transform.position - new Vector3(1f, -2f);
+        }
+        else if (_monster.MonsterModel.localScale.x < 0)
+        {
+            obj.transform.position = _monster.transform.position - new Vector3(-1f, -2f);
+        }
+
+        obj.GetComponent<FlipSlash>().OnFlip(_monster.MonsterModel.localScale);
     }
 
     private void Finish()
