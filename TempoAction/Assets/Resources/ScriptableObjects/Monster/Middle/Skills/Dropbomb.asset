@@ -14,11 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _info:
     skill: 3
-    coolTime: 20
+    coolTime: 18
     totalTime: 0
     range: 100
     damage: 10
     priority: 0
-  dropTime: 1
-  dropEndTime: 7
-  bombAmount: 5
+  bombAmount: 4
+  launchAngle: 45

@@ -83,25 +83,14 @@ public class Middle_Longjump : Middle_Skill
 
     private void Attack()
     {
-        _monster.transform.DOMoveX(_monster.Player.position.x, 1f);
+        Debug.Log(_monster.Direction);
+        _monster.transform.DOMoveX(_monster.Player.position.x - _monster.Direction, 1f);
 
         GameObject hitParticle = ObjectPool.Instance.Spawn("FX_ChungJump@P", 1); ;
 
         hitParticle.transform.position = new Vector3(_monster.transform.position.x, 0.6f, _monster.transform.position.z);
 
         isFlying = true;
-    }
-
-    private Vector3 GetKnockBackPosition()
-    {
-        RaycastHit hit;
-
-        if (Physics.Raycast(_monster.transform.position, Vector2.right * _monster.Direction, out hit, _knockBackPower * _knockBackDuration, _monster.WallLayer))
-        {
-            return hit.point;
-        }
-
-        return (Vector2.right * _monster.Direction) * (_knockBackPower * _knockBackDuration);
     }
 
     private void Finish()
