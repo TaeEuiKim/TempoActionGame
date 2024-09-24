@@ -78,6 +78,7 @@ public class Middle_Takedown : Middle_Skill
             GameObject hitParticle = ObjectPool.Instance.Spawn("P_Slash", 1); ;
 
             hitParticle.transform.position = _monster.transform.position - new Vector3(1f, -2f);
+            hitParticle.transform.localScale = _monster.MonsterModel.localScale;
         }
         else
         {
@@ -85,6 +86,7 @@ public class Middle_Takedown : Middle_Skill
 
             Debug.Log("ÇÇ´Ï½¬");
             hitParticle.transform.position = _monster.transform.position - new Vector3(1f, -2f);
+            hitParticle.transform.localScale = _monster.MonsterModel.localScale;
         }
 
         foreach (Collider player in hitPlayer)
@@ -117,8 +119,9 @@ public class Middle_Takedown : Middle_Skill
     private Vector3 GetKnockBackPosition()
     {
         RaycastHit hit;
-
-        if (Physics.Raycast(_monster.transform.position, Vector2.right * _monster.Direction, out hit, _knockBackPower * _knockBackDuration, _monster.WallLayer))
+        Vector3 pos = _monster.transform.position;
+        pos.y = _monster.Player.position.y;
+        if (Physics.Raycast(pos, Vector2.right * _monster.Direction, out hit, _knockBackPower * _knockBackDuration, _monster.WallLayer))
         {
             return hit.point;
         }

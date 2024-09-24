@@ -85,8 +85,9 @@ public class Middle_Homerun : Middle_Skill
     private Vector3 GetKnockBackPosition()
     {
         RaycastHit hit;
-
-        if (Physics.Raycast(_monster.transform.position, Vector2.right * _monster.Direction, out hit, _knockBackPower * _knockBackDuration, _monster.WallLayer))
+        Vector3 pos = _monster.transform.position;
+        pos.y = _monster.Player.position.y;
+        if (Physics.Raycast(pos, Vector2.right * _monster.Direction, out hit, _knockBackPower * _knockBackDuration, _monster.WallLayer))
         {
             return hit.point;
         }
