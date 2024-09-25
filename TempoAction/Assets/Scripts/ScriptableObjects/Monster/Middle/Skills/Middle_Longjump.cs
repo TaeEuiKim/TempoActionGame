@@ -83,7 +83,6 @@ public class Middle_Longjump : Middle_Skill
 
     private void Attack()
     {
-        Debug.Log(_monster.Direction);
         _monster.transform.DOMoveX(_monster.Player.position.x - _monster.Direction, 1.2f);
 
         GameObject hitParticle = ObjectPool.Instance.Spawn("FX_ChungJump@P", 1); ;
@@ -102,7 +101,7 @@ public class Middle_Longjump : Middle_Skill
 
     private void Finish()
     {
-        _monster.ColliderSize = new Vector3(_monster.ColliderSize.x * 4.5f, _monster.ColliderSize.y * 2f, _monster.ColliderSize.z);
+        _monster.ColliderSize = new Vector3(_monster.ColliderSize.x * 2.5f, _monster.ColliderSize.y * 2f, _monster.ColliderSize.z);
 
         GameObject hitParticle = ObjectPool.Instance.Spawn("FX_ChungLanding@P", 1); ;
 
