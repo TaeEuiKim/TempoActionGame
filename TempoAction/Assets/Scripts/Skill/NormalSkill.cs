@@ -52,6 +52,10 @@ public class NormalSkill : SkillBase
 
     public IEnumerator SwordQuickDrawCoroutine(SkillManager sm)
     {
+        GameObject effect1 = sm.instiatedEffects[sm.target.localScale.x < 0 ? 0 : 1];
+        GameObject effect2 = sm.instiatedEffects[2];
+        GameObject effect3 = sm.instiatedEffects[sm.target.localScale.x < 0 ? 3 : 4];
+        
         // 히트박스
         BoxCollider hitbox = sm.hitbox as BoxCollider;
         hitbox.enabled = false;
@@ -60,8 +64,8 @@ public class NormalSkill : SkillBase
         var size = hitbox.size;
         size.x = skillHitboxSize * 0.01f;
         hitbox.size = size;
-        sm.effectsParent.transform.eulerAngles = new Vector3(0, 180, 0) * (sm.target.localScale.x > 0 ? 1 : 0);
-        sm.instiatedEffects[0].SetActive(true);
+        //sm.effectsParent.transform.eulerAngles = new Vector3(0, 180, 0) * ;
+        effect1.SetActive(true);
 
 
         // 선딜
@@ -85,7 +89,7 @@ public class NormalSkill : SkillBase
             targetPos = initialPos + direction * movingDistance;
         }
 
-        sm.instiatedEffects[1].SetActive(true);
+        effect2.SetActive(true);
         while ((sm.transform.position - targetPos).magnitude > 0.1f && curTime <= regenTime)
         {
             yield return new WaitForEndOfFrame();
@@ -116,15 +120,15 @@ public class NormalSkill : SkillBase
         sm.offingHitbox.SetActive(true);
         sm.offingHitbox2.enabled = true;
 
-        sm.instiatedEffects[2].SetActive(true);
-        sm.instiatedEffects[1].SetActive(false);
-        sm.instiatedEffects[0].SetActive(false);
+        effect3.SetActive(true);
+        effect2.SetActive(false);
+        effect1.SetActive(false);
         //hitbox.enabled = false;
         //rigid.collisionDetectionMode = CollisionDetectionMode.Continuous;
         Debug.Log("QuickDraw End");
 
         yield return new WaitForSeconds(1f);
 
-        sm.instiatedEffects[2].SetActive(false);
+        effect3.SetActive(false);
     }
 }
