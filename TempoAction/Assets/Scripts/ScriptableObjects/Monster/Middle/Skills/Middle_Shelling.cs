@@ -10,7 +10,6 @@ public class Middle_Shelling : Middle_Skill
     public float cameraSpeed = 0f;
 
     private float _coolTime = 0f;
-    private CinemachineVirtualCamera _virtualCamera;
     private float timer = 0f;
 
     public override void Init(MiddleMonster monster)
@@ -39,8 +38,6 @@ public class Middle_Shelling : Middle_Skill
         Debug.Log("ÆøÅº ÅõÇÏ");
 
         _monster.transform.DOMove(_monster.middlePoint[Define.MiddleMonsterPoint.SHELLINGPOINT].position, 2);
-        _virtualCamera = _monster.GetComponentInChildren<CinemachineVirtualCamera>(true);
-        _virtualCamera.gameObject.SetActive(true);
 
         CoroutineRunner.Instance.StartCoroutine(OnRocketCamera());
     }
@@ -53,7 +50,6 @@ public class Middle_Shelling : Middle_Skill
     {
         timer = 0f;
         _coolTime = 0;
-        _virtualCamera = null;
     }
 
     // ·ÎÄÏ ½ºÆù À§Ä¡ Y : 15
@@ -84,41 +80,33 @@ public class Middle_Shelling : Middle_Skill
 
         rocket.transform.DOMoveY(-10, 3);
 
-        for (int i = 0; i < 3; ++i)
-        {
-            rocket = ObjectPool.Instance.Spawn("Rocket");
-            float _x = Random.Range(_monster.middlePoint[Define.MiddleMonsterPoint.BOMBLEFTPOINT].position.x,
-                         _monster.middlePoint[Define.MiddleMonsterPoint.BOMBRIGHTPOINT].position.x);
-            rocket.transform.position = new Vector3(_x, _y, _monster.middlePoint[Define.MiddleMonsterPoint.BOMBLEFTPOINT].position.z);
-            mark = ObjectPool.Instance.Spawn("RocketMark");
-            mark.transform.position = new Vector3(_x, 0.6f, -8f);
-            mark.transform.rotation = Quaternion.Euler(90, 0, 0);
-            mark.GetComponent<Mark>().rocket = rocket;
+        //for (int i = 0; i < 3; ++i)
+        //{
+        //    rocket = ObjectPool.Instance.Spawn("Rocket");
+        //    float _x = Random.Range(_monster.middlePoint[Define.MiddleMonsterPoint.BOMBLEFTPOINT].position.x,
+        //                 _monster.middlePoint[Define.MiddleMonsterPoint.BOMBRIGHTPOINT].position.x);
+        //    rocket.transform.position = new Vector3(_x, _y, _monster.middlePoint[Define.MiddleMonsterPoint.BOMBLEFTPOINT].position.z);
+        //    mark = ObjectPool.Instance.Spawn("RocketMark");
+        //    mark.transform.position = new Vector3(_x, 0.6f, -8f);
+        //    mark.transform.rotation = Quaternion.Euler(90, 0, 0);
+        //    mark.GetComponent<Mark>().rocket = rocket;
 
-            rocket.transform.DOMoveY(-10, 3);
-        }
+        //    rocket.transform.DOMoveY(-10, 3);
+        //}
     }
 
     IEnumerator OnRocketCamera()
     {
         yield return new WaitForSeconds(2f);
-        CinemachineComposer composer = _virtualCamera.GetCinemachineComponent<CinemachineComposer>();
         SpawnCameraRocket();
 
-        while (composer.m_TrackedObjectOffset.y < 4) 
-        {
-            composer.m_TrackedObjectOffset.y += Time.deltaTime * cameraSpeed;
-
-            yield return new WaitForSeconds(0.001f);
-        }
-
-        _virtualCamera.gameObject.SetActive(false);
-
         yield return new WaitForSeconds(2f);
-        SpawnRocket();
 
-        yield return new WaitForSeconds(5f);
-        SpawnRocket();
+        for (int i = 0; i < 4; ++i)
+        {
+            SpawnRocket();
+            yield return new WaitForSeconds(1.5f);
+        }
 
         yield return new WaitForSeconds(3f);
         _monster.transform.DOMove(_monster.middlePoint[Define.MiddleMonsterPoint.GSPAWNPOINT].position, 2f);

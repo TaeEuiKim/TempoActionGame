@@ -83,7 +83,7 @@ public class Middle_Longjump : Middle_Skill
 
     private void Attack()
     {
-        _monster.transform.DOMoveX(_monster.Player.position.x, 1f);
+        _monster.transform.DOMoveX(_monster.Player.position.x - _monster.Direction, 1.2f);
 
         GameObject hitParticle = ObjectPool.Instance.Spawn("FX_ChungJump@P", 1); ;
 
@@ -92,25 +92,20 @@ public class Middle_Longjump : Middle_Skill
         isFlying = true;
     }
 
-    private Vector3 GetKnockBackPosition()
+    IEnumerator FinishTimer()
     {
-        RaycastHit hit;
+        yield return new WaitForSeconds(3f);
 
-        if (Physics.Raycast(_monster.transform.position, Vector2.right * _monster.Direction, out hit, _knockBackPower * _knockBackDuration, _monster.WallLayer))
-        {
-            return hit.point;
-        }
-
-        return (Vector2.right * _monster.Direction) * (_knockBackPower * _knockBackDuration);
+        _monster.FinishSkill();
     }
 
     private void Finish()
     {
-        _monster.ColliderSize = new Vector3(_monster.ColliderSize.x * 4.5f, _monster.ColliderSize.y * 2f, _monster.ColliderSize.z);
+        _monster.ColliderSize = new Vector3(_monster.ColliderSize.x * 2.5f, _monster.ColliderSize.y * 2f, _monster.ColliderSize.z);
 
         GameObject hitParticle = ObjectPool.Instance.Spawn("FX_ChungLanding@P", 1); ;
 
-        hitParticle.transform.position = new Vector3(_monster.transform.position.x, 0.6f, _monster.transform.position.z);
+        hitParticle.transform.position = new Vector3(_monster.transform.position.x + (_monster.Direction * 1.5f), 0.6f, _monster.transform.position.z);
 
         Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 
@@ -123,6 +118,6 @@ public class Middle_Longjump : Middle_Skill
             player.GetComponent<Player>().TakeStun(1f);
         }
 
-        _monster.FinishSkill();
+        CoroutineRunner.Instance.StartCoroutine(FinishTimer());
     }
 }

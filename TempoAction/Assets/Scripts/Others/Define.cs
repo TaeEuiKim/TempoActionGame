@@ -116,7 +116,7 @@ public class Define
     }
     public enum MiddleMonsterPoint
     {
-        BOMBLEFTPOINT, BOMBRIGHTPOINT, CSPAWNPOINT, GSPAWNPOINT, SHELLINGPOINT, NONE
+        BOMBDROPPOINT, CSPAWNPOINT, GSPAWNPOINT, SHELLINGPOINT, NONE
     }
     public enum MiddleMonsterName
     {

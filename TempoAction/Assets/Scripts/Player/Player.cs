@@ -157,7 +157,7 @@ public class Player : MonoBehaviour
     {
         transform.DOMove(point,t);
     }
-    
+
     public void TakeStun(float t)
     {
         CurrentState = Define.PlayerState.STUN;

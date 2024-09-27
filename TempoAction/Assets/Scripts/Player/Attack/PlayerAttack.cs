@@ -17,6 +17,7 @@ public class PlayerAttack
     private TempoAttackData _currentTempoData;
 
     private int _upgradeCount;
+    private bool isAttack = true;
 
     //public TempoCircle PointTempoCircle { get; set; }
 
@@ -63,6 +64,7 @@ public class PlayerAttack
         }
 
         ResetMainTempoQueue();
+        CoroutineRunner.Instance.StartCoroutine(AttackTimer());
     }
 
     public void Update()
@@ -80,7 +82,7 @@ public class PlayerAttack
         if (_currentAttackState != Define.AttackState.ATTACK)
         { 
             // 공격 키 입력
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKeyDown(KeyCode.A) && isAttack)
             {
                 AttackMainTempo();
             }
@@ -111,6 +113,7 @@ public class PlayerAttack
             {
                 ResetMainTempoQueue();
             }
+            isAttack = false;
         }
     }
 
@@ -125,4 +128,18 @@ public class PlayerAttack
     }
 
     #endregion
+
+    IEnumerator AttackTimer()
+    {
+        while (_player.Stat.Hp > 0)
+        {
+            yield return new WaitForSeconds(0.4f);
+
+            if (!isAttack)
+            {
+                isAttack = true;
+            }
+
+        }
+    }
 }
