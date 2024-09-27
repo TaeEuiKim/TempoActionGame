@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _info:
     skill: 0
-    coolTime: 0
+    coolTime: 5
     totalTime: 0
     range: 0
-    damage: 0
+    damage: 10
     priority: 0
+  _power: 500
