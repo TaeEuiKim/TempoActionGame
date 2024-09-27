@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FX_CharacterSwordEdge@MT
-  m_Shader: {fileID: -6465566751694194690, guid: e27bd3c909ede6842b6f9a8e46119310, type: 3}
+  m_Name: FX_CharacterFresnel@MT
+  m_Shader: {fileID: -6465566751694194690, guid: 3d5b6d8cf60209f43865759fe35576fb, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -49,10 +49,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Main_tex:
-        m_Texture: {fileID: 2800000, guid: a545333eab64ff4498dcb45257f13b73, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -99,10 +95,10 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
+    - _FresnelPower: 2
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Mask_power: 1.5
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
@@ -119,12 +115,11 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 47.937256, g: 31.898466, b: 0, a: 1}
+    - _Color: {r: 4, g: 1.8229139, b: 0.28301883, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Main_tex_tile: {r: 1, g: 1, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &7198259191351864454
+--- !u!114 &8299429644632261695
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

@@ -446,7 +446,7 @@ ParticleSystem:
     startRotationX:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.710349
+      scalar: 0.5235988
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -499,7 +499,7 @@ ParticleSystem:
     startRotationY:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.21642081
+      scalar: -0.34906584
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -552,7 +552,7 @@ ParticleSystem:
     startRotation:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.6039575
+      scalar: -1.5707963
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -5334,7 +5334,7 @@ ParticleSystem:
     startRotationX:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.710349
+      scalar: 0.5235988
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -5387,7 +5387,7 @@ ParticleSystem:
     startRotationY:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.21642081
+      scalar: -0.34906584
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -5440,7 +5440,7 @@ ParticleSystem:
     startRotation:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.6039575
+      scalar: -1.5707963
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -9786,7 +9786,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8842005028238508518}
   m_Layer: 0
-  m_Name: FX_Sword@P
+  m_Name: FX_SwordRight@P
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9858,7 +9858,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 0
+  looping: 1
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -10256,7 +10256,7 @@ ParticleSystem:
     startRotationX:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.710349
+      scalar: 0.5235988
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -10309,7 +10309,7 @@ ParticleSystem:
     startRotationY:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.21642081
+      scalar: -0.34906584
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -10362,7 +10362,7 @@ ParticleSystem:
     startRotation:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.6039575
+      scalar: -1.5707963
       minScalar: 0
       maxCurve:
         serializedVersion: 2
