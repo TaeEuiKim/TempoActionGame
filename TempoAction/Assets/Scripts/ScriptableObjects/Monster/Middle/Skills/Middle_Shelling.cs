@@ -43,11 +43,19 @@ public class Middle_Shelling : Middle_Skill
     }
     public override void Stay()
     {
-
+        if (!_monster.Ani.GetBool("Shelling"))
+        {
+            _monster.Ani.SetBool("Shelling", true);
+        }
     }
 
     public override void Exit()
     {
+        if (!_monster.Ani.GetBool("Shelling"))
+        {
+            _monster.Ani.SetBool("Shelling", false);
+        }
+
         timer = 0f;
         _coolTime = 0;
     }
@@ -76,7 +84,7 @@ public class Middle_Shelling : Middle_Skill
         GameObject mark = ObjectPool.Instance.Spawn("RocketMark");
         mark.transform.position = new Vector3(rocket.transform.position.x, 0.6f, -8f);
         mark.transform.rotation = Quaternion.Euler(90, 0, 0);
-        mark.GetComponent<Mark>().rocket = rocket;
+        mark.GetComponent<RocketMark>().rocket = rocket;
 
         rocket.transform.DOMoveY(-10, 3);
 

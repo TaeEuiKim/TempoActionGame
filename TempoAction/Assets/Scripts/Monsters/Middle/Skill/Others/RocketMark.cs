@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mark : MonoBehaviour
+public class RocketMark : MonoBehaviour
 {
     public GameObject rocket;
 
