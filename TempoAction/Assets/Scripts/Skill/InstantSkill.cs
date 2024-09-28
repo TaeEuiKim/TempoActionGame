@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InstantSkill : SkillBase
+public class InstantSkill : SkillBase<SkillData>
 {
-    public InstantSkill(int id, string name, Define.SkillColliderType hitboxType, float hitboxSize, float damage, Define.SkillEffectType effectType, float effectValue) : base(id, name, hitboxType, hitboxSize, damage, effectType, effectValue)
+    public InstantSkill(SkillData skillData) : base(skillData)
     {
         OnSkillAttack.AddListener((SkillManager sm) => { Debug.Log("Invoke Instant Skill"); });
     }

@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class SkillObject : MonoBehaviour
 {
-    private SkillBase skill;
+    private ISkillRoot skill;
     private SkillManager playerSkillManager;
 
-    public void Initialize(SkillBase skill)
+    public void Initialize(ISkillRoot skill)
     {
         this.skill = skill;
     }
 
-    public SkillBase GetSkill()
+    public ISkillRoot GetSkill()
     {
         Destroy(gameObject);
 

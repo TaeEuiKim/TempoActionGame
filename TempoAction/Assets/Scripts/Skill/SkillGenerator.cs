@@ -5,12 +5,13 @@ using UnityEngine;
 public class SkillGenerator : MonoBehaviour
 {
     public GameObject prefab;
+    public NormalSkillData skillData;
 
     void Start()
     {
         var obj = Instantiate(prefab);
 
-        NormalSkill sword = new NormalSkill(500, 51, "¹ßµµ¼ú", Define.SkillColliderType.FORWARD, 150, 250, Define.SkillEffectType.RUSH, 800);
+        NormalSkill sword = new NormalSkill(skillData);
 
         var so = obj.GetComponent<SkillObject>();
         so.Initialize(sword);

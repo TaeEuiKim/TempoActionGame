@@ -9,7 +9,7 @@ public class SkillManager : MonoBehaviour
     [SerializeField] private int MaxReserveSlot;
 
     [SerializeField] private SkillSlot[] skillSlots;
-    private Queue<SkillBase> reserveSlots;
+    private Queue<ISkillRoot> reserveSlots;
 
     private SkillObject interatedObject;
 
@@ -55,7 +55,7 @@ public class SkillManager : MonoBehaviour
         if (reserveSlots != null && reserveSlots?.Count != MaxReserveSlot)
         {
             var oldSlots = reserveSlots;
-            reserveSlots = new Queue<SkillBase>(MaxReserveSlot);
+            reserveSlots = new Queue<ISkillRoot>(MaxReserveSlot);
 
             int oldSlotSize = oldSlots.Count;
             for (int i = 0; i < oldSlotSize; i++)
@@ -68,7 +68,7 @@ public class SkillManager : MonoBehaviour
             return;
         }
 
-        reserveSlots = new Queue<SkillBase>(MaxReserveSlot); 
+        reserveSlots = new Queue<ISkillRoot>(MaxReserveSlot); 
     }
 
     public void InteractObject(SkillObject skillObject)
@@ -83,8 +83,6 @@ public class SkillManager : MonoBehaviour
 
     private void Update()
     {
-       Debug.Log(GetComponent<Rigidbody>().velocity);
-
         foreach (var slot in skillSlots)
         {
             slot.UseSkillKeyDown(this);
@@ -100,7 +98,7 @@ public class SkillManager : MonoBehaviour
         }
     }
 
-    public void AddSkill(SkillBase newSkill)
+    public void AddSkill(ISkillRoot newSkill)
     {
         if(newSkill == null) { return; }
 
@@ -122,7 +120,7 @@ public class SkillManager : MonoBehaviour
     }
 
     // 스킬 제거
-    private void RemoveSkill(SkillBase removedSkill)
+    private void RemoveSkill(ISkillRoot removedSkill)
     {
         if (removedSkill == null) { return; }
 
@@ -139,8 +137,8 @@ public class SkillManager : MonoBehaviour
 
         // 예비 스킬 장착
         if (reserveSlots.Count == 0) { return; }
-        
-        SkillBase nextSkill = reserveSlots.Dequeue();
+
+        ISkillRoot nextSkill = reserveSlots.Dequeue();
         AddSkill(nextSkill);
     }
 }

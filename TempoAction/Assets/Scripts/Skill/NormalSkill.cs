@@ -8,30 +8,28 @@ using UnityEngine.Experimental.AI;
 using UnityEngine.Experimental.Rendering;
 
 [Serializable]
-public class NormalSkill : SkillBase
+public class NormalSkill : SkillBase<NormalSkillData>
 {
-    [field: SerializeField] public float cooldown { get; private set; } // seconds
     private const float cooldownMultiplier = 0.01f;
 
     private float curTime; // seconds
 
     // cooldown: 1/100 seconds
-    public NormalSkill(float cooldown, int id, string name, Define.SkillColliderType hitboxType, float hitboxSize, float damage, Define.SkillEffectType effectType, float effectValue) : base(id, name, hitboxType, hitboxSize, damage, effectType, effectValue)
+    public NormalSkill(NormalSkillData skillData) : base(skillData)
     {
-        this.cooldown = cooldown * cooldownMultiplier;
-        curTime = this.cooldown;
+        curTime = skillData.Cooldown;
         OnSkillAttack.AddListener((SkillManager sm) => { Debug.Log("Invoke Normal Skill"); });
         OnSkillAttack.AddListener(SwordQuickDraw);
     }
 
     public virtual void UpdateTime(float deltaTime)
     {
-        if(curTime > cooldown) { return; }
+        if(curTime > SkillData.Cooldown) { return; }
 
         curTime += deltaTime;
     }
 
-    public bool IsCooldown() => cooldown > curTime;
+    public bool IsCooldown() => SkillData.Cooldown > curTime;
 
     public override bool UseSkill(SkillManager sm) 
     {
@@ -62,7 +60,7 @@ public class NormalSkill : SkillBase
         sm.offingHitbox2.enabled = false;
         sm.offingHitbox.SetActive(false);
         var size = hitbox.size;
-        size.x = skillHitboxSize * 0.01f;
+        size.x = SkillData.SkillHitboxSize * 0.01f;
         hitbox.size = size;
         //sm.effectsParent.transform.eulerAngles = new Vector3(0, 180, 0) * ;
         effect1.SetActive(true);
@@ -73,7 +71,7 @@ public class NormalSkill : SkillBase
 
         // µ¹Áø
         float curTime = 0;
-        float movingDistance = skillEffectValue * 0.01f;
+        float movingDistance = SkillData.SkillEffectValue * 0.01f;
         float originalMovingDistance = movingDistance;
         float regenTime = 0.5f;
         Vector3 initialPos = sm.transform.position;
@@ -110,7 +108,7 @@ public class NormalSkill : SkillBase
         
         foreach(Monster monster in hittedMonsters.Distinct())
         {
-            monster.TakeDamage(skillDamage);
+            monster.TakeDamage(SkillData.SkillDamage);
         }
 
         //yield return new WaitForEndOfFrame();
