@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba950bb8d32c1294b90cd356d18028b5, type: 3}
   m_Name: SwordQuickDraw
   m_EditorClassIdentifier: 
-  <SkillId>k__BackingField: 0
-  <SkillName>k__BackingField: 
+  <SkillId>k__BackingField: 51
+  <SkillName>k__BackingField: "\uBC1C\uB3C4\uC220"
   <SkillHitboxType>k__BackingField: 0
-  <SkillHitboxSize>k__BackingField: 0
-  <SkillDamage>k__BackingField: 0
-  <SkillEffectType>k__BackingField: 0
-  <SkillEffectValue>k__BackingField: 0
-  cooldown: 0
+  <SkillHitboxSize>k__BackingField: 150
+  <SkillDamage>k__BackingField: 250
+  <SkillEffectType>k__BackingField: 1
+  <SkillEffectValue>k__BackingField: 800
+  cooldown: 500

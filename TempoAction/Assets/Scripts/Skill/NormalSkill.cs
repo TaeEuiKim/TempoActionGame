@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Experimental.AI;
-using UnityEngine.Experimental.Rendering;
 
 [Serializable]
 public class NormalSkill : SkillBase<NormalSkillData>
