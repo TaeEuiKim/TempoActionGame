@@ -106,7 +106,9 @@ public class NormalSkill : SkillBase<NormalSkillData>
         
         foreach(Monster monster in hittedMonsters.Distinct())
         {
-            monster.TakeDamage(SkillData.SkillDamage);
+            float damageAmount = SkillData.SkillDamage * 1; // 1대신 공격력 들어가야 함
+
+            monster.TakeDamage(damageAmount);
         }
 
         //yield return new WaitForEndOfFrame();

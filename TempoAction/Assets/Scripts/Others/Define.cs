@@ -72,6 +72,21 @@ public class Define
         CENTER
     }
 
+    public enum SkillType
+    {
+        ATK, // 공격형
+        BUF, // 버프형
+        MOV, // 기동형
+    }
+
+    public enum SkillTarget
+    {
+        NONE,       // 없음
+        PC,            // Playable Character
+        SELF,        // 자기자신
+        ENEMY    // 적(몬스터)
+    }
+
     public enum SkillEffectType
     {
         NONE,
