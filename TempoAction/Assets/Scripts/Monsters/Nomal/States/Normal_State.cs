@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Nomal_State
+public abstract class Normal_State
 {
     protected NomalMonster _monster;
     protected bool _isEntered;
     public bool IsEntered { get => _isEntered; }
-    public Nomal_State(NomalMonster monster)
+    public Normal_State(NomalMonster monster)
     {
         _monster = monster;
     }

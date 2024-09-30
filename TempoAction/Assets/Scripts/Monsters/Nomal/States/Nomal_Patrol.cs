@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Nomal_Patrol : Nomal_State
+public class Nomal_Patrol : Normal_State
 {
     private Vector2 _leftPoint;
     private Vector2 _rightPoint;

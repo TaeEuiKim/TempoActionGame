@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Nomal_Detectionm : Nomal_State
+public class Nomal_Detectionm : Normal_State
 {
     private float _attackTimer = 0;
 
