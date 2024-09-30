@@ -6,28 +6,28 @@ using UnityEditor;
 using UnityEngine;
 
 [Serializable]
-public class NormalSkill : SkillBase<NormalSkillData>
+public class NormalSkill : SkillBase<PlayerNormalSkillData>
 {
     private const float cooldownMultiplier = 0.01f;
 
     private float curTime; // seconds
 
     // cooldown: 1/100 seconds
-    public NormalSkill(NormalSkillData skillData) : base(skillData)
+    public NormalSkill(PlayerNormalSkillData skillData) : base(skillData)
     {
-        curTime = skillData.Cooldown;
+        curTime = skillData.SkillCooldown;
         OnSkillAttack.AddListener((SkillManager sm) => { Debug.Log("Invoke Normal Skill"); });
         OnSkillAttack.AddListener(SwordQuickDraw);
     }
 
     public virtual void UpdateTime(float deltaTime)
     {
-        if(curTime > SkillData.Cooldown) { return; }
+        if(curTime > SkillData.SkillCooldown) { return; }
 
         curTime += deltaTime;
     }
 
-    public bool IsCooldown() => SkillData.Cooldown > curTime;
+    public bool IsCooldown() => SkillData.SkillCooldown > curTime;
 
     public override bool UseSkill(SkillManager sm) 
     {

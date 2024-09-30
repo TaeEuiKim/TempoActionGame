@@ -6,7 +6,6 @@ public class SkillData : ScriptableObject
     [field: SerializeField] public int SkillId { get; protected set; }
 
     [field: SerializeField] public string SkillName { get; protected set; }
-    [field: SerializeField] public int SkillMaxLimit{ get; protected set; }
     [field: SerializeField] public float SkillCastingTime { get; protected set; } // 1/100sec
     [field: SerializeField] public float SkillRegenTime { get; protected set; } // 1/00sec
     [field: SerializeField] public Define.SkillType SkillClassType { get; protected set; } // 1/00sec
