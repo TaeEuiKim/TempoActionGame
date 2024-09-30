@@ -2393,6 +2393,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cheong
       objectReference: {fileID: 0}
+    - target: {fileID: 5084343532810798280, guid: c4d7dfe1fbda57e4fa98b63d373bc5bf, type: 3}
+      propertyPath: _skillStorage.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5084343532810798280, guid: c4d7dfe1fbda57e4fa98b63d373bc5bf, type: 3}
+      propertyPath: _skillStorage.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: a3d557ccda7de7b418a0ed4e8a26362d, type: 2}
     - target: {fileID: 6838630384099963468, guid: c4d7dfe1fbda57e4fa98b63d373bc5bf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 13

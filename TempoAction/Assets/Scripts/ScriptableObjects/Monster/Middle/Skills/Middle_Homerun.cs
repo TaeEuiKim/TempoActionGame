@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -39,6 +40,7 @@ public class Middle_Homerun : Middle_Skill
     {
         Debug.Log("È¨·±");
         _monster.ColliderSize = new Vector3(_monster.ColliderSize.x * 4f, _monster.ColliderSize.y * 2f, _monster.ColliderSize.z);
+        CoroutineRunner.Instance.StartCoroutine(MoveToPlayer());
 
         _monster.OnAttackAction += Attack;
         _monster.OnFinishSkill += Finish;
@@ -59,6 +61,22 @@ public class Middle_Homerun : Middle_Skill
         _coolTime = 0;
 
         IsCompleted = false;
+    }
+
+    IEnumerator MoveToPlayer()
+    {
+        yield return new WaitForSecondsRealtime(0.2f);
+
+        float dis = Vector3.Distance(_monster.transform.position, _monster.Player.transform.position - new Vector3(_monster.Direction, 0, 0));
+
+        if (_monster.MonsterModel.transform.localScale.x < 0)
+        {
+            _monster.transform.DOMoveX(_monster.transform.position.x + dis, 0.6f);
+        }
+        else if (_monster.MonsterModel.transform.localScale.x > 0)
+        {
+            _monster.transform.DOMoveX(_monster.transform.position.x - dis, 0.6f);
+        }
     }
 
     private void Attack()
