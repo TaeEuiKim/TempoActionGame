@@ -5,7 +5,7 @@ using UnityEngine;
 public class SkillGenerator : MonoBehaviour
 {
     public GameObject prefab;
-    public NormalSkillData skillData;
+    public PlayerNormalSkillData skillData;
 
     void Start()
     {

@@ -1,16 +1,18 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NormalSkillData", menuName = "ScriptableObjects/SkillData/NormalSkillData", order = 1)]
-public class NormalSkillData : SkillData
+public abstract class NormalSkillData : SkillData
 {
     // seconds(0.01sec * multiplier)
-    public float Cooldown
+    public float SkillCooldown
     {
-        get { return cooldown * cooldownMultiplier; }
+        get { return skillCooldown * cooldownMultiplier; }
     }
     // cooldownMultiplier sec (현재 단위가 0.01s라는 뜻)
-    [SerializeField] private float cooldown;
+    [SerializeField] private float skillCooldown;
 
     public static float CooldownMultiplier { get { return cooldownMultiplier; } }
+
     public static float cooldownMultiplier = 0.01f;
 }
