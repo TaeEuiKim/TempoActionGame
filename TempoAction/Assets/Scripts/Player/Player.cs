@@ -121,7 +121,6 @@ public class Player : MonoBehaviour
 
                 break;
         }
-
     }
 
     public float GetTotalDamage(bool value = true)
