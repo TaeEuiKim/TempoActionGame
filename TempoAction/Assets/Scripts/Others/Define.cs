@@ -98,7 +98,7 @@ public class Define
     }
     public enum MiddleMonsterSkill
     {
-        SNIPING, HOMERUN, SHELLING, TAKEDOWN, DROPBOMB, NONE
+        JONGJUMP, SNIPING, HOMERUN, SHELLING, TAKEDOWN, DROPBOMB, NONE
     }
     public enum MiddleMonsterPoint
     {

@@ -39,7 +39,7 @@ public class Middle_Homerun : Middle_Skill
     public override void Enter()
     {
         Debug.Log("È¨·±");
-        _monster.ColliderSize = new Vector3(_monster.ColliderSize.x * 4f, _monster.ColliderSize.y * 2f, _monster.ColliderSize.z);
+        _monster.ColliderSize = new Vector3(_monster.ColliderSize.x * 2f, _monster.ColliderSize.y * 1.5f, _monster.ColliderSize.z);
         CoroutineRunner.Instance.StartCoroutine(MoveToPlayer());
 
         _monster.OnAttackAction += Attack;
