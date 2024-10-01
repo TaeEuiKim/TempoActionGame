@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -45,6 +46,7 @@ public class Middle_Takedown : Middle_Skill
     {
         Debug.Log("³»·ÁÂï±â");
         _monster.ColliderSize = new Vector3(_monster.ColliderSize.x * 3f, _monster.ColliderSize.y * 3f, _monster.ColliderSize.z);
+        CoroutineRunner.Instance.StartCoroutine(MoveToPlayer());
 
         _monster.OnAttackAction += Attack;
         _monster.OnFinishSkill += Finish;
@@ -67,6 +69,35 @@ public class Middle_Takedown : Middle_Skill
         _isHit = false;
 
         IsCompleted = false;
+    }
+
+    IEnumerator MoveToPlayer()
+    {
+        yield return new WaitForSecondsRealtime(0.9f);
+
+        float dis = Vector3.Distance(_monster.transform.position, _monster.Player.transform.position - new Vector3(_monster.Direction, 0, 0));
+        float firstDis = dis / 4;
+        float secondDis = dis - firstDis;
+
+        if (_monster.MonsterModel.transform.localScale.x < 0)
+        {
+            _monster.transform.DOMoveX(_monster.transform.position.x + firstDis, 2f);
+        }
+        else if (_monster.MonsterModel.transform.localScale.x > 0)
+        {
+            _monster.transform.DOMoveX(_monster.transform.position.x - firstDis, 2f);
+        }
+
+        yield return new WaitForSecondsRealtime(1.5f);
+
+        if (_monster.MonsterModel.transform.localScale.x < 0)
+        {
+            _monster.transform.DOMoveX(_monster.transform.position.x + secondDis, 1f);
+        }
+        else if (_monster.MonsterModel.transform.localScale.x > 0)
+        {
+            _monster.transform.DOMoveX(_monster.transform.position.x - secondDis, 1f);
+        }
     }
 
     private void Attack()
