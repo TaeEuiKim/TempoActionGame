@@ -37,8 +37,6 @@ public class Middle_Shelling : Middle_Skill
     {
         Debug.Log("∆¯≈∫ ≈ı«œ");
 
-        _monster.transform.DOMove(_monster.middlePoint[Define.MiddleMonsterPoint.SHELLINGPOINT].position, 2);
-
         CoroutineRunner.Instance.StartCoroutine(OnRocketCamera());
     }
     public override void Stay()
@@ -117,9 +115,6 @@ public class Middle_Shelling : Middle_Skill
         }
 
         yield return new WaitForSeconds(3f);
-        _monster.transform.DOMove(_monster.middlePoint[Define.MiddleMonsterPoint.GSPAWNPOINT].position, 2f);
-
-        yield return new WaitForSeconds(2f);
         IsCompleted = false;
         _monster.FinishSkill();
     }
