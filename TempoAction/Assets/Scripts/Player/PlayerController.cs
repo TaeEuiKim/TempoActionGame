@@ -9,7 +9,7 @@ public class PlayerController
     private bool _isLanded;
     private bool _isGrounded;
     private bool _isDashing;
-
+    private bool _isDoubleJumping;
 
     private float _dashTimer;
     protected float _direction;
@@ -73,6 +73,7 @@ public class PlayerController
             if (!_isLanded)
             {
                 SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_JumpLanding", _player.transform);
+                _isDoubleJumping = false;
                 _isLanded = true;
             }
         }
@@ -146,6 +147,13 @@ public class PlayerController
 
     private void Jump()
     {
+        if (Input.GetKeyDown(KeyCode.UpArrow) && !_isGrounded && !_isDoubleJumping)
+        {
+            _player.Ani.SetTrigger("isJumping");
+            _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.Stat.JumpForce);
+            _isDoubleJumping = true;
+        }
+
         if (Input.GetKeyDown(KeyCode.UpArrow) && _isGrounded)
         {
             _player.Ani.SetTrigger("isJumping");
