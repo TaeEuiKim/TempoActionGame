@@ -9,6 +9,7 @@ public class Middle_Longjump : Middle_Skill
     private float _coolTime = 0f;
     private bool isHit = false;
     private bool isFlying = false;
+    private float attackPos;
 
     [SerializeField] private float _knockBackPower;
     [SerializeField] private float _knockBackDuration;
@@ -43,6 +44,7 @@ public class Middle_Longjump : Middle_Skill
     public override void Enter()
     {
         Debug.Log("¸Ö¸®¶Ù±â");
+        attackPos = _monster.Player.transform.position.x - _monster.Direction;
 
         _monster.OnAttackAction += Attack;
         _monster.OnFinishSkill += Finish;
@@ -83,7 +85,7 @@ public class Middle_Longjump : Middle_Skill
 
     private void Attack()
     {
-        _monster.transform.DOMoveX(_monster.Player.position.x - _monster.Direction, 1.2f);
+        _monster.transform.DOMoveX(attackPos, 1.2f);
 
         GameObject hitParticle = ObjectPool.Instance.Spawn("FX_ChungJump@P", 1); ;
 
