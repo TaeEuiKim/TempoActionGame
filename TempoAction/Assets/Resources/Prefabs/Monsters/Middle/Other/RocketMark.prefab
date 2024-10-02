@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3988569808141605157}
   - component: {fileID: 8752548415732241816}
   - component: {fileID: 6477468744099267688}
-  - component: {fileID: 3237113907153274338}
   - component: {fileID: 7529130578983492093}
   - component: {fileID: 7719753279938301699}
   m_Layer: 0
@@ -4891,23 +4890,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!320 &3237113907153274338
-PlayableDirector:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5237745558733412296}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 85d2666e7cd75a44687a46112f17f95b, type: 2}
-  m_InitialState: 1
-  m_WrapMode: 2
-  m_DirectorUpdateMode: 1
-  m_InitialTime: 0
-  m_SceneBindings: []
-  m_ExposedReferences:
-    m_References: []
 --- !u!95 &7529130578983492093
 Animator:
   serializedVersion: 5
@@ -4941,4 +4923,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b9fc4e5ef8716b4fb67759e5326aca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rocket: {fileID: 0}
+  time: 1

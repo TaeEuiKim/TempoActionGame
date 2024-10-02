@@ -4,13 +4,25 @@ using UnityEngine;
 
 public class RocketMark : MonoBehaviour
 {
-    public GameObject rocket;
+    [Header("생존 시간")]
+    [SerializeField] private float time = 0f;
+    private float timer = 0f;
 
-    private void LateUpdate()
+    private void OnEnable()
     {
-        if (!rocket.activeInHierarchy)
+        timer = 0f;
+        StartCoroutine(RemoveTimer());
+    }
+
+    IEnumerator RemoveTimer()
+    {
+        while (timer < time)
         {
-            ObjectPool.Instance.Remove(gameObject);
+            timer += Time.deltaTime;
+
+            yield return 0;
         }
+
+        ObjectPool.Instance.Remove(gameObject);
     }
 }

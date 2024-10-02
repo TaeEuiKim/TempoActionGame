@@ -14,9 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _info:
     skill: 3
-    coolTime: 14
+    coolTime: 17
     totalTime: 0
     range: 50
     damage: 20
     priority: 1
-  cameraSpeed: 2
+  bombSize: {x: 5, y: 4, z: 1}
+  bombType:
+    serializedVersion: 2
+    m_Bits: 2048

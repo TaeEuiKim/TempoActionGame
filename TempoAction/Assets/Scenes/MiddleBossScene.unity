@@ -660,7 +660,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 20, z: 5}
+  m_Size: {x: 3, y: 20, z: 5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &861818635
 PrefabInstance:
@@ -720,7 +720,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8871271568131356890, guid: 93642a692e9ae2a44ba140ecabac167d, type: 3}
       propertyPath: _prefabStorage.Array.size
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8871271568131356890, guid: 93642a692e9ae2a44ba140ecabac167d, type: 3}
       propertyPath: _prefabStorage.Array.data[2]
@@ -761,7 +761,7 @@ PrefabInstance:
     - target: {fileID: 8871271568131356890, guid: 93642a692e9ae2a44ba140ecabac167d, type: 3}
       propertyPath: _prefabStorage.Array.data[11]
       value: 
-      objectReference: {fileID: 6934722697618622019, guid: 5438dae9e70bad5458c4dc46c93d6874, type: 3}
+      objectReference: {fileID: 1557046992035449774, guid: 1ace12aef7e8b0e4bb5bc23fcc5ad54e, type: 3}
     - target: {fileID: 8871271568131356890, guid: 93642a692e9ae2a44ba140ecabac167d, type: 3}
       propertyPath: _prefabStorage.Array.data[12]
       value: 
@@ -863,111 +863,6 @@ Transform:
   - {fileID: 1905802606}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &882121112
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 882121113}
-  - component: {fileID: 882121116}
-  - component: {fileID: 882121115}
-  - component: {fileID: 882121114}
-  m_Layer: 13
-  m_Name: Wire
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &882121113
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 882121112}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.837835, y: -9.2653, z: 10.47}
-  m_LocalScale: {x: 40, y: 0.1093, z: 0.5}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1644084346}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &882121114
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 882121112}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &882121115
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 882121112}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &882121116
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 882121112}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1087701142
 GameObject:
   m_ObjectHideFlags: 0
@@ -1582,7 +1477,6 @@ Transform:
   - {fileID: 1425696327}
   - {fileID: 22957018}
   - {fileID: 407076986}
-  - {fileID: 882121113}
   - {fileID: 1322983511}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2371,7 +2265,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 20, z: 5}
+  m_Size: {x: 3, y: 20, z: 5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &2133787264
 PrefabInstance:
@@ -2395,14 +2289,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5084343532810798280, guid: c4d7dfe1fbda57e4fa98b63d373bc5bf, type: 3}
       propertyPath: _skillStorage.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5084343532810798280, guid: c4d7dfe1fbda57e4fa98b63d373bc5bf, type: 3}
       propertyPath: _skillStorage.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: a3d557ccda7de7b418a0ed4e8a26362d, type: 2}
+      objectReference: {fileID: 11400000, guid: e9f5ab8d91bfb12419040f9bc26ee2ff, type: 2}
     - target: {fileID: 5084343532810798280, guid: c4d7dfe1fbda57e4fa98b63d373bc5bf, type: 3}
       propertyPath: _skillStorage.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: a3d557ccda7de7b418a0ed4e8a26362d, type: 2}
+    - target: {fileID: 5084343532810798280, guid: c4d7dfe1fbda57e4fa98b63d373bc5bf, type: 3}
+      propertyPath: _skillStorage.Array.data[2]
       value: 
       objectReference: {fileID: 11400000, guid: 3d246045c9119a849b266ad77ac94757, type: 2}
     - target: {fileID: 6838630384099963468, guid: c4d7dfe1fbda57e4fa98b63d373bc5bf, type: 3}
@@ -2491,6 +2389,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1582246313906119450, guid: f9ebad15722d36448bbaf34d76bb95f2, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1600616772766597558, guid: f9ebad15722d36448bbaf34d76bb95f2, type: 3}
       propertyPath: m_Name
       value: Gyeongchae
@@ -2505,7 +2407,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2925388396760720453, guid: f9ebad15722d36448bbaf34d76bb95f2, type: 3}
       propertyPath: _skillStorage.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2925388396760720453, guid: f9ebad15722d36448bbaf34d76bb95f2, type: 3}
       propertyPath: _skillStorage.Array.data[0]
@@ -2514,7 +2416,7 @@ PrefabInstance:
     - target: {fileID: 2925388396760720453, guid: f9ebad15722d36448bbaf34d76bb95f2, type: 3}
       propertyPath: _skillStorage.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: 1bd3717cbd2cf264d9dc5984b6a99a4d, type: 2}
+      objectReference: {fileID: 11400000, guid: fa3373cb5b5bef643962af17c6e82675, type: 2}
     - target: {fileID: 3834020379398137710, guid: f9ebad15722d36448bbaf34d76bb95f2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
