@@ -28,34 +28,26 @@ public class Shelling : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
-            StartCoroutine(BombTimer());
+            BombTimer();
         }
 
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            GameObject effect = ObjectPool.Instance.Spawn("BombEffect", 1);
-            effect.transform.position = transform.position;
-            ObjectPool.Instance.Remove(this.gameObject);
+        //if (collision.gameObject.CompareTag("Player"))
+        //{
+        //    GameObject effect = ObjectPool.Instance.Spawn("BombEffect", 1);
+        //    effect.transform.position = transform.position;
+        //    ObjectPool.Instance.Remove(this.gameObject);
 
-            if (collision.gameObject.GetComponent<Player>().IsInvincible) return;
+        //    if (collision.gameObject.GetComponent<Player>().IsInvincible) return;
 
-            collision.gameObject.GetComponent<Player>().TakeDamage(TotalDamage, true);
-        }
+        //    collision.gameObject.GetComponent<Player>().TakeDamage(TotalDamage, true);
+        //}
     }
 
-    IEnumerator BombTimer()
+    private void BombTimer()
     {
-        while (timer < 1.5f)
-        {
-            timer += Time.deltaTime;
-
-            yield return 0;
-        }
-
         Collider[] hitPlayer = Physics.OverlapBox(transform.position, bombSize / 2, transform.rotation, bombType);
         if (hitPlayer.Length > 0)
         {
-            Debug.Log(hitPlayer[0].gameObject.name);
             hitPlayer[0].GetComponent<Player>().TakeDamage(TotalDamage, true);
         }
 
