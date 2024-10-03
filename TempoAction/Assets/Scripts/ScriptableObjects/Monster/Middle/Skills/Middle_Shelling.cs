@@ -7,7 +7,11 @@ using Cinemachine;
 [CreateAssetMenu(fileName = "Shelling", menuName = "ScriptableObjects/MiddleMonster/Skill/Shelling", order = 1)]
 public class Middle_Shelling : Middle_Skill
 {
-    public float cameraSpeed = 0f;
+    [Header("Æø¹ß ¹üÀ§")]
+    [SerializeField] private Vector3 bombSize;
+
+    [Header("Æø¹ß ´ë»ó")]
+    [SerializeField] private LayerMask bombType;
 
     private float _coolTime = 0f;
     private float timer = 0f;
@@ -37,17 +41,20 @@ public class Middle_Shelling : Middle_Skill
     {
         Debug.Log("ÆøÅº ÅõÇÏ");
 
-        _monster.transform.DOMove(_monster.middlePoint[Define.MiddleMonsterPoint.SHELLINGPOINT].position, 2);
-
         CoroutineRunner.Instance.StartCoroutine(OnRocketCamera());
     }
     public override void Stay()
     {
-
+        if (!_monster.Ani.GetBool("Shelling"))
+        {
+            _monster.Ani.SetBool("Shelling", true);
+        }
     }
 
     public override void Exit()
     {
+        _monster.Ani.SetBool("Shelling", false);
+
         timer = 0f;
         _coolTime = 0;
     }
@@ -63,36 +70,24 @@ public class Middle_Shelling : Middle_Skill
             }
 
             GameObject rocket = ObjectPool.Instance.Spawn("Rocket");
-            rocket.transform.position = _monster.transform.position + new Vector3(i, 1);
-            rocket.transform.DOMoveY(30, 6);
+            rocket.transform.position = _monster.transform.position + new Vector3(i * 0.7f, 1);
+            Vector3 moveVec = new Vector3(rocket.transform.position.x + i, 30, rocket.transform.position.z);
+            rocket.transform.DOMove(moveVec, 2);
         }
     }
 
     private void SpawnRocket()
     {
         float _y = 25;
-        GameObject rocket = ObjectPool.Instance.Spawn("Rocket");
-        rocket.transform.position = new Vector3(_monster.Player.position.x, _y, _monster.Player.position.z);
+        Shelling rocket = ObjectPool.Instance.Spawn("Rocket").GetComponent<Shelling>();
+        rocket.transform.position = new Vector3(_monster.Player.position.x + Random.Range(-3f, 3f), _y, _monster.Player.position.z);
+        rocket.transform.rotation = Quaternion.Euler(-90, -200, 0);
+        rocket.bombSize = bombSize;
+        rocket.bombType = bombType;
+        rocket.TotalDamage = Info.damage;
+
         GameObject mark = ObjectPool.Instance.Spawn("RocketMark");
         mark.transform.position = new Vector3(rocket.transform.position.x, 0.6f, -8f);
-        mark.transform.rotation = Quaternion.Euler(90, 0, 0);
-        mark.GetComponent<Mark>().rocket = rocket;
-
-        rocket.transform.DOMoveY(-10, 3);
-
-        //for (int i = 0; i < 3; ++i)
-        //{
-        //    rocket = ObjectPool.Instance.Spawn("Rocket");
-        //    float _x = Random.Range(_monster.middlePoint[Define.MiddleMonsterPoint.BOMBLEFTPOINT].position.x,
-        //                 _monster.middlePoint[Define.MiddleMonsterPoint.BOMBRIGHTPOINT].position.x);
-        //    rocket.transform.position = new Vector3(_x, _y, _monster.middlePoint[Define.MiddleMonsterPoint.BOMBLEFTPOINT].position.z);
-        //    mark = ObjectPool.Instance.Spawn("RocketMark");
-        //    mark.transform.position = new Vector3(_x, 0.6f, -8f);
-        //    mark.transform.rotation = Quaternion.Euler(90, 0, 0);
-        //    mark.GetComponent<Mark>().rocket = rocket;
-
-        //    rocket.transform.DOMoveY(-10, 3);
-        //}
     }
 
     IEnumerator OnRocketCamera()
@@ -102,16 +97,13 @@ public class Middle_Shelling : Middle_Skill
 
         yield return new WaitForSeconds(2f);
 
-        for (int i = 0; i < 4; ++i)
+        for (int i = 0; i < 7; ++i)
         {
             SpawnRocket();
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(0.7f);
         }
 
         yield return new WaitForSeconds(3f);
-        _monster.transform.DOMove(_monster.middlePoint[Define.MiddleMonsterPoint.GSPAWNPOINT].position, 2f);
-
-        yield return new WaitForSeconds(2f);
         IsCompleted = false;
         _monster.FinishSkill();
     }

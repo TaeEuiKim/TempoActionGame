@@ -20,7 +20,7 @@ public class Cheong_Idle : Middle_State
 
     public override void Stay()
     {
-        if (timer < 3f)
+        if (timer < 1f)
         {
             timer += Time.deltaTime;
             return;
