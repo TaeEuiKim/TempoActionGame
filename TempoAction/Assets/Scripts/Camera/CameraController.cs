@@ -117,7 +117,7 @@ public class CameraController : MonoBehaviour
 
         if (SceneName == "START")
         {
-            SceneManager.LoadScene("MiddleBossScene");
+            LoadManager.LoadScene("MiddleBossScene");
         }
 
         yield break;
