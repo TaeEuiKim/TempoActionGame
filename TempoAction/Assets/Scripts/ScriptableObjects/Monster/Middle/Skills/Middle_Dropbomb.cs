@@ -40,7 +40,6 @@ public class Middle_Dropbomb : Middle_Skill
         Debug.Log("∆¯≈∫ ≈ı«œ");
 
         _coolTime = 0;
-        _monster.transform.DOMove(_monster.middlePoint[Define.MiddleMonsterPoint.BOMBDROPPOINT].position, 2f);
 
         _monster.OnAttackAction += Attack;
         _monster.OnFinishSkill += Finish;
@@ -100,7 +99,6 @@ public class Middle_Dropbomb : Middle_Skill
 
     IEnumerator FinishMove()
     {
-        _monster.transform.DOMove(_monster.middlePoint[Define.MiddleMonsterPoint.BOMBDROPPOINT].position, 2f);
 
         yield return new WaitForSeconds(2f);
 

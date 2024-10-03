@@ -17,7 +17,7 @@ public class Middle_PhaseStart : Middle_PhaseState
     public override void Enter()
     {
         _manager.Monster.Enter();
-        //_manager.Monster2.Enter();
+        _manager.Monster2.Enter();
 
         _manager.Monster2.Ani.SetBool("Walk", true);
 
