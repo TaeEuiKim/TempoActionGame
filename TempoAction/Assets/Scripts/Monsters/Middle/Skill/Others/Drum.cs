@@ -9,7 +9,13 @@ public class Drum : MonoBehaviour
 
     private void OnEnable()
     {
+        GetComponent<Rigidbody>().isKinematic = false;
         isAttack = false;
+    }
+
+    private void OnDisable()
+    {
+        GetComponent<Rigidbody>().isKinematic = true;
     }
 
     public void OffMarkSet()
