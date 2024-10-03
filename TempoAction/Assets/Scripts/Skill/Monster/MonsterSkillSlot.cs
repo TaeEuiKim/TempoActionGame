@@ -7,14 +7,16 @@ public class MonsterSkillSlot : SkillSlot
 {
     public bool IsUsable(MonsterSkillManager sm)
     {
+        // 쿨 대기 중이면 실패 처리
         var curSkill = skill as MonsterSkill;
-        var condition = curSkill.SkillData.SkillTriggerCondition;
+        if(curSkill.IsCooldown()) { return false; } 
+
         // 조건이 없으면 성공 처리
+        var condition = curSkill.SkillData.SkillTriggerCondition;
         if (condition == Define.SkillTerms.NONE) { return true; }
 
-        List<GameObject> targets = GetTargets(sm);
-
         // 타겟이 없다고 인식되면 실패 처리
+        List<GameObject> targets = GetTargets(sm);
         if(targets.Count == 0) { return false; }
 
         List<GameObject> objsInRange;
@@ -26,6 +28,7 @@ public class MonsterSkillSlot : SkillSlot
             Vector3.Distance(obj.transform.position, sm.transform.position) <= radius
         ).ToList();
 
+        // 조건에 따라 반환
         switch (condition)
         {
             case Define.SkillTerms.INRANGE:
@@ -47,8 +50,10 @@ public class MonsterSkillSlot : SkillSlot
                 targets = CharacterManager.GetCharacter(1 << 11); // player layer
                 break;
             case Define.SkillTarget.SELF:
-                targets = new List<GameObject>();
-                targets.Add(sm.gameObject);
+                targets = new List<GameObject>
+                {
+                    sm.gameObject
+                };
                 break;
             case Define.SkillTarget.MON:
                 targets = CharacterManager.GetCharacter(1 << 10); // monster layer
