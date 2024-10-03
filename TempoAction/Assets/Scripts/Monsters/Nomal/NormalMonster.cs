@@ -103,6 +103,7 @@ public class NormalMonster : Monster
         _perceptionStateStorage.Add(Define.PerceptionType.PATROL, new Nomal_Patrol(this));
         _perceptionStateStorage.Add(Define.PerceptionType.BOUNDARY, new Nomal_Boundary(this));
         _perceptionStateStorage.Add(Define.PerceptionType.DETECTIONM, new Normal_Detectionm(this));
+        _perceptionStateStorage.Add(Define.PerceptionType.IDLE, new Normal_IdleState(this));
 
         CurrentPerceptionState = Define.PerceptionType.PATROL;
 
@@ -120,7 +121,6 @@ public class NormalMonster : Monster
 
     private void Update()
     {
-
         CheckPerceptionState(); // 게이지 증가 시키는 함수
         UpdatePerceptionState(); // 게이지 확인 후 인식 상태 업데이트
 
@@ -186,9 +186,9 @@ public class NormalMonster : Monster
     {
         if (_aggroGauge == 0)
         {
-            if (CurrentPerceptionState != Define.PerceptionType.PATROL)
+            if (CurrentPerceptionState != Define.PerceptionType.IDLE)
             {
-                CurrentPerceptionState = Define.PerceptionType.PATROL;
+                CurrentPerceptionState = Define.PerceptionType.IDLE;
             }
         }
         else if (_aggroGauge == 10)

@@ -70,7 +70,7 @@ public class Define
     #region 몬스터
     public enum PerceptionType
     {
-        PATROL, BOUNDARY, DETECTIONM
+        PATROL, BOUNDARY, DETECTIONM, IDLE
     }
 
     #region 엘리트 몬스터

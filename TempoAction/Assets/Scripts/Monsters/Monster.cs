@@ -6,7 +6,7 @@ using DG.Tweening;
 
 public abstract class Monster : MonoBehaviour
 {
-    [SerializeField] private MonsterSkillManager _skillManager;
+    [field:SerializeField] public MonsterSkillManager _SkillManager { get; protected set; }
     [SerializeField] protected MonsterStat _stat;
     [SerializeField] protected LayerMask _playerLayer;
     [SerializeField] protected LayerMask _wallLayer;
@@ -60,7 +60,7 @@ public abstract class Monster : MonoBehaviour
 
     private void Awake()
     {
-        _skillManager = GetComponent<MonsterSkillManager>();
+        _SkillManager = GetComponent<MonsterSkillManager>();
 
         _rb = GetComponent<Rigidbody>();
         _ani = GetComponentInChildren<Animator>();
