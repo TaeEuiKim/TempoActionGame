@@ -8,30 +8,19 @@ public class SkillSlot
 {
     public ISkillRoot skill { get; private set; }
     public UnityEvent<ISkillRoot> OnRemoved = new UnityEvent<ISkillRoot>();
-    public KeyCode slotKey;
 
     public void SetSkill(ISkillRoot newSkill)
     {
         skill = newSkill;
     }
 
-    public void UseSkillInstant(SkillManager sm)
+    public void UseSkillInstant(PlayerSkillManager sm)
     {
-        if(skill == null) { return; }
+        if (skill == null) { return; }
 
         if (skill.UseSkill(sm))
         {
             RemoveSkill();
-        }
-    }
-
-    public void UseSkillKeyDown(SkillManager sm)
-    {
-        if(slotKey == KeyCode.None) { return; }
-
-        if (Input.GetKeyDown(slotKey))
-        {
-            UseSkillInstant(sm);
         }
     }
 

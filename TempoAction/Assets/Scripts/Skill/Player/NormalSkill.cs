@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Collections;
 using UnityEditor;
 using UnityEngine;
 
 [Serializable]
-public class NormalSkill : SkillBase<PlayerNormalSkillData>
+public class NormalSkill : SkillBase<PlayerNormalSkillData>, ICooldownSkill
 {
-    private const float cooldownMultiplier = 0.01f;
+    private static float cooldownMultiplier = 0.01f;
 
     private float curTime; // seconds
 
@@ -16,7 +17,7 @@ public class NormalSkill : SkillBase<PlayerNormalSkillData>
     public NormalSkill(PlayerNormalSkillData skillData) : base(skillData)
     {
         curTime = skillData.SkillCooldown;
-        OnSkillAttack.AddListener((SkillManager sm) => { Debug.Log("Invoke Normal Skill"); });
+        OnSkillAttack.AddListener((ISkillManager sm) => { Debug.Log("Invoke Normal Skill(Player)"); });
         OnSkillAttack.AddListener(SwordQuickDraw);
     }
 
@@ -29,7 +30,7 @@ public class NormalSkill : SkillBase<PlayerNormalSkillData>
 
     public bool IsCooldown() => SkillData.SkillCooldown > curTime;
 
-    public override bool UseSkill(SkillManager sm) 
+    public override bool UseSkill(ISkillManager sm) 
     {
         bool isRemove = false;
         if (IsCooldown()) { isRemove = true; }
@@ -41,12 +42,14 @@ public class NormalSkill : SkillBase<PlayerNormalSkillData>
         return isRemove;
     }
 
-    private void SwordQuickDraw(SkillManager sm)
+    private void SwordQuickDraw(ISkillManager sm)
     {
-        sm.StartCoroutine(SwordQuickDrawCoroutine(sm));   
+        var manager = (PlayerSkillManager)sm;
+
+        manager.StartCoroutine(SwordQuickDrawCoroutine(manager));   
     }
 
-    public IEnumerator SwordQuickDrawCoroutine(SkillManager sm)
+    public IEnumerator SwordQuickDrawCoroutine(PlayerSkillManager sm)
     {
         GameObject effect1 = sm.instiatedEffects[sm.target.localScale.x < 0 ? 0 : 1];
         GameObject effect2 = sm.instiatedEffects[2];

@@ -5,7 +5,7 @@ using UnityEngine;
 public class SkillObject : MonoBehaviour
 {
     private ISkillRoot skill;
-    private SkillManager playerSkillManager;
+    private PlayerSkillManager playerSkillManager;
 
     public void Initialize(ISkillRoot skill)
     {
@@ -23,7 +23,7 @@ public class SkillObject : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            playerSkillManager = other.GetComponent<SkillManager>();
+            playerSkillManager = other.GetComponent<PlayerSkillManager>();
             if (playerSkillManager)
             {
                 playerSkillManager.InteractObject(this);

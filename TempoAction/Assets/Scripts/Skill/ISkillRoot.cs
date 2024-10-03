@@ -8,5 +8,5 @@ public interface ISkillRoot
     /// 
     /// </summary>
     /// <returns>스킬이 소멸될지 여부. true = 소멸, false = 유지</returns>
-    public abstract bool UseSkill(SkillManager skillManager);
+    public abstract bool UseSkill(ISkillManager skillManager);
 }

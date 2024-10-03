@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class SkillManager : MonoBehaviour
+public class PlayerSkillManager : MonoBehaviour, ISkillManager
 {
-    [SerializeField] private int MaxSkillSlot;
+    [field: SerializeField] public int MaxSkillSlot { get; protected set; }
     [SerializeField] private int MaxReserveSlot;
 
-    [SerializeField] private SkillSlot[] skillSlots;
+    [field: SerializeField] public SkillSlot[] SkillSlots { get; protected set; }
     private Queue<ISkillRoot> reserveSlots;
 
     private SkillObject interatedObject;
@@ -39,16 +39,16 @@ public class SkillManager : MonoBehaviour
 
     public void Initialize()
     {
-        if (skillSlots != null && skillSlots?.Length != MaxSkillSlot)
+        if (SkillSlots != null && SkillSlots?.Length != MaxSkillSlot)
         {
-            var oldSlots = skillSlots;
-            skillSlots = new SkillSlot[MaxSkillSlot];
+            var oldSlots = SkillSlots;
+            SkillSlots = new PlayerSkillSlot[MaxSkillSlot];
 
-            for(int i = 0; i < oldSlots.Length; i++)
+            for (int i = 0; i < oldSlots.Length; i++)
             {
-                if(i >= skillSlots.Length) { continue; }
+                if (i >= SkillSlots.Length) { continue; }
 
-                skillSlots[i] = oldSlots[i];
+                SkillSlots[i] = oldSlots[i];
             }
         }
 
@@ -68,7 +68,7 @@ public class SkillManager : MonoBehaviour
             return;
         }
 
-        reserveSlots = new Queue<ISkillRoot>(MaxReserveSlot); 
+        reserveSlots = new Queue<ISkillRoot>(MaxReserveSlot);
     }
 
     public void InteractObject(SkillObject skillObject)
@@ -83,7 +83,7 @@ public class SkillManager : MonoBehaviour
 
     private void Update()
     {
-        foreach (var slot in skillSlots)
+        foreach (PlayerSkillSlot slot in SkillSlots)
         {
             slot.UseSkillKeyDown(this);
             if (slot.skill is NormalSkill normalSkill)
@@ -103,14 +103,14 @@ public class SkillManager : MonoBehaviour
         if(newSkill == null) { return; }
 
         // 스킬 슬롯에서 빈 자리 탐색
-        for(int i = 0; i < skillSlots.Length; i++)
+        for(int i = 0; i < SkillSlots.Length; i++)
         {
             // 빈 곳이 있을 경우
-            if (skillSlots[i].skill == null)
+            if (SkillSlots[i].skill == null)
             {
                 // 등록
-                skillSlots[i].OnRemoved.AddListener(RemoveSkill);
-                skillSlots[i].SetSkill(newSkill);
+                SkillSlots[i].OnRemoved.AddListener(RemoveSkill);
+                SkillSlots[i].SetSkill(newSkill);
                 return;
             }
         }
@@ -126,12 +126,12 @@ public class SkillManager : MonoBehaviour
 
         // removedSkill 제거 과정
         int index = -1;
-        for (index = 0; index < skillSlots.Length; index++)
+        for (index = 0; index < SkillSlots.Length; index++)
         {
-            if (skillSlots[index].skill == removedSkill)
+            if (SkillSlots[index].skill == removedSkill)
             {
-                skillSlots[index].OnRemoved.RemoveListener(RemoveSkill);
-                skillSlots[index].RemoveSkill();
+                SkillSlots[index].OnRemoved.RemoveListener(RemoveSkill);
+                SkillSlots[index].RemoveSkill();
             }
         }
 
