@@ -80,7 +80,7 @@ public class Middle_Shelling : Middle_Skill
     {
         float _y = 25;
         Shelling rocket = ObjectPool.Instance.Spawn("Rocket").GetComponent<Shelling>();
-        rocket.transform.position = new Vector3(_monster.Player.position.x, _y, _monster.Player.position.z);
+        rocket.transform.position = new Vector3(_monster.Player.position.x + Random.Range(-3f, 3f), _y, _monster.Player.position.z);
         rocket.transform.rotation = Quaternion.Euler(-90, -200, 0);
         rocket.bombSize = bombSize;
         rocket.bombType = bombType;
@@ -97,10 +97,10 @@ public class Middle_Shelling : Middle_Skill
 
         yield return new WaitForSeconds(2f);
 
-        for (int i = 0; i < 4; ++i)
+        for (int i = 0; i < 7; ++i)
         {
             SpawnRocket();
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(0.7f);
         }
 
         yield return new WaitForSeconds(3f);
