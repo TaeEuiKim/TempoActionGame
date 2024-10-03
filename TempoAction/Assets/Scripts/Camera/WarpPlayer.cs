@@ -18,7 +18,6 @@ public class WarpPlayer : MonoBehaviour
         {
             if (warpType == Define.WarpType.MIDDLEBOSS)
             {
-                cameraController.TurnOnFadeOut(false);
                 cameraController.ChangeCamera(Define.MiddlePhaseState.START);
             }
         }
