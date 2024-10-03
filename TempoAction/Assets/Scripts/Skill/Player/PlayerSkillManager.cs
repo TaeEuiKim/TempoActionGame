@@ -8,7 +8,7 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
     [field: SerializeField] public int MaxSkillSlot { get; protected set; }
     [SerializeField] private int MaxReserveSlot;
 
-    [field: SerializeField] public SkillSlot[] SkillSlots { get; protected set; }
+    [field: SerializeReference] public SkillSlot[] SkillSlots { get; protected set; }
     private Queue<ISkillRoot> reserveSlots;
 
     private SkillObject interatedObject;
@@ -50,6 +50,16 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
 
                 SkillSlots[i] = oldSlots[i];
             }
+
+            for (int i = oldSlots.Length; i < SkillSlots.Length; i++)
+            {
+                SkillSlots[i] = new PlayerSkillSlot();
+            }
+        }
+
+        for (int i = 0; i < SkillSlots.Length; i++)
+        {
+            SkillSlots[i] = SkillSlots[i] as PlayerSkillSlot;
         }
 
         if (reserveSlots != null && reserveSlots?.Count != MaxReserveSlot)
@@ -86,7 +96,7 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
         foreach (PlayerSkillSlot slot in SkillSlots)
         {
             slot.UseSkillKeyDown(this);
-            if (slot.skill is NormalSkill normalSkill)
+            if (slot.Skill is NormalSkill normalSkill)
             {
                 normalSkill.UpdateTime(Time.deltaTime);
             }
@@ -106,7 +116,7 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
         for(int i = 0; i < SkillSlots.Length; i++)
         {
             // 빈 곳이 있을 경우
-            if (SkillSlots[i].skill == null)
+            if (SkillSlots[i].Skill == null)
             {
                 // 등록
                 SkillSlots[i].OnRemoved.AddListener(RemoveSkill);
@@ -128,7 +138,7 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
         int index = -1;
         for (index = 0; index < SkillSlots.Length; index++)
         {
-            if (SkillSlots[index].skill == removedSkill)
+            if (SkillSlots[index].Skill == removedSkill)
             {
                 SkillSlots[index].OnRemoved.RemoveListener(RemoveSkill);
                 SkillSlots[index].RemoveSkill();

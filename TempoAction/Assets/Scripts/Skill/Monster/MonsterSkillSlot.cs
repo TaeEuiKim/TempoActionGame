@@ -1,14 +1,25 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[Serializable]
 public class MonsterSkillSlot : SkillSlot
 {
+    [SerializeReference] public MonsterNormalSkillData skillData;
+
+    public void SetSkill()
+    {
+        MonsterSkill skill = new MonsterSkill(skillData);
+
+        Skill = skill;
+    }
+
     public bool IsUsable(MonsterSkillManager sm)
     {
         // 쿨 대기 중이면 실패 처리
-        var curSkill = skill as MonsterSkill;
+        var curSkill = Skill as MonsterSkill;
         if(curSkill.IsCooldown()) { return false; } 
 
         // 조건이 없으면 성공 처리
@@ -25,7 +36,7 @@ public class MonsterSkillSlot : SkillSlot
         // 범위 내에 있는 obj 리스트 계산
         objsInRange = targets.Where(
             (obj) =>
-            Vector3.Distance(obj.transform.position, sm.transform.position) <= radius
+            Mathf.Abs(obj.transform.position.x - sm.transform.position.x) <= radius
         ).ToList();
 
         // 조건에 따라 반환
@@ -42,12 +53,12 @@ public class MonsterSkillSlot : SkillSlot
 
     private List<GameObject> GetTargets(MonsterSkillManager sm)
     {
-        var curSkill = skill as MonsterSkill;
+        var curSkill = Skill as MonsterSkill;
         List<GameObject> targets;
         switch (curSkill.SkillData.SkillCastingTarget)
         {
             case Define.SkillTarget.PC:
-                targets = CharacterManager.GetCharacter(1 << 11); // player layer
+                targets = CharacterManager.Instance.GetCharacter(1 << 11); // player layer
                 break;
             case Define.SkillTarget.SELF:
                 targets = new List<GameObject>
@@ -56,7 +67,7 @@ public class MonsterSkillSlot : SkillSlot
                 };
                 break;
             case Define.SkillTarget.MON:
-                targets = CharacterManager.GetCharacter(1 << 10); // monster layer
+                targets = CharacterManager.Instance.GetCharacter(1 << 10); // monster layer
                 break;
             case Define.SkillTarget.GROUND:
                 targets = new List<GameObject>();
@@ -67,7 +78,7 @@ public class MonsterSkillSlot : SkillSlot
                 }
                 break;
             case Define.SkillTarget.ALL:
-                targets = CharacterManager.GetCharacter(1 << 11 | 1 << 10);
+                targets = CharacterManager.Instance.GetCharacter(1 << 11 | 1 << 10);
                 break;
             case Define.SkillTarget.NONE:
             default:

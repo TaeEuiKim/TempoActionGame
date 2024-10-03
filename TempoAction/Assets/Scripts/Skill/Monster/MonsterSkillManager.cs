@@ -7,7 +7,7 @@ public class MonsterSkillManager : MonoBehaviour, ISkillManager
 {
     [field: SerializeField] public int MaxSkillSlot { get; protected set; }
 
-    [field: SerializeField] public SkillSlot[] SkillSlots {  get; protected set; }
+    [field: SerializeReference] public SkillSlot[] SkillSlots {  get; protected set; }
 
     private void Start()
     {
@@ -19,19 +19,45 @@ public class MonsterSkillManager : MonoBehaviour, ISkillManager
         if (SkillSlots != null && SkillSlots?.Length != MaxSkillSlot)
         {
             var oldSlots = SkillSlots;
-            SkillSlots = new MonsterSkillSlot[MaxSkillSlot];
+            var newSkillSlots = new MonsterSkillSlot[MaxSkillSlot];
 
             for (int i = 0; i < oldSlots.Length; i++)
             {
-                if (i >= SkillSlots.Length) { continue; }
+                if (i >= newSkillSlots.Length) { continue; }
 
-                SkillSlots[i] = oldSlots[i];
+                newSkillSlots[i] = oldSlots[i] as MonsterSkillSlot;
+            }
+
+            for(int i = oldSlots.Length; i < newSkillSlots.Length; i++)
+            {
+                newSkillSlots[i] = new MonsterSkillSlot();
+            }
+
+            SkillSlots = newSkillSlots;
+        }
+
+        for (int i = 0; i < SkillSlots.Length; i++)
+        {
+            var slot = SkillSlots[i] as MonsterSkillSlot;
+            if (slot.skillData != null)
+            {
+                slot.SetSkill();
             }
         }
     }
 
-    public SkillSlot[] GetUsableSkillSlots()
+    public MonsterSkillSlot[] GetUsableSkillSlots()
     {
-        return SkillSlots.Where((slot) => ((MonsterSkillSlot)slot).IsUsable(this)).ToArray();
+        var slots = new List<MonsterSkillSlot>();
+
+        for(int i = 0; i < SkillSlots.Length; i++)
+        {
+            if (SkillSlots[i] is MonsterSkillSlot slot)
+            {
+                if (slot.IsUsable(this)) {  slots.Add(slot); }
+            }
+        }
+
+        return slots.ToArray();
     }
 }

@@ -6,19 +6,19 @@ using UnityEngine.Events;
 [System.Serializable]
 public class SkillSlot
 {
-    public ISkillRoot skill { get; private set; }
+    public ISkillRoot Skill { get; protected set; }
     public UnityEvent<ISkillRoot> OnRemoved = new UnityEvent<ISkillRoot>();
 
     public void SetSkill(ISkillRoot newSkill)
     {
-        skill = newSkill;
+        Skill = newSkill;
     }
 
-    public void UseSkillInstant(PlayerSkillManager sm)
+    public void UseSkillInstant(ISkillManager sm)
     {
-        if (skill == null) { return; }
+        if (Skill == null) { return; }
 
-        if (skill.UseSkill(sm))
+        if (Skill.UseSkill(sm))
         {
             RemoveSkill();
         }
@@ -26,7 +26,7 @@ public class SkillSlot
 
     public void RemoveSkill()
     {
-        OnRemoved.Invoke(skill);
-        skill = null;
+        OnRemoved.Invoke(Skill);
+        Skill = null;
     }
 }
