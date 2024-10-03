@@ -11,7 +11,7 @@ public class Nomal_Patrol : Normal_State
 
     private bool _movingRight = true;     // 이동 방향
 
-    public Nomal_Patrol(NomalMonster monster) : base(monster)
+    public Nomal_Patrol(NormalMonster monster) : base(monster)
     {
         _movingRight = true;
     }

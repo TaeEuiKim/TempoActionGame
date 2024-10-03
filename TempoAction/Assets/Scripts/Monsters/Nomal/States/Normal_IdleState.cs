@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Normal_IdleState : Normal_State
 {
-    public Normal_IdleState(NomalMonster monster) : base(monster) { }
+    public Normal_IdleState(NormalMonster monster) : base(monster) { }
 
     public override void Enter()
     {

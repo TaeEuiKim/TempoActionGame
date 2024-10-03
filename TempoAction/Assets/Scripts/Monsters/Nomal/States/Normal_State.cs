@@ -4,10 +4,10 @@ using UnityEngine;
 
 public abstract class Normal_State
 {
-    protected NomalMonster _monster;
+    protected NormalMonster _monster;
     protected bool _isEntered;
     public bool IsEntered { get => _isEntered; }
-    public Normal_State(NomalMonster monster)
+    public Normal_State(NormalMonster monster)
     {
         _monster = monster;
     }

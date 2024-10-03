@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NomalMonster : Monster
+public class NormalMonster : Monster
 {
     [System.Serializable]
     public class PerceptionRange
@@ -102,7 +102,7 @@ public class NomalMonster : Monster
     {
         _perceptionStateStorage.Add(Define.PerceptionType.PATROL, new Nomal_Patrol(this));
         _perceptionStateStorage.Add(Define.PerceptionType.BOUNDARY, new Nomal_Boundary(this));
-        _perceptionStateStorage.Add(Define.PerceptionType.DETECTIONM, new Nomal_Detectionm(this));
+        _perceptionStateStorage.Add(Define.PerceptionType.DETECTIONM, new Normal_Detectionm(this));
 
         CurrentPerceptionState = Define.PerceptionType.PATROL;
 

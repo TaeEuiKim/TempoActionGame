@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Nomal_Detectionm : Normal_State
+public class Normal_Detectionm : Normal_State
 {
     private float _attackTimer = 0;
 
-    public Nomal_Detectionm(NomalMonster monster) : base(monster)
+    public Normal_Detectionm(NormalMonster monster) : base(monster)
     {
 
     }
