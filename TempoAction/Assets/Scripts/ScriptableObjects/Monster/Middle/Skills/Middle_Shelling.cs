@@ -86,8 +86,12 @@ public class Middle_Shelling : Middle_Skill
         rocket.bombType = bombType;
         rocket.TotalDamage = Info.damage;
 
-        GameObject mark = ObjectPool.Instance.Spawn("RocketMark");
-        mark.transform.position = new Vector3(rocket.transform.position.x, 0.6f, -8f);
+        RaycastHit ray;
+        if (Physics.Raycast(rocket.transform.position, Vector3.down, out ray, Mathf.Infinity, 1 << LayerMask.NameToLayer("Ground")))
+        {
+            GameObject mark = ObjectPool.Instance.Spawn("RocketMark");
+            mark.transform.position = ray.point + new Vector3(0, 0.3f);
+        }
     }
 
     IEnumerator OnRocketCamera()

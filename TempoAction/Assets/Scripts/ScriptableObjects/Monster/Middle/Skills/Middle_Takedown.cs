@@ -10,6 +10,7 @@ public class Middle_Takedown : Middle_Skill
     private float _coolTime = 0f;
     private float count = 0f;
     private bool _isHit = false;
+    private Vector3 originSize;
 
     [SerializeField] int _attackCount;                      // °ø°Ý È½¼ö
     [SerializeField] private float _knockBackPower;         
@@ -45,7 +46,8 @@ public class Middle_Takedown : Middle_Skill
     public override void Enter()
     {
         Debug.Log("³»·ÁÂï±â");
-        _monster.ColliderSize = new Vector3(_monster.ColliderSize.x * 3f, _monster.ColliderSize.y * 3f, _monster.ColliderSize.z);
+        originSize = _monster.ColliderSize;
+        _monster.ColliderSize = new Vector3(_monster.ColliderSize.x * 3f, _monster.ColliderSize.y * 1.5f, _monster.ColliderSize.z);
         CoroutineRunner.Instance.StartCoroutine(MoveToPlayer());
 
         _monster.OnAttackAction += Attack;
@@ -63,7 +65,7 @@ public class Middle_Takedown : Middle_Skill
     public override void Exit()
     {
         _monster.Ani.SetBool("Takedown", false);
-        _monster.ColliderSize = new Vector3(1, 1.5f, 1);
+        _monster.ColliderSize = originSize;
         _coolTime = 0;
         count = 0f;
         _isHit = false;
@@ -148,7 +150,7 @@ public class Middle_Takedown : Middle_Skill
     {
         RaycastHit hit;
         Vector3 pos = _monster.transform.position;
-        pos.y = 1.54f;
+        pos.y = 2.159f;
         if (Physics.Raycast(pos, Vector2.right * _monster.Direction, out hit, _knockBackPower * _knockBackDuration, _monster.WallLayer))
         {
             return hit.point;
@@ -161,11 +163,11 @@ public class Middle_Takedown : Middle_Skill
     {
         if (_monster.CharacterModel.localScale.x > 0)
         {
-            obj.transform.position = _monster.transform.position - new Vector3(1f, -2f);
+            obj.transform.position = _monster.transform.position - new Vector3(1f, -2.5f);
         }
         else if (_monster.CharacterModel.localScale.x < 0)
         {
-            obj.transform.position = _monster.transform.position - new Vector3(-1f, -2f);
+            obj.transform.position = _monster.transform.position - new Vector3(-1f, -2.5f);
         }
 
         obj.GetComponent<FlipSlash>().OnFlip(_monster.CharacterModel.localScale);
