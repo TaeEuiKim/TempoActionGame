@@ -13,7 +13,8 @@ public class Middle_Longjump : Middle_Skill
 
     [SerializeField] private float _knockBackPower;
     [SerializeField] private float _knockBackDuration;
-    [SerializeField] float _finishDamage;                   // 피니쉬 공격 데미지
+    [Header("피니쉬 공격 데미지 체력(%)")]
+    [SerializeField] float _finishDamage;
 
     private Vector3 originSize;
 

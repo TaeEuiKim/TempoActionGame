@@ -6,6 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Sniping", menuName = "ScriptableObjects/MiddleMonster/Skill/Sniping", order = 1)]
 public class Middle_Sniping : Middle_Skill
 {
+    [Header("드럼 날라가는 속도")]
     [SerializeField] private float _power = 0;
 
     private float _coolTime = 0f;
