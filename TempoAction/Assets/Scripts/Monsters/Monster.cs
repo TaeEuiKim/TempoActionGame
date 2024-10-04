@@ -80,6 +80,7 @@ public abstract class Monster : CharacterBase
 
     public void TakeDamage(float value)
     {
+        Debug.Log(value);
         if (IsGuarded)
         {
             _stat.Hp -= value * ((100 - _stat.Defense) / 100);
