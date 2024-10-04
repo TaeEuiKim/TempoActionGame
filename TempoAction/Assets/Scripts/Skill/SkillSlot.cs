@@ -6,36 +6,27 @@ using UnityEngine.Events;
 [System.Serializable]
 public class SkillSlot
 {
-    public SkillBase skill { get; private set; }
-    public UnityEvent<SkillBase> OnRemoved = new UnityEvent<SkillBase>();
-    public KeyCode slotKey;
+    public ISkillRoot Skill { get; protected set; }
+    public UnityEvent<ISkillRoot> OnRemoved = new UnityEvent<ISkillRoot>();
 
-    public void SetSkill(SkillBase newSkill)
+    public void SetSkill(ISkillRoot newSkill)
     {
-        skill = newSkill;
+        Skill = newSkill;
     }
 
-    public void UseSkillInstnat()
+    public void UseSkillInstant(ISkillManager sm)
     {
-        if (skill.UseSkill())
+        if (Skill == null) { return; }
+
+        if (Skill.UseSkill(sm))
         {
             RemoveSkill();
         }
     }
 
-    public void UseSkillKeyDown()
-    {
-        if(slotKey == KeyCode.None) { return; }
-
-        if (Input.GetKeyDown(slotKey))
-        {
-            UseSkillKeyDown();
-        }
-    }
-
     public void RemoveSkill()
     {
-        OnRemoved.Invoke(skill);
-        skill = null;
+        OnRemoved.Invoke(Skill);
+        Skill = null;
     }
 }

@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Nomal_Boundary : Nomal_State
+public class Nomal_Boundary : Normal_State
 {
-    public Nomal_Boundary(NomalMonster monster) : base(monster)
+    public Nomal_Boundary(NormalMonster monster) : base(monster)
     {
 
     }

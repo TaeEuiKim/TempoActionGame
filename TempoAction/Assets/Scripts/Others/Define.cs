@@ -64,12 +64,13 @@ public class Define
     {
         MAIN, POINT, DASH, RUN, JUMP, STUN, NONE
     }
+
     #endregion
 
     #region 몬스터
     public enum PerceptionType
     {
-        PATROL, BOUNDARY, DETECTIONM
+        PATROL, BOUNDARY, DETECTIONM, IDLE
     }
 
     #region 엘리트 몬스터
@@ -112,4 +113,52 @@ public class Define
 
     #endregion
 
+    #region Skill
+    public enum SkillTerms
+    {
+        NONE,
+        INRANGE,
+        OUTRANGE
+    }
+
+    public enum SkillColliderType
+    {
+        FORWARD,
+        CENTER
+    }
+
+    public enum SkillType
+    {
+        ATK, // 공격형
+        BUF, // 버프형
+        MOV, // 기동형
+    }
+
+    public enum SkillTarget
+    {
+        NONE,       // 없음
+        PC,            // Playable Character
+        SELF,        // 자기자신
+        MON,        // 몬스터
+        GROUND, // 지면
+        ALL,           // 적&아군
+    }
+
+    public enum SkillEffectType
+    {
+        NONE,               // 없음
+        RUSH,               // 전진-돌진
+        BONUS_ATK,   // 추가 공격
+        TP_TO_PC,       // PC에게로 순간이동
+        CREATE_OBJ  // 랜덤 오브젝트 생성
+    }
+
+    public enum SkillSecondEffectType
+    {
+        NONE,               // 없음
+        STIFFNESS,      // 경직
+        KNOCKBACK,   // 넉백
+        KNOCKDOWN // 쓰러짐
+    }
+    #endregion
 }

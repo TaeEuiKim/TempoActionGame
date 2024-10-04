@@ -85,7 +85,7 @@ public class Cheong_Idle : Middle_State
         }
         else
         {
-            Vector3 tempScale = _monster.MonsterModel.localScale;
+            Vector3 tempScale = _monster.CharacterModel.localScale;
             if (direction > 0)
             {
                 tempScale.x = -1;
@@ -95,7 +95,7 @@ public class Cheong_Idle : Middle_State
                 tempScale.x = 1;
             }
 
-            _monster.MonsterModel.localScale = tempScale;
+            _monster.CharacterModel.localScale = tempScale;
 
             _monster.Rb.velocity = new Vector2(_monster.Direction * _monster.Stat.SprintSpeed, _monster.Rb.velocity.y);
             _monster.Ani.SetBool("Run", true);

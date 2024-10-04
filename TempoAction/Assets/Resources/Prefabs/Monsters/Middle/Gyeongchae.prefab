@@ -97,6 +97,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dadd350346dc1674fba6a6a3370ed29e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _characterModel: {fileID: 8267878504855142255}
+  <_SkillManager>k__BackingField: {fileID: 0}
   _stat: {fileID: 11400000, guid: d379a5b8ade49d84185205af46594e09, type: 2}
   _playerLayer:
     serializedVersion: 2
@@ -104,7 +106,6 @@ MonoBehaviour:
   _wallLayer:
     serializedVersion: 2
     m_Bits: 8192
-  _monsterModel: {fileID: 4228420463078324104}
   _monsterName: 1
   _currentState: 5
   _skillStorage:

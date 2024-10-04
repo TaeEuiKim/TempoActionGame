@@ -81,22 +81,22 @@ public class Middle_Takedown : Middle_Skill
         float firstDis = dis / 4;
         float secondDis = dis - firstDis;
 
-        if (_monster.MonsterModel.transform.localScale.x < 0)
+        if (_monster.CharacterModel.transform.localScale.x < 0)
         {
             _monster.transform.DOMoveX(_monster.transform.position.x + firstDis, 2f);
         }
-        else if (_monster.MonsterModel.transform.localScale.x > 0)
+        else if (_monster.CharacterModel.transform.localScale.x > 0)
         {
             _monster.transform.DOMoveX(_monster.transform.position.x - firstDis, 2f);
         }
 
         yield return new WaitForSecondsRealtime(1.5f);
 
-        if (_monster.MonsterModel.transform.localScale.x < 0)
+        if (_monster.CharacterModel.transform.localScale.x < 0)
         {
             _monster.transform.DOMoveX(_monster.transform.position.x + secondDis, 1f);
         }
-        else if (_monster.MonsterModel.transform.localScale.x > 0)
+        else if (_monster.CharacterModel.transform.localScale.x > 0)
         {
             _monster.transform.DOMoveX(_monster.transform.position.x - secondDis, 1f);
         }
@@ -161,16 +161,16 @@ public class Middle_Takedown : Middle_Skill
 
     private void OnFlipEffect(GameObject obj)
     {
-        if (_monster.MonsterModel.localScale.x > 0)
+        if (_monster.CharacterModel.localScale.x > 0)
         {
             obj.transform.position = _monster.transform.position - new Vector3(1f, -2.5f);
         }
-        else if (_monster.MonsterModel.localScale.x < 0)
+        else if (_monster.CharacterModel.localScale.x < 0)
         {
             obj.transform.position = _monster.transform.position - new Vector3(-1f, -2.5f);
         }
 
-        obj.GetComponent<FlipSlash>().OnFlip(_monster.MonsterModel.localScale);
+        obj.GetComponent<FlipSlash>().OnFlip(_monster.CharacterModel.localScale);
     }
 
     private void Finish()
