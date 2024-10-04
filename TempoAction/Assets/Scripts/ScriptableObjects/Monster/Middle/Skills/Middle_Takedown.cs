@@ -12,10 +12,12 @@ public class Middle_Takedown : Middle_Skill
     private bool _isHit = false;
     private Vector3 originSize;
 
-    [SerializeField] int _attackCount;                      // 공격 횟수
     [SerializeField] private float _knockBackPower;         
     [SerializeField] private float _knockBackDuration;
-    [SerializeField] float _finishDamage;                   // 피니쉬 공격 데미지
+    [SerializeField] int _attackCount;
+
+    [Header("피니쉬 공격 데미지 체력(%)")]
+    [SerializeField] float _finishDamage;
 
     public override void Init(MiddleMonster monster)
     {

@@ -54,18 +54,19 @@ public class NormalSkill : SkillBase<PlayerNormalSkillData>, ICooldownSkill
         GameObject effect1 = sm.instiatedEffects[sm.target.localScale.x < 0 ? 0 : 1];
         GameObject effect2 = sm.instiatedEffects[2];
         GameObject effect3 = sm.instiatedEffects[sm.target.localScale.x < 0 ? 3 : 4];
-        
+
         // 히트박스
-        BoxCollider hitbox = sm.hitbox as BoxCollider;
-        hitbox.enabled = false;
+        //BoxCollider hitbox = sm.hitbox as BoxCollider;
+        //hitbox.enabled = false;
         sm.offingHitbox2.enabled = false;
         sm.offingHitbox.SetActive(false);
-        var size = hitbox.size;
+        //var size = hitbox.size;
+        Vector3 size;
         size.x = SkillData.SkillHitboxSize * 0.01f;
-        hitbox.size = size;
+        //hitbox.size = size;
+
         //sm.effectsParent.transform.eulerAngles = new Vector3(0, 180, 0) * ;
         effect1.SetActive(true);
-
 
         // 선딜
         yield return new WaitForSeconds(25 / 100);
