@@ -12,6 +12,8 @@ public class Middle_Homerun : Middle_Skill
     [SerializeField] private float _knockBackPower;
     [SerializeField] private float _knockBackDuration;
 
+    private Vector3 originSize;
+
     public override void Init(MiddleMonster monster)
     {
         base.Init(monster);
@@ -39,6 +41,7 @@ public class Middle_Homerun : Middle_Skill
     public override void Enter()
     {
         Debug.Log("È¨·±");
+        originSize = _monster.ColliderSize;
         _monster.ColliderSize = new Vector3(_monster.ColliderSize.x * 2f, _monster.ColliderSize.y * 1.5f, _monster.ColliderSize.z);
         CoroutineRunner.Instance.StartCoroutine(MoveToPlayer());
 
@@ -57,7 +60,7 @@ public class Middle_Homerun : Middle_Skill
     public override void Exit()
     {
         _monster.Ani.SetBool("Homerun", false);
-        _monster.ColliderSize = new Vector3(1, 1.5f, 1);
+        _monster.ColliderSize = originSize;
         _coolTime = 0;
 
         IsCompleted = false;
@@ -104,7 +107,7 @@ public class Middle_Homerun : Middle_Skill
     {
         RaycastHit hit;
         Vector3 pos = _monster.transform.position;
-        pos.y = 1.54f;
+        pos.y = 2.159f;
 
         if (Physics.Raycast(pos, Vector2.right * _monster.Direction, out hit, _knockBackPower * _knockBackDuration, _monster.WallLayer))
         {

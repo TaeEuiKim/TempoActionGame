@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Cinemachine;
+using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 
 public class CameraController : MonoBehaviour
@@ -34,11 +35,11 @@ public class CameraController : MonoBehaviour
         middlePhaseManager = FindObjectOfType<MiddlePhaseManager>();
     }
 
-    public void TurnOnFadeOut(bool islook)
+    public void TurnOnFadeOut(bool islook, string SceneName)
     {
         isLook = islook;
         _CurCamera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
-        StartCoroutine(FadeOut());
+        StartCoroutine(FadeOut(SceneName));
     }
 
     public void ChangeCamera(Define.MiddlePhaseState state)
@@ -46,9 +47,8 @@ public class CameraController : MonoBehaviour
         switch (state)
         {
             case Define.MiddlePhaseState.START:
-                _PlayerCamera.gameObject.SetActive(false);
-                _SceneCamera.gameObject.SetActive(true);
-                middlePhaseManager.ChangeStageState(state);
+                TurnOnFadeOut(false, "START");
+                //middlePhaseManager.ChangeStageState(state);
                 break;
             case Define.MiddlePhaseState.PHASE1:
                 break;
@@ -87,7 +87,7 @@ public class CameraController : MonoBehaviour
         yield break;
     }
 
-    IEnumerator FadeOut()
+    IEnumerator FadeOut(string SceneName)
     {
         float elapsedTime = 0f;
         float fadedTime = 0.5f;
@@ -106,18 +106,19 @@ public class CameraController : MonoBehaviour
         {
             _CurCamera.LookAt = null;
         }
-        player.transform.position = spawnPoint.transform.position;
 
         elapsedTime = 0;
         while (elapsedTime <= fadedTime)
         {
-
             elapsedTime += Time.deltaTime;
 
             yield return null;
         }
 
-        StartCoroutine(FadeIn());
+        if (SceneName == "START")
+        {
+            LoadManager.LoadScene("MiddleBossStage");
+        }
 
         yield break;
     }

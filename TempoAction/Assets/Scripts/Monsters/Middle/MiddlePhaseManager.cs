@@ -42,6 +42,8 @@ public class MiddlePhaseManager : MonoBehaviour
 
         _monster.middlePoint = _middlePoint;
         _monster2.middlePoint = _middlePoint;
+
+        ChangeStageState(Define.MiddlePhaseState.START);
     }
 
     private void Update()
