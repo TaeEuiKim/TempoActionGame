@@ -69,11 +69,11 @@ public class Middle_Homerun : Middle_Skill
 
         float dis = Vector3.Distance(_monster.transform.position, _monster.Player.transform.position - new Vector3(_monster.Direction, 0, 0));
 
-        if (_monster.MonsterModel.transform.localScale.x < 0)
+        if (_monster.CharacterModel.transform.localScale.x < 0)
         {
             _monster.transform.DOMoveX(_monster.transform.position.x + dis, 0.6f);
         }
-        else if (_monster.MonsterModel.transform.localScale.x > 0)
+        else if (_monster.CharacterModel.transform.localScale.x > 0)
         {
             _monster.transform.DOMoveX(_monster.transform.position.x - dis, 0.6f);
         }

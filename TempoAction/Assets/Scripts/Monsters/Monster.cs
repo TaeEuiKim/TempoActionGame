@@ -4,18 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public abstract class Monster : MonoBehaviour
+public abstract class Monster : CharacterBase
 {
     [field:SerializeField] public MonsterSkillManager _SkillManager { get; protected set; }
     [SerializeField] protected MonsterStat _stat;
     [SerializeField] protected LayerMask _playerLayer;
     [SerializeField] protected LayerMask _wallLayer;
-    [SerializeField] protected Transform _monsterModel;
 
     protected Transform _player;
     private MonsterView _view;
-    protected Animator _ani;
-    protected Rigidbody _rb;
 
     protected float _direction = 1; // 몬스터가 바라보는 방향
 
@@ -26,8 +23,6 @@ public abstract class Monster : MonoBehaviour
 
 
     #region 프로퍼티
-    public Animator Ani { get => _ani;  }
-    public Rigidbody Rb { get => _rb;  }
     public Transform Player { get => _player; }
     public MonsterStat Stat { get => _stat; set => _stat = value; }
     public LayerMask PlayerLayer { get => _playerLayer; }
@@ -54,16 +49,13 @@ public abstract class Monster : MonoBehaviour
             _direction = value;
         }
     }
-
-    public Transform MonsterModel { get => _monsterModel; }
     #endregion
 
-    private void Awake()
+    protected override void Awake()
     {
-        _SkillManager = GetComponent<MonsterSkillManager>();
+        base.Awake();
 
-        _rb = GetComponent<Rigidbody>();
-        _ani = GetComponentInChildren<Animator>();
+        _SkillManager = GetComponent<MonsterSkillManager>();
 
         _view = GetComponent<MonsterView>();
 
