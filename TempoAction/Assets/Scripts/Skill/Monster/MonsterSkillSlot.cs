@@ -11,9 +11,7 @@ public class MonsterSkillSlot : SkillSlot
 
     public void SetSkill()
     {
-        MonsterSkill skill = new MonsterSkill(skillData);
-
-        Skill = skill;
+        Skill = new MonsterSkill(skillData);
     }
 
     public bool IsUsable(MonsterSkillManager sm)
@@ -36,7 +34,7 @@ public class MonsterSkillSlot : SkillSlot
         // 범위 내에 있는 obj 리스트 계산
         objsInRange = targets.Where(
             (obj) =>
-            Mathf.Abs(obj.transform.position.x - sm.transform.position.x) <= radius
+            Mathf.Abs(Vector3.Distance(obj.transform.position, sm.transform.position)) <= radius
         ).ToList();
 
         // 조건에 따라 반환
