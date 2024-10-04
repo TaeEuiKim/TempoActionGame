@@ -469,6 +469,7 @@ GameObject:
   - component: {fileID: 739539354}
   - component: {fileID: 739539356}
   - component: {fileID: 739539355}
+  - component: {fileID: 739539357}
   m_Layer: 5
   m_Name: circle
   m_TagString: Untagged
@@ -533,6 +534,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 739539353}
   m_CullTransparentMesh: 1
+--- !u!114 &739539357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739539353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cd7b04c938d004488470e7694a879a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 766395103}
+  speed: 0
 --- !u!1 &766395101
 GameObject:
   m_ObjectHideFlags: 0
@@ -706,6 +721,7 @@ GameObject:
   - component: {fileID: 1474195882}
   - component: {fileID: 1474195884}
   - component: {fileID: 1474195883}
+  - component: {fileID: 1474195885}
   m_Layer: 5
   m_Name: circle (2)
   m_TagString: Untagged
@@ -770,6 +786,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1474195881}
   m_CullTransparentMesh: 1
+--- !u!114 &1474195885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474195881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cd7b04c938d004488470e7694a879a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 766395103}
+  speed: 1
 --- !u!1 &1477996711
 GameObject:
   m_ObjectHideFlags: 0
@@ -1095,6 +1125,7 @@ GameObject:
   - component: {fileID: 2114342727}
   - component: {fileID: 2114342729}
   - component: {fileID: 2114342728}
+  - component: {fileID: 2114342730}
   m_Layer: 5
   m_Name: circle (1)
   m_TagString: Untagged
@@ -1159,6 +1190,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2114342726}
   m_CullTransparentMesh: 1
+--- !u!114 &2114342730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2114342726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cd7b04c938d004488470e7694a879a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 766395103}
+  speed: 0.5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
