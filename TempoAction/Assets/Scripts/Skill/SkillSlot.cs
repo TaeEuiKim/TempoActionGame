@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [System.Serializable]
-public class SkillSlot
+public abstract class SkillSlot
 {
     public ISkillRoot Skill { get; protected set; }
     public UnityEvent<ISkillRoot> OnRemoved = new UnityEvent<ISkillRoot>();
@@ -14,15 +14,7 @@ public class SkillSlot
         Skill = newSkill;
     }
 
-    public void UseSkillInstant(CharacterBase cb)
-    {
-        if (Skill == null) { return; }
-
-        if (Skill.UseSkill(cb))
-        {
-            RemoveSkill();
-        }
-    }
+    public abstract void UseSkillInstant(CharacterBase character);
 
     public void RemoveSkill()
     {

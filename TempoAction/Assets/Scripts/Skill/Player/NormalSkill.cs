@@ -163,12 +163,13 @@ public class NormalSkill : SkillBase, ICooldownSkill
 
     public bool IsCooldown() => skillData.SkillCooldown > curTime;
 
-    public override bool UseSkill(CharacterBase sm)
+    public override bool UseSkill(CharacterBase character)
     {
         bool isRemove = false;
         if (IsCooldown()) { isRemove = true; }
 
-        OnSkillAttack.Invoke(sm);
+        //OnSkillAttack.Invoke(sm);
+        SkillRunner.Run(character);
 
         curTime = 0;
 

@@ -86,4 +86,11 @@ public class MonsterSkillSlot : SkillSlot
 
         return targets;
     }
+
+    public override void UseSkillInstant(CharacterBase character)
+    {
+        if (Skill == null) { return; }
+
+        Skill.UseSkill(character);
+    }
 }

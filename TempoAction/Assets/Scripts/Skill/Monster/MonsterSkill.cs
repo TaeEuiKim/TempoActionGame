@@ -60,15 +60,15 @@ public class MonsterSkill : SkillBase, ICooldownSkill
         curTime += deltaTime;
     }
 
-    public override bool UseSkill(CharacterBase characterBase)
+    public override bool UseSkill(CharacterBase character)
     {
-        bool isRemove = false;
-        if (IsCooldown()) { isRemove = true; }
+        if (IsCooldown()) { return false; }
 
-        OnSkillAttack.Invoke(characterBase);
+        //OnSkillAttack.Invoke(characterBase);
+        SkillRunner.Run(character);
 
         curTime = 0;
 
-        return isRemove;
+        return true;
     }
 }
