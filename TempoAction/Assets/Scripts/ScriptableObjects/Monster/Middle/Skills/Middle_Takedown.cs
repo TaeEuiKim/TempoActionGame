@@ -10,11 +10,14 @@ public class Middle_Takedown : Middle_Skill
     private float _coolTime = 0f;
     private float count = 0f;
     private bool _isHit = false;
+    private Vector3 originSize;
 
-    [SerializeField] int _attackCount;                      // 공격 횟수
     [SerializeField] private float _knockBackPower;         
     [SerializeField] private float _knockBackDuration;
-    [SerializeField] float _finishDamage;                   // 피니쉬 공격 데미지
+    [SerializeField] int _attackCount;
+
+    [Header("피니쉬 공격 데미지 체력(%)")]
+    [SerializeField] float _finishDamage;
 
     public override void Init(MiddleMonster monster)
     {
@@ -45,7 +48,8 @@ public class Middle_Takedown : Middle_Skill
     public override void Enter()
     {
         Debug.Log("내려찍기");
-        _monster.ColliderSize = new Vector3(_monster.ColliderSize.x * 3f, _monster.ColliderSize.y * 3f, _monster.ColliderSize.z);
+        originSize = _monster.ColliderSize;
+        _monster.ColliderSize = new Vector3(_monster.ColliderSize.x * 3f, _monster.ColliderSize.y * 1.5f, _monster.ColliderSize.z);
         CoroutineRunner.Instance.StartCoroutine(MoveToPlayer());
 
         _monster.OnAttackAction += Attack;
@@ -63,7 +67,7 @@ public class Middle_Takedown : Middle_Skill
     public override void Exit()
     {
         _monster.Ani.SetBool("Takedown", false);
-        _monster.ColliderSize = new Vector3(1, 1.5f, 1);
+        _monster.ColliderSize = originSize;
         _coolTime = 0;
         count = 0f;
         _isHit = false;
@@ -79,22 +83,22 @@ public class Middle_Takedown : Middle_Skill
         float firstDis = dis / 4;
         float secondDis = dis - firstDis;
 
-        if (_monster.MonsterModel.transform.localScale.x < 0)
+        if (_monster.CharacterModel.transform.localScale.x < 0)
         {
             _monster.transform.DOMoveX(_monster.transform.position.x + firstDis, 2f);
         }
-        else if (_monster.MonsterModel.transform.localScale.x > 0)
+        else if (_monster.CharacterModel.transform.localScale.x > 0)
         {
             _monster.transform.DOMoveX(_monster.transform.position.x - firstDis, 2f);
         }
 
         yield return new WaitForSecondsRealtime(1.5f);
 
-        if (_monster.MonsterModel.transform.localScale.x < 0)
+        if (_monster.CharacterModel.transform.localScale.x < 0)
         {
             _monster.transform.DOMoveX(_monster.transform.position.x + secondDis, 1f);
         }
-        else if (_monster.MonsterModel.transform.localScale.x > 0)
+        else if (_monster.CharacterModel.transform.localScale.x > 0)
         {
             _monster.transform.DOMoveX(_monster.transform.position.x - secondDis, 1f);
         }
@@ -148,7 +152,7 @@ public class Middle_Takedown : Middle_Skill
     {
         RaycastHit hit;
         Vector3 pos = _monster.transform.position;
-        pos.y = 1.54f;
+        pos.y = 2.159f;
         if (Physics.Raycast(pos, Vector2.right * _monster.Direction, out hit, _knockBackPower * _knockBackDuration, _monster.WallLayer))
         {
             return hit.point;
@@ -159,16 +163,16 @@ public class Middle_Takedown : Middle_Skill
 
     private void OnFlipEffect(GameObject obj)
     {
-        if (_monster.MonsterModel.localScale.x > 0)
+        if (_monster.CharacterModel.localScale.x > 0)
         {
-            obj.transform.position = _monster.transform.position - new Vector3(1f, -2f);
+            obj.transform.position = _monster.transform.position - new Vector3(1f, -2.5f);
         }
-        else if (_monster.MonsterModel.localScale.x < 0)
+        else if (_monster.CharacterModel.localScale.x < 0)
         {
-            obj.transform.position = _monster.transform.position - new Vector3(-1f, -2f);
+            obj.transform.position = _monster.transform.position - new Vector3(-1f, -2.5f);
         }
 
-        obj.GetComponent<FlipSlash>().OnFlip(_monster.MonsterModel.localScale);
+        obj.GetComponent<FlipSlash>().OnFlip(_monster.CharacterModel.localScale);
     }
 
     private void Finish()

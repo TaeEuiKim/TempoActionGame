@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/EliteMonsterStage.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
+    path: Assets/Scenes/BuildScene/StartScene.unity
+    guid: b0fe4d1b9c6ad8d4eb355cb3103a959e
+  - enabled: 1
+    path: Assets/Scenes/BuildScene/LoadingScene.unity
+    guid: e9f5db002b9cfb04487202d6131da202
+  - enabled: 1
+    path: Assets/Scenes/BuildScene/MiddleBossStage.unity
+    guid: 1aef0402d52ede5438069da91fa82ccf
   m_configObjects: {}

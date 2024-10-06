@@ -209,14 +209,14 @@ public class PlayerController
 
     private void Flip(float value)
     {
-        Vector3 tempScale = _player.PlayerModel.localScale;
+        Vector3 tempScale = _player.CharacterModel.localScale;
 
         if (value * tempScale.x < 0)
         {
             tempScale.x *= -1;
         }
 
-        _player.PlayerModel.localScale = tempScale;
+        _player.CharacterModel.localScale = tempScale;
     }
     private bool CheckMovePath()
     {

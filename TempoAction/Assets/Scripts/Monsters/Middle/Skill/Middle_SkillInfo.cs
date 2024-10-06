@@ -6,9 +6,16 @@ using UnityEngine;
 public class Middle_SkillInfo
 {
     public Define.MiddleMonsterSkill skill;
+
+    [Header("쿨타임")]
     public float coolTime;
-    public float totalTime;
+
+    [Header("사거리 (경채는 조절X)")]
     public float range;
+
+    [Header("데미지 (체력 %)")]
     public float damage;
+
+    [Header("스킬 우선순위")]
     public int priority;
 }

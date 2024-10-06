@@ -1729,7 +1729,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8554655104631171556, guid: e44667fba3fb6d64cae11e0a847fa023, type: 3}
+  - {fileID: 2100000, guid: b854ad717e6aee2489743a89f68c2562, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1838,6 +1838,7 @@ GameObject:
   - component: {fileID: 4073917916111849753}
   - component: {fileID: 8819824192733280397}
   - component: {fileID: 5084343532810798280}
+  - component: {fileID: 7795894189632671301}
   m_Layer: 10
   m_Name: Cheong
   m_TagString: Untagged
@@ -1923,6 +1924,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dadd350346dc1674fba6a6a3370ed29e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _characterModel: {fileID: 1463432801698866788}
+  <_SkillManager>k__BackingField: {fileID: 0}
   _stat: {fileID: 11400000, guid: 9f91f833c9bd8d84f9756584fbea0fdf, type: 2}
   _playerLayer:
     serializedVersion: 2
@@ -1930,12 +1933,12 @@ MonoBehaviour:
   _wallLayer:
     serializedVersion: 2
     m_Bits: 8192
-  _monsterModel: {fileID: 1463432801698866788}
   _monsterName: 0
   _currentState: 5
   _skillStorage:
   - {fileID: 11400000, guid: e9f5ab8d91bfb12419040f9bc26ee2ff, type: 2}
   - {fileID: 11400000, guid: 3d246045c9119a849b266ad77ac94757, type: 2}
+  - {fileID: 11400000, guid: a3d557ccda7de7b418a0ed4e8a26362d, type: 2}
   _currentSkill: {fileID: 0}
   _readySkills: []
   _hitPoint: {fileID: 4255190750091489601}
@@ -1943,6 +1946,19 @@ MonoBehaviour:
   _parringPoint: {fileID: 1812326742488557261}
   _parringColliderSize: {x: 1, y: 1, z: 0}
   _idleDuration: 1
+--- !u!114 &7795894189632671301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4589658708976317112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6933cf497ec53444580a6b2123562aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hpBarImage: {fileID: 0}
 --- !u!1 &4690016875442556617
 GameObject:
   m_ObjectHideFlags: 0
@@ -2727,7 +2743,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 7f33464dfc486b84da67e06b723600dd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3227,7 +3243,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8554655104631171556, guid: e44667fba3fb6d64cae11e0a847fa023, type: 3}
+  - {fileID: 2100000, guid: b854ad717e6aee2489743a89f68c2562, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3388,7 +3404,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8554655104631171556, guid: e44667fba3fb6d64cae11e0a847fa023, type: 3}
+  - {fileID: 2100000, guid: b854ad717e6aee2489743a89f68c2562, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

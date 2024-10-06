@@ -13,7 +13,10 @@ public class Middle_Longjump : Middle_Skill
 
     [SerializeField] private float _knockBackPower;
     [SerializeField] private float _knockBackDuration;
-    [SerializeField] float _finishDamage;                   // 피니쉬 공격 데미지
+    [Header("피니쉬 공격 데미지 체력(%)")]
+    [SerializeField] float _finishDamage;
+
+    private Vector3 originSize;
 
     public override void Init(MiddleMonster monster)
     {
@@ -75,11 +78,10 @@ public class Middle_Longjump : Middle_Skill
     public override void Exit()
     {
         _monster.Ani.SetBool("Longjump", false);
-        _monster.ColliderSize = new Vector3(1, 1.5f, 1);
+        _monster.ColliderSize = originSize;
         _coolTime = 0;
 
         isHit = false;
-        isFlying = false;
         IsCompleted = false;
     }
 
@@ -89,7 +91,7 @@ public class Middle_Longjump : Middle_Skill
 
         GameObject hitParticle = ObjectPool.Instance.Spawn("FX_ChungJump@P", 1); ;
 
-        hitParticle.transform.position = new Vector3(_monster.transform.position.x, 0.6f, _monster.transform.position.z);
+        hitParticle.transform.position = new Vector3(_monster.transform.position.x, 1.1f, _monster.transform.position.z);
 
         isFlying = true;
     }
@@ -103,11 +105,13 @@ public class Middle_Longjump : Middle_Skill
 
     private void Finish()
     {
+        originSize = _monster.ColliderSize;
         _monster.ColliderSize = new Vector3(_monster.ColliderSize.x * 2.5f, _monster.ColliderSize.y * 2f, _monster.ColliderSize.z);
+        isFlying = false;
 
         GameObject hitParticle = ObjectPool.Instance.Spawn("FX_ChungLanding@P", 1); ;
 
-        hitParticle.transform.position = new Vector3(_monster.transform.position.x + (_monster.Direction * 1.5f), 0.6f, _monster.transform.position.z);
+        hitParticle.transform.position = new Vector3(_monster.transform.position.x + (_monster.Direction * 1.5f), 1.1f, _monster.transform.position.z);
 
         Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 

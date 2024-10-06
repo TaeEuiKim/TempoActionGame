@@ -4,7 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using Unity.VisualScripting;
 
-public class Player : MonoBehaviour
+public class Player : CharacterBase
 {
     [SerializeField] private PlayerStat _stat;
     private PlayerView _view;
@@ -12,13 +12,8 @@ public class Player : MonoBehaviour
     private PlayerAttack _attack;
     private PlayerController _controller;
 
-    private Rigidbody _rb;
-    private Animator _ani;
-
     [SerializeField] private Define.PlayerState _currentState = Define.PlayerState.NONE;
     private Dictionary<Define.PlayerState, PlayerState> _stateStorage = new Dictionary<Define.PlayerState, PlayerState>();
-
-    [SerializeField] private Transform _playerModel;
 
     public bool IsInvincible { get; set; } = false;
     public bool IsParrying { get; set; } = false;
@@ -46,8 +41,6 @@ public class Player : MonoBehaviour
     public PlayerStat Stat { get { return _stat; } }
     public PlayerAttack Attack { get { return _attack; } }
     public PlayerController Controller { get { return _controller; } }
-    public Rigidbody Rb { get { return _rb; } }
-    public Animator Ani { get { return _ani; } }
     public Define.PlayerState CurrentState
     {
         get
@@ -62,7 +55,6 @@ public class Player : MonoBehaviour
         }
     }
    
-    public Transform PlayerModel { get => _playerModel; }
     public Transform RightSparkPoint { get => _rightSparkPoint; }
     public Transform LeftSparkPoint { get => _leftSparkPoint; }
     public Transform GroundCheckPoint { get => _groundCheckPoint; }
@@ -81,15 +73,14 @@ public class Player : MonoBehaviour
     public bool isTurn = false;
     public float stunTime = 0f;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         _view = GetComponent<PlayerView>();
 
         _attack = new PlayerAttack(this);
         _controller = new PlayerController(this);
-
-        _rb = GetComponent<Rigidbody>();
-        _ani = GetComponentInChildren<Animator>();
 
         _stat.Init();
     }
