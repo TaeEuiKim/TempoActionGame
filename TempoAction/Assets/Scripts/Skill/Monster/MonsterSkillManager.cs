@@ -39,7 +39,7 @@ public class MonsterSkillManager : MonoBehaviour, ISkillManager
         for (int i = 0; i < SkillSlots.Length; i++)
         {
             var slot = SkillSlots[i] as MonsterSkillSlot;
-            if (slot.skillData != null)
+            if (slot.skillRunner.skillData != null)
             {
                 slot.SetSkill();
             }

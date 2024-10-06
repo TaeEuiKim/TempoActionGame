@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "MonsterNormalSkillData", menuName = "ScriptableObjects/SkillData/Normal/MonsterNormalSkillData", order = 1)]
+[CreateAssetMenu(fileName = "MonsterNormalSkillData", menuName = "ScriptableObjects/Skill/SkillData/Normal/MonsterNormalSkillData", order = 1)]
 public class MonsterNormalSkillData : NormalSkillData, IMonsterSkillData
 {
     [field: SerializeField] public Define.SkillTerms SkillTriggerCondition { get; protected set; }

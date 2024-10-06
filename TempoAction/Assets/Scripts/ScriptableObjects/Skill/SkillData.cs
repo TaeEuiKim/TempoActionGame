@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SkillData", menuName = "ScriptableObjects/SkillData/SkillData", order = 1)]
+[CreateAssetMenu(fileName = "SkillData", menuName = "ScriptableObjects/Skill/SkillData/SkillData", order = 1)]
 public class SkillData : ScriptableObject
 {
     [field: SerializeField] public int SkillId { get; protected set; }

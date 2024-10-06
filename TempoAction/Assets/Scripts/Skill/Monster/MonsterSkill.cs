@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterSkill : SkillBase<MonsterNormalSkillData>, ICooldownSkill
+/*public class MonsterSkill : SkillBase<MonsterNormalSkillData>, ICooldownSkill
 {
     private static float cooldownMultiplier = 0.01f;
 
@@ -14,11 +14,48 @@ public class MonsterSkill : SkillBase<MonsterNormalSkillData>, ICooldownSkill
         OnSkillAttack.AddListener((cb) => { Debug.Log("Invoke Normal Skill(Monster)"); });
     }
 
-    public bool IsCooldown() => SkillData.SkillCooldown > curTime;
+    public bool IsCooldown() => SkillRunner.SkillCooldown > curTime;
 
     public void UpdateTime(float deltaTime)
     {
-        if (curTime > SkillData.SkillCooldown) { return; }
+        if (curTime > SkillRunner.SkillCooldown) { return; }
+
+        curTime += deltaTime;
+    }
+
+    public override bool UseSkill(CharacterBase characterBase)
+    {
+        bool isRemove = false;
+        if (IsCooldown()) { isRemove = true; }
+
+        OnSkillAttack.Invoke(characterBase);
+
+        curTime = 0;
+
+        return isRemove;
+    }
+}
+*/
+
+public class MonsterSkill : SkillBase, ICooldownSkill
+{
+    public MonsterNormalSkillData skillData { get; private set; }
+
+    private static float cooldownMultiplier = 0.01f;
+    private float curTime; // seconds
+
+    public MonsterSkill(SkillRunnerBase skillRunner) : base(skillRunner)
+    {
+        skillData = (MonsterNormalSkillData)skillRunner.skillData;
+        curTime = skillData.SkillCooldown;
+        OnSkillAttack.AddListener((cb) => { Debug.Log("Invoke Normal Skill(Monster)"); });
+    }
+
+    public bool IsCooldown() => skillData.SkillCooldown > curTime;
+
+    public void UpdateTime(float deltaTime)
+    {
+        if (curTime > skillData.SkillCooldown) { return; }
 
         curTime += deltaTime;
     }

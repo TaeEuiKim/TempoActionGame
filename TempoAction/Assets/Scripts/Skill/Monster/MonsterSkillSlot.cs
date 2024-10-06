@@ -7,11 +7,11 @@ using UnityEngine;
 [Serializable]
 public class MonsterSkillSlot : SkillSlot
 {
-    [SerializeReference] public MonsterNormalSkillData skillData;
+    [SerializeReference] public SkillRunnerBase skillRunner;
 
     public void SetSkill()
     {
-        Skill = new MonsterSkill(skillData);
+        Skill = new MonsterSkill(skillRunner);
     }
 
     public bool IsUsable(MonsterSkillManager sm)
@@ -21,7 +21,7 @@ public class MonsterSkillSlot : SkillSlot
         if(curSkill.IsCooldown()) { return false; } 
 
         // 조건이 없으면 성공 처리
-        var condition = curSkill.SkillData.SkillTriggerCondition;
+        var condition = curSkill.skillData.SkillTriggerCondition;
         if (condition == Define.SkillTerms.NONE) { return true; }
 
         // 타겟이 없다고 인식되면 실패 처리
@@ -29,7 +29,7 @@ public class MonsterSkillSlot : SkillSlot
         if(targets.Count == 0) { return false; }
 
         List<GameObject> objsInRange;
-        float radius = curSkill.SkillData.SkillTriggerValue * 0.01f; // cm to m
+        float radius = curSkill.skillData.SkillTriggerValue * SkillData.cm2m; // cm to m
 
         // 범위 내에 있는 obj 리스트 계산
         objsInRange = targets.Where(
@@ -53,7 +53,7 @@ public class MonsterSkillSlot : SkillSlot
     {
         var curSkill = Skill as MonsterSkill;
         List<GameObject> targets;
-        switch (curSkill.SkillData.SkillCastingTarget)
+        switch (curSkill.skillData.SkillCastingTarget)
         {
             case Define.SkillTarget.PC:
                 targets = CharacterManager.Instance.GetCharacter(1 << 11); // player layer
