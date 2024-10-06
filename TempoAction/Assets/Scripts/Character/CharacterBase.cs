@@ -1,18 +1,23 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public abstract class CharacterBase : MonoBehaviour
 {
+    [Header("캐릭터 공통")]
     protected Animator _ani;
     protected Rigidbody _rb;
     protected ISkillManager _skillManager;
     [SerializeField] protected Transform _characterModel;
+    [SerializeField] protected CharacterColliderManager _colliderManager;
 
     public Rigidbody Rb { get { return _rb; } }
     public Animator Ani { get { return _ani; } }
-    public Transform CharacterModel { get { return _characterModel; } }
     public ISkillManager SkillManager { get { return _skillManager; } }
+    public Transform CharacterModel { get { return _characterModel; } }
+    public CharacterColliderManager ColliderManager { get { return _colliderManager; } }
 
     protected virtual void Awake()
     {

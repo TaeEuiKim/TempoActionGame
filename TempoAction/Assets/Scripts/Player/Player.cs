@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 
 public class Player : CharacterBase
 {
+    [Header("±‚≈∏")]
     [SerializeField] private PlayerStat _stat;
     private PlayerView _view;
 

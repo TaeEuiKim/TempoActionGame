@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.Collections;
+using UnityEngine.TextCore.Text;
 
 [CreateAssetMenu(fileName = "SwordQuickDrawRunner", menuName = "ScriptableObjects/Skill/Runner/SwordQuickDrawRunner", order = 1)]
 public class SwordQuickDrawRunner : SkillRunnerBase
@@ -16,9 +18,10 @@ public class SwordQuickDrawRunner : SkillRunnerBase
 
     private GameObject effectParent;
 
-    public override void Run()
+    public override void Run(CharacterBase character)
     {
         Initialize();
+        character.StartCoroutine(SwordQuickDrawCoroutine(character));
     }
 
     public void Initialize()
@@ -44,71 +47,61 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         }
     }
 
-    /*private void SwordQuickDraw(ISkillManager sm)
+    public IEnumerator SwordQuickDrawCoroutine(CharacterBase character)
     {
-        var manager = (PlayerSkillManager)sm;
+        bool isLeftDir = character.IsLeftDirection();
 
-        manager.StartCoroutine(SwordQuickDrawCoroutine(manager));
-    }
-
-    public IEnumerator SwordQuickDrawCoroutine(ISkillManager sm)
-    {
         GameObject ready = readyEffect;
-        GameObject dash = dashEffect[sm.target.localScale.x < 0 ? 0 : 1];
-        GameObject sword = swordEffect[sm.target.localScale.x < 0 ? 0 : 1];
+        GameObject dash = dashEffect[isLeftDir ? 0 : 1];
+        GameObject sword = swordEffect[isLeftDir ? 0 : 1];
 
         // 히트박스
-        BoxCollider hitbox = sm.hitbox as BoxCollider;
-        hitbox.enabled = false;
-        sm.offingHitbox2.enabled = false;
-        sm.offingHitbox.SetActive(false);
-        var size = hitbox.size;
-        size.x = skillData.SkillHitboxSize * 0.01f;
-        hitbox.size = size;
-        //sm.effectsParent.transform.eulerAngles = new Vector3(0, 180, 0) * ;
+        character.ColliderManager.SetActiveCollider(false, Define.ColliderType.PERSISTANCE);
         ready.SetActive(true);
 
-
         // 선딜
-        yield return new WaitForSeconds(25 / 100);
+        yield return new WaitForSeconds(skillData.SkillCastingTime * SkillData.Time2Second);
 
         // 돌진
         float curTime = 0;
-        float movingDistance = skillData.SkillEffectValue * 0.01f;
+        float movingDistance = skillData.SkillEffectValue * SkillData.cm2m;
         float originalMovingDistance = movingDistance;
-        float regenTime = 0.5f;
-        Vector3 initialPos = sm.transform.position;
-        Vector3 direction = sm.transform.right * sm.target.localScale.x;
+        float regenTime = skillData.SkillRegenTime * SkillData.Time2Second;
+        Vector3 initialPos = character.transform.position;
+        Vector3 direction = character.transform.right * (isLeftDir ? -1 : 1);
         Vector3 targetPos = initialPos + direction * movingDistance;
         List<Monster> hittedMonsters = new List<Monster>();
-        Rigidbody rigid = sm.transform.GetComponent<Rigidbody>();
-        //rigid.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
+        Rigidbody rigid = character.Rb;
 
-        if (Physics.Raycast(new Ray(initialPos, direction), out RaycastHit wallHit, (targetPos - initialPos).magnitude, 1 << 13))
+        // 도착 지점 갱신 with Wall
+        if (Physics.Raycast(new Ray(initialPos, direction), out RaycastHit wallHit, (targetPos - initialPos).magnitude, 1 << 13)) // 13은 Wall
         {
             movingDistance = (wallHit.distance - 0.6f) * 0.99f;
             targetPos = initialPos + direction * movingDistance;
         }
 
-        effect2.SetActive(true);
-        while ((sm.transform.position - targetPos).magnitude > 0.1f && curTime <= regenTime)
+        // 대시 이펙트 시작
+        dash.SetActive(true);
+
+        // 대시 시작
+        while ((character.transform.position - targetPos).magnitude > 0.1f && curTime <= regenTime)
         {
             yield return new WaitForEndOfFrame();
 
             curTime += Time.deltaTime;
 
-            Ray ray = new Ray(sm.transform.position, direction.normalized);
+            Ray ray = new Ray(character.transform.position, direction.normalized);
+            float collisiionDepth = skillData.SkillHitboxSize * SkillData.cm2m;
 
-            if (Physics.Raycast(ray, out RaycastHit monsterHit, size.x, 1 << 10))
+            if (Physics.Raycast(ray, out RaycastHit monsterHit, collisiionDepth, 1 << 10))
             {
                 hittedMonsters.Add(monsterHit.transform.GetComponent<Monster>());
             }
 
-            //rigid.MovePosition(Vector3.Lerp(initialPos, targetPos, curTime / regenTime + Vector3.up);
-            sm.transform.position = Vector3.Lerp(initialPos, targetPos, (curTime / regenTime * (originalMovingDistance / movingDistance)));
-            //rigid.velocity = direction * (movingDistance / regenTime);
+            character.transform.position = Vector3.Lerp(initialPos, targetPos, curTime / regenTime * (originalMovingDistance / movingDistance));
         }
 
+        // 몬스터 타격
         foreach (Monster monster in hittedMonsters.Distinct())
         {
             float damageAmount = skillData.SkillDamage * 1; // 1대신 공격력 들어가야 함
@@ -116,22 +109,20 @@ public class SwordQuickDrawRunner : SkillRunnerBase
             monster.TakeDamage(damageAmount);
         }
 
-        //yield return new WaitForEndOfFrame();
-
-        sm.transform.position = targetPos;
+        // 초기화
+        character.transform.position = targetPos;
         rigid.velocity = Vector3.zero;
-        sm.offingHitbox.SetActive(true);
-        sm.offingHitbox2.enabled = true;
+        character.ColliderManager.SetActiveCollider(true, Define.ColliderType.PERSISTANCE);
 
-        effect3.SetActive(true);
-        effect2.SetActive(false);
+        // 이펙트 종료 및 검 이펙트 재생
+        sword.SetActive(true);
+        dash.SetActive(false);
         ready.SetActive(false);
-        //hitbox.enabled = false;
-        //rigid.collisionDetectionMode = CollisionDetectionMode.Continuous;
         Debug.Log("QuickDraw End");
 
         yield return new WaitForSeconds(1f);
 
-        effect3.SetActive(false);
-    }*/
+        // 검 이펙트 종료
+        sword.SetActive(false);
+    }
 }
