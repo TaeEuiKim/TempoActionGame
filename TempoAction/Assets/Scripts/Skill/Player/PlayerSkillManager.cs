@@ -91,11 +91,11 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
         interatedObject = null;
     }
 
-    private void Update()
+    public void OnUpdate(CharacterBase characterBase)
     {
         foreach (PlayerSkillSlot slot in SkillSlots)
         {
-            slot.UseSkillKeyDown(this);
+            slot.UseSkillKeyDown(characterBase);
             if (slot.Skill is NormalSkill normalSkill)
             {
                 normalSkill.UpdateTime(Time.deltaTime);

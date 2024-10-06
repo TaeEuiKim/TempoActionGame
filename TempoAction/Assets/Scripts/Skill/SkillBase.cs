@@ -8,13 +8,13 @@ public abstract class SkillBase<T> : ISkillRoot where T : SkillData
     public T SkillData { get; protected set; }
 
 
-    public UnityEvent<ISkillManager> OnSkillAttack { get; protected set; }
+    public UnityEvent<CharacterBase> OnSkillAttack { get; protected set; }
 
     public SkillBase(T skillData)
     {
         SkillData = skillData;
-        OnSkillAttack = new UnityEvent<ISkillManager>();
+        OnSkillAttack = new UnityEvent<CharacterBase>();
     }
 
-    public  abstract bool UseSkill(ISkillManager skillManager);
+    public  abstract bool UseSkill(CharacterBase skillManager);
 }

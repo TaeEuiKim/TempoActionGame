@@ -95,8 +95,10 @@ public class Player : CharacterBase
         _stateStorage.Add(Define.PlayerState.STUN, new StunState(this));
     }
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
+
         _stateStorage[_currentState]?.Stay();
 
         switch (_currentState)

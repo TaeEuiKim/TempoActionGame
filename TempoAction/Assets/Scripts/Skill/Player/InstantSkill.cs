@@ -6,12 +6,12 @@ public class InstantSkill : SkillBase<SkillData>
 {
     public InstantSkill(SkillData skillData) : base(skillData)
     {
-        OnSkillAttack.AddListener((ISkillManager sm) => { Debug.Log("Invoke Instant Skill"); });
+        OnSkillAttack.AddListener((cb) => { Debug.Log("Invoke Instant Skill"); });
     }
 
-    public override bool UseSkill(ISkillManager sm)
+    public override bool UseSkill(CharacterBase cb)
     {
-        OnSkillAttack.Invoke(sm);
+        OnSkillAttack.Invoke(cb);
 
         return true;
     }

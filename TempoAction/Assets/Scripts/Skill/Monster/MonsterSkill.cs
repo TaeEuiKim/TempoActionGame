@@ -11,7 +11,7 @@ public class MonsterSkill : SkillBase<MonsterNormalSkillData>, ICooldownSkill
     public MonsterSkill(MonsterNormalSkillData skillData) : base(skillData)
     {
         curTime = skillData.SkillCooldown;
-        OnSkillAttack.AddListener((ISkillManager sm) => { Debug.Log("Invoke Normal Skill(Monster)"); });
+        OnSkillAttack.AddListener((cb) => { Debug.Log("Invoke Normal Skill(Monster)"); });
     }
 
     public bool IsCooldown() => SkillData.SkillCooldown > curTime;
@@ -23,12 +23,12 @@ public class MonsterSkill : SkillBase<MonsterNormalSkillData>, ICooldownSkill
         curTime += deltaTime;
     }
 
-    public override bool UseSkill(ISkillManager skillManager)
+    public override bool UseSkill(CharacterBase characterBase)
     {
         bool isRemove = false;
         if (IsCooldown()) { isRemove = true; }
 
-        OnSkillAttack.Invoke(skillManager);
+        OnSkillAttack.Invoke(characterBase);
 
         curTime = 0;
 

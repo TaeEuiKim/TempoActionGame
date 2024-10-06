@@ -14,11 +14,11 @@ public class SkillSlot
         Skill = newSkill;
     }
 
-    public void UseSkillInstant(ISkillManager sm)
+    public void UseSkillInstant(CharacterBase cb)
     {
         if (Skill == null) { return; }
 
-        if (Skill.UseSkill(sm))
+        if (Skill.UseSkill(cb))
         {
             RemoveSkill();
         }

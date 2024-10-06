@@ -60,4 +60,8 @@ public class MonsterSkillManager : MonoBehaviour, ISkillManager
 
         return slots.ToArray();
     }
+
+    public void OnUpdate(CharacterBase characterBase)
+    {
+    }
 }

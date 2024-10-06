@@ -17,8 +17,8 @@ public class NormalSkill : SkillBase<PlayerNormalSkillData>, ICooldownSkill
     public NormalSkill(PlayerNormalSkillData skillData) : base(skillData)
     {
         curTime = skillData.SkillCooldown;
-        OnSkillAttack.AddListener((ISkillManager sm) => { Debug.Log("Invoke Normal Skill(Player)"); });
-        OnSkillAttack.AddListener(SwordQuickDraw);
+        OnSkillAttack.AddListener((cb) => { Debug.Log("Invoke Normal Skill(Player)"); });
+        //OnSkillAttack.AddListener(SwordQuickDraw);
     }
 
     public virtual void UpdateTime(float deltaTime)
@@ -30,7 +30,7 @@ public class NormalSkill : SkillBase<PlayerNormalSkillData>, ICooldownSkill
 
     public bool IsCooldown() => SkillData.SkillCooldown > curTime;
 
-    public override bool UseSkill(ISkillManager sm) 
+    public override bool UseSkill(CharacterBase sm) 
     {
         bool isRemove = false;
         if (IsCooldown()) { isRemove = true; }
@@ -42,7 +42,7 @@ public class NormalSkill : SkillBase<PlayerNormalSkillData>, ICooldownSkill
         return isRemove;
     }
 
-    private void SwordQuickDraw(ISkillManager sm)
+    /*private void SwordQuickDraw(ISkillManager sm)
     {
         var manager = (PlayerSkillManager)sm;
 
@@ -132,5 +132,5 @@ public class NormalSkill : SkillBase<PlayerNormalSkillData>, ICooldownSkill
         yield return new WaitForSeconds(1f);
 
         effect3.SetActive(false);
-    }
+    }*/
 }

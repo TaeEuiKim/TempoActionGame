@@ -8,13 +8,13 @@ public class PlayerSkillSlot : SkillSlot
 {
     public KeyCode slotKey;
 
-    public void UseSkillKeyDown(PlayerSkillManager sm)
+    public void UseSkillKeyDown(CharacterBase cb)
     {
         if(slotKey == KeyCode.None) { return; }
 
         if (Input.GetKeyDown(slotKey))
         {
-            UseSkillInstant(sm);
+            UseSkillInstant(cb);
         }
     }
 }
