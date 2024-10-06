@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Linq;
 using System.Collections;
 using UnityEngine.TextCore.Text;
+using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "SwordQuickDrawRunner", menuName = "ScriptableObjects/Skill/Runner/SwordQuickDrawRunner", order = 1)]
 public class SwordQuickDrawRunner : SkillRunnerBase
@@ -18,14 +19,11 @@ public class SwordQuickDrawRunner : SkillRunnerBase
 
     private GameObject effectParent;
 
-    public override void Run(CharacterBase character)
-    {
-        Initialize();
-        character.StartCoroutine(SwordQuickDrawCoroutine(character));
-    }
+    private WaitForSeconds preDelayWFS;
 
-    public void Initialize()
+    public override void Initialize()
     {
+        // 이펙트 
         if(effectParent == null)
         {
             effectParent = new GameObject("Effects");
@@ -34,20 +32,41 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         if(readyEffect == null)
         {
             readyEffect= Instantiate(ReadyEffect, effectParent.transform);
+            readyEffect.SetActive(false);
+
+            //managedEffects.Add(readyEffect.GetComponent<ParticleSystem>());
         }
-        if (dashEffect == null)
+        if (!IsValidArray(dashEffect))
         {
+            dashEffect = new GameObject[DashEffect.Length];
             dashEffect[0] = Instantiate(DashEffect[0], effectParent.transform);
             dashEffect[1] = Instantiate(DashEffect[1], effectParent.transform);
+            dashEffect[0].SetActive(false);
+            dashEffect[1].SetActive(false);
+
+            //managedEffects.Add(dashEffect[0].GetComponent<ParticleSystem>());
+            //managedEffects.Add(dashEffect[1].GetComponent<ParticleSystem>());
         }
-        if (swordEffect == null)
+        if (!IsValidArray(swordEffect))
         {
+            swordEffect = new GameObject[SwordEffect.Length];
             swordEffect[0] = Instantiate(SwordEffect[0], effectParent.transform);
             swordEffect[1] = Instantiate(SwordEffect[1], effectParent.transform);
+            swordEffect[0].SetActive(false);
+            swordEffect[1].SetActive(false);
+
+            //managedEffects.Add(swordEffect[0].GetComponent<ParticleSystem>());
+            //managedEffects.Add(swordEffect[1].GetComponent<ParticleSystem>());
+        }
+
+        // 대기 시간
+        if(preDelayWFS == null)
+        {
+            preDelayWFS = new WaitForSeconds(skillData.SkillCastingTime * SkillData.Time2Second);
         }
     }
 
-    public IEnumerator SwordQuickDrawCoroutine(CharacterBase character)
+    public override IEnumerator SkillCoroutine(CharacterBase character)
     {
         bool isLeftDir = character.IsLeftDirection();
 
@@ -57,10 +76,12 @@ public class SwordQuickDrawRunner : SkillRunnerBase
 
         // 히트박스
         character.ColliderManager.SetActiveCollider(false, Define.ColliderType.PERSISTANCE);
-        ready.SetActive(true);
+
+        // 준비 이펙트
+        ActiveEffectToCharacter(character, ready);
 
         // 선딜
-        yield return new WaitForSeconds(skillData.SkillCastingTime * SkillData.Time2Second);
+        yield return preDelayWFS;
 
         // 돌진
         float curTime = 0;
@@ -81,12 +102,12 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         }
 
         // 대시 이펙트 시작
-        dash.SetActive(true);
+        ActiveEffectToCharacter(character, dash);
 
         // 대시 시작
         while ((character.transform.position - targetPos).magnitude > 0.1f && curTime <= regenTime)
         {
-            yield return new WaitForEndOfFrame();
+            yield return null;
 
             curTime += Time.deltaTime;
 
@@ -115,14 +136,13 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         character.ColliderManager.SetActiveCollider(true, Define.ColliderType.PERSISTANCE);
 
         // 이펙트 종료 및 검 이펙트 재생
-        sword.SetActive(true);
+        ActiveEffectToCharacter(character, sword);
         dash.SetActive(false);
         ready.SetActive(false);
         Debug.Log("QuickDraw End");
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.4f); // 발도술 이펙트 끝나기를 기다림
 
-        // 검 이펙트 종료
         sword.SetActive(false);
     }
 }
