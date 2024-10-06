@@ -5,6 +5,7 @@ using System.Linq;
 using Unity.Collections;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 /*[Serializable]
 public class NormalSkill : SkillBase<PlayerNormalSkillData>, ICooldownSkill
@@ -163,13 +164,13 @@ public class NormalSkill : SkillBase, ICooldownSkill
 
     public bool IsCooldown() => skillData.SkillCooldown > curTime;
 
-    public override bool UseSkill(CharacterBase character)
+    public override bool UseSkill(CharacterBase character, UnityAction OnEnded = null)
     {
         bool isRemove = false;
         if (IsCooldown()) { isRemove = true; }
 
         //OnSkillAttack.Invoke(sm);
-        SkillRunner.Run(character);
+        SkillRunner.Run(character, OnEnded);
 
         curTime = 0;
 

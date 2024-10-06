@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 /*public class MonsterSkill : SkillBase<MonsterNormalSkillData>, ICooldownSkill
 {
@@ -60,12 +62,12 @@ public class MonsterSkill : SkillBase, ICooldownSkill
         curTime += deltaTime;
     }
 
-    public override bool UseSkill(CharacterBase character)
+    public override bool UseSkill(CharacterBase character, UnityAction OnEnded = null)
     {
         if (IsCooldown()) { return false; }
 
         //OnSkillAttack.Invoke(characterBase);
-        SkillRunner.Run(character);
+        SkillRunner.Run(character, OnEnded);
 
         curTime = 0;
 

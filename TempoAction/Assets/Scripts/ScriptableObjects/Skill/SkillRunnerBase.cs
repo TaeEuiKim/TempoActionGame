@@ -11,10 +11,10 @@ public abstract class SkillRunnerBase : ScriptableObject
     public SkillData skillData;
     protected List<ParticleSystem> managedEffects = new List<ParticleSystem>();
 
-    public virtual void Run(CharacterBase character)
+    public virtual void Run(CharacterBase character, UnityAction OnEnded = null)
     {
         Initialize();
-        character.StartCoroutine(WaitForSkillEnded(character, null));
+        character.StartCoroutine(WaitForSkillEnded(character, OnEnded));
     }
     public abstract void Initialize();
     public abstract IEnumerator SkillCoroutine(CharacterBase character);

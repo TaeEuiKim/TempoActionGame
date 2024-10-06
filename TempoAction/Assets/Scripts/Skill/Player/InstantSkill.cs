@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /*public class InstantSkill : SkillBase<SkillData>
 {
@@ -25,9 +26,9 @@ public class InstantSkill : SkillBase
         OnSkillAttack.AddListener((cb) => { Debug.Log("Invoke Instant Skill"); });
     }
 
-    public override bool UseSkill(CharacterBase cb)
+    public override bool UseSkill(CharacterBase character, UnityAction OnEnded = null)
     {
-        OnSkillAttack.Invoke(cb);
+        SkillRunner.Run(character, OnEnded);
 
         return true;
     }

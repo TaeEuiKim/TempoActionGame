@@ -32,5 +32,5 @@ public abstract class SkillBase : ISkillRoot
         OnSkillAttack = new UnityEvent<CharacterBase>();
     }
 
-    public abstract bool UseSkill(CharacterBase skillManager);
+    public abstract bool UseSkill(CharacterBase skillManager, UnityAction OnEnded = null);
 }
