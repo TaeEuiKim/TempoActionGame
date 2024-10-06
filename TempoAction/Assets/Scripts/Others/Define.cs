@@ -41,8 +41,12 @@ public class Define
         NONE,
         MIDDLEBOSS
     }
-   
 
+    public enum ColliderType
+    {
+        PERSISTANCE,
+        ALTERNATIVE
+    }
 
     #region 플레이어
     public enum TempoType
