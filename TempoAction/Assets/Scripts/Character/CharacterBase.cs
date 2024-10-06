@@ -16,5 +16,16 @@ public abstract class CharacterBase : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _ani = GetComponentInChildren<Animator>();
+        _skillManager = GetComponent<ISkillManager>();
+    }
+
+    protected virtual void Update()
+    {
+        _skillManager?.OnUpdate(this);
+    }
+
+    public virtual bool IsLeftDirection()
+    {
+        return _characterModel.localScale.x < 0;
     }
 }

@@ -18,7 +18,8 @@ public class Normal_IdleState : Normal_State
 
         if(slots.Count() > 0)
         {
-            slots[0].UseSkillInstant(_monster._SkillManager);
+            _monster.CurrentSkillSlots = slots;
+            _monster.CurrentPerceptionState = Define.PerceptionType.SKILLATTACK;
         }
     }
 
