@@ -48,6 +48,7 @@ public class PlayerAnimationEvent : MonoBehaviour
     }
     private void HitMainTempo(Monster monster)
     {
+        CameraShaking(0.2f);
         // 메인 템포일 때 데미지 처리
         monster.TakeDamage(_player.GetTotalDamage());
     }

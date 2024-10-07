@@ -6,6 +6,8 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Normal_TraceState : Normal_State
 {
+    float timer = 0f;
+
     public Normal_TraceState(NormalMonster monster) : base(monster)
     {
     }
@@ -13,12 +15,15 @@ public class Normal_TraceState : Normal_State
     public override void Enter()
     {
         base.Enter();
-
-        
     }
 
     public override void Stay()
     {
+        if (timer < 1.5f)
+        {
+            timer += Time.deltaTime;
+        }
+
         float dir = _monster.Target.transform.position.x - _monster.transform.position.x;
         var tempVelocity = new Vector2(dir * _monster.Stat.WalkSpeed * Time.deltaTime, _monster.Rb.velocity.y);
 
@@ -33,5 +38,11 @@ public class Normal_TraceState : Normal_State
             _monster.CurrentPerceptionState = Define.PerceptionType.IDLE;
         }
         //_monster.CurrentPerceptionState = Define.PerceptionType.GUARD;
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        timer = 0;
     }
 }

@@ -184,7 +184,7 @@ public class MiddleMonster : Monster
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.TransformPoint(_hitPoint.localPosition), _colliderSize);
+        Gizmos.DrawWireCube(transform.TransformPoint(new Vector3(_hitPoint.localPosition.x * -Direction, _hitPoint.localPosition.y, _hitPoint.localPosition.z)), _colliderSize);
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireCube(_parringPoint.position, _parringColliderSize);
