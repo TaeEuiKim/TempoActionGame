@@ -19704,6 +19704,63 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!1001 &195888193
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5549777800505827489, guid: 1d09f62436967584d8956c779357e894, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 24.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549777800505827489, guid: 1d09f62436967584d8956c779357e894, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549777800505827489, guid: 1d09f62436967584d8956c779357e894, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549777800505827489, guid: 1d09f62436967584d8956c779357e894, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549777800505827489, guid: 1d09f62436967584d8956c779357e894, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549777800505827489, guid: 1d09f62436967584d8956c779357e894, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549777800505827489, guid: 1d09f62436967584d8956c779357e894, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549777800505827489, guid: 1d09f62436967584d8956c779357e894, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549777800505827489, guid: 1d09f62436967584d8956c779357e894, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549777800505827489, guid: 1d09f62436967584d8956c779357e894, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091170806654134524, guid: 1d09f62436967584d8956c779357e894, type: 3}
+      propertyPath: m_Name
+      value: FX_SwordRushLeft@P
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1d09f62436967584d8956c779357e894, type: 3}
 --- !u!1 &225943689
 GameObject:
   m_ObjectHideFlags: 0
@@ -29616,6 +29673,63 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!1001 &683619539
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5549777800505827489, guid: 265bd6527ef86584aa3b5ad5bba30df2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 22.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549777800505827489, guid: 265bd6527ef86584aa3b5ad5bba30df2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549777800505827489, guid: 265bd6527ef86584aa3b5ad5bba30df2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549777800505827489, guid: 265bd6527ef86584aa3b5ad5bba30df2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549777800505827489, guid: 265bd6527ef86584aa3b5ad5bba30df2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549777800505827489, guid: 265bd6527ef86584aa3b5ad5bba30df2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549777800505827489, guid: 265bd6527ef86584aa3b5ad5bba30df2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549777800505827489, guid: 265bd6527ef86584aa3b5ad5bba30df2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549777800505827489, guid: 265bd6527ef86584aa3b5ad5bba30df2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549777800505827489, guid: 265bd6527ef86584aa3b5ad5bba30df2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091170806654134524, guid: 265bd6527ef86584aa3b5ad5bba30df2, type: 3}
+      propertyPath: m_Name
+      value: FX_SwordRushRight@P
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 265bd6527ef86584aa3b5ad5bba30df2, type: 3}
 --- !u!1 &902736287
 GameObject:
   m_ObjectHideFlags: 0
@@ -64487,3 +64601,5 @@ SceneRoots:
   - {fileID: 1807700414}
   - {fileID: 131107394}
   - {fileID: 1945574488}
+  - {fileID: 195888193}
+  - {fileID: 683619539}
