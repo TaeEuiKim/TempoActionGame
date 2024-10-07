@@ -8,7 +8,7 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "SwordQuickDrawRunner", menuName = "ScriptableObjects/Skill/Runner/SwordQuickDrawRunner", order = 1)]
 public class SwordQuickDrawRunner : SkillRunnerBase
 {
-    [Header("ÀÌÆåÆ®°¡ º¹¼öÀÎ °Ç Left°¡ 0¹øÀ¸·Î")]
+    [Header("ì´í™íŠ¸ê°€ ë³µìˆ˜ì¸ ê±´ Leftê°€ 0ë²ˆìœ¼ë¡œ")]
     public GameObject ReadyEffect;
     public GameObject[] DashEffect;
     public GameObject[] SwordEffect;
@@ -23,7 +23,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
 
     public override void Initialize()
     {
-        // ÀÌÆåÆ® 
+        // ì´í™íŠ¸ 
         if(effectParent == null)
         {
             effectParent = new GameObject("Effects");
@@ -59,7 +59,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
             //managedEffects.Add(swordEffect[1].GetComponent<ParticleSystem>());
         }
 
-        // ´ë±â ½Ã°£
+        // ëŒ€ê¸° ì‹œê°„
         if(preDelayWFS == null)
         {
             preDelayWFS = new WaitForSeconds(skillData.SkillCastingTime * SkillData.Time2Second);
@@ -77,16 +77,16 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         rigid.useGravity = false;
         
 
-        // ÁØºñ ÀÌÆåÆ®
+        // ì¤€ë¹„ ì´í™íŠ¸
         ActiveEffectToCharacter(character, ready);
 
-        // ¼±µô
+        // ì„ ë”œ
         yield return preDelayWFS;
 
-        // È÷Æ®¹Ú½º
+        // íˆíŠ¸ë°•ìŠ¤
         character.ColliderManager.SetActiveCollider(false, Define.ColliderType.PERSISTANCE);
 
-        // µ¹Áø
+        // ëŒì§„
         float curTime = 0;
         float movingDistance = skillData.SkillEffectValue * SkillData.cm2m;
         float originalMovingDistance = movingDistance;
@@ -97,17 +97,17 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         List<Monster> hittedMonsters = new List<Monster>();
         Player hittedPlayer = new Player();
 
-        // µµÂø ÁöÁ¡ °»½Å with Wall
-        if (Physics.Raycast(new Ray(initialPos, direction), out RaycastHit wallHit, (targetPos - initialPos).magnitude, 1 << 13)) // 13Àº Wall
+        // ë„ì°© ì§€ì  ê°±ì‹  with Wall
+        if (Physics.Raycast(new Ray(initialPos, direction), out RaycastHit wallHit, (targetPos - initialPos).magnitude, 1 << 13)) // 13ì€ Wall
         {
             movingDistance = (wallHit.distance - 0.6f) * 0.99f;
             targetPos = initialPos + direction * movingDistance;
         }
 
-        // ´ë½Ã ÀÌÆåÆ® ½ÃÀÛ
+        // ëŒ€ì‹œ ì´í™íŠ¸ ì‹œì‘
         ActiveEffectToCharacter(character, dash);
 
-        // ´ë½Ã ½ÃÀÛ
+        // ëŒ€ì‹œ ì‹œì‘
         while ((character.transform.position - targetPos).magnitude > 0.1f && curTime <= regenTime)
         {
             yield return null;
@@ -139,35 +139,35 @@ public class SwordQuickDrawRunner : SkillRunnerBase
             character.transform.position = Vector3.Lerp(initialPos, targetPos, curTime / regenTime * (originalMovingDistance / movingDistance));
         }
 
-        // ¸ó½ºÅÍ Å¸°İ
+        // ëª¬ìŠ¤í„° íƒ€ê²©
         foreach (Monster monster in hittedMonsters.Distinct())
         {
-            float damageAmount = skillData.SkillDamage * 1; // 1´ë½Å °ø°İ·Â µé¾î°¡¾ß ÇÔ
+            float damageAmount = skillData.SkillDamage * 1; // 1ëŒ€ì‹  ê³µê²©ë ¥ ë“¤ì–´ê°€ì•¼ í•¨
 
             monster.TakeDamage(damageAmount);
         }
 
-        // ÇÃ·¹ÀÌ¾î Å¸°İ
+        // í”Œë ˆì´ì–´ íƒ€ê²©
         if (hittedPlayer != null)
         {
             hittedPlayer.TakeDamage(skillData.SkillDamage, true);
         }
 
-        // ÃÊ±âÈ­
+        // ì´ˆê¸°í™”
         character.transform.position = targetPos;
         rigid.velocity = Vector3.zero;
         character.ColliderManager.SetActiveCollider(true, Define.ColliderType.PERSISTANCE);
 
         yield return new WaitForSeconds(0.2f);
-        // ÀÌÆåÆ® Á¾·á ¹× °Ë ÀÌÆåÆ® Àç»ı
-        ActiveEffectToCharacter(character, sword);
+        // ì´í™íŠ¸ ì¢…ë£Œ ë° ê²€ ì´í™íŠ¸ ì¬ìƒ
+        //ActiveEffectToCharacter(character, sword);
         dash.SetActive(false);
         ready.SetActive(false);
         rigid.useGravity = true;
         Debug.Log("QuickDraw End");
 
-        yield return new WaitForSeconds(0.4f); // ¹ßµµ¼ú ÀÌÆåÆ® ³¡³ª±â¸¦ ±â´Ù¸²
+        yield return new WaitForSeconds(0.4f); // ë°œë„ìˆ  ì´í™íŠ¸ ëë‚˜ê¸°ë¥¼ ê¸°ë‹¤ë¦¼
 
-        sword.SetActive(false);
+        //sword.SetActive(false);
     }
 }
