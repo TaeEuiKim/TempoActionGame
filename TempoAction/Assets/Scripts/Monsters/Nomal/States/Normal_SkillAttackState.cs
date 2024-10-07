@@ -14,11 +14,24 @@ public class Normal_SkillAttackState : Normal_State
         if(slots.Length == 0) { Debug.LogError("Monster Skill Slot Length Is Zero."); }
 
         var slot = SelectSlot(slots);
-        slot.UseSkillInstant(_monster);
+
+        _monster.Direction = (_monster.Target.transform.position - _monster.transform.position).x;
+
+        slot.UseSkillInstant(_monster, () =>
+        {
+            _monster.CurrentPerceptionState = Define.PerceptionType.IDLE;
+        });
     }
 
     public override void Stay()
     {
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+
+        _monster.CurrentSkillSlots = null;
     }
 
     private MonsterSkillSlot SelectSlot(MonsterSkillSlot[] slots)

@@ -78,7 +78,7 @@ public abstract class Monster : CharacterBase
 
     }
 
-    public void TakeDamage(float value)
+    public virtual void TakeDamage(float value)
     {
         Debug.Log(value);
         if (IsGuarded)
@@ -90,11 +90,13 @@ public abstract class Monster : CharacterBase
             _stat.Hp -= value;
         }
         
-
         UpdateHealth();
     }
 
-
+    public override bool IsLeftDirection()
+    {
+        return Direction == -1;
+    }
     #region View
     public void UpdateHealth()
     {

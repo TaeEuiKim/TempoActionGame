@@ -1,18 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class Normal_TraceState : MonoBehaviour
+public class Normal_TraceState : Normal_State
 {
-    // Start is called before the first frame update
-    void Start()
+    public Normal_TraceState(NormalMonster monster) : base(monster)
     {
+    }
+
+    public override void Enter()
+    {
+        base.Enter();
+
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Stay()
     {
-        
+        Vector3 dir = _monster.Target.transform.position - _monster.Target.transform.position;
+        _monster.transform.position += dir * _monster.Stat.WalkSpeed * Time.deltaTime;
+        _monster.Direction = dir.x;
+
+        if (_monster.TrySkillAttack()) { return; }
+
+        _monster.CurrentPerceptionState = Define.PerceptionType.GUARD;
     }
 }
