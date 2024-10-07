@@ -101,7 +101,7 @@ public class Middle_Shelling : Middle_Skill
 
         yield return new WaitForSeconds(2f);
 
-        for (int i = 0; i < 7; ++i)
+        for (int i = 0; i < 5; ++i)
         {
             SpawnRocket();
             yield return new WaitForSeconds(0.7f);

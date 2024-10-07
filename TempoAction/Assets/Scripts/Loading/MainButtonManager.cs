@@ -5,11 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class MainButtonManager : MonoBehaviour
 {
+    [SerializeField] private CopySkill copy;
+
+    private void Start()
+    {
+        copy = FindObjectOfType<CopySkill>();
+    }
+
     public void RestartScene()
     {
         Time.timeScale = 1.0f;
-        LoadManager.LoadScene(SceneManager.GetActiveScene().name);
-        Debug.Log(Time.timeScale);
+        copy.SetSkillSlots();
+        LoadManager.LoadScene("StartScene");
     }
 
     public void OnLoadScene(string sceneName)
