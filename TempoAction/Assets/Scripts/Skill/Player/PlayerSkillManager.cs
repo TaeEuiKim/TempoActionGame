@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerSkillManager : MonoBehaviour, ISkillManager
 {
     [field: SerializeField] public int MaxSkillSlot { get; protected set; }
-    [SerializeField] private int MaxReserveSlot;
+    [field: SerializeField] public int MaxReserveSlot { get; protected set; }
 
     [field: SerializeReference] public SkillSlot[] SkillSlots { get; protected set; }
-    private Queue<ISkillRoot> reserveSlots;
+    public Queue<ISkillRoot> reserveSlots {  get; protected set; }
 
     private SkillObject interatedObject;
 
@@ -121,12 +122,30 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
                 // 등록
                 SkillSlots[i].OnRemoved.AddListener(RemoveSkill);
                 SkillSlots[i].SetSkill(newSkill);
+                if (newSkill.GetSkillId() == 51)
+                {
+                    GetComponent<PlayerView>().ChangeMainSkillIcon(i, false);
+                }
                 return;
             }
         }
         
         // 자리가 없다면 큐(예비 스킬)에 등록
         reserveSlots.Enqueue(newSkill);
+        if (newSkill.GetSkillId() == 51)
+        {
+            GetComponent<PlayerView>().ChangeSubSkillIcon(reserveSlots.Count, false);
+        }
+    }
+
+    public void LoadSkill(SkillSlot[] skillSlots, Queue<ISkillRoot> reserveSlots)
+    {
+        SkillSlots = skillSlots;
+        for (int i = 0; i < SkillSlots.Length; i++)
+        {
+            SkillSlots[i].OnRemoved.AddListener(RemoveSkill);
+        }
+        this.reserveSlots = reserveSlots;
     }
 
     // 스킬 제거
@@ -142,12 +161,18 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
             {
                 SkillSlots[index].OnRemoved.RemoveListener(RemoveSkill);
                 SkillSlots[index].RemoveSkill();
+
+                if (removedSkill.GetSkillId() == 51)
+                {
+                    GetComponent<PlayerView>().ChangeMainSkillIcon(index, true);
+                }
             }
         }
 
         // 예비 스킬 장착
         if (reserveSlots.Count == 0) { return; }
 
+        GetComponent<PlayerView>().ChangeSubSkillIcon(reserveSlots.Count, true);
         ISkillRoot nextSkill = reserveSlots.Dequeue();
         AddSkill(nextSkill);
     }

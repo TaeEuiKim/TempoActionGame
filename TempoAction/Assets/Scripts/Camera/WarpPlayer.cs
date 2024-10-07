@@ -6,9 +6,11 @@ public class WarpPlayer : MonoBehaviour
 {
     [SerializeField] Define.WarpType warpType;
     private CameraController cameraController;
+    private CopySkill copySkill;
 
     private void Awake()
     {
+        copySkill = FindObjectOfType<CopySkill>();
         cameraController = Object.FindObjectOfType<CameraController>();
     }
 
@@ -18,6 +20,8 @@ public class WarpPlayer : MonoBehaviour
         {
             if (warpType == Define.WarpType.MIDDLEBOSS)
             {
+                Player player = other.GetComponent<Player>();
+                copySkill.SaveSkillSlots(player.SkillManager.SkillSlots, player.GetComponent<PlayerSkillManager>().reserveSlots, player.View.GetMainIcon(), player.View.GetSubIcon());
                 cameraController.ChangeCamera(Define.MiddlePhaseState.START);
             }
         }

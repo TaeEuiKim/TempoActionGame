@@ -42,6 +42,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
             Vector3 hitPos = monsterCollider.ClosestPoint(_player.HitPoint.position);
             hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z - 0.1f);
+            hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(-_player.CharacterModel.localScale.x, 0, 0));
             hitParticle2.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z);
         }
     }

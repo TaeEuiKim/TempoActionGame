@@ -8,8 +8,9 @@ public class FlipSlash : MonoBehaviour
 
     public void OnFlip(Vector3 value)
     {
-        objects[0].transform.localScale = new Vector3(value.x, 1, 1);
-        objects[1].transform.localScale = new Vector3(value.x, 1, 1);
-        objects[2].transform.localScale = new Vector3(value.x, 1, 1);
+        for (int i = 0; i < objects.Length; i++)
+        {
+            objects[i].transform.localScale = new Vector3(value.x, 1, 1);
+        }
     }
 }

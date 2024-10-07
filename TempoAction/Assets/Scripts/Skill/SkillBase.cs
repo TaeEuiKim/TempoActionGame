@@ -32,4 +32,5 @@ public abstract class SkillBase : ISkillRoot
     }
 
     public abstract bool UseSkill(CharacterBase skillManager, UnityAction OnEnded = null);
+    public abstract int GetSkillId();
 }

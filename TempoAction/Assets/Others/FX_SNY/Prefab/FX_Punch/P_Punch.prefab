@@ -4919,8 +4919,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8736143397407470148}
   - {fileID: 564103091381693524}
+  - {fileID: 8736143397407470148}
   m_Father: {fileID: 7049873609933606103}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!198 &1617248683059145070
@@ -9796,6 +9796,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7049873609933606103}
+  - component: {fileID: 1167832862643740187}
   m_Layer: 0
   m_Name: P_Punch
   m_TagString: Untagged
@@ -9819,6 +9820,22 @@ Transform:
   - {fileID: 3201137289330149436}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1167832862643740187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7403408976214375594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74b7c7f1df9564f4ca7ad871adf5b1c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objects:
+  - {fileID: 4892395016672970190}
+  - {fileID: 9146535115017450903}
+  - {fileID: 4688033486887015112}
 --- !u!1 &9146535115017450903
 GameObject:
   m_ObjectHideFlags: 0

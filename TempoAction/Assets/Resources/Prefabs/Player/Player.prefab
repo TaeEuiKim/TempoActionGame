@@ -2317,6 +2317,7 @@ GameObject:
   - component: {fileID: 3161499198174333538}
   - component: {fileID: 5667497640783063983}
   - component: {fileID: 5224209803351331403}
+  - component: {fileID: 1249641569469239912}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -2400,6 +2401,23 @@ MonoBehaviour:
   m_BiasX: 0
   m_BiasY: 0
   m_CenterOnActivate: 1
+--- !u!114 &1249641569469239912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3473213785434802356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 0
+  m_FrequencyGain: 0
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &3595945398744341642
 GameObject:
   m_ObjectHideFlags: 0
@@ -3686,10 +3704,10 @@ GameObject:
   - component: {fileID: 4898430924445477382}
   - component: {fileID: 4430779658894787962}
   - component: {fileID: 1821627459735449073}
+  - component: {fileID: 8535561133280563900}
   - component: {fileID: 7657217239667461207}
   - component: {fileID: 2794289016763969858}
   - component: {fileID: 2810099149246924853}
-  - component: {fileID: 8535561133280563900}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -3731,6 +3749,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hpBarImage: {fileID: 0}
   _gameoverUI: {fileID: 3412626793850250172, guid: 88b2d607a81998945a220ba83e3bf536, type: 3}
+  _mainSkillIcons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _subSkillIcons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _skillSprite:
+  - {fileID: 21300000, guid: 5d089384238e7f14daf60d7f55bc18f7, type: 3}
+  - {fileID: 21300000, guid: feba197a9f0b2ca4aad5b56ebd0ef2c8, type: 3}
+  - {fileID: 21300000, guid: 368195f3792d91e42ac72759e68deabb, type: 3}
+  _skillBackIcon: {fileID: 21300000, guid: 2d22f3670a2b8e84092d2ca1818b7ca2, type: 3}
 --- !u!114 &1821627459735449073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3784,6 +3817,48 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 15c0161abab7bd547b1e4805f2af793b, type: 2}
   isTurn: 0
   stunTime: 0
+--- !u!114 &8535561133280563900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5513155559230452658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd368fc5c7ce77459e0a48e744bd74f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <MaxSkillSlot>k__BackingField: 3
+  <MaxReserveSlot>k__BackingField: 5
+  <SkillSlots>k__BackingField:
+  - rid: 1742484138047307776
+  - rid: 1742484138047307777
+  - rid: 1742484138047307778
+  references:
+    version: 2
+    RefIds:
+    - rid: 1742484138047307776
+      type: {class: PlayerSkillSlot, ns: , asm: Assembly-CSharp}
+      data:
+        OnRemoved:
+          m_PersistentCalls:
+            m_Calls: []
+        slotKey: 97
+    - rid: 1742484138047307777
+      type: {class: PlayerSkillSlot, ns: , asm: Assembly-CSharp}
+      data:
+        OnRemoved:
+          m_PersistentCalls:
+            m_Calls: []
+        slotKey: 115
+    - rid: 1742484138047307778
+      type: {class: PlayerSkillSlot, ns: , asm: Assembly-CSharp}
+      data:
+        OnRemoved:
+          m_PersistentCalls:
+            m_Calls: []
+        slotKey: 100
 --- !u!54 &7657217239667461207
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3847,48 +3922,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attenuationObject: {fileID: 0}
---- !u!114 &8535561133280563900
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5513155559230452658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cd368fc5c7ce77459e0a48e744bd74f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <MaxSkillSlot>k__BackingField: 3
-  MaxReserveSlot: 6
-  <SkillSlots>k__BackingField:
-  - rid: 1742484138047307776
-  - rid: 1742484138047307777
-  - rid: 1742484138047307778
-  references:
-    version: 2
-    RefIds:
-    - rid: 1742484138047307776
-      type: {class: PlayerSkillSlot, ns: , asm: Assembly-CSharp}
-      data:
-        OnRemoved:
-          m_PersistentCalls:
-            m_Calls: []
-        slotKey: 97
-    - rid: 1742484138047307777
-      type: {class: PlayerSkillSlot, ns: , asm: Assembly-CSharp}
-      data:
-        OnRemoved:
-          m_PersistentCalls:
-            m_Calls: []
-        slotKey: 115
-    - rid: 1742484138047307778
-      type: {class: PlayerSkillSlot, ns: , asm: Assembly-CSharp}
-      data:
-        OnRemoved:
-          m_PersistentCalls:
-            m_Calls: []
-        slotKey: 100
 --- !u!1 &5521889502615955318
 GameObject:
   m_ObjectHideFlags: 0

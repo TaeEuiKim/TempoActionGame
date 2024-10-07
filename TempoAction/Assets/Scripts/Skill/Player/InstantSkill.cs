@@ -32,4 +32,9 @@ public class InstantSkill : SkillBase
 
         return true;
     }
+
+    public override int GetSkillId()
+    {
+        return -1;
+    }
 }

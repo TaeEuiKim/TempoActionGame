@@ -7,7 +7,6 @@ public interface ISkillManager
     public int MaxSkillSlot { get; }
     public SkillSlot[] SkillSlots { get; }
 
-
     public void Initialize();
     public void OnUpdate(CharacterBase characterBase);
 }

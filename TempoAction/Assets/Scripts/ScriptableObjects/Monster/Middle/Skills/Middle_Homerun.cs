@@ -9,10 +9,15 @@ public class Middle_Homerun : Middle_Skill
 {
     private float _coolTime;
 
+    [Header("Hit 포지션")]
+    [SerializeField] private Vector3 _hitPoint;
+    [Header("Hit 스케일")]
+    [SerializeField] private Vector3 _hitScale;
     [SerializeField] private float _knockBackPower;
     [SerializeField] private float _knockBackDuration;
 
     private Vector3 originSize;
+    private Vector3 orginPoint;
 
     public override void Init(MiddleMonster monster)
     {
@@ -42,7 +47,9 @@ public class Middle_Homerun : Middle_Skill
     {
         Debug.Log("홈런");
         originSize = _monster.ColliderSize;
-        _monster.ColliderSize = new Vector3(_monster.ColliderSize.x * 2f, _monster.ColliderSize.y * 1.5f, _monster.ColliderSize.z);
+        orginPoint = _monster.HitPoint.localPosition;
+        _monster.HitPoint.localPosition = new Vector3(_hitPoint.x, _hitPoint.y);
+        _monster.ColliderSize = new Vector3(_hitScale.x, _hitScale.y, _hitScale.z);
         CoroutineRunner.Instance.StartCoroutine(MoveToPlayer());
 
         _monster.OnAttackAction += Attack;
@@ -61,6 +68,7 @@ public class Middle_Homerun : Middle_Skill
     {
         _monster.Ani.SetBool("Homerun", false);
         _monster.ColliderSize = originSize;
+        _monster.HitPoint.localPosition = orginPoint;
         _coolTime = 0;
 
         IsCompleted = false;
@@ -84,7 +92,7 @@ public class Middle_Homerun : Middle_Skill
 
     private void Attack()
     {
-        Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
+        Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _hitScale / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 
         foreach (Collider player in hitPlayer)
         {
@@ -114,7 +122,8 @@ public class Middle_Homerun : Middle_Skill
             return hit.point;
         }
 
-        return (Vector2.right * _monster.Direction) * (_knockBackPower * _knockBackDuration);
+        Vector3 target = new Vector3(pos.x + ((Vector2.right * _monster.Direction) * (_knockBackPower * _knockBackDuration)).x, pos.y, pos.z);
+        return target;
     }
 
     private void Finish()

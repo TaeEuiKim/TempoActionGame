@@ -8,7 +8,7 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "SwordQuickDrawRunner", menuName = "ScriptableObjects/Skill/Runner/SwordQuickDrawRunner", order = 1)]
 public class SwordQuickDrawRunner : SkillRunnerBase
 {
-    [Header("ÀÌÆåÆ®°¡ º¹¼öÀÎ °Ç Left°¡ 0¹øÀ¸·Î")]
+    [Header("ì´í™íŠ¸ê°€ ë³µìˆ˜ì¸ ê±´ Leftê°€ 0ë²ˆìœ¼ë¡œ")]
     public GameObject ReadyEffect;
     public GameObject[] DashEffect;
     public GameObject[] SwordEffect;
@@ -23,7 +23,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
 
     public override void Initialize()
     {
-        // ÀÌÆåÆ® 
+        // ì´í™íŠ¸ 
         if(effectParent == null)
         {
             effectParent = new GameObject("Effects");
@@ -59,7 +59,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
             //managedEffects.Add(swordEffect[1].GetComponent<ParticleSystem>());
         }
 
-        // ´ë±â ½Ã°£
+        // ëŒ€ê¸° ì‹œê°„
         if(preDelayWFS == null)
         {
             preDelayWFS = new WaitForSeconds(skillData.SkillCastingTime * SkillData.Time2Second);
@@ -76,16 +76,17 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         Rigidbody rigid = character.Rb;
         rigid.useGravity = false;
         
-        // È÷Æ®¹Ú½º
-        character.ColliderManager.SetActiveCollider(false, Define.ColliderType.PERSISTANCE);
 
-        // ÁØºñ ÀÌÆåÆ®
+        // ì¤€ë¹„ ì´í™íŠ¸
         ActiveEffectToCharacter(character, ready);
 
-        // ¼±µô
+        // ì„ ë”œ
         yield return preDelayWFS;
 
-        // µ¹Áø
+        // íˆíŠ¸ë°•ìŠ¤
+        character.ColliderManager.SetActiveCollider(false, Define.ColliderType.PERSISTANCE);
+
+        // ëŒì§„
         float curTime = 0;
         float movingDistance = skillData.SkillEffectValue * SkillData.cm2m;
         float originalMovingDistance = movingDistance;
@@ -94,58 +95,78 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         Vector3 direction = character.transform.right * (isLeftDir ? -1 : 1);
         Vector3 targetPos = initialPos + direction * movingDistance;
         List<Monster> hittedMonsters = new List<Monster>();
-        Debug.Log(skillData.SkillEffectValue);
-        Debug.Log(movingDistance);
-        // µµÂø ÁöÁ¡ °»½Å with Wall
-        if (Physics.Raycast(new Ray(initialPos, direction), out RaycastHit wallHit, (targetPos - initialPos).magnitude, 1 << 13)) // 13Àº Wall
+        Player hittedPlayer = new Player();
+
+        // ë„ì°© ì§€ì  ê°±ì‹  with Wall
+        if (Physics.Raycast(new Ray(initialPos, direction), out RaycastHit wallHit, (targetPos - initialPos).magnitude, 1 << 13)) // 13ì€ Wall
         {
             movingDistance = (wallHit.distance - 0.6f) * 0.99f;
             targetPos = initialPos + direction * movingDistance;
         }
 
-        // ´ë½Ã ÀÌÆåÆ® ½ÃÀÛ
+        // ëŒ€ì‹œ ì´í™íŠ¸ ì‹œì‘
         ActiveEffectToCharacter(character, dash);
 
-        // ´ë½Ã ½ÃÀÛ
+        // ëŒ€ì‹œ ì‹œì‘
         while ((character.transform.position - targetPos).magnitude > 0.1f && curTime <= regenTime)
         {
             yield return null;
 
-            curTime += Time.deltaTime * 5f;
-
-            Ray ray = new Ray(character.transform.position, direction.normalized);
-            float collisiionDepth = skillData.SkillHitboxSize * SkillData.cm2m;
-
-            if (Physics.Raycast(ray, out RaycastHit monsterHit, collisiionDepth, 1 << 10))
+            curTime += Time.deltaTime * 3f;
+            if (skillData.SkillCastingTarget == Define.SkillTarget.MON)
             {
-                hittedMonsters.Add(monsterHit.transform.GetComponent<Monster>());
+                Ray ray = new Ray(character.transform.position, direction.normalized);
+                Debug.DrawRay(character.transform.position + new Vector3(0, 1f), direction.normalized, Color.blue);
+                float collisiionDepth = skillData.SkillHitboxSize * SkillData.cm2m;
+
+                if (Physics.Raycast(ray, out RaycastHit monsterHit, collisiionDepth, 1 << 10))
+                {
+                    hittedMonsters.Add(monsterHit.transform.GetComponent<Monster>());
+                }
+            }
+            else if (skillData.SkillCastingTarget == Define.SkillTarget.PC)
+            {
+                Ray ray = new Ray(character.transform.position + new Vector3(0, 1f), direction.normalized);
+                Debug.DrawRay(character.transform.position + new Vector3(0, 1f), direction.normalized, Color.blue);
+                float collisiionDepth = skillData.SkillHitboxSize * SkillData.cm2m;
+
+                if (Physics.Raycast(ray, out RaycastHit playerHit, collisiionDepth, 1 << 11))
+                {
+                    hittedPlayer = playerHit.transform.GetComponent<Player>();
+                }
             }
 
             character.transform.position = Vector3.Lerp(initialPos, targetPos, curTime / regenTime * (originalMovingDistance / movingDistance));
         }
 
-        // ¸ó½ºÅÍ Å¸°İ
+        // ëª¬ìŠ¤í„° íƒ€ê²©
         foreach (Monster monster in hittedMonsters.Distinct())
         {
-            float damageAmount = skillData.SkillDamage * 1; // 1´ë½Å °ø°İ·Â µé¾î°¡¾ß ÇÔ
+            float damageAmount = skillData.SkillDamage * 1; // 1ëŒ€ì‹  ê³µê²©ë ¥ ë“¤ì–´ê°€ì•¼ í•¨
 
             monster.TakeDamage(damageAmount);
         }
 
-        // ÃÊ±âÈ­
+        // í”Œë ˆì´ì–´ íƒ€ê²©
+        if (hittedPlayer != null)
+        {
+            hittedPlayer.TakeDamage(skillData.SkillDamage, true);
+        }
+
+        // ì´ˆê¸°í™”
         character.transform.position = targetPos;
         rigid.velocity = Vector3.zero;
         character.ColliderManager.SetActiveCollider(true, Define.ColliderType.PERSISTANCE);
 
         yield return new WaitForSeconds(0.2f);
-        // ÀÌÆåÆ® Á¾·á ¹× °Ë ÀÌÆåÆ® Àç»ı
+        // ì´í™íŠ¸ ì¢…ë£Œ ë° ê²€ ì´í™íŠ¸ ì¬ìƒ
         //ActiveEffectToCharacter(character, sword);
         dash.SetActive(false);
         ready.SetActive(false);
         rigid.useGravity = true;
         Debug.Log("QuickDraw End");
 
-        yield return new WaitForSeconds(0.4f); // ¹ßµµ¼ú ÀÌÆåÆ® ³¡³ª±â¸¦ ±â´Ù¸²
+        yield return new WaitForSeconds(0.4f); // ë°œë„ìˆ  ì´í™íŠ¸ ëë‚˜ê¸°ë¥¼ ê¸°ë‹¤ë¦¼
 
         //sword.SetActive(false);
     }
