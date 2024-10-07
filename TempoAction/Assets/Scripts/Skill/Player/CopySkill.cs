@@ -21,7 +21,6 @@ public class CopySkill : MonoBehaviour
         copyReserveSlots = reserveSlots;
         playerMainIcons = main;
         playerSubIcons = sub;
-        Debug.Log(playerMainIcons[0].sprite);
     }
 
     public SkillSlot[] LoadSkillSlots()

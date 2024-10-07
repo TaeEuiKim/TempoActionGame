@@ -13,10 +13,15 @@ public class Middle_Longjump : Middle_Skill
 
     [SerializeField] private float _knockBackPower;
     [SerializeField] private float _knockBackDuration;
+    [Header("Hit 포지션")]
+    [SerializeField] private Vector3 _hitPoint;
+    [Header("Hit 스케일")]
+    [SerializeField] private Vector3 _hitScale;
     [Header("피니쉬 공격 데미지 체력(%)")]
     [SerializeField] float _finishDamage;
 
     private Vector3 originSize;
+    private Vector3 orginPoint;
 
     public override void Init(MiddleMonster monster)
     {
@@ -48,6 +53,8 @@ public class Middle_Longjump : Middle_Skill
     {
         Debug.Log("멀리뛰기");
         attackPos = _monster.Player.transform.position.x - _monster.Direction;
+        originSize = _monster.ColliderSize;
+        orginPoint = _monster.HitPoint.localPosition;
 
         _monster.OnAttackAction += Attack;
         _monster.OnFinishSkill += Finish;
@@ -79,6 +86,7 @@ public class Middle_Longjump : Middle_Skill
     {
         _monster.Ani.SetBool("Longjump", false);
         _monster.ColliderSize = originSize;
+        _monster.HitPoint.localPosition = orginPoint;
         _coolTime = 0;
 
         isHit = false;
@@ -105,15 +113,15 @@ public class Middle_Longjump : Middle_Skill
 
     private void Finish()
     {
-        originSize = _monster.ColliderSize;
-        _monster.ColliderSize = new Vector3(_monster.ColliderSize.x * 2.5f, _monster.ColliderSize.y * 2f, _monster.ColliderSize.z);
+        _monster.HitPoint.localPosition = new Vector3(_hitPoint.x, _hitPoint.y);
+        _monster.ColliderSize = new Vector3(_hitScale.x, _hitScale.y, _hitScale.z);
         isFlying = false;
 
         GameObject hitParticle = ObjectPool.Instance.Spawn("FX_ChungLanding@P", 1); ;
 
         hitParticle.transform.position = new Vector3(_monster.transform.position.x + (_monster.Direction * 1.5f), 1.1f, _monster.transform.position.z);
 
-        Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
+        Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _hitScale / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 
         foreach (Collider player in hitPlayer)
         {

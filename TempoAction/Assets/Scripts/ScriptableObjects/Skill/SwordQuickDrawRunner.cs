@@ -153,13 +153,13 @@ public class SwordQuickDrawRunner : SkillRunnerBase
             hittedPlayer.TakeDamage(skillData.SkillDamage, true);
         }
 
-        ActiveEffectToCharacter(character, sword);
         // 초기화
         character.transform.position = targetPos;
         rigid.velocity = Vector3.zero;
         character.ColliderManager.SetActiveCollider(true, Define.ColliderType.PERSISTANCE);
 
         // 이펙트 종료 및 검 이펙트 재생
+        ActiveEffectToCharacter(character, sword);
         dash.SetActive(false);
         ready.SetActive(false);
         rigid.useGravity = true;

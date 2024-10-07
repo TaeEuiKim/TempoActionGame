@@ -99,7 +99,7 @@ public class Player : CharacterBase
         _stateStorage.Add(Define.PlayerState.STUN, new StunState(this));
         _stateStorage.Add(Define.PlayerState.NONE, new NoneState(this));
 
-        if (copySkill.LoadSkillSlots() != null)
+        if (copySkill != null && copySkill.LoadSkillSlots() != null)
         {
             GetComponent<PlayerSkillManager>().LoadSkill(copySkill.LoadSkillSlots(), copySkill.LoadReserveSlots());
             _view.SetSkillIcon(copySkill.LoadMainIcon(), copySkill.LoadSubIcon());
