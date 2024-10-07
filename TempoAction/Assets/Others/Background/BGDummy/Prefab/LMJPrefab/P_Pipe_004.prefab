@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1275095639395306874
+--- !u!1 &2752317622625998319
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,7 +8,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1891934488616806358}
+  - component: {fileID: 7687787222033935172}
   m_Layer: 0
   m_Name: P_Pipe_004
   m_TagString: Untagged
@@ -16,29 +16,29 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1891934488616806358
+--- !u!4 &7687787222033935172
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1275095639395306874}
+  m_GameObject: {fileID: 2752317622625998319}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -209.82146, y: 0.893, z: -0.29800004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1864833275904535438}
+  - {fileID: 7592054136479633075}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &2192002352257649765
+--- !u!1001 &7986813423966628184
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1891934488616806358}
+    m_TransformParent: {fileID: 7687787222033935172}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: e2d862888cfd19846a1cdd34fefe191b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -80,6 +80,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e2d862888cfd19846a1cdd34fefe191b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 646d2808cd2c8574e9ab682c2372b195, type: 2}
     - target: {fileID: 919132149155446097, guid: e2d862888cfd19846a1cdd34fefe191b, type: 3}
       propertyPath: m_Name
       value: M_Pipe_004
@@ -89,8 +93,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e2d862888cfd19846a1cdd34fefe191b, type: 3}
---- !u!4 &1864833275904535438 stripped
+--- !u!4 &7592054136479633075 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e2d862888cfd19846a1cdd34fefe191b, type: 3}
-  m_PrefabInstance: {fileID: 2192002352257649765}
+  m_PrefabInstance: {fileID: 7986813423966628184}
   m_PrefabAsset: {fileID: 0}
