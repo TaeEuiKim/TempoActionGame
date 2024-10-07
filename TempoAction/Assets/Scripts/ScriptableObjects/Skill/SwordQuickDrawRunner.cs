@@ -73,6 +73,8 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         GameObject ready = readyEffect;
         GameObject dash = dashEffect[isLeftDir ? 0 : 1];
         GameObject sword = swordEffect[isLeftDir ? 0 : 1];
+        Rigidbody rigid = character.Rb;
+        rigid.useGravity = false;
 
         // 히트박스
         character.ColliderManager.SetActiveCollider(false, Define.ColliderType.PERSISTANCE);
@@ -92,7 +94,6 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         Vector3 direction = character.transform.right * (isLeftDir ? -1 : 1);
         Vector3 targetPos = initialPos + direction * movingDistance;
         List<Monster> hittedMonsters = new List<Monster>();
-        Rigidbody rigid = character.Rb;
 
         // 도착 지점 갱신 with Wall
         if (Physics.Raycast(new Ray(initialPos, direction), out RaycastHit wallHit, (targetPos - initialPos).magnitude, 1 << 13)) // 13은 Wall
@@ -139,6 +140,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         ActiveEffectToCharacter(character, sword);
         dash.SetActive(false);
         ready.SetActive(false);
+        rigid.useGravity = true;
         Debug.Log("QuickDraw End");
 
         yield return new WaitForSeconds(0.4f); // 발도술 이펙트 끝나기를 기다림
