@@ -31,6 +31,6 @@ public abstract class CharacterBase : MonoBehaviour
 
     public virtual bool IsLeftDirection()
     {
-        return _characterModel.localScale.x < 0;
+        return _characterModel.localScale.x > 0;
     }
 }

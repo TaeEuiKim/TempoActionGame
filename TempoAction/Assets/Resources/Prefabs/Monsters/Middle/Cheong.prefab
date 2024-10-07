@@ -1925,6 +1925,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterModel: {fileID: 1463432801698866788}
+  _colliderManager:
+    colliders: []
   <_SkillManager>k__BackingField: {fileID: 0}
   _stat: {fileID: 11400000, guid: 9f91f833c9bd8d84f9756584fbea0fdf, type: 2}
   _playerLayer:
