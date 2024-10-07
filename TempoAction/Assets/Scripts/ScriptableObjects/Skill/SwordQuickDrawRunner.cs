@@ -158,6 +158,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         rigid.velocity = Vector3.zero;
         character.ColliderManager.SetActiveCollider(true, Define.ColliderType.PERSISTANCE);
 
+        yield return new WaitForSeconds(0.2f);
         // 이펙트 종료 및 검 이펙트 재생
         ActiveEffectToCharacter(character, sword);
         dash.SetActive(false);
