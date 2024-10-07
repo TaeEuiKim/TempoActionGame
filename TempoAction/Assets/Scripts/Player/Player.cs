@@ -38,6 +38,8 @@ public class Player : CharacterBase
     [SerializeField] private List<TempoAttackData> _mainTempoAttackDatas;
     [SerializeField] private List<TempoAttackData> _pointTempoAttackDatas;
 
+    private CopySkill copySkill;
+
     public PlayerStat Stat { get { return _stat; } }
     public PlayerAttack Attack { get { return _attack; } }
     public PlayerController Controller { get { return _controller; } }
@@ -69,6 +71,7 @@ public class Player : CharacterBase
     public LayerMask MonsterLayer { get => _monsterLayer; }
     public List<TempoAttackData> MainTempoAttackDatas { get => _mainTempoAttackDatas; }
     public List<TempoAttackData> PointTempoAttackDatas { get => _pointTempoAttackDatas; }
+    public PlayerView View { get => _view; }
 
     public bool isTurn = false;
     public float stunTime = 0f;
@@ -79,6 +82,7 @@ public class Player : CharacterBase
 
         _view = GetComponent<PlayerView>();
 
+        copySkill = FindObjectOfType<CopySkill>();
         _attack = new PlayerAttack(this);
         _controller = new PlayerController(this);
 
@@ -94,6 +98,12 @@ public class Player : CharacterBase
         _stateStorage.Add(Define.PlayerState.DIE, new DieState(this));
         _stateStorage.Add(Define.PlayerState.STUN, new StunState(this));
         _stateStorage.Add(Define.PlayerState.NONE, new NoneState(this));
+
+        if (copySkill.LoadSkillSlots() != null)
+        {
+            GetComponent<PlayerSkillManager>().LoadSkill(copySkill.LoadSkillSlots(), copySkill.LoadReserveSlots());
+            _view.SetSkillIcon(copySkill.LoadMainIcon(), copySkill.LoadSubIcon());
+        }
     }
 
     protected override void Update()

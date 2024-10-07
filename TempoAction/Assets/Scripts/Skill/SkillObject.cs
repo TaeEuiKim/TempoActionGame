@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SkillObject : MonoBehaviour
 {
+    public string skillName;
     private ISkillRoot skill;
     private PlayerSkillManager playerSkillManager;
 

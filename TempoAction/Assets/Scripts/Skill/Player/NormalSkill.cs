@@ -16,11 +16,14 @@ public class NormalSkill : SkillBase, ICooldownSkill
 
     private PlayerNormalSkillData skillData;
 
+    private int skillId;
+
     // cooldown: 1/100 seconds
     public NormalSkill(SkillRunnerBase skillRunner) : base(skillRunner)
     {
         skillData = (PlayerNormalSkillData)skillRunner.skillData;
         curTime = skillData.SkillCooldown;
+        skillId = skillData.SkillId;
         OnSkillAttack.AddListener((cb) => { Debug.Log("Invoke Normal Skill(Player)"); });
     }
 
@@ -44,5 +47,10 @@ public class NormalSkill : SkillBase, ICooldownSkill
         curTime = 0;
 
         return isRemove;
+    }
+
+    public override int GetSkillId()
+    {
+        return skillId;
     }
 }
