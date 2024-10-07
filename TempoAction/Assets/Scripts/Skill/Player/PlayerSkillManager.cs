@@ -13,18 +13,18 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
 
     private SkillObject interatedObject;
 
-    // temp
+    /*// temp
     public Collider hitbox;
     public GameObject offingHitbox;
     public Collider offingHitbox2;
     public Transform target;
     [SerializeField] private GameObject[] effects; // 0: ready, 1: rush, 2: attack
     [HideInInspector]public GameObject[] instiatedEffects; // 0: ready, 1: rush, 2: attack
-    [HideInInspector] public GameObject effectsParent;
+    [HideInInspector] public GameObject effectsParent;*/
 
     private void Start()
     {
-        instiatedEffects = new GameObject[effects.Length];
+        /*instiatedEffects = new GameObject[effects.Length];
         effectsParent = new GameObject("Effects");
         effectsParent.transform.parent = transform;
         effectsParent.transform.localPosition = Vector3.zero;
@@ -32,7 +32,7 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
         {
             instiatedEffects[i] = Instantiate(effects[i], effectsParent.transform);
             instiatedEffects[i].SetActive(false);
-        }
+        }*/
 
         Initialize();
     }
