@@ -99,7 +99,6 @@ public class Player : CharacterBase
     private void Update()
     {
         _stateStorage[_currentState]?.Stay();
-        Debug.Log(_currentState);
         switch (_currentState)
         {
             case Define.PlayerState.STUN:

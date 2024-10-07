@@ -7,8 +7,9 @@ public class MainButtonManager : MonoBehaviour
 {
     public void RestartScene()
     {
-        LoadManager.LoadScene(SceneManager.GetActiveScene().name);
         Time.timeScale = 1.0f;
+        LoadManager.LoadScene(SceneManager.GetActiveScene().name);
+        Debug.Log(Time.timeScale);
     }
 
     public void OnLoadScene(string sceneName)
