@@ -76,7 +76,9 @@ public class Cheong_Idle : Middle_State
     private void Follow()
     {
         float direction = _monster.Player.transform.position.x - _monster.transform.position.x;
+        Debug.Log(direction + "몬스터 방향");
         _monster.Direction = direction;
+        Debug.Log(_monster.Direction + "수정 몬스터 방향");
 
         if (Mathf.Abs(direction) <= _monster.Stat.AttackRange)
         {

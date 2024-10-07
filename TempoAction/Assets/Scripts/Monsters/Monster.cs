@@ -68,15 +68,14 @@ public abstract class Monster : CharacterBase
     // 반전 함수
     public void Flip(float value) 
     {
-        Vector3 tempScale = transform.GetChild(0).localScale;
+        Vector3 tempScale = _characterModel.localScale;
 
         if (value * tempScale.x < 0)
         {
             tempScale.x *= -1;
         }
 
-        transform.GetChild(0).localScale = tempScale;
-
+        _characterModel.localScale = tempScale;
     }
 
     public virtual void TakeDamage(float value)
