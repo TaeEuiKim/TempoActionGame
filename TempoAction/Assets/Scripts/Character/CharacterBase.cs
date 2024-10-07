@@ -21,6 +21,7 @@ public abstract class CharacterBase : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _ani = GetComponentInChildren<Animator>();
         _skillManager = GetComponent<ISkillManager>();
+        _colliderManager.Initialize();
     }
 
     protected virtual void Update()
