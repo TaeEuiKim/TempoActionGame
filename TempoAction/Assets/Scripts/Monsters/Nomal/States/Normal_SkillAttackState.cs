@@ -30,10 +30,6 @@ public class Normal_SkillAttackState : Normal_State
 
     public override void Stay()
     {
-        if (_monster.Stat.Hp <= 0)
-        {
-            _monster.CurrentPerceptionState = Define.PerceptionType.DEATH;
-        }
     }
 
     public override void Exit()

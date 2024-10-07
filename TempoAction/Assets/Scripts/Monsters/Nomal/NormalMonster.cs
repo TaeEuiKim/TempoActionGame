@@ -239,8 +239,15 @@ public class NormalMonster : Monster
     public override void TakeDamage(float value)
     {
         base.TakeDamage(value);
-
-        CurrentPerceptionState = Define.PerceptionType.HIT;
+        Debug.Log(Stat.Hp + "hp");
+        if (Stat.Hp > 0)
+        {
+            CurrentPerceptionState = Define.PerceptionType.HIT;
+        }
+        else if (Stat.Hp <= 0)
+        {
+            CurrentPerceptionState = Define.PerceptionType.DEATH;
+        }
     }
 
     // 성공적으로 스킬공격 상태로 넘어갔는지 반환
