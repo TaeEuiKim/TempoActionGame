@@ -8,11 +8,11 @@ public class PlayerSkillSlot : SkillSlot
 {
     public KeyCode slotKey;
 
-    public override void UseSkillInstant(CharacterBase character)
+    public override void UseSkillInstant(CharacterBase character, UnityAction OnEnded = null)
     {
         if (Skill == null) { return; }
 
-        if (Skill.UseSkill(character))
+        if (Skill.UseSkill(character, OnEnded))
         {
             RemoveSkill();
         }

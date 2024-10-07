@@ -14,7 +14,7 @@ public abstract class SkillSlot
         Skill = newSkill;
     }
 
-    public abstract void UseSkillInstant(CharacterBase character);
+    public abstract void UseSkillInstant(CharacterBase character, UnityAction OnEnded = null);
 
     public void RemoveSkill()
     {
