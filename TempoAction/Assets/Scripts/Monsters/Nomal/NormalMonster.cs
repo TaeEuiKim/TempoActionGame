@@ -21,13 +21,15 @@ public class NormalMonster : Monster
 
     [Space]
     [SerializeField] private float _perceptionDistance;                                                                                    // 인식 거리
-    [SerializeField] private float _perceptionAngle;                                                                                       // 인식 각도
-    [SerializeField] private List<PerceptionRange> _perceptionRanges = new List<PerceptionRange>();                                        // 인식 범위
+    //[SerializeField] private float _perceptionAngle;                                                                                       // 인식 각도
+    //[SerializeField] private List<PerceptionRange> _perceptionRanges = new List<PerceptionRange>();                                        // 인식 범위
     private Dictionary<Define.PerceptionType, Normal_State> _perceptionStateStorage = new Dictionary<Define.PerceptionType, Normal_State>(); // 인식 상태 저장소
     [SerializeField] private Define.PerceptionType _currentPerceptionState;                                                                                 // 현재 인색 상태 
-    
-    [SerializeField] private float _maxAggroGauge; // 최대 어그로 게이지
-    private float _aggroGauge = 0;                 // 현재 어그로 게이지
+    private MonsterSkillSlot[] _currentSlots;
+    private Transform _target;
+
+    /*[SerializeField] private float _maxAggroGauge; // 최대 어그로 게이지
+    private float _aggroGauge = 0;                 // 현재 어그로 게이지*/
 
     public Vector2 SpawnPoint { get; set; }
 
@@ -39,11 +41,13 @@ public class NormalMonster : Monster
     #endregion
 
     #region 프로퍼티
+    public Transform Target { get => _target; }
     public float MoveRange { get => _moveRange; }
 
     public float PerceptionDistance { get => _perceptionDistance; }
-    public float PerceptionAngle { get => _perceptionAngle; }
-    public List<PerceptionRange> PerceptionRanges { get => _perceptionRanges; }
+    //public float PerceptionAngle { get => _perceptionAngle; }
+    //public List<PerceptionRange> PerceptionRanges { get => _perceptionRanges; }
+    public Define.PerceptionType PreviousPerceptionState { get; private set; }
     public Define.PerceptionType CurrentPerceptionState
     {
         get
@@ -56,12 +60,13 @@ public class NormalMonster : Monster
             {
                 _perceptionStateStorage[_currentPerceptionState]?.Exit();
             }
+            PreviousPerceptionState = _currentPerceptionState;
             _currentPerceptionState = value;
             _perceptionStateStorage[_currentPerceptionState]?.Enter();
         }
     }
 
-    public float MaxAggroGauge { get => _maxAggroGauge; }
+    /*public float MaxAggroGauge { get => _maxAggroGauge; }
     public float AggroGauge
     {
         get => _aggroGauge;
@@ -84,7 +89,8 @@ public class NormalMonster : Monster
             }
 
         }
-    }
+    }*/
+    public MonsterSkillSlot[] CurrentSkillSlots { get => _currentSlots; set => _currentSlots = value; }
    
 
     #endregion
@@ -100,14 +106,20 @@ public class NormalMonster : Monster
     }
     private void Start()
     {
-        _perceptionStateStorage.Add(Define.PerceptionType.PATROL, new Nomal_Patrol(this));
-        _perceptionStateStorage.Add(Define.PerceptionType.BOUNDARY, new Nomal_Boundary(this));
-        _perceptionStateStorage.Add(Define.PerceptionType.DETECTIONM, new Normal_Detectionm(this));
+        //_perceptionStateStorage.Add(Define.PerceptionType.PATROL, new Nomal_Patrol(this));
+        //_perceptionStateStorage.Add(Define.PerceptionType.BOUNDARY, new Nomal_Boundary(this));
+        //_perceptionStateStorage.Add(Define.PerceptionType.DETECTIONM, new Normal_Detectionm(this));
         _perceptionStateStorage.Add(Define.PerceptionType.IDLE, new Normal_IdleState(this));
+        _perceptionStateStorage.Add(Define.PerceptionType.HIT, new Normal_HitState(this));
+        _perceptionStateStorage.Add(Define.PerceptionType.TRACE, new Normal_TraceState(this));
+        _perceptionStateStorage.Add(Define.PerceptionType.GUARD, new Normal_GuardState(this));
+        _perceptionStateStorage.Add(Define.PerceptionType.SKILLATTACK, new Normal_SkillAttackState(this));
 
-        CurrentPerceptionState = Define.PerceptionType.PATROL;
+        CurrentPerceptionState = Define.PerceptionType.IDLE;
 
         _stat.Hp = _stat.MaxHp;
+
+        _target = CharacterManager.Instance.GetCharacter(PlayerLayer.value)[0].transform;
 
         // 넉백 시 실행하는 이벤트
         OnKnockback += () =>
@@ -115,14 +127,14 @@ public class NormalMonster : Monster
             float dir = _player.position.x - transform.position.x;
             Direction = dir;
         };
-
-        
     }
 
-    private void Update()
+    protected override void Update()
     {
-        CheckPerceptionState(); // 게이지 증가 시키는 함수
-        UpdatePerceptionState(); // 게이지 확인 후 인식 상태 업데이트
+        //CheckPerceptionState(); // 게이지 증가 시키는 함수
+        //UpdatePerceptionState(); // 게이지 확인 후 인식 상태 업데이트
+
+        _skillManager.OnUpdate(this);
 
         // 인식 범위 안에 들어왔을 때
         if (_perceptionStateStorage[_currentPerceptionState].IsEntered)
@@ -132,10 +144,11 @@ public class NormalMonster : Monster
 
     }
 
-
-    // 부채꼴 안에 플레이어가 있는지 확인
+    #region AggroLegacy
+    /*// 부채꼴 안에 플레이어가 있는지 확인
     private void CheckPerceptionState() 
     {
+        #region legacy
         // 기준점에서 플레이어로 향하는 벡터 계산
 
         Vector3 playerPos = new Vector3(_player.position.x, _player.position.y, _player.position.z);
@@ -205,7 +218,8 @@ public class NormalMonster : Monster
                 CurrentPerceptionState = Define.PerceptionType.BOUNDARY;
             }
         }
-    }
+    }*/
+    #endregion
 
     // 공격 함수
     public void Attack()
@@ -215,19 +229,42 @@ public class NormalMonster : Monster
         if (isHit)
         {
             print("공격");
-            _player.GetComponent<Player>().TakeDamage(_stat.Damage);
+            var player = _player.GetComponent<Player>();
+            player.TakeDamage(_stat.Damage);
         }
 
     }
 
-    #region View
-
-    public void UpdatePerceptionGauge()
+    public override void TakeDamage(float value)
     {
-        _nomalMonsterView.UpdatePerceptionGaugeImage(_aggroGauge/_maxAggroGauge);
+        base.TakeDamage(value);
+
+        CurrentPerceptionState = Define.PerceptionType.HIT;
     }
 
-    #endregion
+    // 성공적으로 스킬공격 상태로 넘어갔는지 반환
+    public bool TrySkillAttack()
+    {
+        var slots = _SkillManager.GetUsableSkillSlots();
+
+        if (slots.Length > 0)
+        {
+            CurrentSkillSlots = slots;
+            CurrentPerceptionState = Define.PerceptionType.SKILLATTACK;
+            return true;
+        }
+
+        return false;
+    }
+
+    /*    #region View
+
+        public void UpdatePerceptionGauge()
+        {
+            _nomalMonsterView.UpdatePerceptionGaugeImage(_aggroGauge/_maxAggroGauge);
+        }
+
+        #endregion*/
 
     private void OnDrawGizmos()
     {
@@ -241,7 +278,7 @@ public class NormalMonster : Monster
         }
     }
 
-    private void OnDrawGizmosSelected()
+   /* private void OnDrawGizmosSelected()
     {
         int _segments = 10;
 
@@ -285,8 +322,5 @@ public class NormalMonster : Monster
             // 마지막 선을 중심으로 그리기
             Gizmos.DrawLine(startPosition, lastPoint);
         }
-
-
-    }
-
+    }*/
 }

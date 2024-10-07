@@ -9,4 +9,5 @@ public interface ISkillManager
 
 
     public void Initialize();
+    public void OnUpdate(CharacterBase characterBase);
 }

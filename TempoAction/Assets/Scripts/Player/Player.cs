@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 
 public class Player : CharacterBase
 {
+    [Header("±‚≈∏")]
     [SerializeField] private PlayerStat _stat;
     private PlayerView _view;
 
@@ -96,8 +97,10 @@ public class Player : CharacterBase
         _stateStorage.Add(Define.PlayerState.NONE, new NoneState(this));
     }
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
+
         _stateStorage[_currentState]?.Stay();
         switch (_currentState)
         {

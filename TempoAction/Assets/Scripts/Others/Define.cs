@@ -41,8 +41,12 @@ public class Define
         NONE,
         MIDDLEBOSS
     }
-   
 
+    public enum ColliderType
+    {
+        PERSISTANCE,
+        ALTERNATIVE
+    }
 
     #region 플레이어
     public enum TempoType
@@ -70,7 +74,8 @@ public class Define
     #region 몬스터
     public enum PerceptionType
     {
-        PATROL, BOUNDARY, DETECTIONM, IDLE
+       /* PATROL, BOUNDARY, DETECTIONM, */ // legacy
+        IDLE, GUARD, HIT, SKILLATTACK, TRACE, DEATH
     }
 
     #region 엘리트 몬스터

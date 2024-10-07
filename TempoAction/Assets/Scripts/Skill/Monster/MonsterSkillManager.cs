@@ -39,7 +39,7 @@ public class MonsterSkillManager : MonoBehaviour, ISkillManager
         for (int i = 0; i < SkillSlots.Length; i++)
         {
             var slot = SkillSlots[i] as MonsterSkillSlot;
-            if (slot.skillData != null)
+            if (slot.skillRunner.skillData != null)
             {
                 slot.SetSkill();
             }
@@ -59,5 +59,16 @@ public class MonsterSkillManager : MonoBehaviour, ISkillManager
         }
 
         return slots.ToArray();
+    }
+
+    public void OnUpdate(CharacterBase characterBase)
+    {
+        foreach(var slot in SkillSlots)
+        {
+            if(slot.Skill is  MonsterSkill skill)
+            {
+                skill.UpdateTime(Time.deltaTime);
+            }
+        }
     }
 }

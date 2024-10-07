@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <SkillId>k__BackingField: 51
   <SkillName>k__BackingField: "\uBC1C\uB3C4\uC220"
-  <SkillCastingTime>k__BackingField: 0
-  <SkillRegenTime>k__BackingField: 0
+  <SkillCastingTime>k__BackingField: 25
+  <SkillRegenTime>k__BackingField: 50
   <SkillClassType>k__BackingField: 0
   <SkillHitboxType>k__BackingField: 0
   <SkillHitboxSize>k__BackingField: 150
-  <SkillCastingTarget>k__BackingField: 0
+  <SkillCastingTarget>k__BackingField: 3
   <SkillDamage>k__BackingField: 250
-  <SkillAttackCount>k__BackingField: 0
+  <SkillAttackCount>k__BackingField: 1
   <SkillEffectType>k__BackingField: 1
   <SkillEffectValue>k__BackingField: 800
-  skillCooldown: 300
-  <SkillMaxLimit>k__BackingField: 0
+  skillCooldown: 500
+  <SkillMaxLimit>k__BackingField: 2

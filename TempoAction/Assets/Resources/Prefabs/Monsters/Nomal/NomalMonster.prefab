@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 382572079243178425}
@@ -95,7 +95,6 @@ GameObject:
   - component: {fileID: 4281396995236081646}
   - component: {fileID: 32627992201053562}
   - component: {fileID: 250722220154513113}
-  - component: {fileID: 8800126701150504375}
   m_Layer: 5
   m_Name: PerceptionGauge
   m_TagString: Untagged
@@ -160,19 +159,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8800126701150504375
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2693373667126874200}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b93163c087281b449cb17bd12a5dce0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0
 --- !u!1 &3649769607465890270
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,7 +170,6 @@ GameObject:
   - component: {fileID: 5176850987481897500}
   - component: {fileID: 391103002442232041}
   - component: {fileID: 3671221502188199225}
-  - component: {fileID: 3992170275184613515}
   m_Layer: 5
   m_Name: HpBarImage
   m_TagString: Untagged
@@ -249,19 +234,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3992170275184613515
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3649769607465890270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b93163c087281b449cb17bd12a5dce0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0
 --- !u!1 &6889173418024680073
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,7 +378,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5365613518509020335}
   - component: {fileID: 1681674904947597808}
-  - component: {fileID: 76847049533262237}
+  - component: {fileID: 2968910832164649905}
+  - component: {fileID: 1298170471948164286}
   - component: {fileID: 4142376200200369098}
   - component: {fileID: 8898620878518490393}
   m_Layer: 10
@@ -448,7 +421,7 @@ MonoBehaviour:
   _hpBarImage: {fileID: 3671221502188199225}
   _nomalMonsterCanvas: {fileID: 2076293469692413261}
   _perceptionGauge: {fileID: 250722220154513113}
---- !u!114 &76847049533262237
+--- !u!114 &2968910832164649905
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -457,9 +430,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 9029766264749156638}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f68edd04f8f222a41ad1a69ba8e28880, type: 3}
+  m_Script: {fileID: 11500000, guid: e24ad999eacfc3443ae374902651f8c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _characterModel: {fileID: 3178130281962697952}
+  _colliderManager:
+    colliders:
+    - <Key>k__BackingField: 0
+      <Colliders>k__BackingField:
+      - {fileID: 8898620878518490393}
+  <_SkillManager>k__BackingField: {fileID: 1298170471948164286}
   _stat: {fileID: 11400000, guid: f19c15c9f692fce4c929887ca8f7b101, type: 2}
   _playerLayer:
     serializedVersion: 2
@@ -467,23 +447,36 @@ MonoBehaviour:
   _wallLayer:
     serializedVersion: 2
     m_Bits: 8192
-  _monsterModel: {fileID: 3178130281962697952}
-  _moveRange: 1
-  _perceptionDistance: 5
-  _perceptionAngle: 60
-  _perceptionRanges:
-  - range_Ratio: 35
-    gaugeIncrementPerSecond: 10
-    color: {r: 1, g: 0, b: 0, a: 1}
-  - range_Ratio: 65
-    gaugeIncrementPerSecond: 6
-    color: {r: 1, g: 0.920817, b: 0, a: 1}
-  - range_Ratio: 100
-    gaugeIncrementPerSecond: 3
-    color: {r: 0, g: 1, b: 0.14503145, a: 1}
-  _maxAggroGauge: 100
+  _moveRange: 0.06
+  _perceptionDistance: 800
+  _currentPerceptionState: 3
   _hitPoint: {fileID: 382572079243178425}
   _colliderSize: {x: 1, y: 1, z: 1}
+--- !u!114 &1298170471948164286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9029766264749156638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ad243c645563641a12beb93663b7d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <MaxSkillSlot>k__BackingField: 1
+  <SkillSlots>k__BackingField:
+  - rid: 6381323680832290830
+  references:
+    version: 2
+    RefIds:
+    - rid: 6381323680832290830
+      type: {class: MonsterSkillSlot, ns: , asm: Assembly-CSharp}
+      data:
+        OnRemoved:
+          m_PersistentCalls:
+            m_Calls: []
+        skillRunner: {fileID: 11400000, guid: 27eccc5da3acdf947b493e4e6b8f13a8, type: 2}
 --- !u!54 &4142376200200369098
 Rigidbody:
   m_ObjectHideFlags: 0
