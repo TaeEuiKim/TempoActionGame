@@ -3675,6 +3675,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hpBarImage: {fileID: 0}
+  _gameoverUI: {fileID: 3412626793850250172, guid: 88b2d607a81998945a220ba83e3bf536, type: 3}
 --- !u!114 &1821627459735449073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3689,7 +3690,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterModel: {fileID: 6585813559602812403}
   _stat: {fileID: 11400000, guid: 645dcda883656e84b90b1de74ac662c9, type: 2}
-  _currentState: 1
+  _currentState: 2
   _rightSparkPoint: {fileID: 8572336553519574047}
   _leftSparkPoint: {fileID: 2644814315565159814}
   _groundCheckPoint: {fileID: 6130173793519594367}

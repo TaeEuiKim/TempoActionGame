@@ -22,15 +22,13 @@ public class LoadManager : MonoBehaviour
 
     IEnumerator LoadScene()
     {
-        yield return new WaitForSeconds(2f);
-
         AsyncOperation op = SceneManager.LoadSceneAsync(nextScene);
         op.allowSceneActivation = false;
 
         float timer = 0f;
         while (!op.isDone)
         {
-            timer += Time.deltaTime;
+            timer += Time.unscaledDeltaTime;
             if (op.progress < 0.9f)
             {
                 progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, op.progress, timer);

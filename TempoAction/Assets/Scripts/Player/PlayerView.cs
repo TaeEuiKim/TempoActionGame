@@ -6,6 +6,13 @@ using UnityEngine.UI;
 public class PlayerView : MonoBehaviour
 {
     [SerializeField] private Image _hpBarImage;
+    [SerializeField] private GameObject _gameoverUI;
+
+    public void OnGameoverUI()
+    {
+        Time.timeScale = 0;
+        _gameoverUI.SetActive(true);
+    }
 
     public void UpdateHpBar(float value)
     {
