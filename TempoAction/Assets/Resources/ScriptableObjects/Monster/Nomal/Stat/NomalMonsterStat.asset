@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a19041a8802d80241a468d8f8fd3315e, type: 3}
   m_Name: NomalMonsterStat
   m_EditorClassIdentifier: 
-  _maxHealth: 100
-  _health: 100
+  _maxHp: 100
   _defense: 0
-  _walkSpeed: 1
+  _walkSpeed: 20
   _sprintSpeed: 1
   _damage: 0
   _attackRange: 0

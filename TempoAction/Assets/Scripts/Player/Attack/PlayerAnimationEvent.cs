@@ -37,11 +37,12 @@ public class PlayerAnimationEvent : MonoBehaviour
                 HitPointTempo(monster);
             }
             // 히트 파티클 생성
-            GameObject hitParticle = SpawnHitParticle(monster);
-
+            GameObject hitParticle = SpawnHitParticle(monster, "P_Punch");
+            GameObject hitParticle2 = SpawnHitParticle(monster, "P_PunchAttack");
 
             Vector3 hitPos = monsterCollider.ClosestPoint(_player.HitPoint.position);
             hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z - 0.1f);
+            hitParticle2.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z);
         }
     }
     private void HitMainTempo(Monster monster)
@@ -55,7 +56,7 @@ public class PlayerAnimationEvent : MonoBehaviour
         float damage = _player.GetTotalDamage();
         monster.TakeDamage(damage);
     }
-    private GameObject SpawnHitParticle(Monster monster)
+    private GameObject SpawnHitParticle(Monster monster, string name)
     {
         GameObject hitParticle = null;
 
@@ -73,11 +74,11 @@ public class PlayerAnimationEvent : MonoBehaviour
         {
             if (_player.Attack.CurrentTempoData.type == Define.TempoType.POINT)
             {
-                hitParticle = ObjectPool.Instance.Spawn("P_point_attack", 1);
+                hitParticle = ObjectPool.Instance.Spawn(name, 1);
             }
             else
             {
-                hitParticle = ObjectPool.Instance.Spawn("P_main_attack", 1);
+                hitParticle = ObjectPool.Instance.Spawn(name, 1);
             }
         }
 

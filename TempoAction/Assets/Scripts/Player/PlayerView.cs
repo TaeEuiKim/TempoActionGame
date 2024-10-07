@@ -10,7 +10,6 @@ public class PlayerView : MonoBehaviour
 
     public void OnGameoverUI()
     {
-        Time.timeScale = 0;
         _gameoverUI.SetActive(true);
     }
 

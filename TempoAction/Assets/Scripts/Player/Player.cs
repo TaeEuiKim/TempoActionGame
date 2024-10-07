@@ -38,7 +38,6 @@ public class Player : CharacterBase
     [SerializeField] private List<TempoAttackData> _mainTempoAttackDatas;
     [SerializeField] private List<TempoAttackData> _pointTempoAttackDatas;
 
-
     public PlayerStat Stat { get { return _stat; } }
     public PlayerAttack Attack { get { return _attack; } }
     public PlayerController Controller { get { return _controller; } }
@@ -168,6 +167,11 @@ public class Player : CharacterBase
     public void PowerUp(float value)
     {
         _stat.Damage += value;
+    }
+
+    public override bool IsLeftDirection()
+    {
+        return CharacterModel.localScale.x < 0;
     }
 
     #region View

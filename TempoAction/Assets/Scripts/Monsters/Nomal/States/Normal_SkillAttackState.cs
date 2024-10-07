@@ -15,7 +15,12 @@ public class Normal_SkillAttackState : Normal_State
 
         var slot = SelectSlot(slots);
 
-        _monster.Direction = (_monster.Target.transform.position - _monster.transform.position).x;
+        _monster.Direction = -((_monster.Target.transform.position - _monster.transform.position).x);
+
+        if (slot.skillRunner.skillData.SkillId == 210)
+        {
+            _monster.Ani.SetBool("Skill", true);
+        }
 
         slot.UseSkillInstant(_monster, () =>
         {
@@ -32,6 +37,8 @@ public class Normal_SkillAttackState : Normal_State
         base.Exit();
 
         _monster.CurrentSkillSlots = null;
+
+        _monster.Ani.SetBool("Skill", false);
     }
 
     private MonsterSkillSlot SelectSlot(MonsterSkillSlot[] slots)

@@ -24,7 +24,7 @@ public class NormalMonster : Monster
     //[SerializeField] private float _perceptionAngle;                                                                                       // 인식 각도
     //[SerializeField] private List<PerceptionRange> _perceptionRanges = new List<PerceptionRange>();                                        // 인식 범위
     private Dictionary<Define.PerceptionType, Normal_State> _perceptionStateStorage = new Dictionary<Define.PerceptionType, Normal_State>(); // 인식 상태 저장소
-    [SerializeField] private Define.PerceptionType _currentPerceptionState;                                                                                 // 현재 인색 상태 
+    [SerializeField] private Define.PerceptionType _currentPerceptionState;                                                                  // 현재 인색 상태 
     private MonsterSkillSlot[] _currentSlots;
     private Transform _target;
 
@@ -114,6 +114,7 @@ public class NormalMonster : Monster
         _perceptionStateStorage.Add(Define.PerceptionType.TRACE, new Normal_TraceState(this));
         _perceptionStateStorage.Add(Define.PerceptionType.GUARD, new Normal_GuardState(this));
         _perceptionStateStorage.Add(Define.PerceptionType.SKILLATTACK, new Normal_SkillAttackState(this));
+        _perceptionStateStorage.Add(Define.PerceptionType.DEATH, new Normal_Death(this));
 
         CurrentPerceptionState = Define.PerceptionType.IDLE;
 
@@ -265,6 +266,12 @@ public class NormalMonster : Monster
         }
 
         #endregion*/
+
+    private void OnEnable()
+    {
+        Rb.useGravity = true;
+        GetComponent<BoxCollider>().enabled = true;
+    }
 
     private void OnDrawGizmos()
     {

@@ -75,7 +75,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         GameObject sword = swordEffect[isLeftDir ? 0 : 1];
         Rigidbody rigid = character.Rb;
         rigid.useGravity = false;
-
+        
         // 히트박스
         character.ColliderManager.SetActiveCollider(false, Define.ColliderType.PERSISTANCE);
 
@@ -110,7 +110,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         {
             yield return null;
 
-            curTime += Time.deltaTime;
+            curTime += Time.deltaTime * 3f;
 
             Ray ray = new Ray(character.transform.position, direction.normalized);
             float collisiionDepth = skillData.SkillHitboxSize * SkillData.cm2m;

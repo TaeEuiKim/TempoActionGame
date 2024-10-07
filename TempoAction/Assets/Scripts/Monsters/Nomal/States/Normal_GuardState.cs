@@ -36,6 +36,7 @@ public class Normal_GuardState : Normal_State
         movingPos = GetMovingPos();
 
         _monster.transform.position = Vector3.Lerp(_monster.transform.position, movingPos, 1 - Mathf.Exp(-_monster.Stat.WalkSpeed * Time.deltaTime));
+        _monster.Direction = -(_monster.Target.position.x - _monster.transform.position.x);
 
         /*Vector3 curDir = (movingPos - _monster.transform.position).normalized;
         curDir.y = 0;*/

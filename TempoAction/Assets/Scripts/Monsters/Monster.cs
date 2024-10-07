@@ -10,6 +10,7 @@ public abstract class Monster : CharacterBase
     [SerializeField] protected MonsterStat _stat;
     [SerializeField] protected LayerMask _playerLayer;
     [SerializeField] protected LayerMask _wallLayer;
+    [SerializeField] public SkillRunnerBase skillData;
 
     protected Transform _player;
     private MonsterView _view;
@@ -95,7 +96,7 @@ public abstract class Monster : CharacterBase
 
     public override bool IsLeftDirection()
     {
-        return Direction == -1;
+        return Direction != -1;
     }
     #region View
     public void UpdateHealth()

@@ -56,7 +56,14 @@ public abstract class SkillRunnerBase : ScriptableObject
     }
     protected void ActiveEffectToCharacter(CharacterBase character, GameObject effect)
     {
-        effect.transform.position = character.transform.position;
+        if (character.gameObject.layer != LayerMask.NameToLayer("Player"))
+        {
+            effect.transform.position = character.transform.position + new Vector3(0, 1);
+        }
+        else
+        {
+            effect.transform.position = character.transform.position;
+        }
         effect.SetActive(true);
     }
 

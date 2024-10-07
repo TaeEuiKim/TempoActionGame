@@ -8,6 +8,7 @@ public class PlayerController
 
     private bool _isLanded;
     private bool _isGrounded;
+    private bool _isOnMonster;
     private bool _isDashing;
     private bool _isDoubleJumping;
 
@@ -66,6 +67,7 @@ public class PlayerController
         }
 
         _isGrounded = Physics.CheckSphere(_player.GroundCheckPoint.position, _player.GroundCheckRadius, _player.GroundLayer);
+        _isOnMonster = Physics.CheckSphere(_player.GroundCheckPoint.position, _player.GroundCheckRadius, _player.MonsterLayer);
         _player.Ani.SetBool("isGrounded", _isGrounded);
 
         if (_isGrounded)
@@ -80,6 +82,11 @@ public class PlayerController
         else
         {
             _isLanded = false;
+        }
+
+        if (_isOnMonster)
+        {
+            _player.Rb.velocity = new Vector3(_direction * 3f, _player.Rb.velocity.y);
         }
 
         if (_dashTimer >= _player.Stat.DashDelay)

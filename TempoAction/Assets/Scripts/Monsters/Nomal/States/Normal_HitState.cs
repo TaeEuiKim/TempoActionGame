@@ -26,7 +26,7 @@ public class Normal_HitState : Normal_State
         }
         else
         {
-            //_monster.CurrentPerceptionState = Define.PerceptionType.DEATH;
+            _monster.CurrentPerceptionState = Define.PerceptionType.DEATH;
         }
     }
 

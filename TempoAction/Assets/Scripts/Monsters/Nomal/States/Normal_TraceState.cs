@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Normal_TraceState : Normal_State
 {
@@ -18,12 +19,14 @@ public class Normal_TraceState : Normal_State
 
     public override void Stay()
     {
-        Vector3 dir = _monster.Target.transform.position - _monster.Target.transform.position;
-        _monster.transform.position += dir * _monster.Stat.WalkSpeed * Time.deltaTime;
-        _monster.Direction = dir.x;
+        float dir = _monster.Target.transform.position.x - _monster.transform.position.x;
+        var tempVelocity = new Vector2(dir * _monster.Stat.WalkSpeed * Time.deltaTime, _monster.Rb.velocity.y);
+
+        _monster.Rb.velocity = tempVelocity;
+        _monster.Direction = -dir;
 
         if (_monster.TrySkillAttack()) { return; }
 
-        _monster.CurrentPerceptionState = Define.PerceptionType.GUARD;
+        //_monster.CurrentPerceptionState = Define.PerceptionType.GUARD;
     }
 }
