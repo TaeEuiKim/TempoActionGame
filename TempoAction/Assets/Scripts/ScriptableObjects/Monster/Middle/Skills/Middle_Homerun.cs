@@ -50,6 +50,7 @@ public class Middle_Homerun : Middle_Skill
         orginPoint = _monster.HitPoint.localPosition;
         _monster.HitPoint.localPosition = new Vector3(_hitPoint.x, _hitPoint.y);
         _monster.ColliderSize = new Vector3(_hitScale.x, _hitScale.y, _hitScale.z);
+        _monster.CharacterModel.localScale = new Vector3(-_monster.Direction, 1, 1);
         CoroutineRunner.Instance.StartCoroutine(MoveToPlayer());
 
         _monster.OnAttackAction += Attack;

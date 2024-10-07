@@ -18,6 +18,7 @@ public abstract class SkillRunnerBase : ScriptableObject
     }
     public abstract void Initialize();
     public abstract IEnumerator SkillCoroutine(CharacterBase character);
+    public abstract void StopSkillCoroutine(CharacterBase character);
     private IEnumerator WaitForSkillEnded(CharacterBase character, UnityAction OnFinished)
     {
         while(true)

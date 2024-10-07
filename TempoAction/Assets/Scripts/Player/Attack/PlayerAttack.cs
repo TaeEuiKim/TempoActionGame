@@ -82,7 +82,7 @@ public class PlayerAttack
         if (_currentAttackState != Define.AttackState.ATTACK)
         { 
             // 공격 키 입력
-            if (Input.GetKeyDown(KeyCode.A) && isAttack)
+            if (Input.GetKeyDown(KeyCode.X) && isAttack)
             {
                 AttackMainTempo();
             }

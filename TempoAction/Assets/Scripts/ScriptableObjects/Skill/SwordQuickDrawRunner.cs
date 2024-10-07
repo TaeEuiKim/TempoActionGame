@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections;
 using UnityEngine.TextCore.Text;
 using UnityEngine.Events;
+using Unity.VisualScripting;
 
 [CreateAssetMenu(fileName = "SwordQuickDrawRunner", menuName = "ScriptableObjects/Skill/Runner/SwordQuickDrawRunner", order = 1)]
 public class SwordQuickDrawRunner : SkillRunnerBase
@@ -76,15 +77,14 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         Rigidbody rigid = character.Rb;
         rigid.useGravity = false;
         
+        // 히트박스
+        character.ColliderManager.SetActiveCollider(false, Define.ColliderType.PERSISTANCE);
 
         // 준비 이펙트
         ActiveEffectToCharacter(character, ready);
 
         // 선딜
         yield return preDelayWFS;
-
-        // 히트박스
-        character.ColliderManager.SetActiveCollider(false, Define.ColliderType.PERSISTANCE);
 
         // 돌진
         float curTime = 0;
@@ -169,5 +169,10 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         yield return new WaitForSeconds(0.4f); // 발도술 이펙트 끝나기를 기다림
 
         //sword.SetActive(false);
+    }
+
+    public override void StopSkillCoroutine(CharacterBase character)
+    {
+        CoroutineRunner.Instance.StopCoroutine(SkillCoroutine(character));
     }
 }

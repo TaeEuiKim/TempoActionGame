@@ -14,6 +14,7 @@ public class Normal_Death : Normal_State
         base.Enter();
         _monster.GetComponent<BoxCollider>().enabled = false;
         _monster.Rb.useGravity = false;
+        _monster.CurrentSkillSlots = null;
 
         if (!_monster.Ani.GetBool("Death"))
         {

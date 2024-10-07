@@ -21,7 +21,7 @@ public class Middle_Longjump : Middle_Skill
     [SerializeField] float _finishDamage;
 
     private Vector3 originSize;
-    private Vector3 orginPoint;
+    private Vector3 originPoint;
 
     public override void Init(MiddleMonster monster)
     {
@@ -54,7 +54,8 @@ public class Middle_Longjump : Middle_Skill
         Debug.Log("¸Ö¸®¶Ù±â");
         attackPos = _monster.Player.transform.position.x - _monster.Direction;
         originSize = _monster.ColliderSize;
-        orginPoint = _monster.HitPoint.localPosition;
+        originPoint = _monster.HitPoint.localPosition;
+        _monster.CharacterModel.localScale = new Vector3(-_monster.Direction, 1, 1);
 
         _monster.OnAttackAction += Attack;
         _monster.OnFinishSkill += Finish;
@@ -86,7 +87,7 @@ public class Middle_Longjump : Middle_Skill
     {
         _monster.Ani.SetBool("Longjump", false);
         _monster.ColliderSize = originSize;
-        _monster.HitPoint.localPosition = orginPoint;
+        _monster.HitPoint.localPosition = originPoint;
         _coolTime = 0;
 
         isHit = false;

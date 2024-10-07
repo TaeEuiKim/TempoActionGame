@@ -91,7 +91,7 @@ public class PlayerController
 
         if (_dashTimer >= _player.Stat.DashDelay)
         {
-            if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKeyDown(KeyCode.LeftShift))
             {
                 Dash();
             }
