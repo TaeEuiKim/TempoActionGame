@@ -22,6 +22,11 @@ public class Normal_TraceState : Normal_State
         if (timer < 1.5f)
         {
             timer += Time.deltaTime;
+            if (_monster.Stat.Hp <= 0)
+            {
+                _monster.CurrentPerceptionState = Define.PerceptionType.DEATH;
+                Debug.Log(_monster.name + "ÀÇ Ã¼·Â : " +  _monster.Stat.Hp);
+            }
         }
 
         float dir = _monster.Target.transform.position.x - _monster.transform.position.x;
