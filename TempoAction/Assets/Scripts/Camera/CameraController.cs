@@ -153,7 +153,7 @@ public class CameraController : MonoBehaviour
     public void VibrateForTime(float times)
     {
         _CurCamera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
-        _CurCamera.m_LookAt = null;
+        //_CurCamera.m_LookAt = null;
         shakeTime = times;
         StartCoroutine(CameraShaking());
     }
@@ -169,7 +169,7 @@ public class CameraController : MonoBehaviour
         }
         _CurCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = 0;
         _CurCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0;
-        _CurCamera.m_LookAt = player.transform;
+        //_CurCamera.m_LookAt = player.transform;
         yield return 0;
     }
 }

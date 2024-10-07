@@ -55,7 +55,7 @@ public class Middle_Takedown : Middle_Skill
         Debug.Log("³»·ÁÂï±â");
         originSize = _monster.ColliderSize;
         orginPoint = _monster.HitPoint.localPosition;
-        _monster.HitPoint.localPosition = new Vector3(_hitPoint.x, _hitPoint.y);
+        _monster.HitPoint.localPosition = new Vector3(_hitPoint.x, _hitPoint.y, _hitPoint.z);
         _monster.ColliderSize = new Vector3(_hitScale.x, _hitScale.y, _hitScale.z);
         CoroutineRunner.Instance.StartCoroutine(MoveToPlayer());
 
