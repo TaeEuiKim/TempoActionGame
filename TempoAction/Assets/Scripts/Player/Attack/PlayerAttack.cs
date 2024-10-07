@@ -64,7 +64,6 @@ public class PlayerAttack
         }
 
         ResetMainTempoQueue();
-        CoroutineRunner.Instance.StartCoroutine(AttackTimer());
     }
 
     public void Update()
@@ -103,7 +102,9 @@ public class PlayerAttack
     public void AttackMainTempo() // 공격 실행
     {
         if (_player.Ani.GetBool("isGrounded"))
-        {         
+        {
+            CoroutineRunner.Instance.StartCoroutine(AttackTimer());
+
             _currentTempoData = _mainTempoQueue.Dequeue();
 
             ChangeCurrentAttackState(Define.AttackState.ATTACK);
@@ -131,15 +132,11 @@ public class PlayerAttack
 
     IEnumerator AttackTimer()
     {
-        while (_player.Stat.Hp > 0)
+        yield return new WaitForSeconds(0.5f);
+
+        if (!isAttack)
         {
-            yield return new WaitForSeconds(0.6f);
-
-            if (!isAttack)
-            {
-                isAttack = true;
-            }
-
+            isAttack = true;
         }
     }
 }

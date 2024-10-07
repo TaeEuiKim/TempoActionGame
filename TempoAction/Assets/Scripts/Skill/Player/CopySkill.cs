@@ -23,6 +23,14 @@ public class CopySkill : MonoBehaviour
         playerSubIcons = sub;
     }
 
+    public void SetSkillSlots()
+    {
+        copySkillSlots = null;
+        copyReserveSlots = null;
+        playerMainIcons = null;
+        playerSubIcons = null;
+    }
+
     public SkillSlot[] LoadSkillSlots()
     {
         if (copySkillSlots == null)

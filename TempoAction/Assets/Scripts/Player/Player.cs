@@ -109,6 +109,11 @@ public class Player : CharacterBase
     protected override void Update()
     {
         base.Update();
+        if (_stat.Hp <= 0)
+        {
+            _currentState = Define.PlayerState.DIE;
+        }
+
 
         _stateStorage[_currentState]?.Stay();
         switch (_currentState)
@@ -188,10 +193,6 @@ public class Player : CharacterBase
     public void UpdateHealth()
     {
         _view.UpdateHpBar(_stat.Hp / _stat.MaxHp);
-        if (_stat.Hp <= 0)
-        {
-            _currentState = Define.PlayerState.DIE;
-        }
     }
 
     #endregion
