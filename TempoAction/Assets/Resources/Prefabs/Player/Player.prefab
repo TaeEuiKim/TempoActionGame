@@ -3635,6 +3635,7 @@ GameObject:
   - component: {fileID: 7657217239667461207}
   - component: {fileID: 2794289016763969858}
   - component: {fileID: 2810099149246924853}
+  - component: {fileID: 8535561133280563900}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -3688,6 +3689,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterModel: {fileID: 6585813559602812403}
+  _colliderManager:
+    colliders:
+    - <Key>k__BackingField: 0
+      <Colliders>k__BackingField:
+      - {fileID: 2794289016763969858}
+      - {fileID: 4417377984766881750}
+      - {fileID: 1746450910089124397}
+      - {fileID: 5870016154128105200}
+      - {fileID: 1280001760261201590}
   _stat: {fileID: 11400000, guid: 645dcda883656e84b90b1de74ac662c9, type: 2}
   _currentState: 1
   _rightSparkPoint: {fileID: 8572336553519574047}
@@ -3782,6 +3792,48 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attenuationObject: {fileID: 0}
+--- !u!114 &8535561133280563900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5513155559230452658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd368fc5c7ce77459e0a48e744bd74f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <MaxSkillSlot>k__BackingField: 3
+  MaxReserveSlot: 6
+  <SkillSlots>k__BackingField:
+  - rid: 1742484138047307776
+  - rid: 1742484138047307777
+  - rid: 1742484138047307778
+  references:
+    version: 2
+    RefIds:
+    - rid: 1742484138047307776
+      type: {class: PlayerSkillSlot, ns: , asm: Assembly-CSharp}
+      data:
+        OnRemoved:
+          m_PersistentCalls:
+            m_Calls: []
+        slotKey: 97
+    - rid: 1742484138047307777
+      type: {class: PlayerSkillSlot, ns: , asm: Assembly-CSharp}
+      data:
+        OnRemoved:
+          m_PersistentCalls:
+            m_Calls: []
+        slotKey: 115
+    - rid: 1742484138047307778
+      type: {class: PlayerSkillSlot, ns: , asm: Assembly-CSharp}
+      data:
+        OnRemoved:
+          m_PersistentCalls:
+            m_Calls: []
+        slotKey: 100
 --- !u!1 &5521889502615955318
 GameObject:
   m_ObjectHideFlags: 0
