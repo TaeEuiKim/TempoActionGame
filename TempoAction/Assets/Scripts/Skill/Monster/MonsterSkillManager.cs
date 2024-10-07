@@ -63,5 +63,12 @@ public class MonsterSkillManager : MonoBehaviour, ISkillManager
 
     public void OnUpdate(CharacterBase characterBase)
     {
+        foreach(var slot in SkillSlots)
+        {
+            if(slot.Skill is  MonsterSkill skill)
+            {
+                skill.UpdateTime(Time.deltaTime);
+            }
+        }
     }
 }
