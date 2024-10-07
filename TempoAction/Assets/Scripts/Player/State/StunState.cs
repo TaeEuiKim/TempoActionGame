@@ -31,7 +31,7 @@ public class StunState : PlayerState
 
     public override void Stay()
     {
-        if (_timer < _player.Stat.StunTime) // 스턴 상태일 때
+        if (_timer < _player.stunTime) // 스턴 상태일 때
         {
             _timer += Time.deltaTime;
         }
@@ -44,8 +44,6 @@ public class StunState : PlayerState
     public override void Exit()
     {
         _player.Ani.SetBool("IsStunned", false);
-        _player.Stat.Stamina = 0;
-        _player.UpdateStamina();
     }
 
   

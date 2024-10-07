@@ -8,9 +8,12 @@ public class ObjectPool : Singleton<ObjectPool>
     [SerializeField] private int _initialSize = 10;  // 초기 생성할 객체의 수
 
     private Dictionary<string, Queue<GameObject>> pool = new Dictionary<string, Queue<GameObject>>();
+    private CharacterManager _characterManager;
 
     private void Awake()
     {
+        _characterManager = FindObjectOfType<CharacterManager>();
+
         foreach (GameObject prefab in _prefabStorage)
         {
             CreatePool(prefab);
@@ -62,6 +65,12 @@ public class ObjectPool : Singleton<ObjectPool>
             Reset(obj);
         }
 
+        CharacterBase ch;
+        if (obj.TryGetComponent<CharacterBase>(out ch))
+        {
+            _characterManager.characters.Add(ch.gameObject);
+        }
+
         if (parent)
         {
             obj.transform.SetParent(parent);
@@ -102,7 +111,7 @@ public class ObjectPool : Singleton<ObjectPool>
         obj.transform.SetParent(GetPool(poolName));
         obj.transform.localPosition = Vector3.zero;
         obj.transform.localRotation = Quaternion.identity;
-        obj.transform.localScale = Vector3.one;
+        //obj.transform.localScale = Vector3.one;
     }
 
     public GameObject GetPrefab(string name)

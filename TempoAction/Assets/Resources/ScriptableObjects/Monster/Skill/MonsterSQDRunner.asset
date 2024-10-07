@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 743ad0e90d0399c47a440ca17a98c7e3, type: 3}
+  m_Name: MonsterSQDRunner
+  m_EditorClassIdentifier: 
+  skillData: {fileID: 11400000, guid: e041058cb64aceb4b805a474e860ce21, type: 2}
+  ReadyEffect: {fileID: 6262132299624502921, guid: e7950906e5c407849aad6962ac763675, type: 3}
+  DashEffect:
+  - {fileID: 9091170806654134524, guid: 1d09f62436967584d8956c779357e894, type: 3}
+  - {fileID: 9091170806654134524, guid: 265bd6527ef86584aa3b5ad5bba30df2, type: 3}
+  SwordEffect:
+  - {fileID: 4747983142260243403, guid: afa886fa1b36e9144bf098a266263cfd, type: 3}
+  - {fileID: 4747983142260243403, guid: 43722bac4bfefcb4cabbfbcccaf7c419, type: 3}

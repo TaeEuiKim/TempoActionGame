@@ -2,24 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Unity.VisualScripting;
 
-public class Player : MonoBehaviour
+public class Player : CharacterBase
 {
+    [Header("기타")]
     [SerializeField] private PlayerStat _stat;
     private PlayerView _view;
 
     private PlayerAttack _attack;
     private PlayerController _controller;
 
-    private Rigidbody _rb;
-    private Animator _ani;
-
     [SerializeField] private Define.PlayerState _currentState = Define.PlayerState.NONE;
     private Dictionary<Define.PlayerState, PlayerState> _stateStorage = new Dictionary<Define.PlayerState, PlayerState>();
 
-    [SerializeField] private Transform _playerModel;
-
     public bool IsInvincible { get; set; } = false;
+    public bool IsParrying { get; set; } = false;
 
     [SerializeField] private Transform _rightSparkPoint;
     [SerializeField] private Transform _leftSparkPoint;
@@ -40,12 +38,11 @@ public class Player : MonoBehaviour
     [SerializeField] private List<TempoAttackData> _mainTempoAttackDatas;
     [SerializeField] private List<TempoAttackData> _pointTempoAttackDatas;
 
+    private CopySkill copySkill;
 
     public PlayerStat Stat { get { return _stat; } }
     public PlayerAttack Attack { get { return _attack; } }
     public PlayerController Controller { get { return _controller; } }
-    public Rigidbody Rb { get { return _rb; } }
-    public Animator Ani { get { return _ani; } }
     public Define.PlayerState CurrentState
     {
         get
@@ -60,7 +57,6 @@ public class Player : MonoBehaviour
         }
     }
    
-    public Transform PlayerModel { get => _playerModel; }
     public Transform RightSparkPoint { get => _rightSparkPoint; }
     public Transform LeftSparkPoint { get => _leftSparkPoint; }
     public Transform GroundCheckPoint { get => _groundCheckPoint; }
@@ -75,16 +71,20 @@ public class Player : MonoBehaviour
     public LayerMask MonsterLayer { get => _monsterLayer; }
     public List<TempoAttackData> MainTempoAttackDatas { get => _mainTempoAttackDatas; }
     public List<TempoAttackData> PointTempoAttackDatas { get => _pointTempoAttackDatas; }
+    public PlayerView View { get => _view; }
 
-    private void Awake()
+    public bool isTurn = false;
+    public float stunTime = 0f;
+
+    protected override void Awake()
     {
+        base.Awake();
+
         _view = GetComponent<PlayerView>();
 
+        copySkill = FindObjectOfType<CopySkill>();
         _attack = new PlayerAttack(this);
         _controller = new PlayerController(this);
-
-        _rb = GetComponent<Rigidbody>();
-        _ani = GetComponentInChildren<Animator>();
 
         _stat.Init();
     }
@@ -95,30 +95,37 @@ public class Player : MonoBehaviour
         _controller.Initialize();
 
         //플레이어 상태
-        _stateStorage.Add(Define.PlayerState.NONE, new NoneState(this));
-        _stateStorage.Add(Define.PlayerState.OVERLOAD, new OverloadState(this));
+        _stateStorage.Add(Define.PlayerState.DIE, new DieState(this));
         _stateStorage.Add(Define.PlayerState.STUN, new StunState(this));
+        _stateStorage.Add(Define.PlayerState.NONE, new NoneState(this));
+
+        if (copySkill != null && copySkill.LoadSkillSlots() != null)
+        {
+            GetComponent<PlayerSkillManager>().LoadSkill(copySkill.LoadSkillSlots(), copySkill.LoadReserveSlots());
+            _view.SetSkillIcon(copySkill.LoadMainIcon(), copySkill.LoadSubIcon());
+        }
     }
 
-    private void Update()
+    protected override void Update()
     {
-        _stateStorage[_currentState]?.Stay();
+        base.Update();
 
+        _stateStorage[_currentState]?.Stay();
         switch (_currentState)
         {
             case Define.PlayerState.STUN:
                 _rb.velocity = new Vector2(0, _rb.velocity.y);
                 //_attack.ChangeCurrentAttackState(Define.AttackState.FINISH);
                 break;
-            case Define.PlayerState.OVERLOAD:
+            case Define.PlayerState.DIE:
+                _view.OnGameoverUI();
+                break;
             case Define.PlayerState.NONE:
                 //_atkStateStorage[_curAtkState]?.Stay();
                 _attack.Update();
                 _controller.Update();
-
                 break;
         }
-
     }
 
     public float GetTotalDamage(bool value = true)
@@ -141,13 +148,25 @@ public class Player : MonoBehaviour
         UpdateHealth();
     }
 
+    public void TakeDamage(float value, bool isHpDamage)
+    {
+        if (_stat.IsKnockedBack || !isHpDamage) return;
+
+        _stat.Hp -= (_stat.MaxHp * (value / 100));
+        UpdateHealth();
+    }
+
     //넉백 함수
     public void Knockback(Vector3 point, float t = 0)
     {
         transform.DOMove(point,t);
     }
-    // 넉백 시작
- 
+
+    public void TakeStun(float t)
+    {
+        CurrentState = Define.PlayerState.STUN;
+        stunTime = t;
+    }
 
     public void Heal(float value)
     {
@@ -160,29 +179,21 @@ public class Player : MonoBehaviour
         _stat.Damage += value;
     }
 
-    // 과부화 상태인지 확인(스테미너가 최대 스테미나랑 같을 때)
-    public bool CheckOverload()
+    public override bool IsLeftDirection()
     {
-        if (_stat.Stamina == _stat.MaxStamina)
-        {
-            return true;
-        }
-        return false;
+        return CharacterModel.localScale.x < 0;
     }
 
     #region View
     public void UpdateHealth()
     {
         _view.UpdateHpBar(_stat.Hp / _stat.MaxHp);
+        if (_stat.Hp <= 0)
+        {
+            _currentState = Define.PlayerState.DIE;
+        }
     }
-    public void UpdateStamina()
-    {
-        _view.UpdateStaminaBar(_stat.Stamina / _stat.MaxStamina);
-    }
-    public void UpdateUpgradeCount()
-    {
-        _view.UpdateUpgradeCountSlider(_attack.UpgradeCount);
-    }
+
     #endregion
     private void OnDrawGizmos()
     {

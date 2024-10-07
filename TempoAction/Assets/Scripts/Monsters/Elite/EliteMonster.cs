@@ -79,16 +79,13 @@ public class EliteMonster : Monster
         _currentState = Define.EliteMonsterState.NONE;
 
         ChangeCurrentState(Define.EliteMonsterState.IDLE);
-
-       
     }
 
     public void Stay()
     {
-        
         if (_currentState != Define.EliteMonsterState.NONE)
         {
-                _stateStroage[_currentState]?.Stay();
+            _stateStroage[_currentState]?.Stay();
         }
     }
 
