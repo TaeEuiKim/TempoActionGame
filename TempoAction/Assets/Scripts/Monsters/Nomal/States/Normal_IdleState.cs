@@ -14,10 +14,12 @@ public class Normal_IdleState : Normal_State
 
     public override void Stay()
     {
+        _monster.Direction = -(_monster.Player.position.x - _monster.transform.position.x);
+
         _monster.TrySkillAttack();
 
         float distance = Vector3.Distance(_monster.transform.position, _monster.Target.position);
-        if(distance <= _monster.PerceptionDistance * SkillData.cm2m)
+        if(distance > _monster.MonsterSt.AttackRange && distance <= _monster.PerceptionDistance * SkillData.cm2m)
         {
             _monster.CurrentPerceptionState = Define.PerceptionType.TRACE;
         }

@@ -4,12 +4,14 @@ using UnityEngine;
 
 public abstract class CharacterBase : MonoBehaviour
 {
+    [SerializeField] protected Stat _stat;
     protected Animator _ani;
     protected Rigidbody _rb;
     protected ISkillManager _skillManager;
     [SerializeField] protected Transform _characterModel;
     [SerializeField] protected CharacterColliderManager _colliderManager;
 
+    public Stat Stat { get => _stat; set => _stat = value; }
     public Rigidbody Rb { get { return _rb; } }
     public Animator Ani { get { return _ani; } }
     public Transform CharacterModel { get { return _characterModel; } }
@@ -22,6 +24,8 @@ public abstract class CharacterBase : MonoBehaviour
         _ani = GetComponentInChildren<Animator>();
         _skillManager = GetComponent<ISkillManager>();
         _colliderManager.Initialize();
+
+        _stat.Init();
     }
 
     protected virtual void Update()

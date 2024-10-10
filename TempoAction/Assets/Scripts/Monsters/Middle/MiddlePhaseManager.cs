@@ -18,6 +18,7 @@ public class MiddlePhaseManager : MonoBehaviour
 
     private List<float> _targetHealthList = new List<float>();
     private int _targetHealthIndex = 0;
+    [HideInInspector] public CameraController _cameraController;
 
     public MiddleMonster Monster { get => _monster; }
     public MiddleMonster Monster2 { get => _monster2; }
@@ -26,6 +27,7 @@ public class MiddlePhaseManager : MonoBehaviour
 
     private void Awake()
     {
+        _cameraController = FindObjectOfType<CameraController>();
         _phaseStateStorage.Add(Define.MiddlePhaseState.START, new Middle_PhaseStart(this));
         _phaseStateStorage.Add(Define.MiddlePhaseState.PHASE1, new Middle_Phase1(this));
 

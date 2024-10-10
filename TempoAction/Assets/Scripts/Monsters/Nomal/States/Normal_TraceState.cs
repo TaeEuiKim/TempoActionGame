@@ -14,6 +14,11 @@ public class Normal_TraceState : Normal_State
     public override void Enter()
     {
         base.Enter();
+
+        if (!_monster.Ani.GetBool("Run"))
+        {
+            _monster.Ani.SetBool("Run", true);
+        }
     }
 
     public override void Stay()
@@ -24,7 +29,6 @@ public class Normal_TraceState : Normal_State
             if (_monster.Stat.Hp <= 0)
             {
                 _monster.CurrentPerceptionState = Define.PerceptionType.DEATH;
-                Debug.Log(_monster.name + "ÀÇ Ã¼·Â : " +  _monster.Stat.Hp);
             }
         }
 
@@ -37,7 +41,7 @@ public class Normal_TraceState : Normal_State
         if (_monster.TrySkillAttack()) { return; }
 
         float distance = Vector3.Distance(_monster.transform.position, _monster.Target.position);
-        if (distance > _monster.PerceptionDistance * SkillData.cm2m)
+        if (distance <= _monster.MonsterSt.AttackRange || distance > _monster.PerceptionDistance * SkillData.cm2m)
         {
             _monster.CurrentPerceptionState = Define.PerceptionType.IDLE;
         }
@@ -46,6 +50,8 @@ public class Normal_TraceState : Normal_State
 
     public override void Exit()
     {
+        _monster.Ani.SetBool("Run", false);
+
         base.Exit();
         timer = 0;
     }

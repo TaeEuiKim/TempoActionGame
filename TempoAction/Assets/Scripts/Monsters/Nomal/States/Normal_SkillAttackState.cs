@@ -10,6 +10,8 @@ public class Normal_SkillAttackState : Normal_State
     {
         base.Enter();
 
+        _monster.Rb.velocity = new Vector3(0, 0, 0);
+
         var slots = _monster.CurrentSkillSlots;
         if(slots.Length == 0) { Debug.LogError("Monster Skill Slot Length Is Zero."); }
 

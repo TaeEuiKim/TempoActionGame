@@ -142,7 +142,6 @@ public class NormalMonster : Monster
         {
             _perceptionStateStorage[_currentPerceptionState]?.Stay();
         }
-
     }
 
     #region AggroLegacy
@@ -239,7 +238,6 @@ public class NormalMonster : Monster
     public override void TakeDamage(float value)
     {
         base.TakeDamage(value);
-        Debug.Log(Stat.Hp + "hp");
         if (Stat.Hp > 0)
         {
             CurrentPerceptionState = Define.PerceptionType.HIT;

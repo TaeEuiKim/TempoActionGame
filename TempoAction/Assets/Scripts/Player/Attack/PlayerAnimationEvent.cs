@@ -86,6 +86,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         return hitParticle;
     }
+
     private void CameraShaking(float shakeTime)
     {
         if (!_cameraController)

@@ -76,10 +76,10 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         GameObject sword = swordEffect[isLeftDir ? 0 : 1];
         Rigidbody rigid = character.Rb;
         rigid.useGravity = false;
-        
+
         // 히트박스
         character.ColliderManager.SetActiveCollider(false, Define.ColliderType.PERSISTANCE);
-
+        
         // 준비 이펙트
         ActiveEffectToCharacter(character, ready);
 
@@ -103,6 +103,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
             movingDistance = (wallHit.distance - 0.6f) * 0.99f;
             targetPos = initialPos + direction * movingDistance;
         }
+
 
         // 대시 이펙트 시작
         ActiveEffectToCharacter(character, dash);
@@ -169,10 +170,5 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         yield return new WaitForSeconds(0.4f); // 발도술 이펙트 끝나기를 기다림
 
         //sword.SetActive(false);
-    }
-
-    public override void StopSkillCoroutine(CharacterBase character)
-    {
-        CoroutineRunner.Instance.StopCoroutine(SkillCoroutine(character));
     }
 }

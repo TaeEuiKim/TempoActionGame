@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Cinemachine;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
+using FMOD;
 
 public class CameraController : MonoBehaviour
 {
@@ -13,8 +14,6 @@ public class CameraController : MonoBehaviour
     public GameObject spawnPoint;
     public Image fadePanel;
     private bool isLook = false;
-
-    private GameObject doorObj;
 
     [Header("Cameras")]
     [SerializeField] private CinemachineVirtualCamera _SceneCamera;
@@ -137,13 +136,13 @@ public class CameraController : MonoBehaviour
         _SceneCamera.m_Lens.FieldOfView = 57;
     }
 
-    private void SetStartCameraSetting()
+    public void SetStartCameraSetting()
     {
         _SceneCamera.gameObject.SetActive(false);
         _PlayerCamera.gameObject.SetActive(true);
     }
 
-    private void RepairCamera()
+    public void RepairCamera()
     {
         _PlayerCamera.gameObject.SetActive(false);
         _SceneCamera.gameObject.SetActive(true);
@@ -153,6 +152,7 @@ public class CameraController : MonoBehaviour
     public void VibrateForTime(float times)
     {
         _CurCamera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
+
         //_CurCamera.m_LookAt = null;
         shakeTime = times;
         StartCoroutine(CameraShaking());
@@ -160,16 +160,20 @@ public class CameraController : MonoBehaviour
 
     IEnumerator CameraShaking()
     {
+        CinemachineBasicMultiChannelPerlin ch = _CurCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+
         while (shakeTime > 0)
         {
+            ch.m_FrequencyGain = Frequency;
+            ch.m_AmplitudeGain = Impulse;
             shakeTime -= Time.deltaTime;
-            _CurCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = Frequency;
-            _CurCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = Impulse;
-            yield return 0;
+
+            yield return null;
         }
-        _CurCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = 0;
-        _CurCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0;
+
+        ch.m_FrequencyGain = 0;
+        ch.m_AmplitudeGain = 0;
         //_CurCamera.m_LookAt = player.transform;
-        yield return 0;
+        yield return null;
     }
 }

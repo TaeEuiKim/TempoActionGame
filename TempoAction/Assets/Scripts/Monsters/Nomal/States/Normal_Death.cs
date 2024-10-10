@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class Normal_Death : Normal_State
 {
@@ -21,12 +22,7 @@ public class Normal_Death : Normal_State
             _monster.Ani.SetBool("Death", true);
         }
 
-        GameObject sword = ObjectPool.Instance.Spawn("Sword");
-        sword.transform.position = _monster.transform.position + new Vector3(0, 3f);
-        NormalSkill sw = new NormalSkill(_monster.skillData);
-
-        var so = sword.GetComponent<SkillObject>();
-        so.Initialize(sw);
+        SpawnItem();
     }
 
     public override void Stay()
@@ -40,5 +36,15 @@ public class Normal_Death : Normal_State
     public override void Exit()
     {
         base.Exit();
+    }
+
+    private void SpawnItem()
+    {
+        GameObject sword = ObjectPool.Instance.Spawn("Sword");
+        sword.transform.position = _monster.transform.position + new Vector3(0, 3f);
+        NormalSkill sw = new NormalSkill(_monster.skillData);
+
+        var so = sword.GetComponent<SkillObject>();
+        so.Initialize(sw);
     }
 }

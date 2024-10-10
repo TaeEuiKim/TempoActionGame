@@ -23,6 +23,26 @@ public abstract class Stat : ScriptableObject
     public float SprintSpeed { get => _sprintSpeed; set => _sprintSpeed = value; }
     public float Damage { get => _damage; set => _damage = value; }
 
+    public float Hp
+    {
+        get
+        {
+            return _hp;
+        }
+        set
+        {
+            _hp = value;
+            if (_hp <= 0)
+            {
+                _hp = 0;
+                _isDead = true;
+            }
+            else if (_hp > _maxHp)
+            {
+                _hp = _maxHp;
+            }
+        }
+    }
 
     public abstract void Init();
 }
