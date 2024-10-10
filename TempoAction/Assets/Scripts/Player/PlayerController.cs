@@ -52,12 +52,12 @@ public class PlayerController
         _dashDirection = 1;
         _dashTimer = 0f;
 
-        _dashTimer = _player.Stat.DashDelay;
+        _dashTimer = _player.PlayerSt.DashDelay;
     }
 
     public void Update()
     {
-        if (_player.Stat.IsKnockedBack) return;
+        if (_player.PlayerSt.IsKnockedBack) return;
 
         if (_player.Attack.CurrentAttackkState == Define.AttackState.ATTACK)
         {
@@ -89,7 +89,7 @@ public class PlayerController
             _player.Rb.velocity = new Vector3(_direction * 3f, _player.Rb.velocity.y);
         }
 
-        if (_dashTimer >= _player.Stat.DashDelay)
+        if (_dashTimer >= _player.PlayerSt.DashDelay)
         {
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
@@ -157,14 +157,14 @@ public class PlayerController
         if (Input.GetKeyDown(KeyCode.UpArrow) && !_isGrounded && !_isDoubleJumping)
         {
             _player.Ani.SetTrigger("isJumping");
-            _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.Stat.JumpForce);
+            _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
             _isDoubleJumping = true;
         }
 
         if (Input.GetKeyDown(KeyCode.UpArrow) && _isGrounded)
         {
             _player.Ani.SetTrigger("isJumping");
-            _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.Stat.JumpForce);
+            _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
             _isGrounded = false;
         }
         else if (Input.GetKeyUp(KeyCode.UpArrow))
@@ -187,17 +187,17 @@ public class PlayerController
         Vector3 dashPosition = Vector3.zero;
 
         RaycastHit hit;
-        if (Physics.Raycast(_player.transform.position, Vector3.right * _dashDirection, out hit, _player.Stat.DashDistance, _player.WallLayer)) // 벽이 있다면 벽과의 충돌 위치 바로 앞에서 멈추게 설정
+        if (Physics.Raycast(_player.transform.position, Vector3.right * _dashDirection, out hit, _player.PlayerSt.DashDistance, _player.WallLayer)) // 벽이 있다면 벽과의 충돌 위치 바로 앞에서 멈추게 설정
         {            
             dashPosition = hit.point - (Vector3.right * _dashDirection) * 0f;  // 곱하는 수 만큼 벽에서 떨어짐
         }
         else  // 벽이 없으면 대쉬 거리만큼 앞으로 이동
         {      
-            dashPosition = _player.transform.position + (Vector3.right * _dashDirection) * _player.Stat.DashDistance;
+            dashPosition = _player.transform.position + (Vector3.right * _dashDirection) * _player.PlayerSt.DashDistance;
         }
 
 
-        _player.Rb.DOMove(dashPosition, _player.Stat.DashDuration).SetEase(Ease.OutQuad).OnComplete(() =>
+        _player.Rb.DOMove(dashPosition, _player.PlayerSt.DashDuration).SetEase(Ease.OutQuad).OnComplete(() =>
         {
             _isDashing = false;
             _player.GetComponent<Collider>().enabled = true;

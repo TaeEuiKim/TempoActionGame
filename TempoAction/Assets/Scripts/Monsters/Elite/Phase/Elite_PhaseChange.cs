@@ -11,8 +11,8 @@ public class Elite_PhaseChange : Elite_PhaseState
 
     public override void Enter()
     {
-        _manager.Phase2Monster.Stat = _manager.Phase1Monster.Stat;
-        _manager.Phase2Monster.Stat = _manager.Phase1Monster.Stat;
+        _manager.Phase2Monster.MonsterSt = _manager.Phase1Monster.MonsterSt;
+        _manager.Phase2Monster.MonsterSt = _manager.Phase1Monster.MonsterSt;
 
         _manager.Phase2Monster.gameObject.SetActive(true);
         _manager.ChangeStageState(Define.ElitePhaseState.PHASE2);

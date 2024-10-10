@@ -15,8 +15,8 @@ public class SuperJumpBuff : BuffData
         }
 
         // 점프력 증가
-        _originValue = _player.Stat.JumpForce;
-        _player.Stat.JumpForce = value;
+        _originValue = _player.PlayerSt.JumpForce;
+        _player.PlayerSt.JumpForce = value;
     }
 
     public override void Stay()
@@ -26,6 +26,6 @@ public class SuperJumpBuff : BuffData
 
     public override void Exit()
     {
-        _player.Stat.JumpForce = _originValue; // 점프력 증가
+        _player.PlayerSt.JumpForce = _originValue; // 점프력 증가
     }
 }

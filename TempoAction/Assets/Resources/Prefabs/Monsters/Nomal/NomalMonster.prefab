@@ -349,6 +349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e24ad999eacfc3443ae374902651f8c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stat: {fileID: 11400000, guid: f19c15c9f692fce4c929887ca8f7b101, type: 2}
   _characterModel: {fileID: 7221192804497416995}
   _colliderManager:
     colliders:
@@ -356,7 +357,6 @@ MonoBehaviour:
       <Colliders>k__BackingField:
       - {fileID: 8898620878518490393}
   <_SkillManager>k__BackingField: {fileID: 1298170471948164286}
-  _stat: {fileID: 11400000, guid: f19c15c9f692fce4c929887ca8f7b101, type: 2}
   _playerLayer:
     serializedVersion: 2
     m_Bits: 2048

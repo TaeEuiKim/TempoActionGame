@@ -24,6 +24,7 @@ public class LoadManager : MonoBehaviour
     {
         AsyncOperation op = SceneManager.LoadSceneAsync(nextScene);
         op.allowSceneActivation = false;
+        StartCoroutine(ChecKTimer(op));
 
         float timer = 0f;
         while (!op.isDone)
@@ -46,6 +47,23 @@ public class LoadManager : MonoBehaviour
                     yield break;
                 }
             }
+        }
+    }
+
+    IEnumerator ChecKTimer(AsyncOperation op)
+    {
+        float timer = 0f;
+
+        while (timer <= 10f)
+        {
+            yield return null;
+
+            timer += Time.unscaledDeltaTime;
+        }
+
+        if (op.isDone)
+        {
+            op.allowSceneActivation = true;
         }
     }
 }

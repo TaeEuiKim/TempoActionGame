@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 public class Player : CharacterBase
 {
     [Header("±‚≈∏")]
-    [SerializeField] private PlayerStat _stat;
+    private PlayerStat _playerStat;
     private PlayerView _view;
 
     private PlayerAttack _attack;
@@ -40,7 +40,7 @@ public class Player : CharacterBase
 
     private CopySkill copySkill;
 
-    public PlayerStat Stat { get { return _stat; } }
+    public PlayerStat PlayerSt { get { return _playerStat; } }
     public PlayerAttack Attack { get { return _attack; } }
     public PlayerController Controller { get { return _controller; } }
     public Define.PlayerState CurrentState
@@ -81,16 +81,16 @@ public class Player : CharacterBase
         base.Awake();
 
         _view = GetComponent<PlayerView>();
+        _playerStat = (PlayerStat)Stat;
 
         copySkill = FindObjectOfType<CopySkill>();
         _attack = new PlayerAttack(this);
         _controller = new PlayerController(this);
-
-        _stat.Init();
     }
 
     private void Start()
     {
+
         _attack.Initialize();
         _controller.Initialize();
 
@@ -147,7 +147,7 @@ public class Player : CharacterBase
 
     public void TakeDamage(float value)
     {
-        if (_stat.IsKnockedBack) return;
+        if (_playerStat.IsKnockedBack) return;
 
         _stat.Hp -= value * ((100 - _stat.Defense) / 100);
         UpdateHealth();
@@ -155,7 +155,7 @@ public class Player : CharacterBase
 
     public void TakeDamage(float value, bool isHpDamage)
     {
-        if (_stat.IsKnockedBack || !isHpDamage) return;
+        if (_playerStat.IsKnockedBack || !isHpDamage) return;
 
         _stat.Hp -= (_stat.MaxHp * (value / 100));
         UpdateHealth();
