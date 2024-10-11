@@ -28,6 +28,7 @@ public class SkillObject : MonoBehaviour
             if (playerSkillManager)
             {
                 playerSkillManager.InteractObject(this);
+                playerSkillManager.AddSkill(GetSkill());
             }
         }
     }
