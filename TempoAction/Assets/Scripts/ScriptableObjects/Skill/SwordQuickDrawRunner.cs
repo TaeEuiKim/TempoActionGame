@@ -117,7 +117,6 @@ public class SwordQuickDrawRunner : SkillRunnerBase
             if (skillData.SkillCastingTarget == Define.SkillTarget.MON)
             {
                 Ray ray = new Ray(character.transform.position, direction.normalized);
-                Debug.DrawRay(character.transform.position + new Vector3(0, 1f), direction.normalized, Color.blue);
                 float collisiionDepth = skillData.SkillHitboxSize * SkillData.cm2m;
 
                 if (Physics.Raycast(ray, out RaycastHit monsterHit, collisiionDepth, 1 << 10))
@@ -128,7 +127,6 @@ public class SwordQuickDrawRunner : SkillRunnerBase
             else if (skillData.SkillCastingTarget == Define.SkillTarget.PC)
             {
                 Ray ray = new Ray(character.transform.position + new Vector3(0, 1f), direction.normalized);
-                Debug.DrawRay(character.transform.position + new Vector3(0, 1f), direction.normalized, Color.blue);
                 float collisiionDepth = skillData.SkillHitboxSize * SkillData.cm2m;
 
                 if (Physics.Raycast(ray, out RaycastHit playerHit, collisiionDepth, 1 << 11))

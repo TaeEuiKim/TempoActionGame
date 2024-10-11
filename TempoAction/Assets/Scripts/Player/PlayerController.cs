@@ -86,7 +86,9 @@ public class PlayerController
 
         if (_isOnMonster)
         {
-            _player.Rb.velocity = new Vector3(_direction * 3f, _player.Rb.velocity.y);
+            //Vector3 force = new Vector3(-_player.CharacterModel.localScale.x * 10f, -5f);
+            //Debug.Log(force);
+            //_player.Rb.AddForce(force, ForceMode.VelocityChange);
         }
 
         if (_dashTimer >= _player.PlayerSt.DashDelay)
