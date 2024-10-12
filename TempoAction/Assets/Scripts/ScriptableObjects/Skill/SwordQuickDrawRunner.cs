@@ -108,9 +108,9 @@ public class SwordQuickDrawRunner : SkillRunnerBase
             Debug.DrawRay(rayOrigin, direction.normalized, Color.blue);
             float collisiionDepth = skillData.SkillHitboxSize * SkillData.cm2m;
             int layerMask = SkillTargetToLayerMask(skillData.SkillCastingTarget);
-            if (Physics.Raycast(ray, out RaycastHit monsterHit, collisiionDepth, layerMask))
+            if (Physics.Raycast(ray, out RaycastHit characterHit, collisiionDepth, layerMask))
             {
-                hittedCharacters.Add(monsterHit.transform.GetComponent<CharacterBase>());
+                hittedCharacters.Add(characterHit.transform.GetComponent<CharacterBase>());
             }
 
             character.transform.position = Vector3.Lerp(initialPos, targetPos, curTime / regenTime * (originalMovingDistance / movingDistance));
