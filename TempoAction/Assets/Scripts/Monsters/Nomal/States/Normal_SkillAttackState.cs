@@ -21,7 +21,7 @@ public class Normal_SkillAttackState : Normal_State
 
         if (slot.skillRunner.skillData.SkillId == 210)
         {
-            _monster.Ani.SetBool("Skill", true);
+            _monster.Ani?.SetBool("Skill", true);
         }
 
         slot.UseSkillInstant(_monster, () =>
@@ -40,7 +40,7 @@ public class Normal_SkillAttackState : Normal_State
 
         _monster.CurrentSkillSlots = null;
 
-        _monster.Ani.SetBool("Skill", false);
+        _monster.Ani?.SetBool("Skill", false);
     }
 
     private MonsterSkillSlot SelectSlot(MonsterSkillSlot[] slots)

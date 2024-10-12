@@ -15,6 +15,8 @@ public class Normal_TraceState : Normal_State
     {
         base.Enter();
 
+        if(_monster.Ani == null) { return; }
+
         if (!_monster.Ani.GetBool("Run"))
         {
             _monster.Ani.SetBool("Run", true);
@@ -50,7 +52,7 @@ public class Normal_TraceState : Normal_State
 
     public override void Exit()
     {
-        _monster.Ani.SetBool("Run", false);
+        _monster.Ani?.SetBool("Run", false);
 
         base.Exit();
         timer = 0;
