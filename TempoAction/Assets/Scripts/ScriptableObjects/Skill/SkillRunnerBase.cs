@@ -155,23 +155,20 @@ public abstract class SkillRunnerBase : ScriptableObject
     protected List<GameObject> GetTargets(CharacterBase caster, Define.SkillTarget target)
     {
         List<GameObject> targets = new List<GameObject>();
+        int mask = SkillTargetToLayerMask(target);
         switch (target)
         {
             case Define.SkillTarget.NONE:
                 break;
-            case Define.SkillTarget.PC:
-                targets.Add(CharacterManager.Instance.GetCharacter(1 << 11)[0]);
-                break;
             case Define.SkillTarget.SELF:
                 targets.Add(caster.gameObject);
                 break;
+            case Define.SkillTarget.PC:
             case Define.SkillTarget.MON:
-                targets = CharacterManager.Instance.GetCharacter(1 << 10);
+            case Define.SkillTarget.ALL:
+                targets = CharacterManager.Instance.GetCharacter(mask);
                 break;
             case Define.SkillTarget.GROUND: // 미구현
-                break;
-            case Define.SkillTarget.ALL:
-                targets = CharacterManager.Instance.GetCharacter(1 << 10 | 1 << 11);
                 break;
             default:
                 Debug.LogError("Invalid Target");
@@ -204,5 +201,32 @@ public abstract class SkillRunnerBase : ScriptableObject
         }
 
         return existingTargets;
+    }
+
+    /// <summary>
+    /// Define.SkillTarget을 LayerMask로 변환하여 반환합니다.
+    /// </summary>
+    /// <param name="target">스킬 대상</param>
+    /// <returns>대상의 LayerMask. 변환 불가한 경우 -1 반환</returns>
+    protected int SkillTargetToLayerMask(Define.SkillTarget target)
+    {
+        int mask = -1;
+        switch (target)
+        {
+            case Define.SkillTarget.PC:
+                mask = 1 << 11;
+                break;
+            case Define.SkillTarget.MON:
+                mask = 1 << 10;
+                break;
+            case Define.SkillTarget.GROUND:
+                mask = 1 << 12;
+                break;
+            case Define.SkillTarget.ALL:
+                mask = SkillTargetToLayerMask(Define.SkillTarget.PC) | SkillTargetToLayerMask(Define.SkillTarget.MON);
+                break;
+        }
+
+        return mask;
     }
 }
