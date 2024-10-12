@@ -68,7 +68,7 @@ public class ObjectPool : Singleton<ObjectPool>
         CharacterBase ch;
         if (obj.TryGetComponent<CharacterBase>(out ch))
         {
-            _characterManager.characters.Add(ch.gameObject);
+            _characterManager.AddCharacter(ch.gameObject);
         }
 
         if (parent)
