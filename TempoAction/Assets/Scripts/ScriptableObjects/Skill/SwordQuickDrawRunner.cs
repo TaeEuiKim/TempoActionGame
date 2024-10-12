@@ -20,10 +20,10 @@ public class SwordQuickDrawRunner : SkillRunnerBase
 
     private GameObject effectParent;
 
-    private WaitForSeconds preDelayWFS;
-
     public override void Initialize()
     {
+        base.Initialize();
+
         // 이펙트 
         if(effectParent == null)
         {
@@ -58,12 +58,6 @@ public class SwordQuickDrawRunner : SkillRunnerBase
 
             //managedEffects.Add(swordEffect[0].GetComponent<ParticleSystem>());
             //managedEffects.Add(swordEffect[1].GetComponent<ParticleSystem>());
-        }
-
-        // 대기 시간
-        if(preDelayWFS == null)
-        {
-            preDelayWFS = new WaitForSeconds(skillData.SkillCastingTime * SkillData.Time2Second);
         }
     }
 
