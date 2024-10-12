@@ -3768,6 +3768,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8593f2bd04926d54b825629799f3e39c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stat: {fileID: 11400000, guid: 645dcda883656e84b90b1de74ac662c9, type: 2}
   _characterModel: {fileID: 6585813559602812403}
   _colliderManager:
     colliders:
@@ -3778,7 +3779,7 @@ MonoBehaviour:
       - {fileID: 1746450910089124397}
       - {fileID: 5870016154128105200}
       - {fileID: 1280001760261201590}
-  _stat: {fileID: 11400000, guid: 645dcda883656e84b90b1de74ac662c9, type: 2}
+  _rayOffset: {x: 0, y: 1, z: 0}
   _currentState: 2
   _rightSparkPoint: {fileID: 8572336553519574047}
   _leftSparkPoint: {fileID: 2644814315565159814}

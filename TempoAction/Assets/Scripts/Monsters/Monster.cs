@@ -2,9 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
-using Unity.VisualScripting;
-using static UnityEngine.UI.Image;
 
 public abstract class Monster : CharacterBase
 {
@@ -87,7 +84,7 @@ public abstract class Monster : CharacterBase
         _characterModel.localScale = tempScale;
     }
 
-    public virtual void TakeDamage(float value)
+    public override void TakeDamage(float value)
     {
         if (IsGuarded)
         {
