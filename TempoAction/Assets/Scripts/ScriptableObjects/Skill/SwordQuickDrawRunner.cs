@@ -101,7 +101,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         {
             yield return null;
 
-            curTime += Time.deltaTime * 3f;
+            curTime += Time.deltaTime;
 
             Vector3 rayOrigin = character.GetRayOrigin();
             Ray ray = new Ray(rayOrigin, direction.normalized);
