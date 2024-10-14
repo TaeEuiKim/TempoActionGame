@@ -84,7 +84,10 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
 
     public void InteractObject(SkillObject skillObject)
     {
-        interatedObject = skillObject;
+        if (interatedObject != null)
+        {
+            interatedObject = skillObject;
+        }
     }
 
     public void DeInteractObject()
@@ -101,11 +104,6 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
             {
                 normalSkill.UpdateTime(Time.deltaTime);
             }
-        }
-
-        if (interatedObject != null && Input.GetKeyDown(KeyCode.X))
-        {
-            AddSkill(interatedObject.GetSkill());
         }
     }
 

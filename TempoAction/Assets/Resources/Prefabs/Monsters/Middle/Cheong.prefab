@@ -1881,7 +1881,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.3
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
@@ -1924,17 +1924,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dadd350346dc1674fba6a6a3370ed29e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stat: {fileID: 11400000, guid: 9f91f833c9bd8d84f9756584fbea0fdf, type: 2}
   _characterModel: {fileID: 1463432801698866788}
   _colliderManager:
     colliders: []
   <_SkillManager>k__BackingField: {fileID: 0}
-  _stat: {fileID: 11400000, guid: 9f91f833c9bd8d84f9756584fbea0fdf, type: 2}
   _playerLayer:
     serializedVersion: 2
     m_Bits: 2048
   _wallLayer:
     serializedVersion: 2
     m_Bits: 8192
+  skillData: {fileID: 0}
   _monsterName: 0
   _currentState: 5
   _skillStorage:

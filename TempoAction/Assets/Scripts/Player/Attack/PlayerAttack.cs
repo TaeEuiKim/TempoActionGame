@@ -103,7 +103,7 @@ public class PlayerAttack
     {
         if (_player.Ani.GetBool("isGrounded"))
         {
-            CoroutineRunner.Instance.StartCoroutine(AttackTimer());
+            //CoroutineRunner.Instance.StartCoroutine(AttackTimer());
 
             _currentTempoData = _mainTempoQueue.Dequeue();
 
@@ -114,7 +114,7 @@ public class PlayerAttack
             {
                 ResetMainTempoQueue();
             }
-            isAttack = false;
+            //isAttack = false;
         }
     }
 

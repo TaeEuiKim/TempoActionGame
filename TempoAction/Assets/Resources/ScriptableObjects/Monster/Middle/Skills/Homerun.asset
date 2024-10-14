@@ -18,7 +18,11 @@ MonoBehaviour:
     range: 5
     damage: 20
     priority: 60
-  _hitPoint: {x: -0.45, y: 0.9, z: 0}
-  _hitScale: {x: 4.5, y: 2, z: 1}
-  _knockBackPower: 20
-  _knockBackDuration: 0.4
+  _frontHitPoint: {x: -1, y: 0.9, z: 0}
+  _frontHitScale: {x: 3, y: 2, z: 1}
+  _frontKnockBackPower: 6
+  _frontKnockBackDuration: 0.6
+  _backHitPoint: {x: 0.5, y: 0.9, z: 0}
+  _backHitScale: {x: 3, y: 2, z: 1}
+  _backKnockBackPower: 6
+  _backKnockBackDuration: 0.6

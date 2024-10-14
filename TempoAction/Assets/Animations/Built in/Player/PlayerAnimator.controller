@@ -90,6 +90,34 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1101 &-8495267052060036931
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: AttackState
+    m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: AtkCount
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 8226779185207787286}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0.25
+  m_TransitionOffset: 0
+  m_ExitTime: 0.8076923
+  m_HasExitTime: 0
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1107 &-8259876076760360310
 AnimatorStateMachine:
   serializedVersion: 6
@@ -101,13 +129,13 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 8226779185207787286}
-    m_Position: {x: 260, y: 100, z: 0}
+    m_Position: {x: 300, y: -150, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2086870508392043640}
     m_Position: {x: 580, y: 100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3976587877962820991}
-    m_Position: {x: 1180, y: 110, z: 0}
+    m_Position: {x: 1200, y: -140, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6031437787473025406}
     m_Position: {x: 840, y: 100, z: 0}
@@ -250,6 +278,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: AttackState
     m_EventTreshold: 0
+  - m_ConditionMode: 4
+    m_ConditionEvent: Speed
+    m_EventTreshold: 0.1
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 69320989354484375}
   m_Solo: 0
@@ -795,6 +826,7 @@ AnimatorState:
   - {fileID: 6367643350101236645}
   - {fileID: 585022678519149221}
   - {fileID: -3157809036458889480}
+  - {fileID: -8495267052060036931}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0

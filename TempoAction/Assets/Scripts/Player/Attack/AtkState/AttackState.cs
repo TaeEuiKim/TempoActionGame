@@ -29,15 +29,6 @@ public class AttackState : PlayerAttackState
     }
     public override void Exit()
     {
-        if (_player.Attack.CurrentTempoData.type == Define.TempoType.MAIN)
-        {
-            if (_player.Attack.CurrentTempoData.attackNumber == 3)
-            {
-                //_player.Attack.CreateTempoCircle();
-            }
-
-        }
-    
         _player.Ani.SetBool("AttackState", false);
     }
 }
