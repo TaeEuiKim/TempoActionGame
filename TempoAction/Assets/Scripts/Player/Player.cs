@@ -145,7 +145,7 @@ public class Player : CharacterBase
         }   
     }
 
-    public void TakeDamage(float value)
+    public override void TakeDamage(float value)
     {
         if (_playerStat.IsKnockedBack) return;
 
@@ -153,7 +153,7 @@ public class Player : CharacterBase
         UpdateHealth();
     }
 
-    public void TakeDamage(float value, bool isHpDamage)
+    public override void TakeDamage(float value, bool isHpDamage)
     {
         if (_playerStat.IsKnockedBack || !isHpDamage) return;
 

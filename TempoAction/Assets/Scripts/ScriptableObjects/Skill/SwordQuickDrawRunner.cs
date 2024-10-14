@@ -20,10 +20,10 @@ public class SwordQuickDrawRunner : SkillRunnerBase
 
     private GameObject effectParent;
 
-    private WaitForSeconds preDelayWFS;
-
     public override void Initialize()
     {
+        base.Initialize();
+
         // 이펙트 
         if(effectParent == null)
         {
@@ -59,12 +59,6 @@ public class SwordQuickDrawRunner : SkillRunnerBase
             //managedEffects.Add(swordEffect[0].GetComponent<ParticleSystem>());
             //managedEffects.Add(swordEffect[1].GetComponent<ParticleSystem>());
         }
-
-        // 대기 시간
-        if(preDelayWFS == null)
-        {
-            preDelayWFS = new WaitForSeconds(skillData.SkillCastingTime * SkillData.Time2Second);
-        }
     }
 
     public override IEnumerator SkillCoroutine(CharacterBase character)
@@ -94,62 +88,40 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         Vector3 initialPos = character.transform.position;
         Vector3 direction = character.transform.right * (isLeftDir ? -1 : 1);
         Vector3 targetPos = initialPos + direction * movingDistance;
-        List<Monster> hittedMonsters = new List<Monster>();
-        Player hittedPlayer = new Player();
+        List<CharacterBase> hittedCharacters = new List<CharacterBase>();
 
         // 도착 지점 갱신 with Wall
-        if (Physics.Raycast(new Ray(initialPos, direction), out RaycastHit wallHit, (targetPos - initialPos).magnitude, 1 << 13)) // 13은 Wall
-        {
-            movingDistance = (wallHit.distance - 0.6f) * 0.99f;
-            targetPos = initialPos + direction * movingDistance;
-        }
+        targetPos = GetTargetPosByCoillision(initialPos, direction, targetPos, movingDistance);
 
-
-        // 대시 이펙트 시작
+        // 돌진 이펙트 시작
         ActiveEffectToCharacter(character, dash);
 
-        // 대시 시작
+        // 돌진 시작
         while ((character.transform.position - targetPos).magnitude > 0.1f && curTime <= regenTime)
         {
             yield return null;
 
-            curTime += Time.deltaTime * 3f;
-            if (skillData.SkillCastingTarget == Define.SkillTarget.MON)
-            {
-                Ray ray = new Ray(character.transform.position, direction.normalized);
-                float collisiionDepth = skillData.SkillHitboxSize * SkillData.cm2m;
+            curTime += Time.deltaTime;
 
-                if (Physics.Raycast(ray, out RaycastHit monsterHit, collisiionDepth, 1 << 10))
-                {
-                    hittedMonsters.Add(monsterHit.transform.GetComponent<Monster>());
-                }
-            }
-            else if (skillData.SkillCastingTarget == Define.SkillTarget.PC)
+            Vector3 rayOrigin = character.GetRayOrigin();
+            Ray ray = new Ray(rayOrigin, direction.normalized);
+            Debug.DrawRay(rayOrigin, direction.normalized, Color.blue);
+            float collisiionDepth = skillData.SkillHitboxSize * SkillData.cm2m;
+            int layerMask = SkillTargetToLayerMask(skillData.SkillCastingTarget);
+            if (Physics.Raycast(ray, out RaycastHit characterHit, collisiionDepth, layerMask))
             {
-                Ray ray = new Ray(character.transform.position + new Vector3(0, 1f), direction.normalized);
-                float collisiionDepth = skillData.SkillHitboxSize * SkillData.cm2m;
-
-                if (Physics.Raycast(ray, out RaycastHit playerHit, collisiionDepth, 1 << 11))
-                {
-                    hittedPlayer = playerHit.transform.GetComponent<Player>();
-                }
+                hittedCharacters.Add(characterHit.transform.GetComponent<CharacterBase>());
             }
 
             character.transform.position = Vector3.Lerp(initialPos, targetPos, curTime / regenTime * (originalMovingDistance / movingDistance));
         }
 
-        // 몬스터 타격
-        foreach (Monster monster in hittedMonsters.Distinct())
+        // 캐릭터 타격
+        foreach (var hittedCharacter in hittedCharacters.Distinct())
         {
-            float damageAmount = skillData.SkillDamage * 1; // 1대신 공격력 들어가야 함
+            float damageAmount = skillData.SkillDamage * character.Stat.Damage;
 
-            monster.TakeDamage(damageAmount);
-        }
-
-        // 플레이어 타격
-        if (hittedPlayer != null)
-        {
-            hittedPlayer.TakeDamage(skillData.SkillDamage, true);
+            hittedCharacter.TakeDamage(damageAmount);
         }
 
         // 초기화
