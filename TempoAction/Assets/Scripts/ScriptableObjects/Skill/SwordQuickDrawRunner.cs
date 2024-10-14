@@ -105,7 +105,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
 
             Vector3 rayOrigin = character.GetRayOrigin();
             Ray ray = new Ray(rayOrigin, direction.normalized);
-            Debug.DrawRay(rayOrigin, direction.normalized, Color.blue);
+
             float collisiionDepth = skillData.SkillHitboxSize * SkillData.cm2m;
             int layerMask = SkillTargetToLayerMask(skillData.SkillCastingTarget);
             if (Physics.Raycast(ray, out RaycastHit characterHit, collisiionDepth, layerMask))

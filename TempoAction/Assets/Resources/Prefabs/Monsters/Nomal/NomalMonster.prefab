@@ -356,6 +356,7 @@ MonoBehaviour:
     - <Key>k__BackingField: 0
       <Colliders>k__BackingField:
       - {fileID: 8898620878518490393}
+  _rayOffset: {x: 0, y: 0, z: 0}
   <_SkillManager>k__BackingField: {fileID: 1298170471948164286}
   _playerLayer:
     serializedVersion: 2
@@ -419,7 +420,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 120
   m_CollisionDetection: 0
 --- !u!65 &8898620878518490393
 BoxCollider:

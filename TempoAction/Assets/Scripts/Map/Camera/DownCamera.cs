@@ -5,6 +5,8 @@ using Cinemachine;
 
 public class DownCamera : MonoBehaviour
 {
+    [Header("е╦ют")]
+    [SerializeField] private Define.CameraType cameraType;
     private CameraController _cameraController;
 
     private void Awake()
@@ -14,9 +16,19 @@ public class DownCamera : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
+        if (cameraType == Define.CameraType.DOWN)
         {
-            _cameraController.SetCameraSetting(Define.CameraType.DOWN);
+            if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
+            {
+                _cameraController.SetCameraSetting(cameraType);
+            }
+        }
+        else if (cameraType == Define.CameraType.PLAYER)
+        {
+            if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
+            {
+                _cameraController.ChangeCamera(cameraType);
+            }
         }
     }
 
