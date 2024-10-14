@@ -8,13 +8,21 @@ using UnityEngine;
 public class Middle_Homerun : Middle_Skill
 {
     private float _coolTime;
+    private bool isFront = false;
 
-    [Header("Hit 포지션")]
-    [SerializeField] private Vector3 _hitPoint;
-    [Header("Hit 스케일")]
-    [SerializeField] private Vector3 _hitScale;
-    [SerializeField] private float _knockBackPower;
-    [SerializeField] private float _knockBackDuration;
+    [Header("전방 Hit 포지션")]
+    [SerializeField] private Vector3 _frontHitPoint;
+    [Header("전방 Hit 스케일")]
+    [SerializeField] private Vector3 _frontHitScale;
+    [SerializeField] private float _frontKnockBackPower;
+    [SerializeField] private float _frontKnockBackDuration;
+
+    [Header("후방 Hit 포지션")]
+    [SerializeField] private Vector3 _backHitPoint;
+    [Header("후방 Hit 스케일")]
+    [SerializeField] private Vector3 _backHitScale;
+    [SerializeField] private float _backKnockBackPower;
+    [SerializeField] private float _backKnockBackDuration;
 
     private Vector3 originSize;
     private Vector3 orginPoint;
@@ -48,8 +56,8 @@ public class Middle_Homerun : Middle_Skill
         Debug.Log("홈런");
         originSize = _monster.ColliderSize;
         orginPoint = _monster.HitPoint.localPosition;
-        _monster.HitPoint.localPosition = new Vector3(_hitPoint.x, _hitPoint.y);
-        _monster.ColliderSize = new Vector3(_hitScale.x, _hitScale.y, _hitScale.z);
+        _monster.HitPoint.localPosition = new Vector3(_backHitPoint.x, _backHitPoint.y);
+        _monster.ColliderSize = new Vector3(_backHitScale.x, _backHitScale.y, _backHitScale.z);
         _monster.CharacterModel.localScale = new Vector3(-_monster.Direction, 1, 1);
         CoroutineRunner.Instance.StartCoroutine(MoveToPlayer());
 
@@ -72,6 +80,7 @@ public class Middle_Homerun : Middle_Skill
         _monster.HitPoint.localPosition = orginPoint;
         _coolTime = 0;
 
+        isFront = false;
         IsCompleted = false;
     }
 
@@ -93,22 +102,53 @@ public class Middle_Homerun : Middle_Skill
 
     private void Attack()
     {
-        Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _hitScale / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
-
-        foreach (Collider player in hitPlayer)
+        if (!isFront)
         {
-            if (player.GetComponent<Player>().IsInvincible) return;
+            _monster.HitPoint.localPosition = new Vector3(_backHitPoint.x, _backHitPoint.y);
+            _monster.ColliderSize = new Vector3(_backHitScale.x, _backHitScale.y, _backHitScale.z);
 
-            Debug.Log("홈런 성공");
-            player.GetComponent<Player>().TakeDamage(_info.damage, true);
-            player.GetComponent<Player>().Knockback(GetKnockBackPosition(), _knockBackDuration);
-            player.GetComponent<Player>().TakeStun(1f);
+            Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _backHitScale / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 
-            // 히트 파티클 생성
-            GameObject hitParticle = ObjectPool.Instance.Spawn("FX_HomerunAttack@P", 1); ;
+            foreach (Collider player in hitPlayer)
+            {
+                if (player.GetComponent<Player>().IsInvincible) return;
 
-            Vector3 hitPos = player.ClosestPoint(_monster.HitPoint.position);
-            hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z - 0.1f);
+                Debug.Log("후방 홈런 성공");
+                player.GetComponent<Player>().TakeDamage(_info.damage, true);
+                player.GetComponent<Player>().Knockback(GetKnockBackPosition(), _backKnockBackDuration);
+                player.GetComponent<Player>().TakeStun(1f);
+
+                // 히트 파티클 생성
+                GameObject hitParticle = ObjectPool.Instance.Spawn("FX_HomerunAttack@P", 1); ;
+
+                Vector3 hitPos = player.ClosestPoint(_monster.HitPoint.position);
+                hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z - 0.1f);
+            }
+
+            isFront = true;
+        }
+        else
+        {
+            _monster.HitPoint.localPosition = new Vector3(_frontHitPoint.x, _frontHitPoint.y);
+            _monster.ColliderSize = new Vector3(_frontHitScale.x, _frontHitScale.y, _frontHitScale.z);
+
+            Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _frontHitScale / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
+
+            foreach (Collider player in hitPlayer)
+            {
+                if (player.GetComponent<Player>().IsInvincible) return;
+
+                Debug.Log("전방 홈런 성공");
+                player.GetComponent<Player>().TakeDamage(_info.damage, true);
+                player.GetComponent<Player>().Knockback(GetKnockBackPosition(), _frontKnockBackDuration);
+                player.GetComponent<Player>().TakeStun(1f);
+
+                // 히트 파티클 생성
+                GameObject hitParticle = ObjectPool.Instance.Spawn("FX_HomerunAttack@P", 1); ;
+
+                Vector3 hitPos = player.ClosestPoint(_monster.HitPoint.position);
+                hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z - 0.1f);
+            }
         }
     }
 
@@ -118,13 +158,27 @@ public class Middle_Homerun : Middle_Skill
         Vector3 pos = _monster.transform.position;
         pos.y = 2.159f;
 
-        if (Physics.Raycast(pos, Vector2.right * _monster.Direction, out hit, _knockBackPower * _knockBackDuration, _monster.WallLayer))
+        if (!isFront)
         {
-            return hit.point;
+            if (Physics.Raycast(pos, Vector2.right * -_monster.Direction, out hit, _backKnockBackPower * _backKnockBackDuration, _monster.WallLayer))
+            {
+                return hit.point;
+            }
+
+            Vector3 target = new Vector3(pos.x + ((Vector2.right * -_monster.Direction) * (_backKnockBackPower * _backKnockBackDuration)).x, pos.y, pos.z);
+            return target;
+        }
+        else
+        {
+            if (Physics.Raycast(pos, Vector2.right * _monster.Direction, out hit, _frontKnockBackPower * _frontKnockBackDuration, _monster.WallLayer))
+            {
+                return hit.point;
+            }
+
+            Vector3 target = new Vector3(pos.x + ((Vector2.right * _monster.Direction) * (_frontKnockBackPower * _frontKnockBackDuration)).x, pos.y, pos.z);
+            return target;
         }
 
-        Vector3 target = new Vector3(pos.x + ((Vector2.right * _monster.Direction) * (_knockBackPower * _knockBackDuration)).x, pos.y, pos.z);
-        return target;
     }
 
     private void Finish()

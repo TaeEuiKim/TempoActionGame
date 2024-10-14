@@ -6,11 +6,18 @@ public class PlayerController
 {
     private Player _player;
 
+    [Header("키 입력 기록 리스트")]
+    private List<KeyCode> keyInputs = new List<KeyCode>();
+    [Header("키 입력 시간 제한")]
+    private float inputTimeLimit = 0.2f;
+    private float lastInputTime;
+
     private bool _isLanded;
     private bool _isGrounded;
     private bool _isOnMonster;
     private bool _isDashing;
     private bool _isDoubleJumping;
+    public bool isDown = false;
 
     private float _dashTimer;
     protected float _direction;
@@ -86,12 +93,23 @@ public class PlayerController
 
         if (_isOnMonster)
         {
-            _player.Rb.velocity = new Vector3(_direction * 3f, _player.Rb.velocity.y);
+            //Vector3 force = new Vector3(-_player.CharacterModel.localScale.x * 10f, -5f);
+            //Debug.Log(force);
+            //_player.Rb.AddForce(force, ForceMode.VelocityChange);
         }
 
         if (_dashTimer >= _player.PlayerSt.DashDelay)
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift))
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                RecordInput(KeyCode.LeftArrow);
+            }
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                RecordInput(KeyCode.RightArrow);
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.C) || CheckDash())
             {
                 Dash();
             }
@@ -106,6 +124,11 @@ public class PlayerController
         {
             Move();
             Jump();
+        }
+
+        if (Input.GetKeyDown(KeyCode.DownArrow) && _isGrounded)
+        {
+            isDown = true;
         }
     }
 
@@ -154,20 +177,20 @@ public class PlayerController
 
     private void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow) && !_isGrounded && !_isDoubleJumping)
+        if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) && !_isGrounded && !_isDoubleJumping)
         {
             _player.Ani.SetTrigger("isJumping");
             _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
             _isDoubleJumping = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.UpArrow) && _isGrounded)
+        if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) && _isGrounded)
         {
             _player.Ani.SetTrigger("isJumping");
             _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
             _isGrounded = false;
         }
-        else if (Input.GetKeyUp(KeyCode.UpArrow))
+        else if ((Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.Space)))
         {
             _player.Rb.velocity = new Vector3(_player.Rb.velocity.x, _player.Rb.velocity.y / 2, _player.Rb.velocity.z);
         }
@@ -238,5 +261,34 @@ public class PlayerController
 
         // 장애물이 없음
         return true;
+    }
+
+    private void RecordInput(KeyCode key)
+    {
+        if (Time.time - lastInputTime <= inputTimeLimit)
+        {
+            keyInputs.Add(key);
+        }
+        else
+        {
+            keyInputs.Clear();
+            keyInputs.Add(key);
+        }
+
+        lastInputTime = Time.time;
+    }
+
+    private bool CheckDash()
+    {
+        if (keyInputs.Count == 2)
+        {
+            if (keyInputs[0] == keyInputs[1])
+            {
+                keyInputs.Clear();
+                return true;
+            }
+        }
+
+        return false;
     }
 }
