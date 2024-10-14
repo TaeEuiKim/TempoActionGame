@@ -82,7 +82,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _diffuse_tex:
-        m_Texture: {fileID: 2800000, guid: 7ede0685921be5244932f31ee1dd4da0, type: 3}
+        m_Texture: {fileID: 2800000, guid: 33acba7aa459e8142b549434a456e2c0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _maintex:
@@ -138,12 +138,12 @@ Material:
     - _ZWrite: 1
     - _dissolve: -0.15
     - _dissolve_sharp: 0.39
-    - _power: 10
+    - _power: 5.83
     - _powerr: 1
-    - _speed: -1
+    - _speed: -1.36
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0, g: 0.2141664, b: 1, a: 1}
+    - _Color: {r: 0.8207547, g: 0.8207547, b: 0.8207547, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _noise_flow: {r: 0, g: 0, b: 0, a: 0}
@@ -151,5 +151,5 @@ Material:
     - _noise_tiling: {r: 1, g: 1, b: 0, a: 0}
     - _secondary_color: {r: 1, g: 1, b: 1, a: 0}
     - _secondeary_color: {r: 1, g: 0.17452824, b: 0.17452824, a: 1}
-    - _tiling: {r: 2, g: 1, b: 0, a: 0}
+    - _tiling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
