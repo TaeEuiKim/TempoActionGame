@@ -2,15 +2,9 @@
 
 public class Define
 {
-
-    public enum UIType
+    public enum CameraType
     {
-        ALL, BUTTON, IMAGE, CANVASGROUP, TMPRO, TOGGLE, SLIDER
-    }
-
-    public enum KeyType
-    {
-        DOWN, HOLD, UP
+        PLAYER, DOWN, MIDDLEBOSS, NONE
     }
 
     public enum BuffType // ENTER : 범위에 들어가면 실행 , STAY : 범위에 들어가 있으면 실행, EXIT : 범위에서 나가면 실행 

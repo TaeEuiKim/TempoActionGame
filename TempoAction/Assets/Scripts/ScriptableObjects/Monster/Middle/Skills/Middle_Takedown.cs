@@ -89,20 +89,26 @@ public class Middle_Takedown : Middle_Skill
     {
         yield return new WaitForSecondsRealtime(0.9f);
 
+        _monster.Direction = _monster.Player.transform.position.x - _monster.transform.position.x;
+        _monster.CharacterModel.localScale = new Vector3(-_monster.Direction, 1, 1);
         float dis = Vector3.Distance(_monster.transform.position, _monster.Player.transform.position - new Vector3(_monster.Direction, 0, 0));
         float firstDis = dis / 4;
-        float secondDis = dis - firstDis;
 
         if (_monster.CharacterModel.transform.localScale.x < 0)
         {
-            _monster.transform.DOMoveX(_monster.transform.position.x + firstDis, 2f);
+            _monster.transform.DOMoveX(_monster.transform.position.x + firstDis, 0.6f);
         }
         else if (_monster.CharacterModel.transform.localScale.x > 0)
         {
-            _monster.transform.DOMoveX(_monster.transform.position.x - firstDis, 2f);
+            _monster.transform.DOMoveX(_monster.transform.position.x - firstDis, 0.6f);
         }
 
-        yield return new WaitForSecondsRealtime(1.5f);
+        yield return new WaitForSecondsRealtime(0.6f);
+
+        _monster.Direction = _monster.Player.transform.position.x - _monster.transform.position.x;
+        _monster.CharacterModel.localScale = new Vector3(-_monster.Direction, 1, 1);
+        dis = Vector3.Distance(_monster.transform.position, _monster.Player.transform.position - new Vector3(_monster.Direction, 0, 0));
+        float secondDis = dis / 4;
 
         if (_monster.CharacterModel.transform.localScale.x < 0)
         {
@@ -111,6 +117,22 @@ public class Middle_Takedown : Middle_Skill
         else if (_monster.CharacterModel.transform.localScale.x > 0)
         {
             _monster.transform.DOMoveX(_monster.transform.position.x - secondDis, 1f);
+        }
+
+        yield return new WaitForSecondsRealtime(1f);
+
+        _monster.Direction = _monster.Player.transform.position.x - _monster.transform.position.x;
+        _monster.CharacterModel.localScale = new Vector3(-_monster.Direction, 1, 1);
+        dis = Vector3.Distance(_monster.transform.position, _monster.Player.transform.position - new Vector3(_monster.Direction, 0, 0));
+        float thirdDis = dis;
+
+        if (_monster.CharacterModel.transform.localScale.x < 0)
+        {
+            _monster.transform.DOMoveX(_monster.transform.position.x + thirdDis, 1f);
+        }
+        else if (_monster.CharacterModel.transform.localScale.x > 0)
+        {
+            _monster.transform.DOMoveX(_monster.transform.position.x - thirdDis, 1f);
         }
     }
 

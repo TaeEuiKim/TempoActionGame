@@ -17,8 +17,9 @@ public class CameraController : MonoBehaviour
 
     [Header("Cameras")]
     [SerializeField] private CinemachineVirtualCamera _SceneCamera;
-    [SerializeField] private CinemachineVirtualCamera _PlayerCamera;
+    [SerializeField] private CinemachineVirtualCamera[] _PlayerCamera;
     private CinemachineVirtualCamera _CurCamera;
+    private Transform _cameraTrans;
 
     [Header("Camera Shaking")]
     [SerializeField] private float Impulse;
@@ -122,30 +123,27 @@ public class CameraController : MonoBehaviour
         yield break;
     }
 
-    private void SetFollowLookObject(GameObject obj)
+    public void SetCameraSetting(Define.CameraType cameraType)
     {
-        saveCameraRotation = _SceneCamera.transform.rotation;
-        _SceneCamera.m_LookAt = obj.transform;
-        _SceneCamera.m_Lens.FieldOfView = 70;
-    }
-
-    private void SetFollowLookPlayer()
-    {
-        _SceneCamera.m_LookAt = player.transform;
-        _SceneCamera.transform.rotation = saveCameraRotation;
-        _SceneCamera.m_Lens.FieldOfView = 57;
-    }
-
-    public void SetStartCameraSetting()
-    {
-        _SceneCamera.gameObject.SetActive(false);
-        _PlayerCamera.gameObject.SetActive(true);
-    }
-
-    public void RepairCamera()
-    {
-        _PlayerCamera.gameObject.SetActive(false);
-        _SceneCamera.gameObject.SetActive(true);
+        switch (cameraType)
+        {
+            case Define.CameraType.PLAYER:
+                for (int i = 0; i < _PlayerCamera.Length; ++i)
+                {
+                    if (_PlayerCamera[i] != null && (int)Define.CameraType.PLAYER != i)
+                    {
+                        _PlayerCamera[i].gameObject.SetActive(false);
+                    }
+                }
+                break;
+            case Define.CameraType.DOWN:
+                _PlayerCamera[(int)Define.CameraType.DOWN].gameObject.SetActive(true);
+                break;
+            case Define.CameraType.MIDDLEBOSS:
+                break;
+            case Define.CameraType.NONE:
+                break;
+        }
     }
 
     // Camera Shaking
