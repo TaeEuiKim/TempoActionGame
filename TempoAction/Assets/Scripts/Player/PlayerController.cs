@@ -73,7 +73,10 @@ public class PlayerController
             return;
         }
 
-        _isGrounded = Physics.CheckSphere(_player.GroundCheckPoint.position, _player.GroundCheckRadius, _player.GroundLayer);
+        if (!(_isGrounded = Physics.CheckSphere(_player.GroundCheckPoint.position, _player.GroundCheckRadius, _player.GroundLayer)))
+        {
+            _isGrounded = Physics.CheckSphere(_player.GroundCheckPoint.position, _player.GroundCheckRadius, _player.WallLayer);
+        }
         _isOnMonster = Physics.CheckSphere(_player.GroundCheckPoint.position, _player.GroundCheckRadius, _player.MonsterLayer);
         _player.Ani.SetBool("isGrounded", _isGrounded);
 
@@ -210,21 +213,22 @@ public class PlayerController
         Vector3 dashPosition = Vector3.zero;
 
         RaycastHit hit;
-        if (Physics.Raycast(_player.transform.position, Vector3.right * _dashDirection, out hit, _player.PlayerSt.DashDistance, _player.WallLayer)) // 벽이 있다면 벽과의 충돌 위치 바로 앞에서 멈추게 설정
+
+        if (Physics.Raycast(_player.transform.position, Vector3.right * _dashDirection, out hit, _player.PlayerSt.DashDistance, _player.WallLayer) ||
+            Physics.Raycast(_player.transform.position, Vector3.right * _dashDirection, out hit, _player.PlayerSt.DashDistance, _player.GroundLayer)) // 벽이 있다면 벽과의 충돌 위치 바로 앞에서 멈추게 설정
         {            
-            dashPosition = hit.point - (Vector3.right * _dashDirection) * 0f;  // 곱하는 수 만큼 벽에서 떨어짐
+            dashPosition = hit.point - (Vector3.right * _dashDirection) * 0.2f;  // 곱하는 수 만큼 벽에서 떨어짐
         }
         else  // 벽이 없으면 대쉬 거리만큼 앞으로 이동
         {      
             dashPosition = _player.transform.position + (Vector3.right * _dashDirection) * _player.PlayerSt.DashDistance;
         }
 
-
         _player.Rb.DOMove(dashPosition, _player.PlayerSt.DashDuration).SetEase(Ease.OutQuad).OnComplete(() =>
         {
             _isDashing = false;
             _player.GetComponent<Collider>().enabled = true;
-           
+
         });
 
         _player.Ani.SetTrigger("Dash");
@@ -261,6 +265,19 @@ public class PlayerController
 
         // 장애물이 없음
         return true;
+    }
+
+    public bool IsOnSlope()
+    {
+        RaycastHit slopeHit;
+        Ray ray = new Ray(_player.transform.position, Vector3.down);
+        if (Physics.Raycast(ray, out slopeHit, 3f, _player.GroundLayer))
+        {
+            var angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+            //return angle != 0f && angle < 
+        }
+
+        return false;
     }
 
     private void RecordInput(KeyCode key)
