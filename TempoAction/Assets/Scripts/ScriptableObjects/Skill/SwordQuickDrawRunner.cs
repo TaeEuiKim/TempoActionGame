@@ -119,12 +119,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         // 캐릭터 타격
         foreach (var hittedCharacter in hittedCharacters.Distinct())
         {
-            if (character.gameObject.layer == hittedCharacter.gameObject.layer)
-            {
-                continue;
-            }
-
-            float damageAmount = skillData.SkillDamage * character.Stat.Damage;
+            float damageAmount = skillData.SkillDamage;
 
             hittedCharacter.TakeDamage(damageAmount);
         }

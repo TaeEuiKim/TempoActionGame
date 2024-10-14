@@ -39,6 +39,7 @@ public class PlayerView : MonoBehaviour
         if (isRemove)
         {
             _mainSkillIcons[value].sprite = _skillBackIcon;
+            Debug.Log("메인 제거");
         }
         else
         {
