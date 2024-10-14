@@ -195,7 +195,7 @@ public class PlayerController
         }
         else if ((Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.Space)))
         {
-            _player.Rb.velocity = new Vector3(_player.Rb.velocity.x, _player.Rb.velocity.y / 2, _player.Rb.velocity.z);
+            //_player.Rb.velocity = new Vector3(_player.Rb.velocity.x, _player.Rb.velocity.y / 2, _player.Rb.velocity.z);
         }
 
         if (Mathf.Abs(_player.Rb.velocity.y) >= 0.1f)
@@ -245,7 +245,7 @@ public class PlayerController
     {
         Vector3 tempScale = _player.CharacterModel.localScale;
 
-        if (value * tempScale.x < 0)
+        if (value * tempScale.x > 0)
         {
             tempScale.x *= -1;
         }

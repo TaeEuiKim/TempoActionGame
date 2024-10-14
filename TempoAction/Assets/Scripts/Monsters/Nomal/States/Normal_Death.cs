@@ -27,7 +27,7 @@ public class Normal_Death : Normal_State
 
     public override void Stay()
     {
-        if (_monster.Ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f && _monster.Ani.GetCurrentAnimatorStateInfo(0).IsName("AC_BaldoMon_Death"))
+        if (_monster.Ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
         {
             ObjectPool.Instance.Remove(_monster.gameObject);
         }
