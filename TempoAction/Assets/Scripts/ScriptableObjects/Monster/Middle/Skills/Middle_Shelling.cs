@@ -80,11 +80,12 @@ public class Middle_Shelling : Middle_Skill
     {
         float _y = 23;
         Shelling rocket = ObjectPool.Instance.Spawn("Rocket").GetComponent<Shelling>();
-        rocket.transform.position = new Vector3(_monster.Player.position.x + Random.Range(-3f, 3f), _y, _monster.Player.position.z);
+        rocket.transform.position = new Vector3(_monster.Player.position.x, _y, _monster.Player.position.z);
         rocket.transform.rotation = Quaternion.Euler(-90, -200, 0);
         rocket.bombSize = bombSize;
         rocket.bombType = bombType;
         rocket.TotalDamage = Info.damage;
+        rocket.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
         RaycastHit ray;
         if (Physics.Raycast(rocket.transform.position, Vector3.down, out ray, Mathf.Infinity, 1 << LayerMask.NameToLayer("Ground")))

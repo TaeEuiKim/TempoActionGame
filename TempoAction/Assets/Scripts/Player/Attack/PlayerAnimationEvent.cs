@@ -116,6 +116,21 @@ public class PlayerAnimationEvent : MonoBehaviour
         }
     }
 
+    private void StartDash()
+    {
+        _player.Ani.SetFloat("Speed", 0);
+    }
+
+    private void FinishDash()
+    {
+        _player.Ani.SetBool("IsBackDash", false);
+        _player.Controller.isMove = true;
+    }
+
+    private void ResetOption()
+    {
+    }
+
     // 공격 사거리 안에 적이 있으면 적 앞으로 이동하는 이벤트 함수
     private void MoveToClosestMonster(float duration)
     {
