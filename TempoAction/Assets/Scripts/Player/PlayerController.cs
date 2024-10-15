@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Unity.VisualScripting;
 public class PlayerController
 {
     private Player _player;
@@ -17,6 +18,7 @@ public class PlayerController
     private bool _isOnMonster;
     private bool _isDashing;
     private bool _isDoubleJumping;
+    private bool _isMove;
     public bool isDown = false;
 
     private float _dashTimer;
@@ -94,11 +96,17 @@ public class PlayerController
             _isLanded = false;
         }
 
+        if (_player.Rb.velocity.x == 0)
+        {
+            _isMove = false;
+        }
+        _player.Ani.SetBool("IsMove", _isMove);
+
         if (_isOnMonster)
         {
-            //Vector3 force = new Vector3(-_player.CharacterModel.localScale.x * 10f, -5f);
-            //Debug.Log(force);
-            //_player.Rb.AddForce(force, ForceMode.VelocityChange);
+            Vector3 force = new Vector3(-_player.CharacterModel.localScale.x * 30f, -5f);
+
+            _player.Rb.AddForce(force, ForceMode.VelocityChange);
         }
 
         if (_dashTimer >= _player.PlayerSt.DashDelay)
@@ -121,7 +129,6 @@ public class PlayerController
         {
             _dashTimer += Time.deltaTime;
         }
-
 
         if (!_isDashing)
         {
@@ -172,6 +179,7 @@ public class PlayerController
         {
             tempVelocity = new Vector2(_direction * _player.Stat.SprintSpeed, _player.Rb.velocity.y);
             _player.Ani.SetFloat("Speed", Mathf.Abs(tempVelocity.x));
+            _isMove = true;
         }
 
         _player.Rb.velocity = tempVelocity;
@@ -183,6 +191,7 @@ public class PlayerController
         if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) && !_isGrounded && !_isDoubleJumping)
         {
             _player.Ani.SetTrigger("isJumping");
+            //_player.Rb.MovePosition(_player.Ani.rootPosition);
             _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
             _isDoubleJumping = true;
         }
@@ -190,6 +199,7 @@ public class PlayerController
         if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) && _isGrounded)
         {
             _player.Ani.SetTrigger("isJumping");
+            //_player.Rb.MovePosition(_player.Ani.rootPosition);
             _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
             _isGrounded = false;
         }
@@ -207,11 +217,9 @@ public class PlayerController
     private void Dash()
     {
         _player.Rb.velocity = Vector2.zero;
-
+        CoroutineRunner.Instance.StartCoroutine(DashInvincibility(_player.PlayerSt.DashDuration));
         _isDashing = true;
-        _player.GetComponent<Collider>().enabled = false; 
         Vector3 dashPosition = Vector3.zero;
-
         RaycastHit hit;
 
         if (Physics.Raycast(_player.transform.position, Vector3.right * _dashDirection, out hit, _player.PlayerSt.DashDistance, _player.WallLayer) ||
@@ -227,13 +235,25 @@ public class PlayerController
         _player.Rb.DOMove(dashPosition, _player.PlayerSt.DashDuration).SetEase(Ease.OutQuad).OnComplete(() =>
         {
             _isDashing = false;
-            _player.GetComponent<Collider>().enabled = true;
 
         });
 
         _player.Ani.SetTrigger("Dash");
 
         _dashTimer = 0;
+    }
+
+    private IEnumerator DashInvincibility(float duration)
+    {
+        float invincibilityTime = duration / 2;
+
+        yield return new WaitForSeconds(duration / 4);
+
+        _player.GetComponent<Collider>().enabled = false;
+
+        yield return new WaitForSeconds(invincibilityTime);
+
+        _player.GetComponent<Collider>().enabled = true;
     }
 
     private void Stop()
