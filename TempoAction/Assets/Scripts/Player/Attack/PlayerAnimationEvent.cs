@@ -99,19 +99,52 @@ public class PlayerAnimationEvent : MonoBehaviour
         _player.Attack.ChangeCurrentAttackState(Define.AttackState.CHECK);
     }
 
+    private void JumpRock()
+    {
+        if (_player.Ani.GetFloat("VerticalSpeed") <= -10)
+        {
+            _player.Rb.isKinematic = true;
+        }
+    }
+
+    private void JumpFinish()
+    {
+        if (_player.Rb.isKinematic)
+        {
+            _player.Rb.isKinematic = false;
+            _player.Ani.SetFloat("VerticalSpeed", 0);
+        }
+    }
+
     // 공격 사거리 안에 적이 있으면 적 앞으로 이동하는 이벤트 함수
     private void MoveToClosestMonster(float duration)
     {
         Vector3 rayOrigin = new Vector3(transform.parent.position.x, transform.parent.position.y, transform.parent.position.z);
-        Vector3 rayDirection = transform.localScale.x > 0 ? transform.right : transform.right * -1;
+        Vector3 rayDirection = transform.localScale.x < 0 ? transform.right : transform.right * -1;
 
-        // 레이캐스트 실행
-        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, _player.Attack.CurrentTempoData.distance, _player.MonsterLayer))
+        if (_player.Ani.GetInteger("AtkCount") == 4)
         {
-            float closestMonsterX = hit.point.x + (-rayDirection.x * 0.2f);
-            transform.parent.DOMoveX(closestMonsterX, duration);
-        }
+            if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitPos, _player.Attack.CurrentTempoData.distance, _player.MonsterLayer))
+            {
+                float closestMonsterX = hitPos.point.x + (-rayDirection.x * 0.2f);
+                transform.parent.DOMoveX(closestMonsterX, duration);
+            }
+            else
+            {
+                transform.parent.DOMoveX(transform.parent.position.x - (2f * _player.CharacterModel.localScale.x), 0.3f);
+            }
 
+            _player.Rb.AddForce(Vector3.right * _player.Controller.Direction * 20f, ForceMode.VelocityChange);
+        }
+        else
+        {
+            // 레이캐스트 실행
+            if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, _player.Attack.CurrentTempoData.distance, _player.MonsterLayer))
+            {
+                float closestMonsterX = hit.point.x + (-rayDirection.x * 0.2f);
+                transform.parent.DOMoveX(closestMonsterX, duration);
+            }
+        }
 
         // 디버그용 레이 그리기
         Debug.DrawRay(rayOrigin, rayDirection * _player.Attack.CurrentTempoData.distance, Color.red);
