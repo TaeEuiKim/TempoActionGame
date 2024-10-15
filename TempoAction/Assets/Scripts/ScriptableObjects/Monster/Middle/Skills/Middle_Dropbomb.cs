@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Dropbomb", menuName = "ScriptableObjects/MiddleMonster/Skill/Dropbomb", order = 1)]
@@ -37,7 +38,7 @@ public class Middle_Dropbomb : Middle_Skill
 
     public override void Enter()
     {
-        Debug.Log("폭탄 투하");
+        Debug.Log("유도 미사일 발사");
 
         _coolTime = 0;
 
@@ -64,8 +65,8 @@ public class Middle_Dropbomb : Middle_Skill
 
     private void LaunchProjectile(GameObject bomb)
     {
-        Vector3 targetPos = _monster.Player.transform.position + new Vector3(0, 0, 0.6f);
-        Vector3 startPos = _monster.transform.position;
+        Vector3 targetPos = _monster.Player.transform.position + new Vector3(0, 0, 4f);
+        Vector3 startPos = _monster.transform.position + new Vector3(0, 0, -1f);
 
         float distance = Vector3.Distance(targetPos, startPos);
 
@@ -91,23 +92,15 @@ public class Middle_Dropbomb : Middle_Skill
 
     private void Attack()
     {
-        GameObject bomb = ObjectPool.Instance.Spawn("Bomb");
-        bomb.transform.position = _monster.HitPoint.position;
+        GameObject bomb = ObjectPool.Instance.Spawn("TraceRocket");
+        bomb.transform.position = _monster.HitPoint.position + new Vector3(0, 0, -1f);
 
         LaunchProjectile(bomb);
-    }
-
-    IEnumerator FinishMove()
-    {
-
-        yield return new WaitForSeconds(2f);
-
-        _monster.FinishSkill();
     }
 
     private void Finish()
     {
         IsCompleted = false;
-        CoroutineRunner.Instance.StartCoroutine(FinishMove());
+        _monster.FinishSkill();
     }
 }
