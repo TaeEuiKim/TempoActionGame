@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2793840841882094093
+--- !u!1 &4042329477154567574
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,38 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2318425498860521336}
-  - component: {fileID: 2467764853526919527}
-  - component: {fileID: 9141978199798250968}
+  - component: {fileID: 3930297974521718505}
+  - component: {fileID: 6434762073214705529}
+  - component: {fileID: 3112924763896284597}
   m_Layer: 0
-  m_Name: FX_Walk
+  m_Name: P_Walk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2318425498860521336
+--- !u!4 &3930297974521718505
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2793840841882094093}
+  m_GameObject: {fileID: 4042329477154567574}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -1, y: 1.36, z: -2.14}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3911080483857195117}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!198 &2467764853526919527
+--- !u!198 &6434762073214705529
 ParticleSystem:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2793840841882094093}
+  m_GameObject: {fileID: 4042329477154567574}
   serializedVersion: 8
   lengthInSec: 1
   simulationSpeed: 1
@@ -116,7 +116,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.7
+      scalar: 0.4
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -287,7 +287,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 1.6
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -870,7 +870,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 1
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -1034,7 +1034,7 @@ ParticleSystem:
       repeatInterval: 0.01
       probability: 1
   SizeModule:
-    enabled: 1
+    enabled: 0
     curve:
       serializedVersion: 2
       minMaxState: 1
@@ -1054,7 +1054,7 @@ ParticleSystem:
           outWeight: 0.125964
         - serializedVersion: 3
           time: 1
-          value: 1
+          value: 0.8513508
           inSlope: 0
           outSlope: 0
           tangentMode: 0
@@ -1383,8 +1383,8 @@ ParticleSystem:
         ctime6: 0
         ctime7: 0
         atime0: 0
-        atime1: 11565
-        atime2: 21781
+        atime1: 8288
+        atime2: 26021
         atime3: 65535
         atime4: 0
         atime5: 0
@@ -1433,7 +1433,7 @@ ParticleSystem:
     frameOverTime:
       serializedVersion: 2
       minMaxState: 1
-      scalar: 0.9999
+      scalar: 0.7777778
       minScalar: 0.9999
       maxCurve:
         serializedVersion: 2
@@ -1441,20 +1441,20 @@ ParticleSystem:
         - serializedVersion: 3
           time: 0
           value: 0
-          inSlope: 2
-          outSlope: 2
+          inSlope: 1.6969111
+          outSlope: 1.6969111
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
-          outWeight: 0
+          outWeight: 0.1433447
         - serializedVersion: 3
           time: 1
           value: 1
-          inSlope: 0.23894426
-          outSlope: 0.23894426
+          inSlope: 0.42121938
+          outSlope: 0.42121938
           tangentMode: 0
           weightedMode: 0
-          inWeight: 0.1131106
+          inWeight: 0.16040963
           outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
@@ -4832,14 +4832,14 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!199 &9141978199798250968
+--- !u!199 &3112924763896284597
 ParticleSystemRenderer:
   serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2793840841882094093}
+  m_GameObject: {fileID: 4042329477154567574}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -4894,7 +4894,7 @@ ParticleSystemRenderer:
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
   m_UseCustomVertexStreams: 1
-  m_VertexStreams: 000103041f08
+  m_VertexStreams: 0003040508
   m_UseCustomTrailVertexStreams: 0
   m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 0}
@@ -4935,6 +4935,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2318425498860521336}
+  - {fileID: 3930297974521718505}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
