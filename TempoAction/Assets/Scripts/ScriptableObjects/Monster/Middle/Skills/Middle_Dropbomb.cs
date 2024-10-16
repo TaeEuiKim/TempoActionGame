@@ -9,8 +9,6 @@ public class Middle_Dropbomb : Middle_Skill
 {
     [Header("폭탄 개수")]
     [SerializeField] private int bombAmount;  
-    [Header("발사 각도")]
-    [SerializeField] private float launchAngle = 45f;  
     [Header("초기 미사일 속도")]
     [SerializeField] private float initSpeed = 10f; 
     [Header("유도 강도")]
@@ -76,7 +74,7 @@ public class Middle_Dropbomb : Middle_Skill
         GameObject bomb = ObjectPool.Instance.Spawn("TraceRocket");
         bomb.transform.position = _monster.HitPoint.position + new Vector3(0, 0, -1f);
 
-        bomb.GetComponent<Dropbomb>().SettingValue(_monster.Player, initSpeed, strength, launchAngle, missleSpeed);
+        bomb.GetComponent<Dropbomb>().SettingValue(_monster.Player, Info.damage, initSpeed, strength, missleSpeed);
     }
 
     private void Finish()

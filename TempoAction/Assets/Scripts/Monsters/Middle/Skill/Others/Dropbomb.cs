@@ -12,8 +12,8 @@ public class Dropbomb : MonoBehaviour
     private Rigidbody rb;
 
     private Transform player;                // 타겟의 Transform
-    private float initialSpeed = 10f;        // 초기 발사 속도
-    private float guidanceStrength = 5f;     // 유도 강도
+    private float initialSpeed;              // 초기 발사 속도
+    private float guidanceStrength;          // 유도 강도
     private float angle;
     private float speed;
 
@@ -24,10 +24,13 @@ public class Dropbomb : MonoBehaviour
 
     private void OnEnable()
     {
+        rb.velocity = Vector3.zero;
         timer = 0f;
 
-        Vector3 launchDirection = Quaternion.Euler(-angle, 0, 0) * transform.forward;
+        Vector3 launchDirection = Quaternion.Euler(0, angle, 0) * Vector3.up;
         rb.velocity = launchDirection * initialSpeed;
+        Debug.Log("RB : " + rb.velocity);
+        Debug.Log("launchDir : " + launchDirection);
 
         StartCoroutine(CheckTime());
     }
@@ -52,7 +55,7 @@ public class Dropbomb : MonoBehaviour
             rb.velocity = Vector3.ClampMagnitude(rb.velocity, speed);
 
             // 미사일의 앞 방향을 속도 벡터로 설정
-            transform.forward = rb.velocity.normalized;
+            transform.up = -rb.velocity.normalized;
         }
     }
 
@@ -62,8 +65,6 @@ public class Dropbomb : MonoBehaviour
         {
             isGrounded = true;
             ObjectPool.Instance.Remove(this.gameObject);
-
-            rb.velocity = Vector3.zero;
         }
 
         if (collision.gameObject.CompareTag("Player"))
@@ -74,17 +75,16 @@ public class Dropbomb : MonoBehaviour
             if (collision.gameObject.GetComponent<Player>().IsInvincible) return;
 
             collision.transform.GetComponent<Player>().TakeDamage(TotalDamage);
-            rb.velocity = Vector3.zero;
         }
     }
 
-    public void SettingValue(Transform player, float initSpeed = 5f, float strength = 30f, float angle = 45f, float speed = 10f)
+    public void SettingValue(Transform player, float damage, float initSpeed = 5f, float strength = 30f, float speed = 10f)
     {
         this.player = player;
         this.initialSpeed = initSpeed;
         this.guidanceStrength = strength;
-        this.angle = angle;
         this.speed = speed;
+        this.TotalDamage = damage;
     }
 
     private IEnumerator CheckTime()
