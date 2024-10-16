@@ -238,7 +238,7 @@ public class PlayerController
         float dir = 1;
         if (_player.Ani.GetBool("IsBackDash"))
         {
-            Flip(-Direction);
+            //Flip(-Direction);
             dir = -1;
         }
 
