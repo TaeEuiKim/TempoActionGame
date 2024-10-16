@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using DG.Tweening;
 
 [CreateAssetMenu(fileName = "StompRunner", menuName = "ScriptableObjects/Skill/Runner/StompRunner", order = 1)]
 public class StompRunner : SkillRunnerBase
@@ -23,6 +24,7 @@ public class StompRunner : SkillRunnerBase
         Vector3 initialPos = character.transform.position;
         Vector3 targetPos = targets[0].transform.position ;
         Vector3 direction = (targetPos - initialPos).normalized;
+        Vector3[] wayPoints = new Vector3[3];
 
         // 히트박스
         character.ColliderManager.SetActiveCollider(false, Define.ColliderType.PERSISTANCE);
@@ -39,26 +41,32 @@ public class StompRunner : SkillRunnerBase
         targetPos = GetTargetPosByCoillision(initialPos, direction, targetPos, movingDistance);
 
         // 포물선 운동 시작
-        while (curTime <= regenTime)
-        {
-            yield return null;
+        //while (curTime <= regenTime)
+        //{
+        //    yield return null;
 
-            curTime += Time.deltaTime;
+        //    curTime += Time.deltaTime;
 
-            Vector3 rayOrigin = character.transform.position; // 무조건 Bottom을 기준으로 해야 아래로 쏠 수 있음.
+        //    Vector3 rayOrigin = character.transform.position; // 무조건 Bottom을 기준으로 해야 아래로 쏠 수 있음.
 
-            Ray ray = new Ray(rayOrigin, Vector3.down);
-            Debug.DrawRay(rayOrigin, Vector3.down, Color.blue);
-            float collisiionDepth = skillData.SkillHitboxSize * SkillData.cm2m;
-            int layerMask = SkillTargetToLayerMask(skillData.SkillCastingTarget);
-            if (Physics.Raycast(ray, out RaycastHit characterHit, collisiionDepth, layerMask))
-            {
-                hittedCharacters.Add(characterHit.transform.GetComponent<CharacterBase>());
-            }
+        //    Ray ray = new Ray(rayOrigin, Vector3.down);
+        //    Debug.DrawRay(rayOrigin, Vector3.down, Color.blue);
+        //    float collisiionDepth = skillData.SkillHitboxSize * SkillData.cm2m;
+        //    int layerMask = SkillTargetToLayerMask(skillData.SkillCastingTarget);
+        //    if (Physics.Raycast(ray, out RaycastHit characterHit, collisiionDepth, layerMask))
+        //    {
+        //        hittedCharacters.Add(characterHit.transform.GetComponent<CharacterBase>());
+        //    }
 
-            Vector3 nextPos = EvaluateParabola(initialPos, targetPos, 3, curTime / regenTime); // 3은 임시 값 추후 높이 값으로 수정 필요
-            character.transform.position = nextPos;
-        }
+        //    Vector3 nextPos = EvaluateParabola(initialPos, targetPos, 3, curTime / regenTime); // 3은 임시 값 추후 높이 값으로 수정 필요
+        //    character.transform.position = nextPos;
+        //}
+
+        wayPoints.SetValue(character.transform.position, 0);
+        wayPoints.SetValue(new Vector3(targets[0].transform.position.x - character.transform.position.x,
+                                       character.transform.position.y + 3f, character.transform.position.z), 1);
+        wayPoints.SetValue(targets[0].transform.position, 2);
+
 
         // 캐릭터 타격
         foreach (var hittedCharacter in hittedCharacters.Distinct())
