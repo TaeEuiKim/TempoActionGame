@@ -7,8 +7,16 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Dropbomb", menuName = "ScriptableObjects/MiddleMonster/Skill/Dropbomb", order = 1)]
 public class Middle_Dropbomb : Middle_Skill
 {
-    [SerializeField] private int bombAmount;        // 폭탄 개수
-    [SerializeField] private float launchAngle = 45f;     // 발사 각도
+    [Header("폭탄 개수")]
+    [SerializeField] private int bombAmount;  
+    [Header("발사 각도")]
+    [SerializeField] private float launchAngle = 45f;  
+    [Header("초기 미사일 속도")]
+    [SerializeField] private float initSpeed = 10f; 
+    [Header("유도 강도")]
+    [SerializeField] private float strength = 5f;
+    [Header("최대 미사일 속도")]
+    [SerializeField] private float missleSpeed = 10f;
 
     private int _bombCount = 0;
 
@@ -63,39 +71,12 @@ public class Middle_Dropbomb : Middle_Skill
         _coolTime = 0;
     }
 
-    private void LaunchProjectile(GameObject bomb)
-    {
-        Vector3 targetPos = _monster.Player.transform.position + new Vector3(0, 0, 4f);
-        Vector3 startPos = _monster.transform.position + new Vector3(0, 0, -1f);
-
-        float distance = Vector3.Distance(targetPos, startPos);
-
-        // 높이 차이 계산
-        float heightDifference = targetPos.y - startPos.y;
-
-        // 수평 거리와 발사 각도를 사용한 속도 계산
-        float angleInRadians = launchAngle * Mathf.Deg2Rad;
-        float horizontalDistance = new Vector3(targetPos.x - startPos.x, 0, targetPos.z - startPos.z).magnitude;
-
-        // 발사 속도 계산 (물리 공식 사용)
-        float velocity = Mathf.Sqrt(horizontalDistance * Physics.gravity.magnitude / Mathf.Sin(2 * angleInRadians));
-
-        // 방향 벡터 계산
-        Vector3 direction = (targetPos - startPos).normalized;
-
-        // 힘 가하기 (3D 공간에서)
-        Vector3 velocityVector = direction * velocity * Mathf.Cos(angleInRadians);
-        velocityVector.y = velocity * Mathf.Sin(angleInRadians);
-
-        bomb.GetComponent<Rigidbody>().velocity = velocityVector;  // Rigidbody에 속도 적용
-    }
-
     private void Attack()
     {
         GameObject bomb = ObjectPool.Instance.Spawn("TraceRocket");
         bomb.transform.position = _monster.HitPoint.position + new Vector3(0, 0, -1f);
 
-        LaunchProjectile(bomb);
+        bomb.GetComponent<Dropbomb>().SettingValue(_monster.Player, initSpeed, strength, launchAngle, missleSpeed);
     }
 
     private void Finish()

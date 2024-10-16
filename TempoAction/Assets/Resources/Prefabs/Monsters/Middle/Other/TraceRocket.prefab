@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4907301561492232521}
   - component: {fileID: 7416419745410511549}
   - component: {fileID: -57522687402346781}
+  - component: {fileID: -4666183584765591135}
   m_Layer: 14
   m_Name: TraceRocket
   m_TagString: Untagged
@@ -132,8 +133,21 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-4666183584765591135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4622881555719169984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ec4e4c3227dd2a44aad18e76505d958, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TotalDamage: 0
 --- !u!1001 &5905808662757268229
 PrefabInstance:
   m_ObjectHideFlags: 0

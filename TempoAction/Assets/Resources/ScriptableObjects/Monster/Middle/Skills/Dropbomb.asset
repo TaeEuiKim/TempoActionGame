@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: Dropbomb
   m_EditorClassIdentifier: 
   _info:
-    skill: 0
+    skill: 5
     coolTime: 0
     range: 0
     damage: 10
     priority: 0
   bombAmount: 1
-  launchAngle: 45
+  launchAngle: 90
+  initSpeed: 200
+  strength: 30
+  missleSpeed: 10
