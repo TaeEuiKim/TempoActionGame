@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Dropbomb : MonoBehaviour
@@ -12,6 +13,7 @@ public class Dropbomb : MonoBehaviour
     private Rigidbody rb;
 
     private Transform player;                // 타겟의 Transform
+    private GameObject mark;
     private float initialSpeed;              // 초기 발사 속도
     private float guidanceStrength;          // 유도 강도
     private float angle;
@@ -27,10 +29,7 @@ public class Dropbomb : MonoBehaviour
         rb.velocity = Vector3.zero;
         timer = 0f;
 
-        Vector3 launchDirection = Quaternion.Euler(0, angle, 0) * Vector3.up;
-        rb.velocity = launchDirection * initialSpeed;
-        Debug.Log("RB : " + rb.velocity);
-        Debug.Log("launchDir : " + launchDirection);
+        transform.rotation = Quaternion.Euler(0f, 0f, -180f);
 
         StartCoroutine(CheckTime());
     }
@@ -64,12 +63,14 @@ public class Dropbomb : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
             isGrounded = true;
+            DestoryMark();
             ObjectPool.Instance.Remove(this.gameObject);
         }
 
         if (collision.gameObject.CompareTag("Player"))
         {
             isGrounded = true;
+            DestoryMark();
             ObjectPool.Instance.Remove(this.gameObject);
 
             if (collision.gameObject.GetComponent<Player>().IsInvincible) return;
@@ -78,19 +79,35 @@ public class Dropbomb : MonoBehaviour
         }
     }
 
-    public void SettingValue(Transform player, float damage, float initSpeed = 5f, float strength = 30f, float speed = 10f)
+    public GameObject SettingValue(Transform player, float damage, GameObject mark, float initSpeed = 5f, float strength = 30f, float speed = 10f)
     {
         this.player = player;
         this.initialSpeed = initSpeed;
         this.guidanceStrength = strength;
         this.speed = speed;
         this.TotalDamage = damage;
+        this.mark = mark;
+
+        return gameObject;
     }
 
     private IEnumerator CheckTime()
     {
+        while (initialSpeed == 0)
+        {
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        Vector3 launchDirection = Vector3.up;
+        rb.velocity = launchDirection * initialSpeed;
+
         yield return new WaitForSeconds(1f);
 
         isGrounded = false;
+    }
+
+    public void DestoryMark()
+    {
+        ObjectPool.Instance.Remove(mark);
     }
 }

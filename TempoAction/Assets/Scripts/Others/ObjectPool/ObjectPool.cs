@@ -109,8 +109,8 @@ public class ObjectPool : Singleton<ObjectPool>
         string poolName = RemoveClone(obj.name) + "Pool";
 
         obj.transform.SetParent(GetPool(poolName));
-        //obj.transform.localPosition = Vector3.zero;
-        //obj.transform.localRotation = Quaternion.identity;
+        obj.transform.localPosition = Vector3.zero;
+        obj.transform.localRotation = Quaternion.identity;
         //obj.transform.localScale = Vector3.one;
     }
 

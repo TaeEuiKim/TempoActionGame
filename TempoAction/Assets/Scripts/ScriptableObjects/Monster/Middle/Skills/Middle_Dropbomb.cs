@@ -71,10 +71,12 @@ public class Middle_Dropbomb : Middle_Skill
 
     private void Attack()
     {
-        GameObject bomb = ObjectPool.Instance.Spawn("TraceRocket");
+        GameObject mark = ObjectPool.Instance.Spawn("TraceMark", 0, _monster.Player);
+        mark.transform.position = _monster.Player.transform.position + new Vector3(0, 1f, -1);
+
+        GameObject bomb = ObjectPool.Instance.Spawn("TraceRocket").GetComponent<Dropbomb>().SettingValue(_monster.Player, Info.damage, mark, initSpeed, strength, missleSpeed);
         bomb.transform.position = _monster.HitPoint.position + new Vector3(0, 0, -1f);
 
-        bomb.GetComponent<Dropbomb>().SettingValue(_monster.Player, Info.damage, initSpeed, strength, missleSpeed);
     }
 
     private void Finish()
