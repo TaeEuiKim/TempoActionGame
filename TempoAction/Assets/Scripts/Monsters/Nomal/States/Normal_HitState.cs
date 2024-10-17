@@ -18,6 +18,10 @@ public class Normal_HitState : Normal_State
         }
 
         // 애니 적용
+        if (!_monster.Ani.GetBool("Hit"))
+        {
+            _monster.Ani.SetBool("Hit", true);
+        }
 
         // 상태 전이
         if(_monster.Stat.Hp > 0)

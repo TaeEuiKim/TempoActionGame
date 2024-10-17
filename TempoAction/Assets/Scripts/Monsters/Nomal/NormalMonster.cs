@@ -37,6 +37,11 @@ public class NormalMonster : Monster
     [SerializeField] private Transform _hitPoint;
     [SerializeField] private Vector3 _colliderSize;
 
+    [Space]
+    [Header("피격 대기시간")]
+    [SerializeField] private float hittingTime = 0f;
+    private float _hitTimer = 0f;
+    private bool isHit = false;
 
     #endregion
 
@@ -240,6 +245,8 @@ public class NormalMonster : Monster
         base.TakeDamage(value);
         if (Stat.Hp > 0)
         {
+            isHit = true;
+            StartCoroutine(CheckHitTimer());
             CurrentPerceptionState = Define.PerceptionType.HIT;
         }
         else if (Stat.Hp <= 0)
@@ -276,6 +283,21 @@ public class NormalMonster : Monster
     {
         Rb.useGravity = true;
         GetComponent<BoxCollider>().enabled = true;
+    }
+
+    private IEnumerator CheckHitTimer()
+    {
+        while (Stat.Hp > 0)
+        {
+            _hitTimer += Time.deltaTime;
+            if (_hitTimer > hittingTime)
+            {
+                _hitTimer = 0;
+                isHit = false;
+            }
+
+            yield return new WaitForSeconds(0.02f);
+        }
     }
 
     private void OnDrawGizmos()

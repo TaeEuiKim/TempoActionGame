@@ -99,10 +99,9 @@ public class PlayerController
             _isLanded = false;
         }
 
-        if (_isOnMonster)
+        if (_isOnMonster && !_isGrounded)
         {
             Vector3 force = new Vector3(-_player.CharacterModel.localScale.x * 30f, -5f);
-
             _player.Rb.AddForce(force, ForceMode.VelocityChange);
         }
 
@@ -151,7 +150,7 @@ public class PlayerController
             return;
         }
 
-        Direction = 0;
+        _direction = 0;
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
@@ -255,7 +254,6 @@ public class PlayerController
         _player.Rb.DOMove(dashPosition, _player.PlayerSt.DashDuration).SetEase(Ease.OutQuad).OnComplete(() =>
         {
             _isDashing = false;
-            Debug.LogError(1);
         });
 
         _player.Ani.SetTrigger("Dash");

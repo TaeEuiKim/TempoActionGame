@@ -6,6 +6,7 @@ using UnityEngine;
 public class Shelling : MonoBehaviour
 {
     public float TotalDamage { get; set; }
+    public float MonsterDamage { get; set; }
     public Vector3 bombSize { get; set; }
     public LayerMask bombType { get; set; }
 
@@ -54,7 +55,7 @@ public class Shelling : MonoBehaviour
             }
             if (collider.gameObject.layer == LayerMask.NameToLayer("Monster"))
             {
-                collider.GetComponent<Monster>().TakeDamage(TotalDamage);
+                collider.GetComponent<Monster>().TakeDamage(MonsterDamage);
             }
         }
 

@@ -7,6 +7,9 @@ using Cinemachine;
 [CreateAssetMenu(fileName = "Shelling", menuName = "ScriptableObjects/MiddleMonster/Skill/Shelling", order = 1)]
 public class Middle_Shelling : Middle_Skill
 {
+    [Header("몬스터에게 입히는 데미지")]
+    [SerializeField] private float monsterDamage;
+
     [Header("폭발 범위")]
     [SerializeField] private Vector3 bombSize;
 

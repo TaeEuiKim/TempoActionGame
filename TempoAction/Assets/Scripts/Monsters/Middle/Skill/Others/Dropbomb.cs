@@ -7,6 +7,7 @@ using UnityEngine;
 public class Dropbomb : MonoBehaviour
 {
     public float TotalDamage;
+    private float monsterDamage;
 
     private float timer = 0f;
     private bool isGrounded = true;
@@ -65,7 +66,7 @@ public class Dropbomb : MonoBehaviour
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Monster"))
         {
-            collision.transform.GetComponent<Monster>().TakeDamage(TotalDamage);
+            collision.transform.GetComponent<Monster>().TakeDamage(monsterDamage);
         }
 
         if (collision.gameObject.CompareTag("Player"))
@@ -78,7 +79,7 @@ public class Dropbomb : MonoBehaviour
         ObjectPool.Instance.Remove(this.gameObject);
     }
 
-    public GameObject SettingValue(Transform player, float damage, GameObject mark, float initSpeed = 5f, float strength = 30f, float speed = 10f)
+    public GameObject SettingValue(Transform player, float damage, float monsterDamage, GameObject mark, float initSpeed = 5f, float strength = 30f, float speed = 10f)
     {
         this.player = player;
         this.initialSpeed = initSpeed;
@@ -86,6 +87,7 @@ public class Dropbomb : MonoBehaviour
         this.speed = speed;
         this.TotalDamage = damage;
         this.mark = mark;
+        this.monsterDamage = monsterDamage;
 
         return gameObject;
     }
