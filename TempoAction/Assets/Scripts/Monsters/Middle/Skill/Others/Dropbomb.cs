@@ -60,23 +60,22 @@ public class Dropbomb : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        isGrounded = true;
+        DestoryMark();
+
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Monster"))
         {
-            isGrounded = true;
-            DestoryMark();
-            ObjectPool.Instance.Remove(this.gameObject);
+            collision.transform.GetComponent<Monster>().TakeDamage(TotalDamage);
         }
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            isGrounded = true;
-            DestoryMark();
-            ObjectPool.Instance.Remove(this.gameObject);
-
             if (collision.gameObject.GetComponent<Player>().IsInvincible) return;
 
             collision.transform.GetComponent<Player>().TakeDamage(TotalDamage);
         }
+
+        ObjectPool.Instance.Remove(this.gameObject);
     }
 
     public GameObject SettingValue(Transform player, float damage, GameObject mark, float initSpeed = 5f, float strength = 30f, float speed = 10f)

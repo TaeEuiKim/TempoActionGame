@@ -46,9 +46,16 @@ public class Shelling : MonoBehaviour
     private void BombTimer()
     {
         Collider[] hitPlayer = Physics.OverlapBox(transform.position, bombSize / 2, transform.rotation, bombType);
-        if (hitPlayer.Length > 0)
+        foreach (Collider collider in hitPlayer)
         {
-            hitPlayer[0].GetComponent<Player>().TakeDamage(TotalDamage, true);
+            if (collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+            {
+                collider.GetComponent<Player>().TakeDamage(TotalDamage, true);
+            }
+            if (collider.gameObject.layer == LayerMask.NameToLayer("Monster"))
+            {
+                collider.GetComponent<Monster>().TakeDamage(TotalDamage);
+            }
         }
 
         GameObject effect = ObjectPool.Instance.Spawn("BombEffect", 1);
