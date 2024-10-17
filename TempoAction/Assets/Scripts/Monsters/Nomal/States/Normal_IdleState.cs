@@ -10,16 +10,31 @@ public class Normal_IdleState : Normal_State
     public override void Enter()
     {
         base.Enter();
+        _monster.Ani.SetBool("RunStop", false);
     }
 
     public override void Stay()
     {
         _monster.Direction = -(_monster.Player.position.x - _monster.transform.position.x);
 
-        _monster.TrySkillAttack();
-
         float distance = Vector3.Distance(_monster.transform.position, _monster.Target.position);
-        if(distance > _monster.MonsterSt.AttackRange && distance <= _monster.PerceptionDistance * SkillData.cm2m)
+
+        if (_monster.TrySkillAttack())
+        {
+            if (_monster.Ani.GetBool("Attack"))
+            {
+                _monster.Ani.SetBool("Attack", false);
+            }
+        }
+        else
+        {
+            if (distance <= _monster.MonsterSt.AttackRange && _monster.isAttack)
+            {
+                _monster.CurrentPerceptionState = Define.PerceptionType.DETECTIONM;
+            }
+        }
+
+        if (distance > _monster.MonsterSt.AttackRange && distance <= _monster.PerceptionDistance * SkillData.cm2m)
         {
             _monster.CurrentPerceptionState = Define.PerceptionType.TRACE;
         }

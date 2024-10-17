@@ -84,7 +84,7 @@ public class Middle_Shelling : Middle_Skill
         float _y = 23;
         Shelling rocket = ObjectPool.Instance.Spawn("Rocket").GetComponent<Shelling>();
         rocket.transform.position = new Vector3(_monster.Player.position.x, _y, _monster.Player.position.z);
-        rocket.transform.rotation = Quaternion.Euler(-90, -200, 0);
+        rocket.transform.rotation = Quaternion.Euler(0, 0, 0);
         rocket.bombSize = bombSize;
         rocket.bombType = bombType;
         rocket.TotalDamage = Info.damage;

@@ -196,7 +196,6 @@ public class PlayerController
         if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) && !_isGrounded && !_isDoubleJumping)
         {
             _player.Ani.SetTrigger("isJumping");
-            //_player.Rb.MovePosition(_player.Ani.rootPosition);
             _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
             _isDoubleJumping = true;
         }
@@ -204,7 +203,6 @@ public class PlayerController
         if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) && _isGrounded)
         {
             _player.Ani.SetTrigger("isJumping");
-            //_player.Rb.MovePosition(_player.Ani.rootPosition);
             _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
             _isGrounded = false;
         }
