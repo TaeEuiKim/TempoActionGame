@@ -90,7 +90,6 @@ public class Player : CharacterBase
 
     private void Start()
     {
-
         _attack.Initialize();
         _controller.Initialize();
 
