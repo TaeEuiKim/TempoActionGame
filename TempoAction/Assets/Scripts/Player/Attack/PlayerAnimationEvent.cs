@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Cinemachine;
+using Unity.VisualScripting;
+using System.Threading;
 
 public class PlayerAnimationEvent : MonoBehaviour
 {
     [SerializeField] private Player _player;
+    [SerializeField] private Transform leftHandTrans;
+    [SerializeField] private Transform rightHandTrans;
     private CameraController _cameraController;
 
     private void Start()
@@ -24,23 +28,56 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         _player.Attack.IsHit = true;
 
+        // 히트 파티클 생성
+        GameObject hitParticle = ObjectPool.Instance.Spawn("P_Punch", 1);
+        GameObject hitParticle2 = ObjectPool.Instance.Spawn("P_PunchAttack", 1);
+
         foreach (Collider monsterCollider in hitMonsters)
         {
             Monster monster = monsterCollider.GetComponent<Monster>();
 
-            if (_player.Attack.CurrentTempoData.type == Define.TempoType.MAIN)
+            switch (_player.Ani.GetInteger("AtkCount"))
             {
-                HitMainTempo(monster);
+                case 0:
+                    hitParticle.transform.position = leftHandTrans.position;
+                    hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                    hitParticle2.transform.position = leftHandTrans.position;
+                    hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                    hitParticle.transform.rotation = leftHandTrans.rotation;
+                    hitParticle2.transform.rotation = leftHandTrans.rotation;
+                    break;
+                case 1:
+                    hitParticle.transform.position = rightHandTrans.position;
+                    hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                    hitParticle2.transform.position = rightHandTrans.position;
+                    hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                    hitParticle.transform.rotation = rightHandTrans.rotation;
+                    hitParticle2.transform.rotation = rightHandTrans.rotation;
+                    break;
+                case 2:
+                    hitParticle.transform.position = leftHandTrans.position;
+                    hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                    hitParticle2.transform.position = leftHandTrans.position;
+                    hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                    hitParticle.transform.rotation = leftHandTrans.rotation;
+                    hitParticle2.transform.rotation = leftHandTrans.rotation;
+                    break;
+                case 3:
+                    hitParticle.transform.position = leftHandTrans.position;
+                    hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                    hitParticle2.transform.position = leftHandTrans.position;
+                    hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                    hitParticle.transform.rotation = leftHandTrans.rotation;
+                    hitParticle2.transform.rotation = leftHandTrans.rotation;
+                    break;
+                case 4:
+                    GameObject hitParticle3 = ObjectPool.Instance.Spawn("FX_PunchAttackSphere", 1);
+
+                    hitParticle3.transform.position = monsterCollider.ClosestPoint(_player.HitPoint.position);
+                    break;
             }
 
-            // 히트 파티클 생성
-            GameObject hitParticle = SpawnHitParticle(monster, "P_Punch");
-            GameObject hitParticle2 = SpawnHitParticle(monster, "P_PunchAttack");
-
-            Vector3 hitPos = monsterCollider.ClosestPoint(_player.HitPoint.position);
-            hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z - 0.1f);
-            hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(-_player.CharacterModel.localScale.x, 0, 0));
-            hitParticle2.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z);
+            HitMainTempo(monster);
         }
     }
     private void HitMainTempo(Monster monster)
