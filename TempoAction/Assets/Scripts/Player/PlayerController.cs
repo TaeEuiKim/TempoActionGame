@@ -99,10 +99,9 @@ public class PlayerController
             _isLanded = false;
         }
 
-        if (_isOnMonster)
+        if (_isOnMonster && !_isGrounded)
         {
             Vector3 force = new Vector3(-_player.CharacterModel.localScale.x * 30f, -5f);
-
             _player.Rb.AddForce(force, ForceMode.VelocityChange);
         }
 
@@ -151,7 +150,7 @@ public class PlayerController
             return;
         }
 
-        Direction = 0;
+        _direction = 0;
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
@@ -197,7 +196,6 @@ public class PlayerController
         if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) && !_isGrounded && !_isDoubleJumping)
         {
             _player.Ani.SetTrigger("isJumping");
-            //_player.Rb.MovePosition(_player.Ani.rootPosition);
             _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
             _isDoubleJumping = true;
         }
@@ -205,7 +203,6 @@ public class PlayerController
         if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) && _isGrounded)
         {
             _player.Ani.SetTrigger("isJumping");
-            //_player.Rb.MovePosition(_player.Ani.rootPosition);
             _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
             _isGrounded = false;
         }
@@ -229,8 +226,8 @@ public class PlayerController
 
         isMove = false;
 
-        _player.Rb.velocity = Vector2.zero;
         CoroutineRunner.Instance.StartCoroutine(DashInvincibility(_player.PlayerSt.DashDuration));
+        _player.Rb.velocity = Vector2.zero;
         _isDashing = true;
         Vector3 dashPosition = Vector3.zero;
         RaycastHit hit;
@@ -238,12 +235,11 @@ public class PlayerController
         float dir = 1;
         if (_player.Ani.GetBool("IsBackDash"))
         {
-            //Flip(-Direction);
             dir = -1;
         }
 
         if (Physics.Raycast(_player.transform.position + new Vector3(0, 0.5f), Vector3.right * _dashDirection * dir, out hit, _player.PlayerSt.DashDistance, _player.WallLayer) ||
-            Physics.Raycast(_player.transform.position + new Vector3(0, 0.5f), Vector3.right * _dashDirection * dir, out hit, _player.PlayerSt.DashDistance, _player.GroundLayer)) // 벽이 있다면 벽과의 충돌 위치 바로 앞에서 멈추게 설정
+            Physics.Raycast(_player.transform.position + new Vector3(0, 0.5f), Vector3.right * _dashDirection * dir, out hit, _player.PlayerSt.DashDistance, _player.GroundLayer))
         {
             dashPosition = (hit.point - new Vector3(0, 0.5f)) - (Vector3.right * _dashDirection * dir) * 0.2f;  // 곱하는 수 만큼 벽에서 떨어짐
             isMove = true;
@@ -256,7 +252,6 @@ public class PlayerController
         _player.Rb.DOMove(dashPosition, _player.PlayerSt.DashDuration).SetEase(Ease.OutQuad).OnComplete(() =>
         {
             _isDashing = false;
-
         });
 
         _player.Ani.SetTrigger("Dash");
@@ -320,6 +315,7 @@ public class PlayerController
 
         _player.CharacterModel.localScale = tempScale;
     }
+
     private bool CheckMovePath()
     {
         // 레이캐스트로 장애물 감지
@@ -375,12 +371,5 @@ public class PlayerController
         }
 
         return false;
-    }
-
-    public void FlipDirection()
-    {
-        Direction = -Direction;
-        _dashDirection = -_dashDirection;
-        _tempDir = -_tempDir;
     }
 }

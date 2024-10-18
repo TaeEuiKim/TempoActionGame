@@ -40,7 +40,10 @@ public class Normal_TraceState : Normal_State
         _monster.Rb.velocity = tempVelocity;
         _monster.Direction = -dir;
 
-        if (_monster.TrySkillAttack()) { return; }
+        if (_monster.TrySkillAttack()) 
+        {
+            return; 
+        }
 
         float distance = Vector3.Distance(_monster.transform.position, _monster.Target.position);
         if (distance <= _monster.MonsterSt.AttackRange || distance > _monster.PerceptionDistance * SkillData.cm2m)

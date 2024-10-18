@@ -6,6 +6,7 @@ using UnityEngine;
 public class Shelling : MonoBehaviour
 {
     public float TotalDamage { get; set; }
+    public float MonsterDamage { get; set; }
     public Vector3 bombSize { get; set; }
     public LayerMask bombType { get; set; }
 
@@ -46,13 +47,20 @@ public class Shelling : MonoBehaviour
     private void BombTimer()
     {
         Collider[] hitPlayer = Physics.OverlapBox(transform.position, bombSize / 2, transform.rotation, bombType);
-        if (hitPlayer.Length > 0)
+        foreach (Collider collider in hitPlayer)
         {
-            hitPlayer[0].GetComponent<Player>().TakeDamage(TotalDamage, true);
+            if (collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+            {
+                collider.GetComponent<Player>().TakeDamage(TotalDamage, true);
+            }
+            if (collider.gameObject.layer == LayerMask.NameToLayer("Monster"))
+            {
+                collider.GetComponent<Monster>().TakeDamage(MonsterDamage);
+            }
         }
 
         GameObject effect = ObjectPool.Instance.Spawn("BombEffect", 1);
-        effect.transform.position = transform.position + new Vector3(0, -0.5f);
+        effect.transform.position = transform.position + new Vector3(0, 0f);
         ObjectPool.Instance.Remove(this.gameObject);
     }
 

@@ -15,6 +15,9 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
     private SkillObject interatedObject;
     private PlayerView _view;
 
+    private bool isSkill = true;
+    private float skillTimer = 0;
+
     /*// temp
     public Collider hitbox;
     public GameObject offingHitbox;
@@ -38,6 +41,7 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
 
         _view = GetComponent<PlayerView>();
         Initialize();
+        StartCoroutine(SkillTimer());
     }
 
     public void Initialize()
@@ -101,7 +105,7 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
     {
         foreach (PlayerSkillSlot slot in SkillSlots)
         {
-            slot.UseSkillKeyDown(characterBase);
+            slot.UseSkillKeyDown(characterBase, isSkill);
             if (slot.Skill is NormalSkill normalSkill)
             {
                 normalSkill.UpdateTime(Time.deltaTime);
@@ -176,5 +180,28 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
         _view.ChangeSubSkillIcon(reserveSlots.Count - 1, true);
         ISkillRoot nextSkill = reserveSlots.Dequeue();
         AddSkill(nextSkill);
+    }
+
+    public void SetIsSkill(bool isSk)
+    {
+        isSkill = isSk;
+    }
+
+    private IEnumerator SkillTimer()
+    {
+        while (true)
+        {
+            if (isSkill == false)
+            {
+                skillTimer += Time.deltaTime;
+                if (skillTimer > 1f)
+                {
+                    skillTimer = 0f;
+                    isSkill = true;
+                }
+            }
+
+            yield return new WaitForSeconds(0.01f);
+        }
     }
 }

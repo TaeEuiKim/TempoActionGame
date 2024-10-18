@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class Dropbomb : MonoBehaviour
 {
+    [SerializeField] private Vector3 ro;
+
     public float TotalDamage;
+    private float monsterDamage;
 
     private float timer = 0f;
     private bool isGrounded = true;
@@ -29,7 +33,8 @@ public class Dropbomb : MonoBehaviour
         rb.velocity = Vector3.zero;
         timer = 0f;
 
-        transform.rotation = Quaternion.Euler(0f, 0f, -180f);
+        //transform.rotation = Quaternion.Euler(0f, 0f, -180f);
+        transform.rotation = Quaternion.Euler(ro);
 
         StartCoroutine(CheckTime());
     }
@@ -60,26 +65,34 @@ public class Dropbomb : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        isGrounded = true;
+        DestoryMark();
+
+        GameObject effect = ObjectPool.Instance.Spawn("TraceEffect", 1);
+
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Monster"))
         {
-            isGrounded = true;
-            DestoryMark();
-            ObjectPool.Instance.Remove(this.gameObject);
+            effect.transform.position = collision.transform.position - new Vector3(0, 2.5f);
+            collision.transform.GetComponent<Monster>().TakeDamage(monsterDamage);
         }
 
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            isGrounded = true;
-            DestoryMark();
-            ObjectPool.Instance.Remove(this.gameObject);
-
+            effect.transform.position = collision.transform.position - new Vector3(0, 2.5f);
             if (collision.gameObject.GetComponent<Player>().IsInvincible) return;
 
             collision.transform.GetComponent<Player>().TakeDamage(TotalDamage);
         }
+
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            effect.transform.position = transform.position - new Vector3(0, 3.5f);
+        }
+
+        ObjectPool.Instance.Remove(this.gameObject);
     }
 
-    public GameObject SettingValue(Transform player, float damage, GameObject mark, float initSpeed = 5f, float strength = 30f, float speed = 10f)
+    public GameObject SettingValue(Transform player, float damage, float monsterDamage, GameObject mark, float initSpeed = 5f, float strength = 30f, float speed = 10f)
     {
         this.player = player;
         this.initialSpeed = initSpeed;
@@ -87,6 +100,7 @@ public class Dropbomb : MonoBehaviour
         this.speed = speed;
         this.TotalDamage = damage;
         this.mark = mark;
+        this.monsterDamage = monsterDamage;
 
         return gameObject;
     }

@@ -7,6 +7,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Dropbomb", menuName = "ScriptableObjects/MiddleMonster/Skill/Dropbomb", order = 1)]
 public class Middle_Dropbomb : Middle_Skill
 {
+    [Header("몬스터에게 입히는 피해")]
+    [SerializeField] private float monsterDamage;
     [Header("폭탄 개수")]
     [SerializeField] private int bombAmount;  
     [Header("초기 미사일 속도")]
@@ -74,7 +76,7 @@ public class Middle_Dropbomb : Middle_Skill
         GameObject mark = ObjectPool.Instance.Spawn("TraceMark", 0, _monster.Player);
         mark.transform.position = _monster.Player.transform.position + new Vector3(0, 1f, -1);
 
-        GameObject bomb = ObjectPool.Instance.Spawn("TraceRocket").GetComponent<Dropbomb>().SettingValue(_monster.Player, Info.damage, mark, initSpeed, strength, missleSpeed);
+        GameObject bomb = ObjectPool.Instance.Spawn("TraceRocket").GetComponent<Dropbomb>().SettingValue(_monster.Player, Info.damage, monsterDamage, mark, initSpeed, strength, missleSpeed);
         bomb.transform.position = _monster.HitPoint.position + new Vector3(0, 0, -1f);
 
     }

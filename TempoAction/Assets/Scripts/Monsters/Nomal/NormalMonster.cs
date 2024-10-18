@@ -19,6 +19,7 @@ public class NormalMonster : Monster
 
     [SerializeField] private float _moveRange; // Idle 이동 거리
 
+
     [Space]
     [SerializeField] private float _perceptionDistance;                                                                                    // 인식 거리
     //[SerializeField] private float _perceptionAngle;                                                                                       // 인식 각도
@@ -33,16 +34,27 @@ public class NormalMonster : Monster
 
     public Vector2 SpawnPoint { get; set; }
 
+
     [Space]
     [SerializeField] private Transform _hitPoint;
     [SerializeField] private Vector3 _colliderSize;
 
+    [Space]
+    [Header("피격 대기시간")]
+    [SerializeField] private float hittingTime = 0f;
+    private float _hitTimer = 0f;
+    private bool isHit = false;
 
     #endregion
 
     #region 프로퍼티
+    public bool isAttack { get; set; }
+
     public Transform Target { get => _target; }
     public float MoveRange { get => _moveRange; }
+    public Transform HitPoint { get => _hitPoint; set => _hitPoint = value; }
+    public Vector3 ColliderSize { get => _colliderSize; set => _colliderSize = value; }
+
 
     public float PerceptionDistance { get => _perceptionDistance; }
     //public float PerceptionAngle { get => _perceptionAngle; }
@@ -108,11 +120,11 @@ public class NormalMonster : Monster
     {
         //_perceptionStateStorage.Add(Define.PerceptionType.PATROL, new Nomal_Patrol(this));
         //_perceptionStateStorage.Add(Define.PerceptionType.BOUNDARY, new Nomal_Boundary(this));
-        //_perceptionStateStorage.Add(Define.PerceptionType.DETECTIONM, new Normal_Detectionm(this));
         _perceptionStateStorage.Add(Define.PerceptionType.IDLE, new Normal_IdleState(this));
         _perceptionStateStorage.Add(Define.PerceptionType.HIT, new Normal_HitState(this));
         _perceptionStateStorage.Add(Define.PerceptionType.TRACE, new Normal_TraceState(this));
         _perceptionStateStorage.Add(Define.PerceptionType.GUARD, new Normal_GuardState(this));
+        _perceptionStateStorage.Add(Define.PerceptionType.DETECTIONM, new Normal_Detectionm(this));
         _perceptionStateStorage.Add(Define.PerceptionType.SKILLATTACK, new Normal_SkillAttackState(this));
         _perceptionStateStorage.Add(Define.PerceptionType.DEATH, new Normal_Death(this));
 
@@ -128,6 +140,8 @@ public class NormalMonster : Monster
             float dir = _player.position.x - transform.position.x;
             Direction = dir;
         };
+
+        isAttack = true;
     }
 
     protected override void Update()
@@ -221,26 +235,14 @@ public class NormalMonster : Monster
     }*/
     #endregion
 
-    // 공격 함수
-    public void Attack()
-    {
-        bool isHit = Physics.CheckBox(_hitPoint.position, _colliderSize / 2, _hitPoint.rotation, _playerLayer);
-
-        if (isHit)
-        {
-            print("공격");
-            var player = _player.GetComponent<Player>();
-            player.TakeDamage(_stat.Damage);
-        }
-
-    }
-
     public override void TakeDamage(float value)
     {
         base.TakeDamage(value);
-        if (Stat.Hp > 0)
+        if (Stat.Hp > 0 && !isHit)
         {
+            isHit = true;
             CurrentPerceptionState = Define.PerceptionType.HIT;
+            StartCoroutine(CheckHitTimer());
         }
         else if (Stat.Hp <= 0)
         {
@@ -252,12 +254,16 @@ public class NormalMonster : Monster
     public bool TrySkillAttack()
     {
         var slots = _SkillManager.GetUsableSkillSlots();
+        float distance = Vector3.Distance(transform.position, Player.position);
 
         if (slots.Length > 0)
         {
             CurrentSkillSlots = slots;
-            CurrentPerceptionState = Define.PerceptionType.SKILLATTACK;
-            return true;
+            if (CurrentSkillSlots[0].skillRunner.skillData.SkillEffectValue * SkillData.cm2m >= distance)
+            {
+                CurrentPerceptionState = Define.PerceptionType.SKILLATTACK;
+                return true;
+            }
         }
 
         return false;
@@ -276,6 +282,21 @@ public class NormalMonster : Monster
     {
         Rb.useGravity = true;
         GetComponent<BoxCollider>().enabled = true;
+    }
+
+    private IEnumerator CheckHitTimer()
+    {
+        while (isHit)
+        {
+            _hitTimer += Time.deltaTime;
+            if (_hitTimer > hittingTime)
+            {
+                _hitTimer = 0;
+                isHit = false;
+            }
+
+            yield return new WaitForSeconds(0.02f);
+        }
     }
 
     private void OnDrawGizmos()
