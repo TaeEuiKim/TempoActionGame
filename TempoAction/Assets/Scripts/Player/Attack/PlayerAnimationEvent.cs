@@ -5,6 +5,7 @@ using DG.Tweening;
 using Cinemachine;
 using Unity.VisualScripting;
 using System.Threading;
+using UnityEngine.UIElements;
 
 public class PlayerAnimationEvent : MonoBehaviour
 {
@@ -132,6 +133,7 @@ public class PlayerAnimationEvent : MonoBehaviour
     private void Finish(float delay)
     {
         _player.Attack.IsHit = false;
+        _player.Controller.isMove = true;
         _player.Attack.CheckDelay = delay;
         _player.Attack.ChangeCurrentAttackState(Define.AttackState.CHECK);
     }
@@ -175,32 +177,54 @@ public class PlayerAnimationEvent : MonoBehaviour
         Vector3 rayOrigin = new Vector3(transform.parent.position.x, transform.parent.position.y, transform.parent.position.z);
         Vector3 rayDirection = transform.localScale.x < 0 ? transform.right : transform.right * -1;
 
-        if (_player.Ani.GetInteger("AtkCount") == 4)
+        // 레이캐스트 실행
+        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, _player.Attack.CurrentTempoData.distance, _player.MonsterLayer))
         {
-            if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitPos, _player.Attack.CurrentTempoData.distance, _player.MonsterLayer))
-            {
-                float closestMonsterX = hitPos.point.x + (-rayDirection.x * 0.2f);
-                transform.parent.DOMoveX(closestMonsterX, duration);
-            }
-            else
-            {
-                transform.parent.DOMoveX(transform.parent.position.x - (2f * _player.CharacterModel.localScale.x), 0.3f);
-            }
-
-            _player.Rb.AddForce(Vector3.right * _player.Controller.Direction * 20f, ForceMode.VelocityChange);
-        }
-        else
-        {
-            // 레이캐스트 실행
-            if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, _player.Attack.CurrentTempoData.distance, _player.MonsterLayer))
-            {
-                float closestMonsterX = hit.point.x + (-rayDirection.x * 0.2f);
-                transform.parent.DOMoveX(closestMonsterX, duration);
-            }
+            float closestMonsterX = hit.point.x + (-rayDirection.x * 0.2f);
+            transform.parent.DOMoveX(closestMonsterX, duration);
         }
 
         // 디버그용 레이 그리기
         Debug.DrawRay(rayOrigin, rayDirection * _player.Attack.CurrentTempoData.distance, Color.red);
+    }
+
+    private void MoveAttack(float duration)
+    {
+        Vector3 rayOrigin = new Vector3(transform.parent.position.x, transform.parent.position.y, transform.parent.position.z);
+        Vector3 rayDirection = transform.localScale.x < 0 ? transform.right : transform.right * -1;
+
+        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitPos, _player.Attack.CurrentTempoData.distance, _player.MonsterLayer))
+        {
+            float closestMonsterX = hitPos.point.x + (-rayDirection.x * 0.2f);
+            transform.parent.DOMoveX(closestMonsterX, duration);
+        }
+        else
+        {
+            switch (_player.Ani.GetInteger("AtkCount"))
+            {
+                case 0:
+                    transform.parent.DOMoveX(transform.parent.position.x - (2f * _player.CharacterModel.localScale.x), 0.3f);
+
+                    _player.Rb.AddForce(Vector3.right * _player.Controller.Direction * 20f, ForceMode.VelocityChange);
+                    break;
+                case 1:
+
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+                    transform.parent.DOMoveX(transform.parent.position.x - (2f * _player.CharacterModel.localScale.x), 0.3f);
+
+                    _player.Rb.AddForce(Vector3.right * _player.Controller.Direction * 20f, ForceMode.VelocityChange);
+                    break;
+                case 4:
+                    transform.parent.DOMoveX(transform.parent.position.x - (2f * _player.CharacterModel.localScale.x), 0.3f);
+
+                    _player.Rb.AddForce(Vector3.right * _player.Controller.Direction * 20f, ForceMode.VelocityChange);
+                    break;
+            }
+        }
     }
 
     // 시간 크기 변경
