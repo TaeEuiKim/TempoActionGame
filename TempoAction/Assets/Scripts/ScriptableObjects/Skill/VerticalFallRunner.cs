@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 
 [CreateAssetMenu(fileName = "VerticalFallRunner", menuName = "ScriptableObjects/Skill/Runner/VerticalFallRunner", order = 1)]
@@ -75,6 +74,14 @@ public class VerticalFallRunner : SkillRunnerBase
             float curYSpeed = ySpeed * Time.deltaTime;              // 착지 속도
             character.Ani?.SetFloat("VerticalSpeed", -curYSpeed);   // 착지 애니를 위한 수치 변경
             Vector3 nextPos = new Vector3(initialPos.x, yPos - curYSpeed, initialPos.z);
+
+            // 만약 움직였을 때 바닥에 닿는다면
+            if(Physics.Linecast(character.transform.position, nextPos, 1 << 12))
+            {
+                // 즉시 낙하 종료
+                break;
+            }
+
             character.transform.position = nextPos;
         }
 
@@ -93,12 +100,13 @@ public class VerticalFallRunner : SkillRunnerBase
         character.ColliderManager.SetActiveCollider(true, Define.ColliderType.PERSISTANCE);
         rigid.useGravity = true;
 
-        var playerContorlller = ((Player)character).Controller;
-        //playerContorlller.Jump(false);
-        character.Ani.SetTrigger("isJumping");
-        //playerContorlller._IsGrounded = false;
-        float? jumpPower = ((PlayerStat)(character.Stat))?.JumpForce;
-        rigid.velocity = Vector3.up * jumpPower.Value;
+        // 적을 밟았을 경우 재도약
+        if(hittedCharacters.Count > 0)
+        {
+            character.Ani?.SetTrigger("isJumping");
+            float? jumpPower = ((PlayerStat)(character.Stat))?.JumpForce;
+            rigid.velocity = Vector3.up * jumpPower.Value;
+        }
 
         Debug.Log("Vertical Fall End");
     }
