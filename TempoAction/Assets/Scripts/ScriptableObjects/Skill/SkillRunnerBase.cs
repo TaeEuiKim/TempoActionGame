@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +20,9 @@ public abstract class SkillRunnerBase : ScriptableObject
     }
     
     /// <summary>
-    /// �ʱ�ȭ �޼ҵ�. 
-    /// ����Ʈ ���� �޼ҵ带 �ʱ�ȭ �ϴ� �뵵. 
-    /// *//preDelayWFS�� ����Ϸ��� �ݵ�� �������̵� ���� ȣ�� �ʿ�//*
+    /// 초기화 함수 
+    /// 이펙트 등을 초기화 하는 부분. 
+    /// preDelayWFS는 자동으로 정의하므로, 이 값을 그대로 사용하려면 해당 메소드 무시하지 말 것.
     /// </summary>
     public virtual void Initialize()
     {
@@ -33,10 +33,10 @@ public abstract class SkillRunnerBase : ScriptableObject
     }
 
     /// <summary>
-    /// ������ ��ų�� ����ϴ� �κ�.
-    /// ��ų�� ������� �� �߻��� �ൿ�� �����ϴ� �ڷ�ƾ
+    /// 캐릭터의 스킬 처리 메소드
+    /// 스킬을 사용하는 동안 발생하는 행동을 정의
     /// </summary>
-    /// <param name="character">��ų �����(ĳ����)</param>
+    /// <param name="character">스킬 사용자(캐릭터)</param>
     /// <returns></returns>
     public abstract IEnumerator SkillCoroutine(CharacterBase character);
 
@@ -78,10 +78,10 @@ public abstract class SkillRunnerBase : ScriptableObject
     }
 
     /// <summary>
-    /// character�� ��ġ�� effect�� Ȱ��ȭ�Ѵ�.
+    /// character의 위치에서 effect를 활성화.
     /// </summary>
-    /// <param name="character">��� ĳ����</param>
-    /// <param name="effect">��� ����Ʈ</param>
+    /// <param name="character">대상 캐릭터</param>
+    /// <param name="effect">적용할 이펙트</param>
     protected void ActiveEffectToCharacter(CharacterBase character, GameObject effect)
     {
         if (character.gameObject.layer != LayerMask.NameToLayer("Player"))
@@ -96,10 +96,10 @@ public abstract class SkillRunnerBase : ScriptableObject
     }
 
     /// <summary>
-    /// array�� nullüũ, ���� üũ(0���� �ƴ���), element�� nullüũ�� �����Ѵ�.
+    /// array의 null체크, 길이 체크(0이 아닌지), element의 null체크를 수행.
     /// </summary>
-    /// <param name="array">��� �迭</param>
-    /// <returns>���� üũ�� �����Ͽ� ����ϸ� true</returns>
+    /// <param name="array">대상 배열</param>
+    /// <returns>검사 통과 시 true</returns>
     protected bool IsValidArray(GameObject[] array)
     {
         return array != null && array.Length > 0 && !Array.Exists(array, (value) => value == null);
@@ -128,14 +128,14 @@ public abstract class SkillRunnerBase : ScriptableObject
     }
 
     /// <summary>
-    /// �浹�� �����Ͽ� Target Position(���� ��ġ)�� ���Ѵ�.
-    /// �浹�� Wall Layer�� �����Ѵ�.
+    /// 충돌을 검사하여 Target Position(목표 위치) 계산.
+    /// 충돌 대상은 Wall Layer로 한정
     /// </summary>
-    /// <param name="initialPos">�ʱ� ��ġ</param>
-    /// <param name="direction">ĳ������ ����(�¿�)</param>
-    /// <param name="targetPos">���� ���� ��ǥ ��ġ</param>
-    /// <param name="movingDistance">�̵��� �Ÿ�</param>
-    /// <returns>(targetPos - initialPos) ���Ͱ�, Wall�� �浹�Ѵٸ� Wall���� ���� �Ÿ� ��, �ƴ϶�� ���� ��ġ�� ��ȯ</returns>
+    /// <param name="initialPos">초기 우치</param>
+    /// <param name="direction">캐릭터의 방향(좌우)</param>
+    /// <param name="targetPos">계산된 목표 위치</param>
+    /// <param name="movingDistance">이동할 거리</param>
+    /// <returns>(targetPos - initialPos) 벡터가, Wall과 충돌한다면, Wall까지의 거리 값, 아니라면 목표 위치 반환</returns>
     protected Vector3 GetTargetPosByCoillision(Vector3 initialPos, Vector3 direction, Vector3 targetPos, float movingDistance)
     {
         // ���� ���� ���� with Wall
@@ -149,11 +149,11 @@ public abstract class SkillRunnerBase : ScriptableObject
     }
 
     /// <summary>
-    ///  SkillTarget�� �ش��ϴ� Ÿ�� �� �� ������ ��ȿ�� Ÿ���� ���� �����´�.
+    ///  SkillTarget에 해당하는 타겟 중, 유효한 타겟만을 반환
     /// </summary>
-    /// <param name="caster">��ų ������</param>
-    /// <param name="target">��ų ���</param>
-    /// <returns>�� ���� ��ȿ ��ų ����� ���� ��ȯ</returns>
+    /// <param name="caster">스킬 시전자</param>
+    /// <param name="target">스킬 대상</param>
+    /// <returns>유효 타겟 리스트</returns>
     protected List<GameObject> GetTargets(CharacterBase caster, Define.SkillTarget target)
     {
         List<GameObject> targets = new List<GameObject>();
@@ -170,7 +170,7 @@ public abstract class SkillRunnerBase : ScriptableObject
             case Define.SkillTarget.ALL:
                 targets = CharacterManager.Instance.GetCharacter(mask);
                 break;
-            case Define.SkillTarget.GROUND: // �̱���
+            case Define.SkillTarget.GROUND: // 미개발
                 break;
             default:
                 Debug.LogError("Invalid Target");
@@ -181,12 +181,12 @@ public abstract class SkillRunnerBase : ScriptableObject
     }
 
     /// <summary>
-    /// objs ���� ��� �߿�, target�� �ش��ϴ� GameObject���� ��ȯ
+    /// objs 목록 중, target에 해당하는 GameObject만을 반환
     /// </summary>
-    /// <param name="caster">��ų ������</param>
-    /// <param name="target">��ų ���</param>
-    /// <param name="objs">�˻��� GameObjects</param>
-    /// <returns>target�� objs���� ��� ��ü</returns>
+    /// <param name="caster">스킬 시전자</param>
+    /// <param name="target">스킬 대상</param>
+    /// <param name="objs">검사할 GameObjects</param>
+    /// <returns>objs 중, target에 해당하는 오브젝트</returns>
     protected List<GameObject> GetExistingTargets(CharacterBase caster, Define.SkillTarget target, GameObject[] objs)
     {
         var targets = GetTargets(caster, target);
@@ -194,11 +194,11 @@ public abstract class SkillRunnerBase : ScriptableObject
 
         foreach (var obj in objs)
         {
-            // CharacterManager�� ��ϵ��� ���� obj�� ��ŵ
-            // Ground�� ��쵵 �޾ƿ� Ground ����Ʈ �ȿ� �������� �ʴ� ��� �Ǻ��� ����
+            // CharacterManager에 등록된 대상 obj만을 처리
+            //  Ground는 현재 작업되지 않음.
             if (!targets.Contains(obj)) { continue; }
 
-            // ��ϵ� obj�� �߰�
+            // 반환할 오브젝트에 추가
             existingTargets.Add(obj);
         }
 
@@ -206,10 +206,10 @@ public abstract class SkillRunnerBase : ScriptableObject
     }
 
     /// <summary>
-    /// Define.SkillTarget�� LayerMask�� ��ȯ�Ͽ� ��ȯ�մϴ�.
+    /// Define.SkillTarget을 LayerMask로 변환
     /// </summary>
-    /// <param name="target">��ų ���</param>
-    /// <returns>����� LayerMask. ��ȯ �Ұ��� ��� -1 ��ȯ</returns>
+    /// <param name="target">스킬 대상</param>
+    /// <returns>변환된 LayerMask. 변환 불가 시 -1 반환</returns>
     protected int SkillTargetToLayerMask(Define.SkillTarget target)
     {
         int mask = -1;
