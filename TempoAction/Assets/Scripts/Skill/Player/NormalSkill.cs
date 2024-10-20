@@ -46,11 +46,13 @@ public class NormalSkill : SkillBase, ICooldownSkill
 
         curTime = 0;
     }
+
     public override int GetSkillId()
     {
         return skillId;
     }
-    void UseSkillCount()
+
+    public void UseSkillCount()
     {
         SkillCountCharged--;
     }
