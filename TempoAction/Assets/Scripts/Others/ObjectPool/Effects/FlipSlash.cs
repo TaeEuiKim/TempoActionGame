@@ -10,7 +10,7 @@ public class FlipSlash : MonoBehaviour
     {
         for (int i = 0; i < objects.Length; i++)
         {
-            objects[i].transform.localScale = new Vector3(value.x, 1, 1);
+            objects[i].transform.localScale = new Vector3(value.x, value.y, value.z);
         }
     }
 }

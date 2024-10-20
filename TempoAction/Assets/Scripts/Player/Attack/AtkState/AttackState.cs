@@ -16,6 +16,7 @@ public class AttackState : PlayerAttackState
     public override void Enter()
     {
         _player.Ani.SetBool("AttackState", true);
+        _player.Ani.SetBool("IsAttack", true);
 
         if (_player.Attack.CurrentTempoData.type == Define.TempoType.MAIN)
         {

@@ -90,7 +90,6 @@ public class Player : CharacterBase
 
     private void Start()
     {
-
         _attack.Initialize();
         _controller.Initialize();
 
@@ -186,7 +185,7 @@ public class Player : CharacterBase
 
     public override bool IsLeftDirection()
     {
-        return CharacterModel.localScale.x < 0;
+        return CharacterModel.localScale.x > 0;
     }
 
     #region View

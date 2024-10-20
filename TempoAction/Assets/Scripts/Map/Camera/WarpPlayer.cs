@@ -22,7 +22,7 @@ public class WarpPlayer : MonoBehaviour
             {
                 Player player = other.GetComponent<Player>();
                 copySkill.SaveSkillSlots(player.SkillManager.SkillSlots, player.GetComponent<PlayerSkillManager>().reserveSlots, player.View.GetMainIcon(), player.View.GetSubIcon());
-                cameraController.ChangeCamera(Define.MiddlePhaseState.START);
+                cameraController.ChangeCamera(Define.CameraType.MIDDLEBOSS);
             }
         }
     }

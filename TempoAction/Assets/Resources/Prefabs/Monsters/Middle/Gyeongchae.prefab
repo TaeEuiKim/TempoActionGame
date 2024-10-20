@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1582246313906119450}
   - component: {fileID: 3696055884598120238}
   - component: {fileID: 2925388396760720453}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Gyeongchae
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,20 +97,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dadd350346dc1674fba6a6a3370ed29e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterModel: {fileID: 8267878504855142255}
-  <_SkillManager>k__BackingField: {fileID: 0}
   _stat: {fileID: 11400000, guid: d379a5b8ade49d84185205af46594e09, type: 2}
+  _characterModel: {fileID: 4228420463078324104}
+  _colliderManager:
+    colliders: []
+  _rayOffset: {x: 0, y: 0, z: 0}
+  <_SkillManager>k__BackingField: {fileID: 0}
   _playerLayer:
     serializedVersion: 2
     m_Bits: 2048
   _wallLayer:
     serializedVersion: 2
     m_Bits: 8192
+  skillData: {fileID: 0}
   _monsterName: 1
   _currentState: 5
   _skillStorage:
-  - {fileID: 11400000, guid: 1bd3717cbd2cf264d9dc5984b6a99a4d, type: 2}
-  - {fileID: 11400000, guid: 6f6ae2134a10bb54aaa684c0fba22b22, type: 2}
+  - {fileID: 11400000, guid: 2201e998a8a5dac409a7fc108ab8daf1, type: 2}
   _currentSkill: {fileID: 0}
   _readySkills: []
   _hitPoint: {fileID: 1941828484115224897}
@@ -257,6 +260,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9479939d95c440f4496dc543a86ca5b4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5756919710636728223}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9479939d95c440f4496dc543a86ca5b4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6913160845215393929}
   m_SourcePrefab: {fileID: 100100000, guid: 9479939d95c440f4496dc543a86ca5b4, type: 3}
 --- !u!1 &3595436757991484722 stripped
 GameObject:
@@ -284,6 +290,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6913160845215393929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3595436757991484722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2bf002a3627f8a4da70521d4bd778ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _monster: {fileID: 2925388396760720453}
 --- !u!4 &4228420463078324104 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9479939d95c440f4496dc543a86ca5b4, type: 3}

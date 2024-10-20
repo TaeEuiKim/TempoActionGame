@@ -17,7 +17,6 @@ public class PlayerAttack
     private TempoAttackData _currentTempoData;
 
     private int _upgradeCount;
-    private bool isAttack = true;
 
     //public TempoCircle PointTempoCircle { get; set; }
 
@@ -81,7 +80,7 @@ public class PlayerAttack
         if (_currentAttackState != Define.AttackState.ATTACK)
         { 
             // 공격 키 입력
-            if (Input.GetKeyDown(KeyCode.X) && isAttack)
+            if (Input.GetKeyDown(KeyCode.X) && _player.Ani.GetBool("isGrounded"))
             {
                 AttackMainTempo();
             }
@@ -129,14 +128,4 @@ public class PlayerAttack
     }
 
     #endregion
-
-    IEnumerator AttackTimer()
-    {
-        yield return new WaitForSeconds(0.5f);
-
-        if (!isAttack)
-        {
-            isAttack = true;
-        }
-    }
 }

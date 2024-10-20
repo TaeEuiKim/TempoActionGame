@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Cinemachine;
+using Unity.VisualScripting;
+using System.Threading;
 
 public class PlayerAnimationEvent : MonoBehaviour
 {
     [SerializeField] private Player _player;
+    [SerializeField] private Transform leftHandTrans;
+    [SerializeField] private Transform rightHandTrans;
     private CameraController _cameraController;
 
     private void Start()
@@ -24,23 +28,56 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         _player.Attack.IsHit = true;
 
+        // 히트 파티클 생성
+        GameObject hitParticle = ObjectPool.Instance.Spawn("P_Punch", 1);
+        GameObject hitParticle2 = ObjectPool.Instance.Spawn("P_PunchAttack", 1);
+
         foreach (Collider monsterCollider in hitMonsters)
         {
             Monster monster = monsterCollider.GetComponent<Monster>();
 
-            if (_player.Attack.CurrentTempoData.type == Define.TempoType.MAIN)
+            switch (_player.Ani.GetInteger("AtkCount"))
             {
-                HitMainTempo(monster);
+                case 0:
+                    hitParticle.transform.position = leftHandTrans.position;
+                    hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                    hitParticle2.transform.position = leftHandTrans.position;
+                    hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                    hitParticle.transform.rotation = leftHandTrans.rotation;
+                    hitParticle2.transform.rotation = leftHandTrans.rotation;
+                    break;
+                case 1:
+                    hitParticle.transform.position = rightHandTrans.position;
+                    hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                    hitParticle2.transform.position = rightHandTrans.position;
+                    hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                    hitParticle.transform.rotation = rightHandTrans.rotation;
+                    hitParticle2.transform.rotation = rightHandTrans.rotation;
+                    break;
+                case 2:
+                    hitParticle.transform.position = leftHandTrans.position;
+                    hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                    hitParticle2.transform.position = leftHandTrans.position;
+                    hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                    hitParticle.transform.rotation = leftHandTrans.rotation;
+                    hitParticle2.transform.rotation = leftHandTrans.rotation;
+                    break;
+                case 3:
+                    hitParticle.transform.position = leftHandTrans.position;
+                    hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                    hitParticle2.transform.position = leftHandTrans.position;
+                    hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                    hitParticle.transform.rotation = leftHandTrans.rotation;
+                    hitParticle2.transform.rotation = leftHandTrans.rotation;
+                    break;
+                case 4:
+                    GameObject hitParticle3 = ObjectPool.Instance.Spawn("FX_PunchAttackSphere", 1);
+
+                    hitParticle3.transform.position = monsterCollider.ClosestPoint(_player.HitPoint.position);
+                    break;
             }
 
-            // 히트 파티클 생성
-            GameObject hitParticle = SpawnHitParticle(monster, "P_Punch");
-            GameObject hitParticle2 = SpawnHitParticle(monster, "P_PunchAttack");
-
-            Vector3 hitPos = monsterCollider.ClosestPoint(_player.HitPoint.position);
-            hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z - 0.1f);
-            hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(-_player.CharacterModel.localScale.x, 0, 0));
-            hitParticle2.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z);
+            HitMainTempo(monster);
         }
     }
     private void HitMainTempo(Monster monster)
@@ -99,19 +136,68 @@ public class PlayerAnimationEvent : MonoBehaviour
         _player.Attack.ChangeCurrentAttackState(Define.AttackState.CHECK);
     }
 
+    private void JumpRock()
+    {
+        if (_player.Ani.GetFloat("VerticalSpeed") <= -10)
+        {
+            _player.Rb.isKinematic = true;
+        }
+    }
+
+    private void JumpFinish()
+    {
+        if (_player.Rb.isKinematic)
+        {
+            _player.Rb.isKinematic = false;
+            _player.Ani.SetFloat("VerticalSpeed", 0);
+        }
+    }
+
+    private void JumpFalling()
+    {
+        _player.Rb.AddForce(Vector3.down * 50f, ForceMode.Impulse);
+    }
+
+    private void StartDash()
+    {
+        _player.Ani.SetFloat("Speed", 0);
+    }
+
+    private void FinishDash()
+    {
+        _player.Ani.SetBool("IsBackDash", false);
+        _player.Controller.isMove = true;
+    }
+
     // 공격 사거리 안에 적이 있으면 적 앞으로 이동하는 이벤트 함수
     private void MoveToClosestMonster(float duration)
     {
         Vector3 rayOrigin = new Vector3(transform.parent.position.x, transform.parent.position.y, transform.parent.position.z);
-        Vector3 rayDirection = transform.localScale.x > 0 ? transform.right : transform.right * -1;
+        Vector3 rayDirection = transform.localScale.x < 0 ? transform.right : transform.right * -1;
 
-        // 레이캐스트 실행
-        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, _player.Attack.CurrentTempoData.distance, _player.MonsterLayer))
+        if (_player.Ani.GetInteger("AtkCount") == 4)
         {
-            float closestMonsterX = hit.point.x + (-rayDirection.x * 0.2f);
-            transform.parent.DOMoveX(closestMonsterX, duration);
-        }
+            if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitPos, _player.Attack.CurrentTempoData.distance, _player.MonsterLayer))
+            {
+                float closestMonsterX = hitPos.point.x + (-rayDirection.x * 0.2f);
+                transform.parent.DOMoveX(closestMonsterX, duration);
+            }
+            else
+            {
+                transform.parent.DOMoveX(transform.parent.position.x - (2f * _player.CharacterModel.localScale.x), 0.3f);
+            }
 
+            _player.Rb.AddForce(Vector3.right * _player.Controller.Direction * 20f, ForceMode.VelocityChange);
+        }
+        else
+        {
+            // 레이캐스트 실행
+            if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, _player.Attack.CurrentTempoData.distance, _player.MonsterLayer))
+            {
+                float closestMonsterX = hit.point.x + (-rayDirection.x * 0.2f);
+                transform.parent.DOMoveX(closestMonsterX, duration);
+            }
+        }
 
         // 디버그용 레이 그리기
         Debug.DrawRay(rayOrigin, rayDirection * _player.Attack.CurrentTempoData.distance, Color.red);

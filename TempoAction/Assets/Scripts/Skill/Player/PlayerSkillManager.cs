@@ -13,6 +13,10 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
     public Queue<ISkillRoot> reserveSlots {  get; protected set; }
 
     private SkillObject interatedObject;
+    private PlayerView _view;
+
+    private bool isSkill = true;
+    private float skillTimer = 0;
 
     /*// temp
     public Collider hitbox;
@@ -35,7 +39,9 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
             instiatedEffects[i].SetActive(false);
         }*/
 
+        _view = GetComponent<PlayerView>();
         Initialize();
+        StartCoroutine(SkillTimer());
     }
 
     public void Initialize()
@@ -99,7 +105,7 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
     {
         foreach (PlayerSkillSlot slot in SkillSlots)
         {
-            slot.UseSkillKeyDown(characterBase);
+            slot.UseSkillKeyDown(characterBase, isSkill);
             if (slot.Skill is NormalSkill normalSkill)
             {
                 normalSkill.UpdateTime(Time.deltaTime);
@@ -127,8 +133,9 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
                 SkillSlots[i].SetSkill(newSkill);
                 if (newSkill.GetSkillId() == 51)
                 {
-                    GetComponent<PlayerView>().ChangeMainSkillIcon(i, false);
+                    _view.ChangeMainSkillIcon(i, false);
                 }
+
                 return;
             }
         }
@@ -137,7 +144,7 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
         reserveSlots.Enqueue(newSkill);
         if (newSkill.GetSkillId() == 51)
         {
-            GetComponent<PlayerView>().ChangeSubSkillIcon(reserveSlots.Count, false);
+            _view.ChangeSubSkillIcon(reserveSlots.Count - 1, false);
         }
     }
 
@@ -167,7 +174,7 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
 
                 if (removedSkill.GetSkillId() == 51)
                 {
-                    GetComponent<PlayerView>().ChangeMainSkillIcon(index, true);
+                    _view.ChangeMainSkillIcon(index, true);
                 }
             }
         }
@@ -175,8 +182,31 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
         // 예비 스킬 장착
         if (reserveSlots.Count == 0) { return; }
 
-        GetComponent<PlayerView>().ChangeSubSkillIcon(reserveSlots.Count, true);
+        _view.ChangeSubSkillIcon(reserveSlots.Count - 1, true);
         ISkillRoot nextSkill = reserveSlots.Dequeue();
         AddSkill(nextSkill);
+    }
+
+    public void SetIsSkill(bool isSk)
+    {
+        isSkill = isSk;
+    }
+
+    private IEnumerator SkillTimer()
+    {
+        while (true)
+        {
+            if (isSkill == false)
+            {
+                skillTimer += Time.deltaTime;
+                if (skillTimer > 1f)
+                {
+                    skillTimer = 0f;
+                    isSkill = true;
+                }
+            }
+
+            yield return new WaitForSeconds(0.01f);
+        }
     }
 }

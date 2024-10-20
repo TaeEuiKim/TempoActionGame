@@ -42,25 +42,19 @@ public class CameraController : MonoBehaviour
         StartCoroutine(FadeOut(SceneName));
     }
 
-    public void ChangeCamera(Define.MiddlePhaseState state)
+    public void ChangeCamera(Define.CameraType state)
     {
         switch (state)
         {
-            case Define.MiddlePhaseState.START:
+            case Define.CameraType.PLAYER:
+                _PlayerCamera[(int)Define.CameraType.PLAYER].GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset.z = -9.29f;
+                break;
+            case Define.CameraType.DOWN:
+                break;
+            case Define.CameraType.MIDDLEBOSS:
                 TurnOnFadeOut(false, "START");
-                //middlePhaseManager.ChangeStageState(state);
                 break;
-            case Define.MiddlePhaseState.PHASE1:
-                break;
-            case Define.MiddlePhaseState.PHASECHANGE:
-                break;
-            case Define.MiddlePhaseState.PHASE2:
-                break;
-            case Define.MiddlePhaseState.FINISH:
-                break;
-            case Define.MiddlePhaseState.NONE:
-                break;
-            default:
+            case Define.CameraType.NONE:
                 break;
         }
     }
