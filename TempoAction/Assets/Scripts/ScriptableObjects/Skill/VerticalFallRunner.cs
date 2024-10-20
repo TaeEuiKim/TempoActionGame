@@ -10,8 +10,9 @@ public class VerticalFallRunner : SkillRunnerBase
 {
     public override IEnumerator SkillCoroutine(CharacterBase character)
     {
+        // #*********** 초기화 ***********# // 
         // 사용 횟수 차감
-        if(CurrentSkill is NormalSkill skill)
+        if (CurrentSkill is NormalSkill skill)
         {
             skill.UseSkillCount();
         }
@@ -48,6 +49,7 @@ public class VerticalFallRunner : SkillRunnerBase
             Debug.LogError("Failed to Detection for Ground");
         }
 
+        // #*********** 스킬 행동 ***********# // 
         // 낙하 운동 시작
         while (curTime <= regenTime)
         {
@@ -76,6 +78,7 @@ public class VerticalFallRunner : SkillRunnerBase
             character.transform.position = nextPos;
         }
 
+        // #*********** 후처리 ***********# // 
         // 캐릭터 타격
         foreach (var hittedCharacter in hittedCharacters.Distinct())
         {
@@ -99,6 +102,4 @@ public class VerticalFallRunner : SkillRunnerBase
 
         Debug.Log("Vertical Fall End");
     }
-
-    
 }
