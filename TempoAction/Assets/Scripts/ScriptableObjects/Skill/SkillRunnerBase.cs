@@ -10,11 +10,14 @@ public abstract class SkillRunnerBase : ScriptableObject
 {
     public SkillData skillData;
     protected List<ParticleSystem> managedEffects = new List<ParticleSystem>();
+    protected WaitForSeconds preDelayWFS;
+    protected ISkillRoot CurrentSkill { get; private set; }
 
-    public virtual void Run(CharacterBase character)
+    public virtual void Run(ISkillRoot skill, CharacterBase character, UnityAction OnEnded = null)
     {
         Initialize();
-        character.StartCoroutine(WaitForSkillEnded(character, null));
+        CurrentSkill = skill;
+        character.StartCoroutine(WaitForSkillEnded(character, OnEnded));
     }
     public abstract void Initialize();
     public abstract IEnumerator SkillCoroutine(CharacterBase character);
@@ -39,14 +42,14 @@ public abstract class SkillRunnerBase : ScriptableObject
         {
             yield return null;
 
-            // ÀÌÆåÆ®°¡ »ì¾Æ ÀÖ´ÂÁö Ã¼Å©
+            // ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ Ã¼Å©
             removingEffects.Clear();
             foreach (var effect in effects)
             {
                 if(!effect.IsAlive(true)) { removingEffects.Add(effect); }
             }
 
-            // Á×Àº ÀÌÆåÆ®´Â ºñÈ°¼ºÈ­ ¹× ´õÀÌ»ó °Ë»çÇÏÁö ¾Êµµ·Ï »èÁ¦
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­ ï¿½ï¿½ ï¿½ï¿½ï¿½Ì»ï¿½ ï¿½Ë»ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Êµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             foreach (var effect in removingEffects)
             {
                 effect.gameObject.SetActive(false);
@@ -72,18 +75,18 @@ public abstract class SkillRunnerBase : ScriptableObject
         List<ParticleSystem> waitingEffects = new List<ParticleSystem>();
         foreach (ParticleSystem effect in managedEffects)
         {
-            // ¹«ÇÑ¹Ýº¹ÀÌ ¾Æ´Ï°í ÀÚ½Ä Áß ÇÏ³ª¶óµµ »ì¾Æ ÀÖ´Ù¸é
+            // ï¿½ï¿½ï¿½Ñ¹Ýºï¿½ï¿½ï¿½ ï¿½Æ´Ï°ï¿½ ï¿½Ú½ï¿½ ï¿½ï¿½ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½
             if(!effect.main.loop && effect.IsAlive(true))
             {
                 waitingEffects.Add(effect);
                 continue;
             }
 
-            // ºñÈ°¼ºÈ­
+            // ï¿½ï¿½È°ï¿½ï¿½È­
             effect.gameObject.SetActive(false);
         }
 
-        // »èÁ¦µÇÁö ¾ÊÀº ÀÌÆåÆ® ´ë±â ÈÄ »èÁ¦
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         character.StartCoroutine(WaitForEffectEnded(waitingEffects));
     }
 }

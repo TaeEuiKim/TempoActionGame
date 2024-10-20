@@ -99,6 +99,11 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
             if (slot.Skill is NormalSkill normalSkill)
             {
                 normalSkill.UpdateTime(Time.deltaTime);
+
+                if(normalSkill.SkillCountCharged == 0)
+                {
+                    slot.RemoveSkill();
+                }
             }
         }
 

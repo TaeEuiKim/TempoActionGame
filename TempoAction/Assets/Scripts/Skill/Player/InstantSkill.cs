@@ -25,10 +25,8 @@ public class InstantSkill : SkillBase
         OnSkillAttack.AddListener((cb) => { Debug.Log("Invoke Instant Skill"); });
     }
 
-    public override bool UseSkill(CharacterBase cb)
+    public override void UseSkill(CharacterBase character, UnityAction OnEnded = null)
     {
-        OnSkillAttack.Invoke(cb);
-
-        return true;
+        SkillRunner.Run(this, character, OnEnded);
     }
 }

@@ -12,10 +12,7 @@ public class PlayerSkillSlot : SkillSlot
     {
         if (Skill == null) { return; }
 
-        if (Skill.UseSkill(character))
-        {
-            RemoveSkill();
-        }
+        Skill.UseSkill(character, OnEnded);
     }
 
     public void UseSkillKeyDown(CharacterBase cb)

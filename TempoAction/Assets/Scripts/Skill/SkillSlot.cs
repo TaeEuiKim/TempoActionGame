@@ -9,9 +9,11 @@ public abstract class SkillSlot
     public ISkillRoot Skill { get; protected set; }
     public UnityEvent<ISkillRoot> OnRemoved = new UnityEvent<ISkillRoot>();
 
-    public void SetSkill(ISkillRoot newSkill)
+    public virtual void SetSkill(ISkillRoot newSkill)
     {
         Skill = newSkill;
+
+        newSkill?.SetSkillAdded();
     }
 
     public abstract void UseSkillInstant(CharacterBase character);

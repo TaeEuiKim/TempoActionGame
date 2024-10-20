@@ -7,6 +7,8 @@ public interface ISkillRoot
     /// <summary>
     /// 
     /// </summary>
-    /// <returns>½ºÅ³ÀÌ ¼Ò¸êµÉÁö ¿©ºÎ. true = ¼Ò¸ê, false = À¯Áö</returns>
-    public abstract bool UseSkill(CharacterBase skillManager);
+    /// <returns>ï¿½ï¿½Å³ï¿½ï¿½ ï¿½Ò¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½. true = ï¿½Ò¸ï¿½, false = ï¿½ï¿½ï¿½ï¿½</returns>
+    public abstract void UseSkill(CharacterBase skillManager, UnityAction OnEnded = null);
+    public abstract int GetSkillId();
+    public abstract void SetSkillAdded();
 }

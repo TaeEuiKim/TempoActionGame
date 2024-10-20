@@ -60,15 +60,13 @@ public class MonsterSkill : SkillBase, ICooldownSkill
         curTime += deltaTime;
     }
 
-    public override bool UseSkill(CharacterBase character)
+    public override void UseSkill(CharacterBase character, UnityAction OnEnded = null)
     {
-        if (IsCooldown()) { return false; }
+        if (IsCooldown()) { return; }
 
         //OnSkillAttack.Invoke(characterBase);
-        SkillRunner.Run(character);
+        SkillRunner.Run(this, character, OnEnded);
 
         curTime = 0;
-
-        return true;
     }
 }
