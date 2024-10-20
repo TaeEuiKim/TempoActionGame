@@ -14,6 +14,7 @@ public class NormalSkill : SkillBase, ICooldownSkill
     private int skillId;
 
     public int SkillCountCharged { get; private set; }
+
     // cooldown: 1/100 seconds
     public NormalSkill(SkillRunnerBase skillRunner) : base(skillRunner)
     {
@@ -30,21 +31,23 @@ public class NormalSkill : SkillBase, ICooldownSkill
 
     public virtual void UpdateTime(float deltaTime)
     {
-        if (curTime > skillData.SkillCooldown) { return; }
-
         curTime += deltaTime;
+
+        if (curTime > skillData.SkillCooldown)
+        {
+            RechargeSkillCount();
+            curTime = 0;
+        }
     }
 
-    public bool IsCooldown() => skillData.SkillCooldown > curTime;
+    public bool IsSkillUsable() => SkillCountCharged > 0;
 
     public override void UseSkill(CharacterBase character, UnityAction OnEnded = null)
     {
-        if (IsCooldown()) { UseSkillCount(); }
+        if (IsSkillUsable()) { UseSkillCount(); }
 
         //OnSkillAttack.Invoke(sm);
         SkillRunner.Run(this, character, OnEnded);
-
-        curTime = 0;
     }
 
     public override int GetSkillId()
@@ -55,5 +58,17 @@ public class NormalSkill : SkillBase, ICooldownSkill
     public void UseSkillCount()
     {
         SkillCountCharged--;
+        SetSkillCountInRange();
+    }
+
+    private void RechargeSkillCount()
+    {
+        SkillCountCharged++;
+        SetSkillCountInRange();
+    }
+
+    private void SetSkillCountInRange()
+    {
+        SkillCountCharged = Mathf.Clamp(SkillCountCharged, 0, skillData.SkillMaxLimit);
     }
 }

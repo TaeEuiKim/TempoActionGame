@@ -53,7 +53,7 @@ public class MonsterSkill : SkillBase, ICooldownSkill
         OnSkillAttack.AddListener((cb) => { Debug.Log("Invoke Normal Skill(Monster)"); });
     }
 
-    public bool IsCooldown() => skillData.SkillCooldown > curTime;
+    public bool IsSkillUsable() => skillData.SkillCooldown > curTime;
 
     public void UpdateTime(float deltaTime)
     {
@@ -64,7 +64,7 @@ public class MonsterSkill : SkillBase, ICooldownSkill
 
     public override void UseSkill(CharacterBase character, UnityAction OnEnded = null)
     {
-        if (IsCooldown()) { return; }
+        if (IsSkillUsable()) { return; }
 
         //OnSkillAttack.Invoke(characterBase);
         SkillRunner.Run(this, character, OnEnded);
