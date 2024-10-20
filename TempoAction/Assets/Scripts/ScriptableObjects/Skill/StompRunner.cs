@@ -6,11 +6,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "StompRunner", menuName = "ScriptableObjects/Skill/Runner/StompRunner", order = 1)]
 public class StompRunner : SkillRunnerBase
 {
-    // 이거 몬스터는 점프 -> 낙하
-    // 플레이어는 낙하 + 추가 기능
-    // 따라서 플레이어 구현할 땐 스킬(Runner) 자체를  점프랑 낙하 분리하는 게 좋을 듯...?
-    // 점프 실행 시엔 무조건 낙하 스킬 가지고 있다가 낙하 발동하게 하는 느낌으로...
-    // 추가로 플레이어 스킬일 땐 추가 기능 넣을 수 있게 SkillRunnerBase 딴에서 수정도 하고...
     public override IEnumerator SkillCoroutine(CharacterBase character)
     {
         Rigidbody rigid = character.Rb;

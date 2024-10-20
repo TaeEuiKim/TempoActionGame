@@ -131,7 +131,7 @@ public abstract class SkillRunnerBase : ScriptableObject
     /// 충돌을 검사하여 Target Position(목표 위치) 계산.
     /// 충돌 대상은 Wall Layer로 한정
     /// </summary>
-    /// <param name="initialPos">초기 우치</param>
+    /// <param name="initialPos">초기 위치</param>
     /// <param name="direction">캐릭터의 방향(좌우)</param>
     /// <param name="targetPos">계산된 목표 위치</param>
     /// <param name="movingDistance">이동할 거리</param>
