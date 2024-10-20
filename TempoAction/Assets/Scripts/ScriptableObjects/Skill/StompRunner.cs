@@ -44,19 +44,23 @@ public class StompRunner : SkillRunnerBase
             yield return null;
 
             curTime += Time.deltaTime;
+            float completeRatio = curTime / regenTime;
 
-            Vector3 rayOrigin = character.transform.position; // 무조건 Bottom을 기준으로 해야 아래로 쏠 수 있음.
-
-            Ray ray = new Ray(rayOrigin, Vector3.down);
-            Debug.DrawRay(rayOrigin, Vector3.down, Color.blue);
-            float collisiionDepth = skillData.SkillHitboxSize * SkillData.cm2m;
-            int layerMask = SkillTargetToLayerMask(skillData.SkillCastingTarget);
-            if (Physics.Raycast(ray, out RaycastHit characterHit, collisiionDepth, layerMask))
+            /// 최고 높이까지 도달한 이후에 충돌 처리를 수행
+            if(completeRatio > 0.5f)
             {
-                hittedCharacters.Add(characterHit.transform.GetComponent<CharacterBase>());
+                Vector3 rayOrigin = character.transform.position; // 무조건 Bottom을 기준으로 해야 아래로 쏠 수 있음.
+                Ray ray = new Ray(rayOrigin, Vector3.down);
+                Debug.DrawRay(rayOrigin, Vector3.down, Color.blue);
+                float collisiionDepth = skillData.SkillHitboxSize * SkillData.cm2m;
+                int layerMask = SkillTargetToLayerMask(skillData.SkillCastingTarget);
+                if (Physics.Raycast(ray, out RaycastHit characterHit, collisiionDepth, layerMask))
+                {
+                    hittedCharacters.Add(characterHit.transform.GetComponent<CharacterBase>());
+                }
             }
 
-            Vector3 nextPos = EvaluateParabola(initialPos, targetPos, 3, curTime / regenTime); // 3은 임시 값 추후 높이 값으로 수정 필요
+            Vector3 nextPos = EvaluateParabola(initialPos, targetPos, 3, completeRatio); // 3은 임시 값 추후 높이 값으로 수정 필요
             character.transform.position = nextPos;
         }
 
