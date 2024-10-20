@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /*public class InstantSkill : SkillBase<SkillData>
 {
@@ -28,5 +29,10 @@ public class InstantSkill : SkillBase
     public override void UseSkill(CharacterBase character, UnityAction OnEnded = null)
     {
         SkillRunner.Run(this, character, OnEnded);
+    }
+
+    public override int GetSkillId()
+    {
+        return -1;
     }
 }

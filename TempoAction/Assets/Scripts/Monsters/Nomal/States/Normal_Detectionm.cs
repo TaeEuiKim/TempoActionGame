@@ -22,14 +22,14 @@ public class Normal_Detectionm : Normal_State
     public override void Stay()
     {
 
-        if (_monster.Stat.AttackRange < Vector3.Distance(_monster.Player.position, _monster.transform.position))
+        if (_monster.MonsterSt.AttackRange < Vector3.Distance(_monster.Player.position, _monster.transform.position))
         {
             _attackTimer = 0;
         }
         else
         {
 
-            if (_attackTimer >= _monster.Stat.AttackDelay)
+            if (_attackTimer >= _monster.MonsterSt.AttackDelay)
             {
                 _monster.Attack();
                 _attackTimer = 0;

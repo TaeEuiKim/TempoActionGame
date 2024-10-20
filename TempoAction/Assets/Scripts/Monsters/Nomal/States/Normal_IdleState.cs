@@ -14,11 +14,14 @@ public class Normal_IdleState : Normal_State
 
     public override void Stay()
     {
-        var slots = _monster._SkillManager.GetUsableSkillSlots();
+        _monster.Direction = -(_monster.Player.position.x - _monster.transform.position.x);
 
-        if(slots.Count() > 0)
+        _monster.TrySkillAttack();
+
+        float distance = Vector3.Distance(_monster.transform.position, _monster.Target.position);
+        if(distance > _monster.MonsterSt.AttackRange && distance <= _monster.PerceptionDistance * SkillData.cm2m)
         {
-            slots[0].UseSkillInstant(_monster);
+            _monster.CurrentPerceptionState = Define.PerceptionType.TRACE;
         }
     }
 

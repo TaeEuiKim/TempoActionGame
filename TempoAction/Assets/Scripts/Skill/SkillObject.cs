@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SkillObject : MonoBehaviour
 {
+    public string skillName;
     private ISkillRoot skill;
     private PlayerSkillManager playerSkillManager;
 
@@ -27,6 +28,7 @@ public class SkillObject : MonoBehaviour
             if (playerSkillManager)
             {
                 playerSkillManager.InteractObject(this);
+                playerSkillManager.AddSkill(GetSkill());
             }
         }
     }

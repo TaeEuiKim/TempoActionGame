@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 /*public class MonsterSkill : SkillBase<MonsterNormalSkillData>, ICooldownSkill
 {
@@ -68,5 +70,10 @@ public class MonsterSkill : SkillBase, ICooldownSkill
         SkillRunner.Run(this, character, OnEnded);
 
         curTime = 0;
+    }
+
+    public override int GetSkillId()
+    {
+        return -1;
     }
 }

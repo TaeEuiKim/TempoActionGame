@@ -78,7 +78,7 @@ public class Middle_Shelling : Middle_Skill
 
     private void SpawnRocket()
     {
-        float _y = 25;
+        float _y = 23;
         Shelling rocket = ObjectPool.Instance.Spawn("Rocket").GetComponent<Shelling>();
         rocket.transform.position = new Vector3(_monster.Player.position.x + Random.Range(-3f, 3f), _y, _monster.Player.position.z);
         rocket.transform.rotation = Quaternion.Euler(-90, -200, 0);
@@ -90,7 +90,7 @@ public class Middle_Shelling : Middle_Skill
         if (Physics.Raycast(rocket.transform.position, Vector3.down, out ray, Mathf.Infinity, 1 << LayerMask.NameToLayer("Ground")))
         {
             GameObject mark = ObjectPool.Instance.Spawn("RocketMark");
-            mark.transform.position = ray.point + new Vector3(0, 0.3f);
+            mark.transform.position = ray.point + new Vector3(0, 0.2f);
         }
     }
 
@@ -101,7 +101,7 @@ public class Middle_Shelling : Middle_Skill
 
         yield return new WaitForSeconds(2f);
 
-        for (int i = 0; i < 7; ++i)
+        for (int i = 0; i < 5; ++i)
         {
             SpawnRocket();
             yield return new WaitForSeconds(0.7f);

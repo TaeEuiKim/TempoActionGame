@@ -2,29 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerSkillManager : MonoBehaviour, ISkillManager
 {
     [field: SerializeField] public int MaxSkillSlot { get; protected set; }
-    [SerializeField] private int MaxReserveSlot;
+    [field: SerializeField] public int MaxReserveSlot { get; protected set; }
 
     [field: SerializeReference] public SkillSlot[] SkillSlots { get; protected set; }
-    private Queue<ISkillRoot> reserveSlots;
+    public Queue<ISkillRoot> reserveSlots {  get; protected set; }
 
     private SkillObject interatedObject;
 
-    // temp
+    /*// temp
     public Collider hitbox;
     public GameObject offingHitbox;
     public Collider offingHitbox2;
     public Transform target;
     [SerializeField] private GameObject[] effects; // 0: ready, 1: rush, 2: attack
     [HideInInspector]public GameObject[] instiatedEffects; // 0: ready, 1: rush, 2: attack
-    [HideInInspector] public GameObject effectsParent;
+    [HideInInspector] public GameObject effectsParent;*/
 
     private void Start()
     {
-        instiatedEffects = new GameObject[effects.Length];
+        /*instiatedEffects = new GameObject[effects.Length];
         effectsParent = new GameObject("Effects");
         effectsParent.transform.parent = transform;
         effectsParent.transform.localPosition = Vector3.zero;
@@ -32,7 +33,7 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
         {
             instiatedEffects[i] = Instantiate(effects[i], effectsParent.transform);
             instiatedEffects[i].SetActive(false);
-        }
+        }*/
 
         Initialize();
     }
@@ -83,7 +84,10 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
 
     public void InteractObject(SkillObject skillObject)
     {
-        interatedObject = skillObject;
+        if (interatedObject != null)
+        {
+            interatedObject = skillObject;
+        }
     }
 
     public void DeInteractObject()
@@ -106,11 +110,6 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
                 }
             }
         }
-
-        if (interatedObject != null && Input.GetKeyDown(KeyCode.X))
-        {
-            AddSkill(interatedObject.GetSkill());
-        }
     }
 
     public void AddSkill(ISkillRoot newSkill)
@@ -126,12 +125,30 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
                 // 등록
                 SkillSlots[i].OnRemoved.AddListener(RemoveSkill);
                 SkillSlots[i].SetSkill(newSkill);
+                if (newSkill.GetSkillId() == 51)
+                {
+                    GetComponent<PlayerView>().ChangeMainSkillIcon(i, false);
+                }
                 return;
             }
         }
         
         // 자리가 없다면 큐(예비 스킬)에 등록
         reserveSlots.Enqueue(newSkill);
+        if (newSkill.GetSkillId() == 51)
+        {
+            GetComponent<PlayerView>().ChangeSubSkillIcon(reserveSlots.Count, false);
+        }
+    }
+
+    public void LoadSkill(SkillSlot[] skillSlots, Queue<ISkillRoot> reserveSlots)
+    {
+        SkillSlots = skillSlots;
+        for (int i = 0; i < SkillSlots.Length; i++)
+        {
+            SkillSlots[i].OnRemoved.AddListener(RemoveSkill);
+        }
+        this.reserveSlots = reserveSlots;
     }
 
     // 스킬 제거
@@ -147,12 +164,18 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
             {
                 SkillSlots[index].OnRemoved.RemoveListener(RemoveSkill);
                 SkillSlots[index].RemoveSkill();
+
+                if (removedSkill.GetSkillId() == 51)
+                {
+                    GetComponent<PlayerView>().ChangeMainSkillIcon(index, true);
+                }
             }
         }
 
         // 예비 스킬 장착
         if (reserveSlots.Count == 0) { return; }
 
+        GetComponent<PlayerView>().ChangeSubSkillIcon(reserveSlots.Count, true);
         ISkillRoot nextSkill = reserveSlots.Dequeue();
         AddSkill(nextSkill);
     }

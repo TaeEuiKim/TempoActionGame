@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 [Serializable]
 public class MonsterSkillSlot : SkillSlot
@@ -11,6 +12,11 @@ public class MonsterSkillSlot : SkillSlot
 
     public void SetSkill()
     {
+        if(Skill != null && Skill is MonsterSkill monsterSkill)
+        {
+            if(monsterSkill.SkillRunner == skillRunner) { return; }
+        }
+
         Skill = new MonsterSkill(skillRunner);
     }
 
@@ -87,10 +93,10 @@ public class MonsterSkillSlot : SkillSlot
         return targets;
     }
 
-    public override void UseSkillInstant(CharacterBase character)
+    public override void UseSkillInstant(CharacterBase character, UnityAction OnEnded = null)
     {
         if (Skill == null) { return; }
 
-        Skill.UseSkill(character);
+        Skill.UseSkill(character, OnEnded);
     }
 }

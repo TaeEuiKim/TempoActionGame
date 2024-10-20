@@ -4,11 +4,12 @@ using System.Linq;
 using System.Collections;
 using UnityEngine.TextCore.Text;
 using UnityEngine.Events;
+using Unity.VisualScripting;
 
 [CreateAssetMenu(fileName = "SwordQuickDrawRunner", menuName = "ScriptableObjects/Skill/Runner/SwordQuickDrawRunner", order = 1)]
 public class SwordQuickDrawRunner : SkillRunnerBase
 {
-    [Header("����Ʈ�� ������ �� Left�� 0������")]
+    [Header("이펙트가 복수인 건 Left가 0번으로")]
     public GameObject ReadyEffect;
     public GameObject[] DashEffect;
     public GameObject[] SwordEffect;
@@ -19,11 +20,11 @@ public class SwordQuickDrawRunner : SkillRunnerBase
 
     private GameObject effectParent;
 
-    private WaitForSeconds preDelayWFS;
-
     public override void Initialize()
     {
-        // ����Ʈ 
+        base.Initialize();
+
+        // 이펙트 
         if(effectParent == null)
         {
             effectParent = new GameObject("Effects");
@@ -58,12 +59,6 @@ public class SwordQuickDrawRunner : SkillRunnerBase
             //managedEffects.Add(swordEffect[0].GetComponent<ParticleSystem>());
             //managedEffects.Add(swordEffect[1].GetComponent<ParticleSystem>());
         }
-
-        // ��� �ð�
-        if(preDelayWFS == null)
-        {
-            preDelayWFS = new WaitForSeconds(skillData.SkillCastingTime * SkillData.Time2Second);
-        }
     }
 
     public override IEnumerator SkillCoroutine(CharacterBase character)
@@ -73,21 +68,22 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         GameObject ready = readyEffect;
         GameObject dash = dashEffect[isLeftDir ? 0 : 1];
         GameObject sword = swordEffect[isLeftDir ? 0 : 1];
+        Rigidbody rigid = character.Rb;
+        rigid.useGravity = false;
 
-        // ��Ʈ�ڽ�
+        // 히트박스
         character.ColliderManager.SetActiveCollider(false, Define.ColliderType.PERSISTANCE);
 
-        // �غ� ����Ʈ
+        // 준비 이펙트
         ActiveEffectToCharacter(character, ready);
 
-        // ����
+        // 선딜
         yield return preDelayWFS;
 
         if(CurrentSkill is NormalSkill skill)
         {
             skill.UseSkillCount();
         }
-
         // 돌진
         float curTime = 0;
         float movingDistance = skillData.SkillEffectValue * SkillData.cm2m;
@@ -96,58 +92,57 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         Vector3 initialPos = character.transform.position;
         Vector3 direction = character.transform.right * (isLeftDir ? -1 : 1);
         Vector3 targetPos = initialPos + direction * movingDistance;
-        List<Monster> hittedMonsters = new List<Monster>();
-        Rigidbody rigid = character.Rb;
+        List<CharacterBase> hittedCharacters = new List<CharacterBase>();
 
-        // ���� ���� ���� with Wall
-        if (Physics.Raycast(new Ray(initialPos, direction), out RaycastHit wallHit, (targetPos - initialPos).magnitude, 1 << 13)) // 13�� Wall
-        {
-            movingDistance = (wallHit.distance - 0.6f) * 0.99f;
-            targetPos = initialPos + direction * movingDistance;
-        }
+        // 도착 지점 갱신 with Wall
+        targetPos = GetTargetPosByCoillision(initialPos, direction, targetPos, movingDistance);
 
-        // ��� ����Ʈ ����
+        // 돌진 이펙트 시작
         ActiveEffectToCharacter(character, dash);
 
-        // ��� ����
+        // 돌진 시작
         while ((character.transform.position - targetPos).magnitude > 0.1f && curTime <= regenTime)
         {
             yield return null;
 
             curTime += Time.deltaTime;
 
-            Ray ray = new Ray(character.transform.position, direction.normalized);
+            Vector3 rayOrigin = character.GetRayOrigin();
+            Ray ray = new Ray(rayOrigin, direction.normalized);
+            Debug.DrawRay(rayOrigin, direction.normalized, Color.blue);
             float collisiionDepth = skillData.SkillHitboxSize * SkillData.cm2m;
-
-            if (Physics.Raycast(ray, out RaycastHit monsterHit, collisiionDepth, 1 << 10))
+            int layerMask = SkillTargetToLayerMask(skillData.SkillCastingTarget);
+            if (Physics.Raycast(ray, out RaycastHit characterHit, collisiionDepth, layerMask))
             {
-                hittedMonsters.Add(monsterHit.transform.GetComponent<Monster>());
+                hittedCharacters.Add(characterHit.transform.GetComponent<CharacterBase>());
             }
 
             character.transform.position = Vector3.Lerp(initialPos, targetPos, curTime / regenTime * (originalMovingDistance / movingDistance));
         }
 
-        // ���� Ÿ��
-        foreach (Monster monster in hittedMonsters.Distinct())
+        // 캐릭터 타격
+        foreach (var hittedCharacter in hittedCharacters.Distinct())
         {
-            float damageAmount = skillData.SkillDamage * 1; // 1��� ���ݷ� ���� ��
+            float damageAmount = skillData.SkillDamage * character.Stat.Damage;
 
-            monster.TakeDamage(damageAmount);
+            hittedCharacter.TakeDamage(damageAmount);
         }
 
-        // �ʱ�ȭ
+        // 초기화
         character.transform.position = targetPos;
         rigid.velocity = Vector3.zero;
         character.ColliderManager.SetActiveCollider(true, Define.ColliderType.PERSISTANCE);
 
-        // ����Ʈ ���� �� �� ����Ʈ ���
-        ActiveEffectToCharacter(character, sword);
+        yield return new WaitForSeconds(0.2f);
+        // 이펙트 종료 및 검 이펙트 재생
+        //ActiveEffectToCharacter(character, sword);
         dash.SetActive(false);
         ready.SetActive(false);
+        rigid.useGravity = true;
         Debug.Log("QuickDraw End");
 
-        yield return new WaitForSeconds(0.4f); // �ߵ��� ����Ʈ �����⸦ ��ٸ�
+        yield return new WaitForSeconds(0.4f); // 발도술 이펙트 끝나기를 기다림
 
-        sword.SetActive(false);
+        //sword.SetActive(false);
     }
 }

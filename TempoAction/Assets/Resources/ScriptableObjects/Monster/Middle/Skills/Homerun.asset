@@ -14,9 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _info:
     skill: 2
-    coolTime: 10
-    range: 3
-    damage: 50
-    priority: 0
-  _knockBackPower: 50
-  _knockBackDuration: 0.6
+    coolTime: 2.5
+    range: 5
+    damage: 20
+    priority: 60
+  _frontHitPoint: {x: -1, y: 0.9, z: 0}
+  _frontHitScale: {x: 3, y: 2, z: 1}
+  _frontKnockBackPower: 6
+  _frontKnockBackDuration: 0.6
+  _backHitPoint: {x: 0.5, y: 0.9, z: 0}
+  _backHitScale: {x: 3, y: 2, z: 1}
+  _backKnockBackPower: 6
+  _backKnockBackDuration: 0.6

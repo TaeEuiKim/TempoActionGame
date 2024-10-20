@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public interface ISkillRoot
 {
@@ -8,7 +9,6 @@ public interface ISkillRoot
     /// 
     /// </summary>
     /// <returns>��ų�� �Ҹ���� ����. true = �Ҹ�, false = ����</returns>
-    public abstract void UseSkill(CharacterBase skillManager, UnityAction OnEnded = null);
+    public abstract bool UseSkill(CharacterBase skillManager, UnityAction OnEnded = null);
     public abstract int GetSkillId();
-    public abstract void SetSkillAdded();
 }

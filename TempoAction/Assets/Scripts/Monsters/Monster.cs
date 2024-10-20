@@ -2,14 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 
 public abstract class Monster : CharacterBase
 {
     [field:SerializeField] public MonsterSkillManager _SkillManager { get; protected set; }
-    [SerializeField] protected MonsterStat _stat;
     [SerializeField] protected LayerMask _playerLayer;
     [SerializeField] protected LayerMask _wallLayer;
+    [SerializeField] public SkillRunnerBase skillData;
+    protected MonsterStat _monsterStat;
 
     protected Transform _player;
     private MonsterView _view;
@@ -24,7 +24,7 @@ public abstract class Monster : CharacterBase
 
     #region 프로퍼티
     public Transform Player { get => _player; }
-    public MonsterStat Stat { get => _stat; set => _stat = value; }
+    public MonsterStat MonsterSt { get => _monsterStat; set => _monsterStat = value; }
     public LayerMask PlayerLayer { get => _playerLayer; }
     public LayerMask WallLayer { get => _wallLayer; }
     public float Direction
@@ -59,6 +59,13 @@ public abstract class Monster : CharacterBase
 
         _view = GetComponent<MonsterView>();
 
+        string json = JsonUtility.ToJson(Stat);
+        MonsterStat _temp = ScriptableObject.CreateInstance<MonsterStat>();
+        JsonUtility.FromJsonOverwrite(json, _temp);
+
+        Stat = _temp;
+        MonsterSt = _temp;
+
         Init();
     }
 
@@ -67,20 +74,18 @@ public abstract class Monster : CharacterBase
     // 반전 함수
     public void Flip(float value) 
     {
-        Vector3 tempScale = transform.GetChild(0).localScale;
+        Vector3 tempScale = _characterModel.localScale;
 
         if (value * tempScale.x < 0)
         {
             tempScale.x *= -1;
         }
 
-        transform.GetChild(0).localScale = tempScale;
-
+        _characterModel.localScale = tempScale;
     }
 
-    public void TakeDamage(float value)
+    public override void TakeDamage(float value)
     {
-        Debug.Log(value);
         if (IsGuarded)
         {
             _stat.Hp -= value * ((100 - _stat.Defense) / 100);
@@ -90,11 +95,13 @@ public abstract class Monster : CharacterBase
             _stat.Hp -= value;
         }
         
-
         UpdateHealth();
     }
 
-
+    public override bool IsLeftDirection()
+    {
+        return Direction != -1;
+    }
     #region View
     public void UpdateHealth()
     {

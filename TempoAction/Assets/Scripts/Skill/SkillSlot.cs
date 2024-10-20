@@ -16,7 +16,7 @@ public abstract class SkillSlot
         newSkill?.SetSkillAdded();
     }
 
-    public abstract void UseSkillInstant(CharacterBase character);
+    public abstract void UseSkillInstant(CharacterBase character, UnityAction OnEnded = null);
 
     public void RemoveSkill()
     {

@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 public class Player : CharacterBase
 {
     [Header("기타")]
-    [SerializeField] private PlayerStat _stat;
+    private PlayerStat _playerStat;
     private PlayerView _view;
 
     private PlayerAttack _attack;
@@ -38,8 +38,9 @@ public class Player : CharacterBase
     [SerializeField] private List<TempoAttackData> _mainTempoAttackDatas;
     [SerializeField] private List<TempoAttackData> _pointTempoAttackDatas;
 
+    private CopySkill copySkill;
 
-    public PlayerStat Stat { get { return _stat; } }
+    public PlayerStat PlayerSt { get { return _playerStat; } }
     public PlayerAttack Attack { get { return _attack; } }
     public PlayerController Controller { get { return _controller; } }
     public Define.PlayerState CurrentState
@@ -70,6 +71,7 @@ public class Player : CharacterBase
     public LayerMask MonsterLayer { get => _monsterLayer; }
     public List<TempoAttackData> MainTempoAttackDatas { get => _mainTempoAttackDatas; }
     public List<TempoAttackData> PointTempoAttackDatas { get => _pointTempoAttackDatas; }
+    public PlayerView View { get => _view; }
 
     public bool isTurn = false;
     public float stunTime = 0f;
@@ -79,40 +81,54 @@ public class Player : CharacterBase
         base.Awake();
 
         _view = GetComponent<PlayerView>();
+        _playerStat = (PlayerStat)Stat;
 
+        copySkill = FindObjectOfType<CopySkill>();
         _attack = new PlayerAttack(this);
         _controller = new PlayerController(this);
-
-        _stat.Init();
     }
 
     private void Start()
     {
+
         _attack.Initialize();
         _controller.Initialize();
 
         //플레이어 상태
-        _stateStorage.Add(Define.PlayerState.NONE, new NoneState(this));
+        _stateStorage.Add(Define.PlayerState.DIE, new DieState(this));
         _stateStorage.Add(Define.PlayerState.STUN, new StunState(this));
+        _stateStorage.Add(Define.PlayerState.NONE, new NoneState(this));
+
+        if (copySkill != null && copySkill.LoadSkillSlots() != null)
+        {
+            GetComponent<PlayerSkillManager>().LoadSkill(copySkill.LoadSkillSlots(), copySkill.LoadReserveSlots());
+            _view.SetSkillIcon(copySkill.LoadMainIcon(), copySkill.LoadSubIcon());
+        }
     }
 
     protected override void Update()
     {
         base.Update();
+        if (_stat.Hp <= 0)
+        {
+            _currentState = Define.PlayerState.DIE;
+        }
+
 
         _stateStorage[_currentState]?.Stay();
-
         switch (_currentState)
         {
             case Define.PlayerState.STUN:
                 _rb.velocity = new Vector2(0, _rb.velocity.y);
                 //_attack.ChangeCurrentAttackState(Define.AttackState.FINISH);
                 break;
+            case Define.PlayerState.DIE:
+                _view.OnGameoverUI();
+                break;
             case Define.PlayerState.NONE:
                 //_atkStateStorage[_curAtkState]?.Stay();
                 _attack.Update();
                 _controller.Update();
-
                 break;
         }
     }
@@ -129,17 +145,17 @@ public class Player : CharacterBase
         }   
     }
 
-    public void TakeDamage(float value)
+    public override void TakeDamage(float value)
     {
-        if (_stat.IsKnockedBack) return;
+        if (_playerStat.IsKnockedBack) return;
 
         _stat.Hp -= value * ((100 - _stat.Defense) / 100);
         UpdateHealth();
     }
 
-    public void TakeDamage(float value, bool isHpDamage)
+    public override void TakeDamage(float value, bool isHpDamage)
     {
-        if (_stat.IsKnockedBack || !isHpDamage) return;
+        if (_playerStat.IsKnockedBack || !isHpDamage) return;
 
         _stat.Hp -= (_stat.MaxHp * (value / 100));
         UpdateHealth();
@@ -168,25 +184,17 @@ public class Player : CharacterBase
         _stat.Damage += value;
     }
 
-    // 과부화 상태인지 확인(스테미너가 최대 스테미나랑 같을 때)
-    //public bool CheckOverload()
-    //{
-    //    if (_stat.Stamina == _stat.MaxStamina)
-    //    {
-    //        return true;
-    //    }
-    //    return false;
-    //}
+    public override bool IsLeftDirection()
+    {
+        return CharacterModel.localScale.x < 0;
+    }
 
     #region View
     public void UpdateHealth()
     {
         _view.UpdateHpBar(_stat.Hp / _stat.MaxHp);
     }
-    //public void UpdateStamina()
-    //{
-    //    _view.UpdateStaminaBar(_stat.Stamina / _stat.MaxStamina);
-    //}
+
     #endregion
     private void OnDrawGizmos()
     {

@@ -35,7 +35,7 @@ public class MiddleMonster : Monster
     public Define.MiddleMonsterName monsterName { get => _monsterName; }
     public Middle_Skill CurrentSkill { get => _currentSkill; }
     public List<Middle_Skill> ReadySkills { get => _readySkills; set => _readySkills = value; }
-    public Transform HitPoint { get =>  _hitPoint; }
+    public Transform HitPoint { get => _hitPoint; set => _hitPoint = value; }
     public List<Middle_Skill> SkillStorage { get => _skillStorage; }
     public Vector3 ColliderSize { get => _colliderSize; set => _colliderSize = value; }
     public float IdleDuration { get => _idleDuration; }
@@ -184,7 +184,7 @@ public class MiddleMonster : Monster
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(_hitPoint.position, _colliderSize);
+        Gizmos.DrawWireCube(transform.TransformPoint(new Vector3(_hitPoint.localPosition.x * -Direction, _hitPoint.localPosition.y, _hitPoint.localPosition.z)), _colliderSize);
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireCube(_parringPoint.position, _parringColliderSize);

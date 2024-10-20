@@ -75,7 +75,7 @@ public class Elite_Idle : Elite_State
         float direction = _monster.Player.transform.position.x - _monster.transform.position.x;
         _monster.Direction = direction;
 
-        if (Mathf.Abs(direction) <= _monster.Stat.AttackRange)
+        if (Mathf.Abs(direction) <= _monster.MonsterSt.AttackRange)
         {
             _monster.Rb.velocity = new Vector2(0, _monster.Rb.velocity.y);
             _monster.Ani.SetBool("Run", false);

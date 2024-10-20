@@ -14,12 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _info:
     skill: 4
-    coolTime: 1
-    totalTime: 0
+    coolTime: 2
     range: 6
-    damage: 10
-    priority: 0
-  _attackCount: 2
-  _knockBackPower: 50
+    damage: 15
+    priority: 50
+  _hitPoint: {x: -1.5, y: 0.9, z: 0}
+  _hitScale: {x: 3.5, y: 2, z: 1}
+  _knockBackPower: 10
   _knockBackDuration: 0.6
-  _finishDamage: 15
+  _attackCount: 2
+  _finishDamage: 20

@@ -32,30 +32,25 @@ public class PlayerAnimationEvent : MonoBehaviour
             {
                 HitMainTempo(monster);
             }
-            else
-            {
-                HitPointTempo(monster);
-            }
-            // 히트 파티클 생성
-            GameObject hitParticle = SpawnHitParticle(monster);
 
+            // 히트 파티클 생성
+            GameObject hitParticle = SpawnHitParticle(monster, "P_Punch");
+            GameObject hitParticle2 = SpawnHitParticle(monster, "P_PunchAttack");
 
             Vector3 hitPos = monsterCollider.ClosestPoint(_player.HitPoint.position);
             hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z - 0.1f);
+            hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(-_player.CharacterModel.localScale.x, 0, 0));
+            hitParticle2.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z);
         }
     }
     private void HitMainTempo(Monster monster)
     {
+        CameraShaking(0.2f);
         // 메인 템포일 때 데미지 처리
         monster.TakeDamage(_player.GetTotalDamage());
     }
-    private void HitPointTempo(Monster monster)
-    {
-        //Define.CircleState state = _player.Attack.PointTempoCircle.CircleState;
-        float damage = _player.GetTotalDamage();
-        monster.TakeDamage(damage);
-    }
-    private GameObject SpawnHitParticle(Monster monster)
+
+    private GameObject SpawnHitParticle(Monster monster, string name)
     {
         GameObject hitParticle = null;
 
@@ -73,16 +68,17 @@ public class PlayerAnimationEvent : MonoBehaviour
         {
             if (_player.Attack.CurrentTempoData.type == Define.TempoType.POINT)
             {
-                hitParticle = ObjectPool.Instance.Spawn("P_point_attack", 1);
+                hitParticle = ObjectPool.Instance.Spawn(name, 1);
             }
             else
             {
-                hitParticle = ObjectPool.Instance.Spawn("P_main_attack", 1);
+                hitParticle = ObjectPool.Instance.Spawn(name, 1);
             }
         }
 
         return hitParticle;
     }
+
     private void CameraShaking(float shakeTime)
     {
         if (!_cameraController)
@@ -94,24 +90,6 @@ public class PlayerAnimationEvent : MonoBehaviour
     }
 
     #endregion
-
-    private void StartPointTempo()
-    {
-        _player.IsInvincible = true;
-    }
-
-    // 포인트 템포 애니메이션 끝에 추가하는 이벤트 함수
-    private void FinishPointTempo()
-    {
-        if (_player.Attack.IsHit)
-        {
-        }
-
-        _player.Attack.IsHit = false;
-
-        _player.IsInvincible = false;
-        _player.Attack.ChangeCurrentAttackState(Define.AttackState.FINISH);
-    }
 
     // 메인 템포 애니메이션 끝에 추가하는 이벤트 함수
     private void Finish(float delay)

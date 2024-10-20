@@ -23,7 +23,6 @@ public abstract class SkillBase : ISkillRoot
 { 
     public SkillRunnerBase SkillRunner { get; protected set; }
 
-
     public UnityEvent<CharacterBase> OnSkillAttack { get; protected set; }
 
     public SkillBase(SkillRunnerBase skillData)
