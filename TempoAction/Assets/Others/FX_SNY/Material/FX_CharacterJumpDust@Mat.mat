@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8766350761040438502
+--- !u!114 &-7004646870222665947
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,13 +20,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FX_WalkSequance
-  m_Shader: {fileID: -6465566751694194690, guid: 5ee379fcd66339a4a98eea0607e50f02, type: 3}
+  m_Name: FX_CharacterJumpDust@Mat
+  m_Shader: {fileID: -6465566751694194690, guid: 79787e590ba8f834fa247e134c4a2e33, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 0
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -61,15 +61,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 8805e8a6009705a44abd82c0068097fd, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Main_tex:
-        m_Texture: {fileID: 2800000, guid: 2cdc92a7661987c408fe0795d82e183e, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Maintex:
-        m_Texture: {fileID: 2800000, guid: 4636077ebf62c564d9d374f46b12af50, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5fa2fee2db49627459115b2e55988c23, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -84,16 +80,28 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_29c832a1c93242bf965c651ea097a082_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 3c0abb6c690a9e04ca418a3001496c0f, type: 3}
+    - _SampleTexture2D_2a2f4557e17044c5b4e56baf0c3862df_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 9eb1a8e1c0a66d14ab206b9edff0b75d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_3f18fac028374e72a5ef915694d31a8a_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 3c0abb6c690a9e04ca418a3001496c0f, type: 3}
+    - _SampleTexture2D_997ee806bb244d7a8bffd88e861abe3f_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 4e0377035bd0e37488acaed7dc1d9995, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _disssolve_tex:
+        m_Texture: {fileID: 2800000, guid: 3c0abb6c690a9e04ca418a3001496c0f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _dist_tex:
+        m_Texture: {fileID: 2800000, guid: 4e0377035bd0e37488acaed7dc1d9995, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _dust_tex:
+        m_Texture: {fileID: 2800000, guid: 3c0abb6c690a9e04ca418a3001496c0f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -114,33 +122,22 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
-    - _BlendOp: 0
     - _BumpScale: 1
-    - _CameraFadingEnabled: 0
-    - _CameraFarFadeDistance: 2
-    - _CameraNearFadeDistance: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _ColorMode: 0
-    - _Cull: 0
+    - _Cull: 2
     - _Cutoff: 0.5
+    - _Depth_distance: 4
+    - _Depth_pw: 1.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DistortionBlend: 0.5
-    - _DistortionEnabled: 0
-    - _DistortionStrength: 1
-    - _DistortionStrengthScaled: 0
-    - _DstBlend: 10
+    - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _EmissionEnabled: 1
     - _EnvironmentReflections: 1
-    - _FlipbookMode: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _LightingEnabled: 0
     - _Metallic: 0
-    - _Mode: 2
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
@@ -148,22 +145,21 @@ Material:
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
-    - _SoftParticlesEnabled: 0
-    - _SoftParticlesFarFadeDistance: 1
-    - _SoftParticlesNearFadeDistance: 0
     - _SpecularHighlights: 1
-    - _SrcBlend: 5
+    - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
     - _WorkflowMode: 1
-    - _ZWrite: 0
-    - _dist: 2
+    - _ZWrite: 1
+    - _dissolve_tex_xtile: 1
+    - _dissolve_tex_ytile: 1
+    - _dist_inten: 0.5
+    - _dist_tex_xtile: 0.2
+    - _dist_tex_ytile: 0.2
+    - _scale: 2
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
-    - _Color: {r: 1.4980392, g: 1.4980392, b: 1.4980392, a: 1}
-    - _ColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

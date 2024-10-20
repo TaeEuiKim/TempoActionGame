@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8766350761040438502
+--- !u!114 &-1324433710404191769
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,18 +20,22 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FX_WalkSequance
-  m_Shader: {fileID: -6465566751694194690, guid: 5ee379fcd66339a4a98eea0607e50f02, type: 3}
+  m_Name: FX_Jumpdust
+  m_Shader: {fileID: 211, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _ALPHABLEND_ON
+  - _REQUIRE_UV2
   m_InvalidKeywords: []
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    RenderType: Transparent
+  disabledShaderPasses:
+  - GRABPASS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -61,15 +65,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 8805e8a6009705a44abd82c0068097fd, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Main_tex:
-        m_Texture: {fileID: 2800000, guid: 2cdc92a7661987c408fe0795d82e183e, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Maintex:
-        m_Texture: {fileID: 2800000, guid: 4636077ebf62c564d9d374f46b12af50, type: 3}
+        m_Texture: {fileID: 2800000, guid: adb2ff29e4ae21a49b1694d19bb812c7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -82,14 +78,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_29c832a1c93242bf965c651ea097a082_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 3c0abb6c690a9e04ca418a3001496c0f, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_3f18fac028374e72a5ef915694d31a8a_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 3c0abb6c690a9e04ca418a3001496c0f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -132,7 +120,7 @@ Material:
     - _DistortionStrengthScaled: 0
     - _DstBlend: 10
     - _DstBlendAlpha: 0
-    - _EmissionEnabled: 1
+    - _EmissionEnabled: 0
     - _EnvironmentReflections: 1
     - _FlipbookMode: 1
     - _GlossMapScale: 0
@@ -143,7 +131,6 @@ Material:
     - _Mode: 2
     - _OcclusionStrength: 1
     - _Parallax: 0.005
-    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
@@ -157,11 +144,10 @@ Material:
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 0
-    - _dist: 2
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
-    - _Color: {r: 1.4980392, g: 1.4980392, b: 1.4980392, a: 1}
+    - _Color: {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
     - _ColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
