@@ -36,6 +36,9 @@ public class PlayerView : MonoBehaviour
 
     public void ChangeMainSkillIcon(int value, bool isRemove)
     {
+        if(_mainSkillIcons.Length <= value) { return; }
+        if (_mainSkillIcons[value] == null) { return; }
+
         if (isRemove)
         {
             _mainSkillIcons[value].sprite = _skillBackIcon;
@@ -49,6 +52,9 @@ public class PlayerView : MonoBehaviour
 
     public void ChangeSubSkillIcon(int value, bool isRemove)
     {
+        if (_subSkillIcons.Length <= value) { return; }
+        if (_subSkillIcons[value] == null) { return; }
+
         if (isRemove)
         {
             _subSkillIcons[value].sprite = _skillBackIcon;

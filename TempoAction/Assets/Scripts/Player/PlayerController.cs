@@ -191,25 +191,29 @@ public class PlayerController
     }
 
 
-    private void Jump()
+    public void Jump(bool useKeyDown = true)
     {
-        if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) && !_isGrounded && !_isDoubleJumping)
+        if(!useKeyDown || (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)))
         {
-            _player.Ani.SetTrigger("isJumping");
-            _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
-            _isDoubleJumping = true;
-        }
+            if (!_isGrounded && !_isDoubleJumping)
+            {
+                _player.Ani.SetTrigger("isJumping");
+                _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
+                _isDoubleJumping = true;
+            }
 
-        if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) && _isGrounded)
-        {
-            _player.Ani.SetTrigger("isJumping");
-            _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
-            _isGrounded = false;
+            if (_isGrounded)
+            {
+                _player.Ani.SetTrigger("isJumping");
+                _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
+                _isGrounded = false;
+            }
+            else
+            {
+                //_player.Rb.velocity = new Vector3(_player.Rb.velocity.x, _player.Rb.velocity.y / 2, _player.Rb.velocity.z);
+            }
         }
-        else if ((Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.Space)))
-        {
-            //_player.Rb.velocity = new Vector3(_player.Rb.velocity.x, _player.Rb.velocity.y / 2, _player.Rb.velocity.z);
-        }
+        
 
         if (Mathf.Abs(_player.Rb.velocity.y) >= 0.1f)
         {

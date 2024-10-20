@@ -7,7 +7,7 @@ using UnityEngine.Events;
 public abstract class SkillSlot
 {
     public ISkillRoot Skill { get; protected set; }
-    public UnityEvent<ISkillRoot> OnRemoved = new UnityEvent<ISkillRoot>();
+    public UnityEvent<SkillSlot> OnRemoved = new UnityEvent<SkillSlot>();
 
     public virtual void SetSkill(ISkillRoot newSkill)
     {
@@ -20,7 +20,11 @@ public abstract class SkillSlot
 
     public void RemoveSkill()
     {
-        OnRemoved.Invoke(Skill);
+#if UNITY_EDITOR
+        Debug.Log($"*½ºÅ³ ¼Ò¸ê({Skill.GetSkillId()})*");
+#endif
+
+        OnRemoved.Invoke(this);
         Skill = null;
     }
 }

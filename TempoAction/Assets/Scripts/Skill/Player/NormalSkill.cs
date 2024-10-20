@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -44,7 +44,7 @@ public class NormalSkill : SkillBase, ICooldownSkill
 
     public override void UseSkill(CharacterBase character, UnityAction OnEnded = null)
     {
-        if (IsSkillUsable()) { UseSkillCount(); }
+        if (!IsSkillUsable()) { return; }
 
         //OnSkillAttack.Invoke(sm);
         SkillRunner.Run(this, character, OnEnded);
@@ -57,14 +57,30 @@ public class NormalSkill : SkillBase, ICooldownSkill
 
     public void UseSkillCount()
     {
+#if UNITY_EDITOR
+        float originalSkillCount = SkillCountCharged;
+#endif
+
         SkillCountCharged--;
         SetSkillCountInRange();
+
+#if UNITY_EDITOR
+        Debug.Log($"*잔여스킬사용량* 【{originalSkillCount} ▶ {SkillCountCharged}】 ----- ◈ {skillData.SkillName}({skillData.SkillId})");
+#endif
     }
 
     private void RechargeSkillCount()
     {
+#if UNITY_EDITOR
+        float originalSkillCount = SkillCountCharged;
+#endif
+
         SkillCountCharged++;
         SetSkillCountInRange();
+
+#if UNITY_EDITOR
+        Debug.Log($"*스킬사용량회복!* 【{originalSkillCount} ▶ {SkillCountCharged}】 ----- ◈ {skillData.SkillName}({skillData.SkillId})");
+#endif
     }
 
     private void SetSkillCountInRange()
