@@ -13,17 +13,17 @@ public class StompRunner : SkillRunnerBase
 
         float movingDistance = skillData.SkillEffectValue * SkillData.cm2m;
 
-        var targets = GetTargets(character, skillData.SkillCastingTarget);
+        var targets = GetTargets(skillData.SkillCastingTarget, character);
+
+        // ¼±µô
+        yield return preDelayWFS;
 
         Vector3 initialPos = character.transform.position;
-        Vector3 targetPos = targets[0].transform.position ;
+        Vector3 targetPos = targets[0].transform.position;
         Vector3 direction = (targetPos - initialPos).normalized;
 
         // È÷Æ®¹Ú½º
         character.ColliderManager.SetActiveCollider(false, Define.ColliderType.PERSISTANCE);
-
-        // ¼±µô
-        yield return preDelayWFS;
 
         // Á¡ÇÁ ¹× ³«ÇÏ
         float curTime = 0;
