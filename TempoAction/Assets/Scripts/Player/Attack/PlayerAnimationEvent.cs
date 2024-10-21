@@ -12,6 +12,8 @@ public class PlayerAnimationEvent : MonoBehaviour
     [SerializeField] private Player _player;
     [SerializeField] private Transform leftHandTrans;
     [SerializeField] private Transform rightHandTrans;
+    [SerializeField] private Transform leftFootTrans;
+    [SerializeField] private Transform rightFootTrans;
     private CameraController _cameraController;
 
     private void Start()
@@ -221,6 +223,18 @@ public class PlayerAnimationEvent : MonoBehaviour
                     break;
             }
         }
+    }
+
+    private void LeftFootEffect()
+    {
+        GameObject effect = ObjectPool.Instance.Spawn("FX_Walk", 1);
+        effect.transform.position = leftFootTrans.position;
+    }
+
+    private void RightFootEffect()
+    {
+        GameObject effect = ObjectPool.Instance.Spawn("FX_Walk", 1);
+        effect.transform.position = rightFootTrans.position;
     }
 
     // 시간 크기 변경

@@ -157,12 +157,12 @@ public class PlayerController
             return;
         }
 
-        if (PlayerInputManager.Instance.move.x == -1)
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
             Direction = -1f;
             _dashDirection = -1f;
         }
-        if (PlayerInputManager.Instance.move.x == 1)
+        if (Input.GetKey(KeyCode.RightArrow))
         {
             Direction = 1f;
             _dashDirection = 1f;
@@ -206,7 +206,6 @@ public class PlayerController
                 _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
                 _isDoubleJumping = true;
             }
-
             if (_isGrounded)
             {
                 _player.Ani.SetTrigger("isJumping");
