@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 [CreateAssetMenu(fileName = "StompRunner", menuName = "ScriptableObjects/Skill/Runner/StompRunner", order = 1)]
 public class StompRunner : SkillRunnerBase
@@ -20,10 +21,9 @@ public class StompRunner : SkillRunnerBase
 
         Vector3 initialPos = character.transform.position;
         Vector3 targetPos = targets[0].transform.position;
-        Vector3 direction = (targetPos - initialPos).normalized;
-
-        // 히트박스
-        character.ColliderManager.SetActiveCollider(false, Define.ColliderType.PERSISTANCE);
+        Vector3 direction = (targetPos - initialPos);
+        direction.y = 0f;
+        direction.Normalize();
 
         // 점프 및 낙하
         float curTime = 0;
@@ -31,7 +31,20 @@ public class StompRunner : SkillRunnerBase
 
         List<CharacterBase> hittedCharacters = new List<CharacterBase>();
 
-        targetPos = GetTargetPosByCoillision(initialPos, direction, targetPos, movingDistance);
+        // 콜라이더 사이즈 가져오기
+        float halfColliderSize = character.ColliderManager.GetHalfSizeForMain(Vector3.right);
+        float colliderSizeForTarget = 0;
+        var target = GetCharacter(targets[0]);
+        if(target != null)
+        {
+            colliderSizeForTarget = target.ColliderManager.GetHalfSizeForMain(Vector3.right) * 2f;
+        }
+
+        // 히트박스
+        character.ColliderManager.SetActiveCollider(false, Define.ColliderType.PERSISTANCE);
+
+        // 목표 위치 계산
+        targetPos = GetTargetPosByCoillision(initialPos, direction, targetPos, halfColliderSize + colliderSizeForTarget);
 
         // 포물선 운동 시작
         while (curTime <= regenTime)
@@ -67,6 +80,17 @@ public class StompRunner : SkillRunnerBase
             hittedCharacter.TakeDamage(damageAmount);
         }
 
+        var targetsInRanged = Physics.SphereCastAll(character.transform.position, 5, Vector3.up, 0, SkillTargetToLayerMask(skillData.SkillCastingTarget));
+
+        foreach(var targetInReanged in targetsInRanged)
+        {
+            var targetCharacter = targetInReanged.transform.GetComponent<CharacterBase>();
+            if (targetCharacter != null)
+            { 
+                KnockbackTarget(targetCharacter, character, 5);
+            }
+        }
+
         // 초기화
         character.transform.position = targetPos;
         rigid.velocity = Vector3.zero;
@@ -84,5 +108,32 @@ public class StompRunner : SkillRunnerBase
         Vector3 vec = Vector3.Lerp(start, end, normalizedTime);
 
         return new Vector3(vec.x, quadratic + start.y, start.z);
+    }
+
+    private CharacterBase GetCharacter(GameObject obj)
+    {
+        var character = obj.GetComponent<CharacterBase>();
+        if (character == null)
+        {
+            Debug.LogWarning("This Object has not Character Base");
+        }
+
+        return character;
+    }
+
+    private void KnockbackTarget(CharacterBase target, CharacterBase self, float power)
+    {
+        Vector3 selfToTarget = target.transform.position - self.transform.position;
+        selfToTarget.y = 0;
+
+        if(selfToTarget == Vector3.zero)
+        {
+            selfToTarget = self.transform.right * (self.IsLeftDirection() ? -1 : 1);
+        }
+
+        Vector3 direction = selfToTarget.normalized;
+        Vector3 velocity = direction * power;
+        velocity.y = target.Rb.velocity.y;
+        target.Rb.velocity = velocity;
     }
 }

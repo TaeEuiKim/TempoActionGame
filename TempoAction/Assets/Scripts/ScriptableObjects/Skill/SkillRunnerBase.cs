@@ -134,15 +134,15 @@ public abstract class SkillRunnerBase : ScriptableObject
     /// <param name="initialPos">초기 위치</param>
     /// <param name="direction">캐릭터의 방향(좌우)</param>
     /// <param name="targetPos">계산된 목표 위치</param>
-    /// <param name="movingDistance">이동할 거리</param>
-    /// <returns>(targetPos - initialPos) 벡터가, Wall과 충돌한다면, Wall까지의 거리 값, 아니라면 목표 위치 반환</returns>
-    protected Vector3 GetTargetPosByCoillision(Vector3 initialPos, Vector3 direction, Vector3 targetPos, float movingDistance)
+    /// <param name="distanceToWall">벽으로부터 떨어진 거리</param>
+    /// <returns>(targetPos - initialPos) (+ distanceToWall) 벡터가, Wall과 충돌한다면, Wall까지의 거리 벡터, 아니라면 목표 위치 반환</returns>
+    protected Vector3 GetTargetPosByCoillision(Vector3 initialPos, Vector3 direction, Vector3 targetPos, float distanceToWall = 0.6f)
     {
         // ���� ���� ���� with Wall
-        if (Physics.Raycast(new Ray(initialPos, direction), out RaycastHit wallHit, (targetPos - initialPos).magnitude, 1 << 13)) // 13�� Wall
+        if (Physics.Raycast(new Ray(initialPos, direction), out RaycastHit wallHit, (targetPos - initialPos).magnitude + distanceToWall, 1 << 13)) // 13은 Wall
         {
-            movingDistance = (wallHit.distance - 0.6f) * 0.99f;
-            return initialPos + direction * movingDistance;
+            var wallGap = wallHit.point + wallHit.normal * distanceToWall;
+            return wallGap;
         }
 
         return targetPos;
@@ -154,7 +154,7 @@ public abstract class SkillRunnerBase : ScriptableObject
     /// <param name="caster">스킬 시전자</param>
     /// <param name="target">스킬 대상</param>
     /// <returns>유효 타겟 리스트</returns>
-    protected List<GameObject> GetTargets(CharacterBase caster, Define.SkillTarget target)
+    protected List<GameObject> GetTargets(Define.SkillTarget target, CharacterBase caster = null)
     {
         List<GameObject> targets = new List<GameObject>();
         int mask = SkillTargetToLayerMask(target);
@@ -189,7 +189,7 @@ public abstract class SkillRunnerBase : ScriptableObject
     /// <returns>objs 중, target에 해당하는 오브젝트</returns>
     protected List<GameObject> GetExistingTargets(CharacterBase caster, Define.SkillTarget target, GameObject[] objs)
     {
-        var targets = GetTargets(caster, target);
+        var targets = GetTargets(target, caster);
         var existingTargets = new List<GameObject>();
 
         foreach (var obj in objs)

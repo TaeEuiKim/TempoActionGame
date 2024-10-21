@@ -95,7 +95,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         List<CharacterBase> hittedCharacters = new List<CharacterBase>();
 
         // 도착 지점 갱신 with Wall
-        targetPos = GetTargetPosByCoillision(initialPos, direction, targetPos, movingDistance);
+        targetPos = GetTargetPosByCoillision(initialPos, direction, targetPos);
 
         // 돌진 이펙트 시작
         ActiveEffectToCharacter(character, dash);
