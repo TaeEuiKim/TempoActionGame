@@ -188,40 +188,36 @@ public class PlayerAnimationEvent : MonoBehaviour
         Debug.DrawRay(rayOrigin, rayDirection * _player.Attack.CurrentTempoData.distance, Color.red);
     }
 
-    private void MoveAttack(float duration)
+    private void MoveAttack(float moveDistance)
     {
         Vector3 rayOrigin = new Vector3(transform.parent.position.x, transform.parent.position.y, transform.parent.position.z);
         Vector3 rayDirection = transform.localScale.x < 0 ? transform.right : transform.right * -1;
 
-        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitPos, _player.Attack.CurrentTempoData.distance, _player.MonsterLayer))
+        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitPos, _player.Attack.CurrentTempoData.distance, _player.MonsterLayer | _player.WallLayer))
         {
             float closestMonsterX = hitPos.point.x + (-rayDirection.x * 0.2f);
-            transform.parent.DOMoveX(closestMonsterX, duration);
+            transform.parent.DOMoveX(closestMonsterX, 0.3f);
         }
         else
         {
             switch (_player.Ani.GetInteger("AtkCount"))
             {
                 case 0:
-                    transform.parent.DOMoveX(transform.parent.position.x - (2f * _player.CharacterModel.localScale.x), 0.3f);
-
-                    _player.Rb.AddForce(Vector3.right * _player.Controller.Direction * 20f, ForceMode.VelocityChange);
+                    transform.parent.DOMoveX(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x), 0.3f);
                     break;
                 case 1:
-
+                    transform.parent.DOMoveX(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x), 0.3f);
                     break;
                 case 2:
-
+                    transform.parent.DOMoveX(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x), 0.3f);
                     break;
                 case 3:
-                    transform.parent.DOMoveX(transform.parent.position.x - (2f * _player.CharacterModel.localScale.x), 0.3f);
-
-                    _player.Rb.AddForce(Vector3.right * _player.Controller.Direction * 20f, ForceMode.VelocityChange);
+                    transform.parent.DOMoveX(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x), 0.3f);
                     break;
                 case 4:
-                    transform.parent.DOMoveX(transform.parent.position.x - (2f * _player.CharacterModel.localScale.x), 0.3f);
+                    transform.parent.DOMoveX(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x), 0.3f);
 
-                    _player.Rb.AddForce(Vector3.right * _player.Controller.Direction * 20f, ForceMode.VelocityChange);
+                    //_player.Rb.AddForce(Vector3.right * _player.Controller.Direction * moveDistance, ForceMode.VelocityChange);
                     break;
             }
         }
