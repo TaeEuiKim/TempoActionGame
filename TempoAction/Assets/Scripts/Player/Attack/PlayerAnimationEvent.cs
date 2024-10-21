@@ -218,11 +218,15 @@ public class PlayerAnimationEvent : MonoBehaviour
                     break;
                 case 4:
                     transform.parent.DOMoveX(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x), 0.3f);
-
                     //_player.Rb.AddForce(Vector3.right * _player.Controller.Direction * moveDistance, ForceMode.VelocityChange);
                     break;
             }
         }
+    }
+
+    private void CheckCommand()
+    {
+        _player.Controller.OnCommandTime(0.3f);
     }
 
     private void LeftFootEffect()

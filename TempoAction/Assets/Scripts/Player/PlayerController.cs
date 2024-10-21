@@ -19,6 +19,7 @@ public class PlayerController
     private bool _isDashing;
     private bool _isDoubleJumping;
     public bool isMove;
+    public bool isJump;
     public bool isDown = false;
 
     private float _dashTimer;
@@ -59,6 +60,7 @@ public class PlayerController
         _isGrounded = true;
         _isDashing = false;
         isMove = true;
+        isJump = true;
 
         _dashDirection = 1;
         _dashTimer = 0f;
@@ -198,8 +200,14 @@ public class PlayerController
 
     public void Jump(bool useKeyDown = true)
     {
+        if (!isJump)
+        {
+            return;
+        }    
+
         if(!useKeyDown || PlayerInputManager.Instance.jump)
         {
+            PlayerInputManager.Instance.jump = false;
             if (!_isGrounded && !_isDoubleJumping)
             {
                 _player.Ani.SetTrigger("isJumping");
@@ -211,6 +219,9 @@ public class PlayerController
                 _player.Ani.SetTrigger("isJumping");
                 _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
                 _isGrounded = false;
+
+                GameObject effect = ObjectPool.Instance.Spawn("FX_Jump", 1);
+                effect.transform.position = _player.transform.position + new Vector3(0, 0.2f);
             }
             else
             {
@@ -278,6 +289,29 @@ public class PlayerController
         yield return new WaitForSeconds(invincibilityTime);
 
         _player.GetComponent<Collider>().enabled = true;
+    }
+
+    public void OnCommandTime(float checkTime)
+    {
+        isJump = false;
+        isMove = false;
+
+        PlayerInputManager.Instance.isCommand = true;
+        CoroutineRunner.Instance.StartCoroutine(CheckCommandTime(checkTime));
+    }
+
+    private IEnumerator CheckCommandTime(float checkTime)
+    {
+        float checkTimer = 0f;
+        while (checkTimer < checkTime)
+        {
+            checkTimer += Time.deltaTime;
+            Debug.LogError(checkTimer);
+            yield return null;
+        }
+
+        CheckAttackCommand(PlayerInputManager.Instance.GetCommandKey());
+        yield return null;
     }
 
     private void Stop()
@@ -352,5 +386,22 @@ public class PlayerController
         }
 
         return false;
+    }
+
+    private void CheckAttackCommand(List<KeyCode> keyList)
+    {
+        if (keyList.Count == 0)
+        {
+            Debug.Log("커맨드 없음");
+            return;
+        }
+        else if (keyList[0] == KeyCode.RightArrow && keyList[1] == KeyCode.Z)
+        {
+            Debug.Log("스매쉬");
+        }
+
+        PlayerInputManager.Instance.isCommand = false;
+        isMove = true;
+        isJump = true;
     }
 }
