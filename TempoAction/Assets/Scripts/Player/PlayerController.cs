@@ -157,12 +157,12 @@ public class PlayerController
             return;
         }
 
-        if (PlayerInputManager.Instance.move.x == -1)
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
             Direction = -1f;
             _dashDirection = -1f;
         }
-        if (PlayerInputManager.Instance.move.x == 1)
+        if (Input.GetKey(KeyCode.RightArrow))
         {
             Direction = 1f;
             _dashDirection = 1f;
@@ -212,6 +212,9 @@ public class PlayerController
             _player.Ani.SetTrigger("isJumping");
             _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
             _isGrounded = false;
+
+            GameObject effect = ObjectPool.Instance.Spawn("FX_Jump", 1);
+            effect.transform.position = _player.transform.position + new Vector3(0, 0.2f);
         }
         else if (PlayerInputManager.Instance.jump)
         {
