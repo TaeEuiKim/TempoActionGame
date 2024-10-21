@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 public class PlayerController
 {
     private Player _player;
+    private SkillCommand _skillCommand;
 
     [Header("키 입력 기록 리스트")]
     private List<KeyCode> keyInputs = new List<KeyCode>();
@@ -23,7 +24,6 @@ public class PlayerController
     public bool isDown = false;
 
     private float _dashTimer;
-    private float _tempDir = 1;
     protected float _direction;
     protected float _dashDirection;
     public float Direction
@@ -52,6 +52,7 @@ public class PlayerController
     public PlayerController(Player player)
     {
         _player = player;
+        _skillCommand = player._skillCommand;
     }
 
     public void Initialize()
@@ -102,7 +103,7 @@ public class PlayerController
 
         if (_isOnMonster && !_isGrounded)
         {
-            Vector3 force = new Vector3(-_player.CharacterModel.localScale.x * 30f, -5f);
+            Vector3 force = new Vector3(-_player.CharacterModel.localScale.x * 10f, -5f);
             _player.Rb.AddForce(force, ForceMode.VelocityChange);
         }
 
@@ -291,26 +292,25 @@ public class PlayerController
         _player.GetComponent<Collider>().enabled = true;
     }
 
-    public void OnCommandTime(float checkTime)
+    public void OnCommandTime(float checkTime, int attackCount)
     {
         isJump = false;
         isMove = false;
 
         PlayerInputManager.Instance.isCommand = true;
-        CoroutineRunner.Instance.StartCoroutine(CheckCommandTime(checkTime));
+        CoroutineRunner.Instance.StartCoroutine(CheckCommandTime(checkTime, attackCount));
     }
 
-    private IEnumerator CheckCommandTime(float checkTime)
+    private IEnumerator CheckCommandTime(float checkTime, int attackCount)
     {
         float checkTimer = 0f;
         while (checkTimer < checkTime)
         {
             checkTimer += Time.deltaTime;
-            Debug.LogError(checkTimer);
             yield return null;
         }
 
-        CheckAttackCommand(PlayerInputManager.Instance.GetCommandKey());
+        CheckAttackCommand(PlayerInputManager.Instance.GetCommandKey(), attackCount);
         yield return null;
     }
 
@@ -388,20 +388,50 @@ public class PlayerController
         return false;
     }
 
-    private void CheckAttackCommand(List<KeyCode> keyList)
+    private void CheckAttackCommand(List<KeyCode> keyList, int attackCount)
     {
-        if (keyList.Count == 0)
+        KeyCode[] keys = new KeyCode[keyList.Count];
+        bool isValues = false;
+
+        //for (int i = 0; i < keyList.Count; ++i)
+        //{
+        //    Debug.LogError(i + " : " + keyList[i]);
+        //}
+
+        // AttackCount와 일치하는 스킬 아이디가 있는지 검사
+        for (int i = 0; i < _skillCommand.commandDatas.Length; ++i)
         {
-            Debug.Log("커맨드 없음");
-            return;
-        }
-        else if (keyList[0] == KeyCode.RightArrow && keyList[1] == KeyCode.Z)
-        {
-            Debug.Log("스매쉬");
+            if (attackCount == _skillCommand.commandDatas[i].SkillId)
+            {
+                keys = _skillCommand.commandDatas[i].KeyCodes;
+                isValues = true;
+                break;
+            }
         }
 
-        PlayerInputManager.Instance.isCommand = false;
-        isMove = true;
-        isJump = true;
+        // 일치하는 스킬 아이디가 없거나 받아온 키 개수와 일치하는 키의 개수가 일치하지 않으면 종료
+        if (!isValues || keyList.Count != keys.Length)
+        {
+            PlayerInputManager.Instance.isCommand = false;
+            isMove = true;
+            isJump = true;
+            return;
+        }
+
+        for (int i = 0; i < keys.Length; ++i)
+        {
+            // 키가 다르면
+            if (!(keyList[i] == keys[i]))
+            {
+                PlayerInputManager.Instance.isCommand = false;
+                isMove = true;
+                isJump = true;
+                return;
+            }
+        }
+
+        Debug.Log("커맨드 성공");
+        //_player.Ani.SetInteger("CommandAtkCount", attackCount);
+        //_player.Ani.SetBool("IsCommandAttack", true);
     }
 }

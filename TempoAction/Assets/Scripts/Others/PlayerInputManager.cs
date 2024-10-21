@@ -32,7 +32,6 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     public List<KeyCode> GetCommandKey()
     {
         List<KeyCode> result = commandValue.ToList();
-        Debug.LogError(commandValue.Count);
         commandValue.Clear();
         return result;
     }

@@ -9,6 +9,7 @@ public class Player : CharacterBase
     [Header("±‚≈∏")]
     private PlayerStat _playerStat;
     private PlayerView _view;
+    public SkillCommand _skillCommand;
 
     private PlayerAttack _attack;
     private PlayerController _controller;

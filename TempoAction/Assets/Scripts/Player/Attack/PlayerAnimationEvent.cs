@@ -224,9 +224,9 @@ public class PlayerAnimationEvent : MonoBehaviour
         }
     }
 
-    private void CheckCommand()
+    private void CheckCommand(int AttackCount)
     {
-        _player.Controller.OnCommandTime(0.3f);
+        _player.Controller.OnCommandTime(0.3f, AttackCount);
     }
 
     private void LeftFootEffect()
