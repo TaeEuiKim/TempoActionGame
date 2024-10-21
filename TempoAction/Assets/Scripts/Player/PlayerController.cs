@@ -17,7 +17,6 @@ public class PlayerController
     private bool _isGrounded;
     private bool _isOnMonster;
     private bool _isDashing;
-    private bool _isBackDashCheck;
     private bool _isDoubleJumping;
     public bool isMove;
     public bool isDown = false;
@@ -107,16 +106,18 @@ public class PlayerController
 
         if (_dashTimer >= _player.PlayerSt.DashDelay)
         {
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            if (PlayerInputManager.Instance.leftArrow)
             {
+                PlayerInputManager.Instance.leftArrow = false;
                 RecordInput(KeyCode.LeftArrow);
             }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            else if (PlayerInputManager.Instance.rightArrow)
             {
+                PlayerInputManager.Instance.rightArrow = false;
                 RecordInput(KeyCode.RightArrow);
             }
 
-            if ((Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.C) || CheckDash()) && !_isBackDashCheck)
+            if ((PlayerInputManager.Instance.dash || CheckDash()))
             {
                 Dash();
             }
@@ -126,9 +127,13 @@ public class PlayerController
             _dashTimer += Time.deltaTime;
         }
 
-        if (Input.GetKeyDown(KeyCode.DownArrow) && !_isBackDashCheck)
+        if (PlayerInputManager.Instance.downArrow)
         {
-            CoroutineRunner.Instance.StartCoroutine(CheckDashDir());
+            _player.Ani.SetBool("IsBackDash", true);
+        }
+        else
+        {
+            _player.Ani.SetBool("IsBackDash", false);
         }
 
         if (!_isDashing)
@@ -137,7 +142,7 @@ public class PlayerController
             Jump();
         }
 
-        if (Input.GetKeyDown(KeyCode.DownArrow) && _isGrounded)
+        if (PlayerInputManager.Instance.downArrow && _isGrounded)
         {
             isDown = true;
         }
@@ -145,19 +150,19 @@ public class PlayerController
 
     private void Move()
     {
+        Direction = 0f;
+
         if (!isMove)
         {
             return;
         }
 
-        _direction = 0;
-
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (PlayerInputManager.Instance.move.x == -1)
         {
             Direction = -1f;
             _dashDirection = -1f;
         }
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (PlayerInputManager.Instance.move.x == 1)
         {
             Direction = 1f;
             _dashDirection = 1f;
@@ -167,7 +172,7 @@ public class PlayerController
         {
             _player.Rb.velocity = new Vector2(0, _player.Rb.velocity.y);
 
-            if (_direction == 0)
+            if (Direction == 0)
             {
                 _player.Ani.SetFloat("Speed", 0);
             }
@@ -193,20 +198,22 @@ public class PlayerController
 
     private void Jump()
     {
-        if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) && !_isGrounded && !_isDoubleJumping)
+        if (PlayerInputManager.Instance.jump && !_isGrounded && !_isDoubleJumping)
         {
+            PlayerInputManager.Instance.jump = false;
             _player.Ani.SetTrigger("isJumping");
             _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
             _isDoubleJumping = true;
         }
 
-        if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) && _isGrounded)
+        if (PlayerInputManager.Instance.jump && _isGrounded)
         {
+            PlayerInputManager.Instance.jump = false;
             _player.Ani.SetTrigger("isJumping");
             _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
             _isGrounded = false;
         }
-        else if ((Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.Space)))
+        else if (PlayerInputManager.Instance.jump)
         {
             //_player.Rb.velocity = new Vector3(_player.Rb.velocity.x, _player.Rb.velocity.y / 2, _player.Rb.velocity.z);
         }
@@ -255,7 +262,6 @@ public class PlayerController
         });
 
         _player.Ani.SetTrigger("Dash");
-        _isBackDashCheck = false;
 
         _dashTimer = 0;
     }
@@ -271,32 +277,6 @@ public class PlayerController
         yield return new WaitForSeconds(invincibilityTime);
 
         _player.GetComponent<Collider>().enabled = true;
-    }
-
-    private IEnumerator CheckDashDir()
-    {
-        _isBackDashCheck = true;
-        _player.Ani.SetBool("IsBackDash", true);
-
-        float checkTime = 0.2f;
-        while (checkTime > 0)
-        {
-            if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.C) || CheckDash())
-            {
-                Dash();
-                yield break;
-            }
-
-            checkTime -= Time.deltaTime;
-            yield return new WaitForSeconds(0.01f);
-        }
-
-        if (_isBackDashCheck)
-        {
-            _isBackDashCheck = false;
-            _player.Ani.SetBool("IsBackDash", false);
-        }
-        yield return 0;
     }
 
     private void Stop()

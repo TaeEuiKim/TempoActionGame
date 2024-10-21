@@ -140,7 +140,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     private void JumpRock()
     {
-        if (_player.Ani.GetFloat("VerticalSpeed") <= -10)
+        if (_player.Ani.GetFloat("VerticalSpeed") <= -15)
         {
             _player.Rb.isKinematic = true;
         }
