@@ -68,6 +68,7 @@ MonoBehaviour:
   _stat: {fileID: 11400000, guid: f19c15c9f692fce4c929887ca8f7b101, type: 2}
   _characterModel: {fileID: 755044433271613083}
   _colliderManager:
+    mainCollider: {fileID: 3257734353095450533}
     colliders:
     - <Key>k__BackingField: 0
       <Colliders>k__BackingField:
@@ -86,6 +87,7 @@ MonoBehaviour:
   _currentPerceptionState: 3
   _hitPoint: {fileID: 4981716890653695903}
   _colliderSize: {x: 1, y: 1, z: 1}
+  hittingTime: 0
 --- !u!114 &6149916463832138144
 MonoBehaviour:
   m_ObjectHideFlags: 0

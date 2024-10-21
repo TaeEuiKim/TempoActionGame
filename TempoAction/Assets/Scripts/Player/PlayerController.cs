@@ -7,9 +7,9 @@ public class PlayerController
 {
     private Player _player;
 
-    [Header("Å° ÀÔ·Â ±â·Ï ¸®½ºÆ®")]
+    [Header("í‚¤ ì…ë ¥ ê¸°ë¡ ë¦¬ìŠ¤íŠ¸")]
     private List<KeyCode> keyInputs = new List<KeyCode>();
-    [Header("Å° ÀÔ·Â ½Ã°£ Á¦ÇÑ")]
+    [Header("í‚¤ ì…ë ¥ ì‹œê°„ ì œí•œ")]
     private float inputTimeLimit = 0.2f;
     private float lastInputTime;
 
@@ -196,27 +196,29 @@ public class PlayerController
     }
 
 
-    private void Jump()
+    public void Jump(bool useKeyDown = true)
     {
-        if (PlayerInputManager.Instance.jump && !_isGrounded && !_isDoubleJumping)
+        if(!useKeyDown || PlayerInputManager.Instance.jump)
         {
-            PlayerInputManager.Instance.jump = false;
-            _player.Ani.SetTrigger("isJumping");
-            _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
-            _isDoubleJumping = true;
-        }
+            if (!_isGrounded && !_isDoubleJumping)
+            {
+                _player.Ani.SetTrigger("isJumping");
+                _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
+                _isDoubleJumping = true;
+            }
 
-        if (PlayerInputManager.Instance.jump && _isGrounded)
-        {
-            PlayerInputManager.Instance.jump = false;
-            _player.Ani.SetTrigger("isJumping");
-            _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
-            _isGrounded = false;
+            if (_isGrounded)
+            {
+                _player.Ani.SetTrigger("isJumping");
+                _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
+                _isGrounded = false;
+            }
+            else
+            {
+                //_player.Rb.velocity = new Vector3(_player.Rb.velocity.x, _player.Rb.velocity.y / 2, _player.Rb.velocity.z);
+            }
         }
-        else if (PlayerInputManager.Instance.jump)
-        {
-            //_player.Rb.velocity = new Vector3(_player.Rb.velocity.x, _player.Rb.velocity.y / 2, _player.Rb.velocity.z);
-        }
+        
 
         if (Mathf.Abs(_player.Rb.velocity.y) >= 0.1f)
         {
@@ -248,10 +250,10 @@ public class PlayerController
         if (Physics.Raycast(_player.transform.position + new Vector3(0, 0.5f), Vector3.right * _dashDirection * dir, out hit, _player.PlayerSt.DashDistance, _player.WallLayer) ||
             Physics.Raycast(_player.transform.position + new Vector3(0, 0.5f), Vector3.right * _dashDirection * dir, out hit, _player.PlayerSt.DashDistance, _player.GroundLayer))
         {
-            dashPosition = (hit.point - new Vector3(0, 0.5f)) - (Vector3.right * _dashDirection * dir) * 0.2f;  // °öÇÏ´Â ¼ö ¸¸Å­ º®¿¡¼­ ¶³¾îÁü
+            dashPosition = (hit.point - new Vector3(0, 0.5f)) - (Vector3.right * _dashDirection * dir) * 0.2f;  // ê³±í•˜ëŠ” ìˆ˜ ë§Œí¼ ë²½ì—ì„œ ë–¨ì–´ì§
             isMove = true;
         }
-        else  // º®ÀÌ ¾øÀ¸¸é ´ë½¬ °Å¸®¸¸Å­ ¾ÕÀ¸·Î ÀÌµ¿
+        else  // ë²½ì´ ì—†ìœ¼ë©´ ëŒ€ì‰¬ ê±°ë¦¬ë§Œí¼ ì•ìœ¼ë¡œ ì´ë™
         {      
             dashPosition = _player.transform.position + (Vector3.right * _dashDirection * dir) * _player.PlayerSt.DashDistance;
         }
@@ -298,16 +300,16 @@ public class PlayerController
 
     private bool CheckMovePath()
     {
-        // ·¹ÀÌÄ³½ºÆ®·Î Àå¾Ö¹° °¨Áö
+        // ë ˆì´ìºìŠ¤íŠ¸ë¡œ ì¥ì• ë¬¼ ê°ì§€
         RaycastHit hit;
         if (Physics.Raycast(_player.transform.position, Vector2.right * _dashDirection, out hit, 0.5f, _player.BlockLayer))
         {
-            // Àå¾Ö¹°ÀÌ ·¹ÀÌÄ³½ºÆ® ¹üÀ§ ¾È¿¡ ÀÖÀ½
-            //Debug.Log("Àå¾Ö¹° °¨Áö: " + hit.collider.name);
+            // ì¥ì• ë¬¼ì´ ë ˆì´ìºìŠ¤íŠ¸ ë²”ìœ„ ì•ˆì— ìˆìŒ
+            //Debug.Log("ì¥ì• ë¬¼ ê°ì§€: " + hit.collider.name);
             return false;
         }
 
-        // Àå¾Ö¹°ÀÌ ¾øÀ½
+        // ì¥ì• ë¬¼ì´ ì—†ìŒ
         return true;
     }
 

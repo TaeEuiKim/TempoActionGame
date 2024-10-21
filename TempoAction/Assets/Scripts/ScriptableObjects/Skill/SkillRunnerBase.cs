@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,17 +10,19 @@ public abstract class SkillRunnerBase : ScriptableObject
     public SkillData skillData;
     protected List<ParticleSystem> managedEffects = new List<ParticleSystem>();
     protected WaitForSeconds preDelayWFS;
+    protected ISkillRoot CurrentSkill { get; private set; }
 
-    public virtual void Run(CharacterBase character, UnityAction OnEnded = null)
+    public virtual void Run(ISkillRoot skill, CharacterBase character, UnityAction OnEnded = null)
     {
         Initialize();
+        CurrentSkill = skill;
         character.StartCoroutine(WaitForSkillEnded(character, OnEnded));
     }
     
     /// <summary>
-    /// ÃÊ±âÈ­ ¸Ş¼Òµå. 
-    /// ÀÌÆåÆ® µîÀÇ ¸Ş¼Òµå¸¦ ÃÊ±âÈ­ ÇÏ´Â ¿ëµµ. 
-    /// *//preDelayWFS¸¦ »ç¿ëÇÏ·Á¸é ¹İµå½Ã ¿À¹ö¶óÀÌµå ÀÌÈÄ È£Ãâ ÇÊ¿ä//*
+    /// ì´ˆê¸°í™” í•¨ìˆ˜ 
+    /// ì´í™íŠ¸ ë“±ì„ ì´ˆê¸°í™” í•˜ëŠ” ë¶€ë¶„. 
+    /// preDelayWFSëŠ” ìë™ìœ¼ë¡œ ì •ì˜í•˜ë¯€ë¡œ, ì´ ê°’ì„ ê·¸ëŒ€ë¡œ ì‚¬ìš©í•˜ë ¤ë©´ í•´ë‹¹ ë©”ì†Œë“œ ë¬´ì‹œí•˜ì§€ ë§ ê²ƒ.
     /// </summary>
     public virtual void Initialize()
     {
@@ -31,10 +33,10 @@ public abstract class SkillRunnerBase : ScriptableObject
     }
 
     /// <summary>
-    /// ½ÇÁ¦·Î ½ºÅ³À» »ç¿ëÇÏ´Â ºÎºĞ.
-    /// ½ºÅ³À» »ç¿ëÇßÀ» ¶§ ¹ß»ıµÉ Çàµ¿À» Á¤ÀÇÇÏ´Â ÄÚ·çÆ¾
+    /// ìºë¦­í„°ì˜ ìŠ¤í‚¬ ì²˜ë¦¬ ë©”ì†Œë“œ
+    /// ìŠ¤í‚¬ì„ ì‚¬ìš©í•˜ëŠ” ë™ì•ˆ ë°œìƒí•˜ëŠ” í–‰ë™ì„ ì •ì˜
     /// </summary>
-    /// <param name="character">½ºÅ³ »ç¿ëÀÚ(Ä³¸¯ÅÍ)</param>
+    /// <param name="character">ìŠ¤í‚¬ ì‚¬ìš©ì(ìºë¦­í„°)</param>
     /// <returns></returns>
     public abstract IEnumerator SkillCoroutine(CharacterBase character);
 
@@ -59,14 +61,14 @@ public abstract class SkillRunnerBase : ScriptableObject
         {
             yield return null;
 
-            // ÀÌÆåÆ®°¡ »ì¾Æ ÀÖ´ÂÁö Ã¼Å©
+            // ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ Ã¼Å©
             removingEffects.Clear();
             foreach (var effect in effects)
             {
                 if (!effect.IsAlive(true)) { removingEffects.Add(effect); }
             }
 
-            // Á×Àº ÀÌÆåÆ®´Â ºñÈ°¼ºÈ­ ¹× ´õÀÌ»ó °Ë»çÇÏÁö ¾Êµµ·Ï »èÁ¦
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­ ï¿½ï¿½ ï¿½ï¿½ï¿½Ì»ï¿½ ï¿½Ë»ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Êµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             foreach (var effect in removingEffects)
             {
                 effect.gameObject.SetActive(false);
@@ -76,10 +78,10 @@ public abstract class SkillRunnerBase : ScriptableObject
     }
 
     /// <summary>
-    /// characterÀÇ À§Ä¡¿¡ effect¸¦ È°¼ºÈ­ÇÑ´Ù.
+    /// characterì˜ ìœ„ì¹˜ì—ì„œ effectë¥¼ í™œì„±í™”.
     /// </summary>
-    /// <param name="character">´ë»ó Ä³¸¯ÅÍ</param>
-    /// <param name="effect">´ë»ó ÀÌÆåÆ®</param>
+    /// <param name="character">ëŒ€ìƒ ìºë¦­í„°</param>
+    /// <param name="effect">ì ìš©í•  ì´í™íŠ¸</param>
     protected void ActiveEffectToCharacter(CharacterBase character, GameObject effect)
     {
         if (character.gameObject.layer != LayerMask.NameToLayer("Player"))
@@ -94,10 +96,10 @@ public abstract class SkillRunnerBase : ScriptableObject
     }
 
     /// <summary>
-    /// arrayÀÇ nullÃ¼Å©, ±æÀÌ Ã¼Å©(0ÀÎÁö ¾Æ´ÑÁö), elementÀÇ nullÃ¼Å©¸¦ ¼öÇàÇÑ´Ù.
+    /// arrayì˜ nullì²´í¬, ê¸¸ì´ ì²´í¬(0ì´ ì•„ë‹Œì§€), elementì˜ nullì²´í¬ë¥¼ ìˆ˜í–‰.
     /// </summary>
-    /// <param name="array">´ë»ó ¹è¿­</param>
-    /// <returns>°¢Á¾ Ã¼Å©¸¦ ¼öÇàÇÏ¿© Åë°úÇÏ¸é true</returns>
+    /// <param name="array">ëŒ€ìƒ ë°°ì—´</param>
+    /// <returns>ê²€ì‚¬ í†µê³¼ ì‹œ true</returns>
     protected bool IsValidArray(GameObject[] array)
     {
         return array != null && array.Length > 0 && !Array.Exists(array, (value) => value == null);
@@ -110,49 +112,49 @@ public abstract class SkillRunnerBase : ScriptableObject
         List<ParticleSystem> waitingEffects = new List<ParticleSystem>();
         foreach (ParticleSystem effect in managedEffects)
         {
-            // ¹«ÇÑ¹İº¹ÀÌ ¾Æ´Ï°í ÀÚ½Ä Áß ÇÏ³ª¶óµµ »ì¾Æ ÀÖ´Ù¸é
-            if (!effect.main.loop && effect.IsAlive(true))
+            // ï¿½ï¿½ï¿½Ñ¹İºï¿½ï¿½ï¿½ ï¿½Æ´Ï°ï¿½ ï¿½Ú½ï¿½ ï¿½ï¿½ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½
+            if(!effect.main.loop && effect.IsAlive(true))
             {
                 waitingEffects.Add(effect);
                 continue;
             }
 
-            // ºñÈ°¼ºÈ­
+            // ï¿½ï¿½È°ï¿½ï¿½È­
             effect.gameObject.SetActive(false);
         }
 
-        // »èÁ¦µÇÁö ¾ÊÀº ÀÌÆåÆ® ´ë±â ÈÄ »èÁ¦
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         character.StartCoroutine(WaitForEffectEnded(waitingEffects));
     }
 
     /// <summary>
-    /// Ãæµ¹À» °í·ÁÇÏ¿© Target Position(ÃÖÁ¾ À§Ä¡)À» ±¸ÇÑ´Ù.
-    /// Ãæµ¹Àº Wall Layer¸¸ °í·ÁÇÑ´Ù.
+    /// ì¶©ëŒì„ ê²€ì‚¬í•˜ì—¬ Target Position(ëª©í‘œ ìœ„ì¹˜) ê³„ì‚°.
+    /// ì¶©ëŒ ëŒ€ìƒì€ Wall Layerë¡œ í•œì •
     /// </summary>
-    /// <param name="initialPos">ÃÊ±â À§Ä¡</param>
-    /// <param name="direction">Ä³¸¯ÅÍÀÇ ¹æÇâ(ÁÂ¿ì)</param>
-    /// <param name="targetPos">ÇöÀç °è»êµÈ ¸ñÇ¥ À§Ä¡</param>
-    /// <param name="movingDistance">ÀÌµ¿ÇÒ °Å¸®</param>
-    /// <returns>(targetPos - initialPos) º¤ÅÍ°¡, Wall¿¡ Ãæµ¹ÇÑ´Ù¸é Wall¿¡¼­ ÀÏÁ¤ °Å¸® ¾Õ, ¾Æ´Ï¶ó¸é ¿ø·¡ À§Ä¡¸¦ ¹İÈ¯</returns>
-    protected Vector3 GetTargetPosByCoillision(Vector3 initialPos, Vector3 direction, Vector3 targetPos, float movingDistance)
+    /// <param name="initialPos">ì´ˆê¸° ìœ„ì¹˜</param>
+    /// <param name="direction">ìºë¦­í„°ì˜ ë°©í–¥(ì¢Œìš°)</param>
+    /// <param name="targetPos">ê³„ì‚°ëœ ëª©í‘œ ìœ„ì¹˜</param>
+    /// <param name="distanceToWall">ë²½ìœ¼ë¡œë¶€í„° ë–¨ì–´ì§„ ê±°ë¦¬</param>
+    /// <returns>(targetPos - initialPos) (+ distanceToWall) ë²¡í„°ê°€, Wallê³¼ ì¶©ëŒí•œë‹¤ë©´, Wallê¹Œì§€ì˜ ê±°ë¦¬ ë²¡í„°, ì•„ë‹ˆë¼ë©´ ëª©í‘œ ìœ„ì¹˜ ë°˜í™˜</returns>
+    protected Vector3 GetTargetPosByCoillision(Vector3 initialPos, Vector3 direction, Vector3 targetPos, float distanceToWall = 0.6f)
     {
-        // µµÂø ÁöÁ¡ °»½Å with Wall
-        if (Physics.Raycast(new Ray(initialPos, direction), out RaycastHit wallHit, (targetPos - initialPos).magnitude, 1 << 13)) // 13Àº Wall
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ with Wall
+        if (Physics.Raycast(new Ray(initialPos, direction), out RaycastHit wallHit, (targetPos - initialPos).magnitude + distanceToWall, 1 << 13)) // 13ì€ Wall
         {
-            movingDistance = (wallHit.distance - 0.6f) * 0.99f;
-            return initialPos + direction * movingDistance;
+            var wallGap = wallHit.point + wallHit.normal * distanceToWall;
+            return wallGap;
         }
 
         return targetPos;
     }
 
     /// <summary>
-    ///  SkillTarget¿¡ ÇØ´çÇÏ´Â Å¸°Ù Áß ¾À ³»¿¡¼­ À¯È¿ÇÑ Å¸°ÙÀ» ÀüºÎ °¡Á®¿Â´Ù.
+    ///  SkillTargetì— í•´ë‹¹í•˜ëŠ” íƒ€ê²Ÿ ì¤‘, ìœ íš¨í•œ íƒ€ê²Ÿë§Œì„ ë°˜í™˜
     /// </summary>
-    /// <param name="caster">½ºÅ³ ½ÃÀüÀÚ</param>
-    /// <param name="target">½ºÅ³ ´ë»ó</param>
-    /// <returns>¾À ³»ÀÇ À¯È¿ ½ºÅ³ ´ë»óÀ» ÀüºÎ ¹İÈ¯</returns>
-    protected List<GameObject> GetTargets(CharacterBase caster, Define.SkillTarget target)
+    /// <param name="caster">ìŠ¤í‚¬ ì‹œì „ì</param>
+    /// <param name="target">ìŠ¤í‚¬ ëŒ€ìƒ</param>
+    /// <returns>ìœ íš¨ íƒ€ê²Ÿ ë¦¬ìŠ¤íŠ¸</returns>
+    protected List<GameObject> GetTargets(Define.SkillTarget target, CharacterBase caster = null)
     {
         List<GameObject> targets = new List<GameObject>();
         int mask = SkillTargetToLayerMask(target);
@@ -168,7 +170,7 @@ public abstract class SkillRunnerBase : ScriptableObject
             case Define.SkillTarget.ALL:
                 targets = CharacterManager.Instance.GetCharacter(mask);
                 break;
-            case Define.SkillTarget.GROUND: // ¹Ì±¸Çö
+            case Define.SkillTarget.GROUND: // ë¯¸ê°œë°œ
                 break;
             default:
                 Debug.LogError("Invalid Target");
@@ -179,24 +181,24 @@ public abstract class SkillRunnerBase : ScriptableObject
     }
 
     /// <summary>
-    /// objs ³»ÀÇ ¿ä¼Ò Áß¿¡, target¿¡ ÇØ´çÇÏ´Â GameObject¸¸À» ¹İÈ¯
+    /// objs ëª©ë¡ ì¤‘, targetì— í•´ë‹¹í•˜ëŠ” GameObjectë§Œì„ ë°˜í™˜
     /// </summary>
-    /// <param name="caster">½ºÅ³ ½ÃÀüÀÚ</param>
-    /// <param name="target">½ºÅ³ ´ë»ó</param>
-    /// <param name="objs">°Ë»çÇÒ GameObjects</param>
-    /// <returns>targetÀÎ objs³»ÀÇ ¿ä¼Ò ÀÏÃ¼</returns>
+    /// <param name="caster">ìŠ¤í‚¬ ì‹œì „ì</param>
+    /// <param name="target">ìŠ¤í‚¬ ëŒ€ìƒ</param>
+    /// <param name="objs">ê²€ì‚¬í•  GameObjects</param>
+    /// <returns>objs ì¤‘, targetì— í•´ë‹¹í•˜ëŠ” ì˜¤ë¸Œì íŠ¸</returns>
     protected List<GameObject> GetExistingTargets(CharacterBase caster, Define.SkillTarget target, GameObject[] objs)
     {
-        var targets = GetTargets(caster, target);
+        var targets = GetTargets(target, caster);
         var existingTargets = new List<GameObject>();
 
         foreach (var obj in objs)
         {
-            // CharacterManager¿¡ µî·ÏµÇÁö ¾ÊÀº obj´Â ½ºÅµ
-            // GroundÀÇ °æ¿ìµµ ¹Ş¾Æ¿Â Ground ¸®½ºÆ® ¾È¿¡ Á¸ÀçÇÏÁö ¾Ê´Â °æ¿ì ÆÇº°ÇÒ ¿¹Á¤
+            // CharacterManagerì— ë“±ë¡ëœ ëŒ€ìƒ objë§Œì„ ì²˜ë¦¬
+            //  GroundëŠ” í˜„ì¬ ì‘ì—…ë˜ì§€ ì•ŠìŒ.
             if (!targets.Contains(obj)) { continue; }
 
-            // µî·ÏµÈ obj¸¸ Ãß°¡
+            // ë°˜í™˜í•  ì˜¤ë¸Œì íŠ¸ì— ì¶”ê°€
             existingTargets.Add(obj);
         }
 
@@ -204,10 +206,10 @@ public abstract class SkillRunnerBase : ScriptableObject
     }
 
     /// <summary>
-    /// Define.SkillTargetÀ» LayerMask·Î º¯È¯ÇÏ¿© ¹İÈ¯ÇÕ´Ï´Ù.
+    /// Define.SkillTargetì„ LayerMaskë¡œ ë³€í™˜
     /// </summary>
-    /// <param name="target">½ºÅ³ ´ë»ó</param>
-    /// <returns>´ë»óÀÇ LayerMask. º¯È¯ ºÒ°¡ÇÑ °æ¿ì -1 ¹İÈ¯</returns>
+    /// <param name="target">ìŠ¤í‚¬ ëŒ€ìƒ</param>
+    /// <returns>ë³€í™˜ëœ LayerMask. ë³€í™˜ ë¶ˆê°€ ì‹œ -1 ë°˜í™˜</returns>
     protected int SkillTargetToLayerMask(Define.SkillTarget target)
     {
         int mask = -1;
