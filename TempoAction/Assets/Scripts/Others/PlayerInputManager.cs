@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,6 +18,23 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     public bool downArrow;
     public bool leftArrow;
     public bool rightArrow;
+    private bool keyZ;
+
+    [Header("Important Command Setting")]
+    public List<KeyCode> commandValue;
+    public bool isCommand;
+
+    private void Awake()
+    {
+        commandValue = new List<KeyCode>();
+    }
+
+    public List<KeyCode> GetCommandKey()
+    {
+        List<KeyCode> result = commandValue.ToList();
+        commandValue.Clear();
+        return result;
+    }
 
 #if ENABLE_INPUT_SYSTEM
     public void OnMove(InputValue value)
@@ -46,16 +65,36 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     public void OnDownArrow(InputValue value)
     {
         DownArrowInput(value.isPressed);
+        if (value.isPressed && isCommand)
+        {
+            commandValue.Add(KeyCode.DownArrow);
+        }
     }
 
     public void OnLeftArrow(InputValue value)
     {
         LeftArrowInput(value.isPressed);
+        if (value.isPressed && isCommand)
+        {
+            commandValue.Add(KeyCode.LeftArrow);
+        }
     }
 
     public void OnRightArrow(InputValue value)
     {
         RightArrowInput(value.isPressed);
+        if (value.isPressed && isCommand)
+        {
+            commandValue.Add(KeyCode.RightArrow);
+        }
+    }
+
+    public void OnKeyZ(InputValue value)
+    {
+        if (value.isPressed && isCommand)
+        {
+            commandValue.Add(KeyCode.Z);
+        }
     }
 #endif
     public readonly GenericEventSystem<Vector2> MoveEvent = new();
