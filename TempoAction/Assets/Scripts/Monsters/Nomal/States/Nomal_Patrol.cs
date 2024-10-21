@@ -9,7 +9,7 @@ public class Nomal_Patrol : Normal_State
 
     private Vector2 _targetPosition;
 
-    private bool _movingRight = true;     // ÀÌµ¿ ¹æÇâ
+    private bool _movingRight = true;     // ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
 
     public Nomal_Patrol(NormalMonster monster) : base(monster)
     {
@@ -29,10 +29,10 @@ public class Nomal_Patrol : Normal_State
 
     public override void Stay()
     {
-        // Rigidbody2D¸¦ »ç¿ëÇÏ¿© ÀÌµ¿
+        // Rigidbody2Dï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½Ìµï¿½
         _monster.Rb.velocity = new Vector2(_monster.Direction * _monster.Stat.WalkSpeed, _monster.Rb.velocity.y);
 
-        // ¸ñÇ¥ ÁöÁ¡¿¡ µµ´ÞÇÏ¸é »õ·Î¿î ¸ñÇ¥ ÁöÁ¡ ¼³Á¤
+        // ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (Mathf.Abs(_monster.transform.position.x - _targetPosition.x) <= 0.01f)
         {
             _movingRight = !_movingRight;
@@ -45,7 +45,7 @@ public class Nomal_Patrol : Normal_State
         base.Exit();
     }
 
-    // Idle »óÅÂÀÏ ¶§ ÁÂ¿ì Å¸°Ù º¯°æ ÇÔ¼ö
+    // Idle ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Â¿ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
     private void ChangeTarget()
     {
         if (_monster.MoveRange == 0) return;

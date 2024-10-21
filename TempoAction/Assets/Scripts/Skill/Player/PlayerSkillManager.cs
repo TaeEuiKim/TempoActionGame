@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -109,6 +110,11 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
             if (slot.Skill is NormalSkill normalSkill)
             {
                 normalSkill.UpdateTime(Time.deltaTime);
+
+                if(normalSkill.SkillCountCharged == 0)
+                {
+                    slot.RemoveSkill();
+                }
             }
         }
     }
@@ -165,7 +171,6 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
             if (SkillSlots[index].Skill == removedSkill)
             {
                 SkillSlots[index].OnRemoved.RemoveListener(RemoveSkill);
-                SkillSlots[index].RemoveSkill();
 
                 if (removedSkill.GetSkillId() == 51)
                 {
@@ -173,6 +178,34 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
                 }
             }
         }
+
+        // 예비 스킬 장착
+        if (reserveSlots.Count == 0) { return; }
+
+        _view.ChangeSubSkillIcon(reserveSlots.Count - 1, true);
+        ISkillRoot nextSkill = reserveSlots.Dequeue();
+        AddSkill(nextSkill);
+    }
+
+    private void RemoveSkill(SkillSlot removedSkillSlot)
+    {
+        if (removedSkillSlot == null) { return; }
+
+        // 스킬 슬롯 인덱스 탐색
+        int index;
+        bool isDetected = false;
+        for(index = 0; index < SkillSlots.Length; index++)
+        {
+            if (SkillSlots[index] == removedSkillSlot) { isDetected = true;  break; }
+        }
+
+        // 찾지 못했다면 반환
+        if (!isDetected) { return; }
+
+        // 스킬 삭제
+        removedSkillSlot.OnRemoved.RemoveListener(RemoveSkill);
+
+        _view.ChangeMainSkillIcon(index, true);
 
         // 예비 스킬 장착
         if (reserveSlots.Count == 0) { return; }

@@ -6,5 +6,5 @@ public interface ICooldownSkill
 {
     public void UpdateTime(float deltaTime);
 
-    public bool IsCooldown();
+    public bool IsSkillUsable();
 }

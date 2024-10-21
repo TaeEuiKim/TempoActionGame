@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Unity.Collections;
-using UnityEditor;
+﻿using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -18,6 +13,8 @@ public class NormalSkill : SkillBase, ICooldownSkill
 
     private int skillId;
 
+    public int SkillCountCharged { get; private set; }
+
     // cooldown: 1/100 seconds
     public NormalSkill(SkillRunnerBase skillRunner) : base(skillRunner)
     {
@@ -27,30 +24,67 @@ public class NormalSkill : SkillBase, ICooldownSkill
         OnSkillAttack.AddListener((cb) => { Debug.Log("Invoke Normal Skill(Player)"); });
     }
 
-    public virtual void UpdateTime(float deltaTime)
+    public override void SetSkillAdded()
     {
-        if (curTime > skillData.SkillCooldown) { return; }
-
-        curTime += deltaTime;
+        SkillCountCharged = skillData.SkillMaxLimit;
     }
 
-    public bool IsCooldown() => skillData.SkillCooldown > curTime;
-
-    public override bool UseSkill(CharacterBase character, UnityAction OnEnded = null)
+    public virtual void UpdateTime(float deltaTime)
     {
-        bool isRemove = false;
-        if (IsCooldown()) { isRemove = true; }
+        curTime += deltaTime;
+
+        if (curTime > skillData.SkillCooldown)
+        {
+            RechargeSkillCount();
+            curTime = 0;
+        }
+    }
+
+    public bool IsSkillUsable() => SkillCountCharged > 0;
+
+    public override void UseSkill(CharacterBase character, UnityAction OnEnded = null)
+    {
+        if (!IsSkillUsable()) { return; }
 
         //OnSkillAttack.Invoke(sm);
-        SkillRunner.Run(character, OnEnded);
-
-        curTime = 0;
-
-        return isRemove;
+        SkillRunner.Run(this, character, OnEnded);
     }
 
     public override int GetSkillId()
     {
         return skillId;
+    }
+
+    public void UseSkillCount()
+    {
+#if UNITY_EDITOR
+        float originalSkillCount = SkillCountCharged;
+#endif
+
+        SkillCountCharged--;
+        SetSkillCountInRange();
+
+#if UNITY_EDITOR
+        Debug.Log($"*잔여스킬사용량* 【{originalSkillCount} ▶ {SkillCountCharged}】 ----- ◈ {skillData.SkillName}({skillData.SkillId})");
+#endif
+    }
+
+    private void RechargeSkillCount()
+    {
+#if UNITY_EDITOR
+        float originalSkillCount = SkillCountCharged;
+#endif
+
+        SkillCountCharged++;
+        SetSkillCountInRange();
+
+#if UNITY_EDITOR
+        Debug.Log($"*스킬사용량회복!* 【{originalSkillCount} ▶ {SkillCountCharged}】 ----- ◈ {skillData.SkillName}({skillData.SkillId})");
+#endif
+    }
+
+    private void SetSkillCountInRange()
+    {
+        SkillCountCharged = Mathf.Clamp(SkillCountCharged, 0, skillData.SkillMaxLimit);
     }
 }

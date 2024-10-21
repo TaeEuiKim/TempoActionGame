@@ -30,7 +30,7 @@ public abstract class SkillBase : ISkillRoot
         SkillRunner = skillData;
         OnSkillAttack = new UnityEvent<CharacterBase>();
     }
-
-    public abstract bool UseSkill(CharacterBase skillManager, UnityAction OnEnded = null);
+    public virtual void SetSkillAdded() { }
+    public abstract void UseSkill(CharacterBase skillManager, UnityAction OnEnded = null);
     public abstract int GetSkillId();
 }

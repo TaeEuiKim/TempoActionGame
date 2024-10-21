@@ -113,7 +113,6 @@ public class Player : CharacterBase
             _currentState = Define.PlayerState.DIE;
         }
 
-
         _stateStorage[_currentState]?.Stay();
         switch (_currentState)
         {

@@ -11,11 +11,7 @@ public class PlayerSkillSlot : SkillSlot
     public override void UseSkillInstant(CharacterBase character, UnityAction OnEnded = null)
     {
         if (Skill == null) { return; }
-
-        if (Skill.UseSkill(character, OnEnded))
-        {
-            RemoveSkill();
-        }
+        Skill.UseSkill(character, OnEnded);
     }
 
     public void UseSkillKeyDown(CharacterBase cb, bool isSkill)

@@ -73,13 +73,17 @@ public class SwordQuickDrawRunner : SkillRunnerBase
 
         // 히트박스
         character.ColliderManager.SetActiveCollider(false, Define.ColliderType.PERSISTANCE);
-        
+
         // 준비 이펙트
         ActiveEffectToCharacter(character, ready);
 
         // 선딜
         yield return preDelayWFS;
 
+        if(CurrentSkill is NormalSkill skill)
+        {
+            skill.UseSkillCount();
+        }
         // 돌진
         float curTime = 0;
         float movingDistance = skillData.SkillEffectValue * SkillData.cm2m;
@@ -91,7 +95,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         List<CharacterBase> hittedCharacters = new List<CharacterBase>();
 
         // 도착 지점 갱신 with Wall
-        targetPos = GetTargetPosByCoillision(initialPos, direction, targetPos, movingDistance);
+        targetPos = GetTargetPosByCoillision(initialPos, direction, targetPos);
 
         // 돌진 이펙트 시작
         ActiveEffectToCharacter(character, dash);

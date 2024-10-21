@@ -24,7 +24,7 @@ public class MonsterSkillSlot : SkillSlot
     {
         // 쿨 대기 중이면 실패 처리
         var curSkill = Skill as MonsterSkill;
-        if(curSkill.IsCooldown()) { return false; } 
+        if(curSkill.IsSkillUsable()) { return false; } 
 
         // 조건이 없으면 성공 처리
         var condition = curSkill.skillData.SkillTriggerCondition;

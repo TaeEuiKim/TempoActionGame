@@ -12,6 +12,7 @@ public class DieState : PlayerState
     public override void Enter()
     {
         _player.Ani.SetBool("IsDie", true);
+        _player.Rb.velocity = Vector3.zero;
     }
 
     public override void Stay()
