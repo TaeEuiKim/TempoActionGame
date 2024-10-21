@@ -7,9 +7,9 @@ public class PlayerController
 {
     private Player _player;
 
-    [Header("Å° ÀÔ·Â ±â·Ï ¸®½ºÆ®")]
+    [Header("í‚¤ ì…ë ¥ ê¸°ë¡ ë¦¬ìŠ¤íŠ¸")]
     private List<KeyCode> keyInputs = new List<KeyCode>();
-    [Header("Å° ÀÔ·Â ½Ã°£ Á¦ÇÑ")]
+    [Header("í‚¤ ì…ë ¥ ì‹œê°„ ì œí•œ")]
     private float inputTimeLimit = 0.2f;
     private float lastInputTime;
 
@@ -17,7 +17,6 @@ public class PlayerController
     private bool _isGrounded;
     private bool _isOnMonster;
     private bool _isDashing;
-    private bool _isBackDashCheck;
     private bool _isDoubleJumping;
     public bool isMove;
     public bool isDown = false;
@@ -107,16 +106,18 @@ public class PlayerController
 
         if (_dashTimer >= _player.PlayerSt.DashDelay)
         {
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            if (PlayerInputManager.Instance.leftArrow)
             {
+                PlayerInputManager.Instance.leftArrow = false;
                 RecordInput(KeyCode.LeftArrow);
             }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            else if (PlayerInputManager.Instance.rightArrow)
             {
+                PlayerInputManager.Instance.rightArrow = false;
                 RecordInput(KeyCode.RightArrow);
             }
 
-            if ((Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.C) || CheckDash()) && !_isBackDashCheck)
+            if ((PlayerInputManager.Instance.dash || CheckDash()))
             {
                 Dash();
             }
@@ -126,9 +127,13 @@ public class PlayerController
             _dashTimer += Time.deltaTime;
         }
 
-        if (Input.GetKeyDown(KeyCode.DownArrow) && !_isBackDashCheck)
+        if (PlayerInputManager.Instance.downArrow)
         {
-            CoroutineRunner.Instance.StartCoroutine(CheckDashDir());
+            _player.Ani.SetBool("IsBackDash", true);
+        }
+        else
+        {
+            _player.Ani.SetBool("IsBackDash", false);
         }
 
         if (!_isDashing)
@@ -137,7 +142,7 @@ public class PlayerController
             Jump();
         }
 
-        if (Input.GetKeyDown(KeyCode.DownArrow) && _isGrounded)
+        if (PlayerInputManager.Instance.downArrow && _isGrounded)
         {
             isDown = true;
         }
@@ -145,19 +150,19 @@ public class PlayerController
 
     private void Move()
     {
+        Direction = 0f;
+
         if (!isMove)
         {
             return;
         }
 
-        _direction = 0;
-
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (PlayerInputManager.Instance.move.x == -1)
         {
             Direction = -1f;
             _dashDirection = -1f;
         }
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (PlayerInputManager.Instance.move.x == 1)
         {
             Direction = 1f;
             _dashDirection = 1f;
@@ -167,7 +172,7 @@ public class PlayerController
         {
             _player.Rb.velocity = new Vector2(0, _player.Rb.velocity.y);
 
-            if (_direction == 0)
+            if (Direction == 0)
             {
                 _player.Ani.SetFloat("Speed", 0);
             }
@@ -193,7 +198,7 @@ public class PlayerController
 
     public void Jump(bool useKeyDown = true)
     {
-        if(!useKeyDown || (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)))
+        if(!useKeyDown || PlayerInputManager.Instance.jump)
         {
             if (!_isGrounded && !_isDoubleJumping)
             {
@@ -245,10 +250,10 @@ public class PlayerController
         if (Physics.Raycast(_player.transform.position + new Vector3(0, 0.5f), Vector3.right * _dashDirection * dir, out hit, _player.PlayerSt.DashDistance, _player.WallLayer) ||
             Physics.Raycast(_player.transform.position + new Vector3(0, 0.5f), Vector3.right * _dashDirection * dir, out hit, _player.PlayerSt.DashDistance, _player.GroundLayer))
         {
-            dashPosition = (hit.point - new Vector3(0, 0.5f)) - (Vector3.right * _dashDirection * dir) * 0.2f;  // °öÇÏ´Â ¼ö ¸¸Å­ º®¿¡¼­ ¶³¾îÁü
+            dashPosition = (hit.point - new Vector3(0, 0.5f)) - (Vector3.right * _dashDirection * dir) * 0.2f;  // ê³±í•˜ëŠ” ìˆ˜ ë§Œí¼ ë²½ì—ì„œ ë–¨ì–´ì§
             isMove = true;
         }
-        else  // º®ÀÌ ¾øÀ¸¸é ´ë½¬ °Å¸®¸¸Å­ ¾ÕÀ¸·Î ÀÌµ¿
+        else  // ë²½ì´ ì—†ìœ¼ë©´ ëŒ€ì‰¬ ê±°ë¦¬ë§Œí¼ ì•ìœ¼ë¡œ ì´ë™
         {      
             dashPosition = _player.transform.position + (Vector3.right * _dashDirection * dir) * _player.PlayerSt.DashDistance;
         }
@@ -259,7 +264,6 @@ public class PlayerController
         });
 
         _player.Ani.SetTrigger("Dash");
-        _isBackDashCheck = false;
 
         _dashTimer = 0;
     }
@@ -275,32 +279,6 @@ public class PlayerController
         yield return new WaitForSeconds(invincibilityTime);
 
         _player.GetComponent<Collider>().enabled = true;
-    }
-
-    private IEnumerator CheckDashDir()
-    {
-        _isBackDashCheck = true;
-        _player.Ani.SetBool("IsBackDash", true);
-
-        float checkTime = 0.2f;
-        while (checkTime > 0)
-        {
-            if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.C) || CheckDash())
-            {
-                Dash();
-                yield break;
-            }
-
-            checkTime -= Time.deltaTime;
-            yield return new WaitForSeconds(0.01f);
-        }
-
-        if (_isBackDashCheck)
-        {
-            _isBackDashCheck = false;
-            _player.Ani.SetBool("IsBackDash", false);
-        }
-        yield return 0;
     }
 
     private void Stop()
@@ -322,16 +300,16 @@ public class PlayerController
 
     private bool CheckMovePath()
     {
-        // ·¹ÀÌÄ³½ºÆ®·Î Àå¾Ö¹° °¨Áö
+        // ë ˆì´ìºìŠ¤íŠ¸ë¡œ ì¥ì• ë¬¼ ê°ì§€
         RaycastHit hit;
         if (Physics.Raycast(_player.transform.position, Vector2.right * _dashDirection, out hit, 0.5f, _player.BlockLayer))
         {
-            // Àå¾Ö¹°ÀÌ ·¹ÀÌÄ³½ºÆ® ¹üÀ§ ¾È¿¡ ÀÖÀ½
-            //Debug.Log("Àå¾Ö¹° °¨Áö: " + hit.collider.name);
+            // ì¥ì• ë¬¼ì´ ë ˆì´ìºìŠ¤íŠ¸ ë²”ìœ„ ì•ˆì— ìˆìŒ
+            //Debug.Log("ì¥ì• ë¬¼ ê°ì§€: " + hit.collider.name);
             return false;
         }
 
-        // Àå¾Ö¹°ÀÌ ¾øÀ½
+        // ì¥ì• ë¬¼ì´ ì—†ìŒ
         return true;
     }
 
