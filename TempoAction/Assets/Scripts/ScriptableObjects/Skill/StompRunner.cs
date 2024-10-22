@@ -76,7 +76,7 @@ public class StompRunner : SkillRunnerBase
         foreach (var hittedCharacter in hittedCharacters.Distinct())
         {
             float damageAmount = skillData.SkillDamage * character.Stat.Damage;
-
+            Debug.LogError("1");
             hittedCharacter.TakeDamage(damageAmount);
         }
 

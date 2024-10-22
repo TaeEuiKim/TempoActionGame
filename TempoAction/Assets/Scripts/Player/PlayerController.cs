@@ -153,12 +153,12 @@ public class PlayerController
 
     private void Move()
     {
-        Direction = 0f;
-
         if (!isMove)
         {
             return;
         }
+
+        Direction = 0f;
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
@@ -245,9 +245,10 @@ public class PlayerController
         }
 
         isMove = false;
+        _player.transform.DOKill();
 
         CoroutineRunner.Instance.StartCoroutine(DashInvincibility(_player.PlayerSt.DashDuration));
-        _player.Rb.velocity = Vector2.zero;
+        //_player.Rb.velocity = Vector2.zero;
         _isDashing = true;
         Vector3 dashPosition = Vector3.zero;
         RaycastHit hit;
@@ -393,10 +394,10 @@ public class PlayerController
         KeyCode[] keys = new KeyCode[keyList.Count];
         bool isValues = false;
 
-        //for (int i = 0; i < keyList.Count; ++i)
-        //{
-        //    Debug.LogError(i + " : " + keyList[i]);
-        //}
+        for (int i = 0; i < keyList.Count; ++i)
+        {
+            Debug.LogError(i + " : " + keyList[i]);
+        }
 
         // AttackCount와 일치하는 스킬 아이디가 있는지 검사
         for (int i = 0; i < _skillCommand.commandDatas.Length; ++i)

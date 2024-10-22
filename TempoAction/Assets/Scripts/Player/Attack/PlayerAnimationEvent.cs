@@ -29,8 +29,6 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         if (hitMonsters.Length <= 0) return;
 
-        _player.Attack.IsHit = true;
-
         // 히트 파티클 생성
         GameObject hitParticle = ObjectPool.Instance.Spawn("P_Punch", 1);
         GameObject hitParticle2 = ObjectPool.Instance.Spawn("P_PunchAttack", 1);
@@ -134,8 +132,6 @@ public class PlayerAnimationEvent : MonoBehaviour
     // 메인 템포 애니메이션 끝에 추가하는 이벤트 함수
     private void Finish(float delay)
     {
-        _player.Attack.IsHit = false;
-        _player.Controller.isMove = true;
         _player.Attack.CheckDelay = delay;
         _player.Attack.ChangeCurrentAttackState(Define.AttackState.CHECK);
     }
@@ -164,7 +160,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     private void StartDash()
     {
-        _player.Ani.SetFloat("Speed", 0);
+        //_player.Ani.SetFloat("Speed", 0);
     }
 
     private void FinishDash()
