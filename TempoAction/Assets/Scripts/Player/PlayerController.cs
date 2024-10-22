@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Unity.VisualScripting;
+using System.Linq;
 public class PlayerController
 {
     private Player _player;
@@ -17,8 +18,8 @@ public class PlayerController
     private bool _isLanded;
     private bool _isGrounded;
     private bool _isOnMonster;
-    private bool _isDashing;
     private bool _isDoubleJumping;
+    public bool isDashing;
     public bool isMove;
     public bool isJump;
     public bool isDown = false;
@@ -59,11 +60,11 @@ public class PlayerController
     {
         _isLanded = false;
         _isGrounded = true;
-        _isDashing = false;
+        isDashing = false;
         isMove = true;
         isJump = true;
 
-        _dashDirection = 1;
+        _dashDirection = -_player.CharacterModel.localScale.x;
         _dashTimer = 0f;
 
         _dashTimer = _player.PlayerSt.DashDelay;
@@ -72,6 +73,29 @@ public class PlayerController
     public void Update()
     {
         if (_player.PlayerSt.IsKnockedBack) return;
+
+        if (_dashTimer >= _player.PlayerSt.DashDelay)
+        {
+            if (PlayerInputManager.Instance.leftArrow)
+            {
+                PlayerInputManager.Instance.leftArrow = false;
+                RecordInput(KeyCode.LeftArrow);
+            }
+            else if (PlayerInputManager.Instance.rightArrow)
+            {
+                PlayerInputManager.Instance.rightArrow = false;
+                RecordInput(KeyCode.RightArrow);
+            }
+
+            if ((PlayerInputManager.Instance.dash || CheckDash()))
+            {
+                Dash();
+            }
+        }
+        else
+        {
+            _dashTimer += Time.deltaTime;
+        }
 
         if (_player.Attack.CurrentAttackkState == Define.AttackState.ATTACK)
         {
@@ -107,29 +131,6 @@ public class PlayerController
             _player.Rb.AddForce(force, ForceMode.VelocityChange);
         }
 
-        if (_dashTimer >= _player.PlayerSt.DashDelay)
-        {
-            if (PlayerInputManager.Instance.leftArrow)
-            {
-                PlayerInputManager.Instance.leftArrow = false;
-                RecordInput(KeyCode.LeftArrow);
-            }
-            else if (PlayerInputManager.Instance.rightArrow)
-            {
-                PlayerInputManager.Instance.rightArrow = false;
-                RecordInput(KeyCode.RightArrow);
-            }
-
-            if ((PlayerInputManager.Instance.dash || CheckDash()))
-            {
-                Dash();
-            }
-        }
-        else
-        {
-            _dashTimer += Time.deltaTime;
-        }
-
         if (PlayerInputManager.Instance.downArrow)
         {
             _player.Ani.SetBool("IsBackDash", true);
@@ -139,7 +140,7 @@ public class PlayerController
             _player.Ani.SetBool("IsBackDash", false);
         }
 
-        if (!_isDashing)
+        if (!isDashing)
         {
             Move();
             Jump();
@@ -153,12 +154,12 @@ public class PlayerController
 
     private void Move()
     {
+        Direction = 0f;
+
         if (!isMove)
         {
             return;
         }
-
-        Direction = 0f;
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
@@ -181,7 +182,6 @@ public class PlayerController
             }
             return;
         }
-
         Vector3 tempVelocity = new Vector3();
 
         if (_player.isTurn)
@@ -244,12 +244,23 @@ public class PlayerController
             return;
         }
 
-        isMove = false;
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            _dashDirection = -1f;
+        }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            _dashDirection = 1f;
+        }
+
+        isDashing = true;
         _player.transform.DOKill();
+        _player.Ani.SetFloat("Speed", 0);
+        _player.Rb.velocity = Vector3.zero;
+        _player.Attack.ChangeCurrentAttackState(Define.AttackState.FINISH);
 
         CoroutineRunner.Instance.StartCoroutine(DashInvincibility(_player.PlayerSt.DashDuration));
         //_player.Rb.velocity = Vector2.zero;
-        _isDashing = true;
         Vector3 dashPosition = Vector3.zero;
         RaycastHit hit;
 
@@ -258,6 +269,8 @@ public class PlayerController
         {
             dir = -1;
         }
+
+        _player.CharacterModel.localScale = new Vector3(-_dashDirection, 1, -1);
 
         if (Physics.Raycast(_player.transform.position + new Vector3(0, 0.5f), Vector3.right * _dashDirection * dir, out hit, _player.PlayerSt.DashDistance, _player.WallLayer) ||
             Physics.Raycast(_player.transform.position + new Vector3(0, 0.5f), Vector3.right * _dashDirection * dir, out hit, _player.PlayerSt.DashDistance, _player.GroundLayer))
@@ -270,10 +283,7 @@ public class PlayerController
             dashPosition = _player.transform.position + (Vector3.right * _dashDirection * dir) * _player.PlayerSt.DashDistance;
         }
 
-        _player.Rb.DOMove(dashPosition, _player.PlayerSt.DashDuration).SetEase(Ease.OutQuad).OnComplete(() =>
-        {
-            _isDashing = false;
-        });
+        _player.Rb.DOMove(dashPosition, _player.PlayerSt.DashDuration);
 
         _player.Ani.SetTrigger("Dash");
 
@@ -391,8 +401,7 @@ public class PlayerController
 
     private void CheckAttackCommand(List<KeyCode> keyList, int attackCount)
     {
-        KeyCode[] keys = new KeyCode[keyList.Count];
-        bool isValues = false;
+        KeyCode[] keys;
 
         for (int i = 0; i < keyList.Count; ++i)
         {
@@ -400,18 +409,14 @@ public class PlayerController
         }
 
         // AttackCount와 일치하는 스킬 아이디가 있는지 검사
-        for (int i = 0; i < _skillCommand.commandDatas.Length; ++i)
-        {
-            if (attackCount == _skillCommand.commandDatas[i].SkillId)
-            {
-                keys = _skillCommand.commandDatas[i].KeyCodes;
-                isValues = true;
-                break;
-            }
-        }
+        var commandData = _skillCommand.commandDatas
+            .FirstOrDefault(data => data.SkillId == attackCount);
 
-        // 일치하는 스킬 아이디가 없거나 받아온 키 개수와 일치하는 키의 개수가 일치하지 않으면 종료
-        if (!isValues || keyList.Count != keys.Length)
+        if (commandData != null && commandData.KeyCodes.Length == keyList.Count)
+        {
+            keys = commandData.KeyCodes;
+        }
+        else
         {
             PlayerInputManager.Instance.isCommand = false;
             isMove = true;
@@ -419,20 +424,17 @@ public class PlayerController
             return;
         }
 
-        for (int i = 0; i < keys.Length; ++i)
+        // 키가 다 같으면
+        if (keyList.Zip(keys, (key1, key2) => key1 == key2).All(isEqual => isEqual))
         {
-            // 키가 다르면
-            if (!(keyList[i] == keys[i]))
-            {
-                PlayerInputManager.Instance.isCommand = false;
-                isMove = true;
-                isJump = true;
-                return;
-            }
+            _player.Ani.SetInteger("CommandCount", attackCount);
+            _player.Ani.SetBool("IsCommand", true);
+            _player.SkillManager.SkillSlots[0].UseSkillInstant(_player);
+            _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
         }
 
-        Debug.Log("커맨드 성공");
-        //_player.Ani.SetInteger("CommandAtkCount", attackCount);
-        //_player.Ani.SetBool("IsCommandAttack", true);
+        PlayerInputManager.Instance.isCommand = false;
+        isMove = true;
+        isJump = true;
     }
 }

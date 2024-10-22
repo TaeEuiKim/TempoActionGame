@@ -41,7 +41,7 @@ public class NormalMonster : Monster
 
     [Space]
     [Header("피격 대기시간")]
-    [SerializeField] private float hittingTime = 0f;
+    [SerializeField] private float hittingTime = 0.5f;
     private float _hitTimer = 0f;
     private bool isHit = false;
 
@@ -238,11 +238,13 @@ public class NormalMonster : Monster
     public override void TakeDamage(float value)
     {
         base.TakeDamage(value);
-        if (Stat.Hp > 0 && !isHit)
+        if (Stat.Hp > 0)
         {
-            isHit = true;
-            CurrentPerceptionState = Define.PerceptionType.HIT;
-            StartCoroutine(CheckHitTimer());
+            if (!Ani.GetBool("Hit"))
+            {
+                Ani.SetBool("Hit", true);
+                CurrentPerceptionState = Define.PerceptionType.HIT;
+            }
         }
         else if (Stat.Hp <= 0)
         {
@@ -295,7 +297,7 @@ public class NormalMonster : Monster
                 isHit = false;
             }
 
-            yield return new WaitForSeconds(0.02f);
+            yield return null;
         }
     }
 

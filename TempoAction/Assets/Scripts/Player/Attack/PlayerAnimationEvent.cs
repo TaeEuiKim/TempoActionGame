@@ -134,6 +134,7 @@ public class PlayerAnimationEvent : MonoBehaviour
     {
         _player.Attack.CheckDelay = delay;
         _player.Attack.ChangeCurrentAttackState(Define.AttackState.CHECK);
+        _player.Ani.SetBool("IsCommand", false);
     }
 
     private void JumpRock()
@@ -158,14 +159,10 @@ public class PlayerAnimationEvent : MonoBehaviour
         _player.Rb.AddForce(Vector3.down * 50f, ForceMode.Impulse);
     }
 
-    private void StartDash()
-    {
-        //_player.Ani.SetFloat("Speed", 0);
-    }
-
     private void FinishDash()
     {
         _player.Ani.SetBool("IsBackDash", false);
+        _player.Controller.isDashing = false;
         _player.Controller.isMove = true;
     }
 
@@ -181,17 +178,16 @@ public class PlayerAnimationEvent : MonoBehaviour
             float closestMonsterX = hit.point.x + (-rayDirection.x * 0.2f);
             transform.parent.DOMoveX(closestMonsterX, duration);
         }
-
-        // 디버그용 레이 그리기
-        Debug.DrawRay(rayOrigin, rayDirection * _player.Attack.CurrentTempoData.distance, Color.red);
     }
 
     private void MoveAttack(float moveDistance)
     {
+        _player.Ani.SetFloat("Speed", 0);
+
         Vector3 rayOrigin = new Vector3(transform.parent.position.x, transform.parent.position.y, transform.parent.position.z);
         Vector3 rayDirection = transform.localScale.x < 0 ? transform.right : transform.right * -1;
 
-        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitPos, _player.Attack.CurrentTempoData.distance, _player.MonsterLayer | _player.WallLayer))
+        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitPos, _player.Attack.CurrentTempoData.distance, _player.BlockLayer))
         {
             float closestMonsterX = hitPos.point.x + (-rayDirection.x * 0.2f);
             transform.parent.DOMoveX(closestMonsterX, 0.3f);

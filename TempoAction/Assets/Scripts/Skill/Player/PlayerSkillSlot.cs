@@ -14,19 +14,20 @@ public class PlayerSkillSlot : SkillSlot
         Skill.UseSkill(character, OnEnded);
     }
 
-    public void UseSkillKeyDown(CharacterBase cb, bool isSkill)
+    public bool UseSkillKeyDown(CharacterBase cb, bool isSkill)
     {
-        if(slotKey == KeyCode.None) { return; }
-        if (!isSkill) { return; }
-
-        if (Input.GetKeyDown(slotKey))
+        if (isSkill)
         {
             if (cb.TryGetComponent<PlayerSkillManager>(out var s))
             {
                 s.SetIsSkill(false);
             }
             UseSkillInstant(cb);
+
+            return true;
         }
+
+        return false;
     }
 
 }
