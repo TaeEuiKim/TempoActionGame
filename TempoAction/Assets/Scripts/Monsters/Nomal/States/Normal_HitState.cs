@@ -20,6 +20,7 @@ public class Normal_HitState : Normal_State
         {
             _monster.Ani.SetBool("Hit", true);
         }
+        _monster.Ani.SetBool("Attack", false);
     }
 
     public override void Stay() 
@@ -29,7 +30,5 @@ public class Normal_HitState : Normal_State
     public override void Exit()
     {
         base.Exit();
-
-        _monster.Ani.SetBool("Hit", false);
     }
 }

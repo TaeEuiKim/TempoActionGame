@@ -19,8 +19,6 @@ public class Normal_Detectionm : Normal_State
             _monster.Ani.SetBool("Attack", true);
         }
         _monster.isAttack = false;
-
-        CoroutineRunner.Instance.StartCoroutine(CheckAttackTimer());
     }
     public override void Stay()
     {
@@ -29,6 +27,7 @@ public class Normal_Detectionm : Normal_State
     {
         base.Exit();
 
+        CoroutineRunner.Instance.StartCoroutine(CheckAttackTimer());
         _monster.Ani.SetBool("Attack", false);
     }
 

@@ -259,6 +259,10 @@ public class PlayerController
         _player.Rb.velocity = Vector3.zero;
         _player.Attack.ChangeCurrentAttackState(Define.AttackState.FINISH);
 
+        // 커맨드 초기화
+        PlayerInputManager.Instance.isCommand = false;
+        _player.Ani.SetBool("IsCommand", false);
+
         CoroutineRunner.Instance.StartCoroutine(DashInvincibility(_player.PlayerSt.DashDuration));
         //_player.Rb.velocity = Vector2.zero;
         Vector3 dashPosition = Vector3.zero;
