@@ -135,6 +135,10 @@ public class CameraController : MonoBehaviour
                 break;
             case Define.CameraType.MIDDLEBOSS:
                 break;
+            case Define.CameraType.NONFOLLOW:
+                _PlayerCamera[0].Follow = null;
+                _PlayerCamera[0].transform.SetParent(null);
+                break;
             case Define.CameraType.NONE:
                 break;
         }

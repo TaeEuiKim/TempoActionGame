@@ -135,6 +135,7 @@ public class PlayerAnimationEvent : MonoBehaviour
         _player.Attack.CheckDelay = delay;
         _player.Attack.ChangeCurrentAttackState(Define.AttackState.CHECK);
         _player.Ani.SetBool("IsCommand", false);
+        PlayerInputManager.Instance.isCommand = false;
     }
 
     private void JumpRock()
@@ -189,36 +190,38 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitPos, _player.Attack.CurrentTempoData.distance, _player.BlockLayer))
         {
-            float closestMonsterX = hitPos.point.x + (-rayDirection.x * 0.2f);
+            float closestMonsterX = hitPos.point.x + (-rayDirection.x * 1f);
             transform.parent.DOMoveX(closestMonsterX, 0.3f);
         }
         else
         {
-            switch (_player.Ani.GetInteger("AtkCount"))
+            if (_player.Ani.GetBool("IsCommand"))
             {
-                case 0:
-                    transform.parent.DOMoveX(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x), 0.3f);
-                    break;
-                case 1:
-                    transform.parent.DOMoveX(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x), 0.3f);
-                    break;
-                case 2:
-                    transform.parent.DOMoveX(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x), 0.3f);
-                    break;
-                case 3:
-                    transform.parent.DOMoveX(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x), 0.3f);
-                    break;
-                case 4:
-                    transform.parent.DOMoveX(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x), 0.3f);
-                    //_player.Rb.AddForce(Vector3.right * _player.Controller.Direction * moveDistance, ForceMode.VelocityChange);
-                    break;
+                transform.parent.DOMoveX(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x), 0.3f);
+            }
+            else
+            {
+                switch (_player.Ani.GetInteger("AtkCount"))
+                {
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                    default:
+                        transform.parent.DOMoveX(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x), 0.3f);
+                        break;
+                    case 4:
+                        transform.parent.DOMoveX(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x), 0.3f);
+                        //_player.Rb.AddForce(Vector3.right * _player.Controller.Direction * moveDistance, ForceMode.VelocityChange);
+                        break;
+                }
             }
         }
     }
 
     private void CheckCommand(int AttackCount)
     {
-        _player.Controller.OnCommandTime(0.3f, AttackCount);
+        _player.Controller.OnCommandTime(1f, AttackCount);
     }
 
     private void LeftFootEffect()

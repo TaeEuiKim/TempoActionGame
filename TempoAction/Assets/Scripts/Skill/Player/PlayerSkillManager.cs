@@ -16,7 +16,6 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
     private SkillObject interatedObject;
     private PlayerView _view;
 
-    private bool isSkill = false;
     private float skillTimer = 0;
 
     /*// temp
@@ -105,11 +104,6 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
     {
         foreach (PlayerSkillSlot slot in SkillSlots)
         {
-            if (slot.UseSkillKeyDown(characterBase, isSkill))
-            {
-                isSkill = false;
-            }
-
             if (slot.Skill is NormalSkill normalSkill)
             {
                 normalSkill.UpdateTime(Time.deltaTime);
@@ -216,10 +210,5 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
         _view.ChangeSubSkillIcon(reserveSlots.Count - 1, true);
         ISkillRoot nextSkill = reserveSlots.Dequeue();
         AddSkill(nextSkill);
-    }
-
-    public void SetIsSkill(bool isSk)
-    {
-        isSkill = isSk;
     }
 }

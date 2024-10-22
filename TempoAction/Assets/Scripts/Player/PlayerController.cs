@@ -131,7 +131,7 @@ public class PlayerController
             _player.Rb.AddForce(force, ForceMode.VelocityChange);
         }
 
-        if (PlayerInputManager.Instance.downArrow)
+        if (PlayerInputManager.Instance.downArrow && !PlayerInputManager.Instance.isCommand)
         {
             _player.Ani.SetBool("IsBackDash", true);
         }
@@ -317,11 +317,18 @@ public class PlayerController
         float checkTimer = 0f;
         while (checkTimer < checkTime)
         {
+            if (CheckAttackCommand(PlayerInputManager.Instance.GetCommandKey(), attackCount))
+            {
+                break;
+            }
+
             checkTimer += Time.deltaTime;
             yield return null;
         }
 
-        CheckAttackCommand(PlayerInputManager.Instance.GetCommandKey(), attackCount);
+        isMove = true;
+        isJump = true;
+        PlayerInputManager.Instance.ResetCommandKey();
         yield return null;
     }
 
@@ -399,42 +406,30 @@ public class PlayerController
         return false;
     }
 
-    private void CheckAttackCommand(List<KeyCode> keyList, int attackCount)
+    private bool CheckAttackCommand(List<KeyCode> keyList, int attackCount)
     {
-        KeyCode[] keys;
-
-        for (int i = 0; i < keyList.Count; ++i)
-        {
-            Debug.LogError(i + " : " + keyList[i]);
-        }
-
         // AttackCount와 일치하는 스킬 아이디가 있는지 검사
         var commandData = _skillCommand.commandDatas
             .FirstOrDefault(data => data.SkillId == attackCount);
 
         if (commandData != null && commandData.KeyCodes.Length == keyList.Count)
         {
-            keys = commandData.KeyCodes;
-        }
-        else
-        {
-            PlayerInputManager.Instance.isCommand = false;
-            isMove = true;
-            isJump = true;
-            return;
+            // 키가 다 같으면
+            if (keyList.Zip(commandData.KeyCodes, (key1, key2) => key1 == key2).All(isEqual => isEqual))
+            {
+                _player.Ani.SetInteger("CommandCount", attackCount);
+                _player.Ani.SetBool("IsCommand", true);
+
+                if (attackCount == 2)
+                {
+                    _player.SkillManager.SkillSlots[0].UseSkillInstant(_player);
+                }
+                _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
+
+                return true;
+            }
         }
 
-        // 키가 다 같으면
-        if (keyList.Zip(keys, (key1, key2) => key1 == key2).All(isEqual => isEqual))
-        {
-            _player.Ani.SetInteger("CommandCount", attackCount);
-            _player.Ani.SetBool("IsCommand", true);
-            _player.SkillManager.SkillSlots[0].UseSkillInstant(_player);
-            _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
-        }
-
-        PlayerInputManager.Instance.isCommand = false;
-        isMove = true;
-        isJump = true;
+        return false;
     }
 }
