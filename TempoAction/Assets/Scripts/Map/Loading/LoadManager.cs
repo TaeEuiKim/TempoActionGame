@@ -22,6 +22,8 @@ public class LoadManager : MonoBehaviour
 
     IEnumerator LoadScene()
     {
+        yield return new WaitForSeconds(2f);
+
         AsyncOperation op = SceneManager.LoadSceneAsync(nextScene);
         op.allowSceneActivation = false;
         StartCoroutine(ChecKTimer(op));

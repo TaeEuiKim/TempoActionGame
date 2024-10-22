@@ -31,9 +31,12 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
 
     public List<KeyCode> GetCommandKey()
     {
-        List<KeyCode> result = commandValue.ToList();
+        return commandValue;
+    }
+
+    public void ResetCommandKey()
+    {
         commandValue.Clear();
-        return result;
     }
 
 #if ENABLE_INPUT_SYSTEM

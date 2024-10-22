@@ -4,7 +4,7 @@ public class Define
 {
     public enum CameraType
     {
-        PLAYER, DOWN, MIDDLEBOSS, NONE
+        PLAYER, DOWN, MIDDLEBOSS, NONFOLLOW, NONE
     }
 
     public enum BuffType // ENTER : 범위에 들어가면 실행 , STAY : 범위에 들어가 있으면 실행, EXIT : 범위에서 나가면 실행 

@@ -13,21 +13,4 @@ public class PlayerSkillSlot : SkillSlot
         if (Skill == null) { return; }
         Skill.UseSkill(character, OnEnded);
     }
-
-    public bool UseSkillKeyDown(CharacterBase cb, bool isSkill)
-    {
-        if (isSkill)
-        {
-            if (cb.TryGetComponent<PlayerSkillManager>(out var s))
-            {
-                s.SetIsSkill(false);
-            }
-            UseSkillInstant(cb);
-
-            return true;
-        }
-
-        return false;
-    }
-
 }
