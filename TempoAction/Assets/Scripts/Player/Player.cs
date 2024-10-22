@@ -18,7 +18,6 @@ public class Player : CharacterBase
     private Dictionary<Define.PlayerState, PlayerState> _stateStorage = new Dictionary<Define.PlayerState, PlayerState>();
 
     public bool IsInvincible { get; set; } = false;
-    public bool IsParrying { get; set; } = false;
 
     [SerializeField] private Transform _rightSparkPoint;
     [SerializeField] private Transform _leftSparkPoint;
@@ -74,8 +73,8 @@ public class Player : CharacterBase
     public List<TempoAttackData> PointTempoAttackDatas { get => _pointTempoAttackDatas; }
     public PlayerView View { get => _view; }
 
-    public bool isTurn = false;
-    public float stunTime = 0f;
+    [HideInInspector] public bool isTurn = false;
+    [HideInInspector] public float stunTime = 0f;
 
     protected override void Awake()
     {
@@ -119,13 +118,11 @@ public class Player : CharacterBase
         {
             case Define.PlayerState.STUN:
                 _rb.velocity = new Vector2(0, _rb.velocity.y);
-                //_attack.ChangeCurrentAttackState(Define.AttackState.FINISH);
                 break;
             case Define.PlayerState.DIE:
                 _view.OnGameoverUI();
                 break;
             case Define.PlayerState.NONE:
-                //_atkStateStorage[_curAtkState]?.Stay();
                 _attack.Update();
                 _controller.Update();
                 break;

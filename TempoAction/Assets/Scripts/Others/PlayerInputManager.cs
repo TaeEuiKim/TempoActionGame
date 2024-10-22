@@ -64,8 +64,11 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
 
     public void OnDownArrow(InputValue value)
     {
-        DownArrowInput(value.isPressed);
-        if (value.isPressed && isCommand)
+        if (!isCommand)
+        {
+            DownArrowInput(value.isPressed);
+        }
+        else if (value.isPressed && isCommand)
         {
             commandValue.Add(KeyCode.DownArrow);
         }
@@ -73,8 +76,11 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
 
     public void OnLeftArrow(InputValue value)
     {
-        LeftArrowInput(value.isPressed);
-        if (value.isPressed && isCommand)
+        if (!isCommand)
+        {
+            LeftArrowInput(value.isPressed);
+        }
+        else if (value.isPressed && isCommand)
         {
             commandValue.Add(KeyCode.LeftArrow);
         }
@@ -82,8 +88,11 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
 
     public void OnRightArrow(InputValue value)
     {
-        RightArrowInput(value.isPressed);
-        if (value.isPressed && isCommand)
+        if (!isCommand)
+        {
+            RightArrowInput(value.isPressed);
+        }
+        else if (value.isPressed && isCommand)
         {
             commandValue.Add(KeyCode.RightArrow);
         }

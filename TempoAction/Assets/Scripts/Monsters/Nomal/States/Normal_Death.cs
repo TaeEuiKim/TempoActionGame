@@ -32,7 +32,6 @@ public class Normal_Death : Normal_State
 
     public override void Stay()
     {
-        Debug.LogError(_monster.Ani.GetCurrentAnimatorStateInfo(0).normalizedTime);
         if (_monster.Ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f &&
             _monster.Ani.GetCurrentAnimatorStateInfo(0).IsName("AC_BaldoMon_Death"))
         {
