@@ -20,7 +20,7 @@ public class FinishState : PlayerAttackState
 
         _player.Attack.ResetMainTempoQueue(); // 메인 템포 큐 초기화
         _player.Ani.SetBool("IsAttack", false);
-
+        _player.Controller.isMove = true;
     }
 
     public override void Stay()
