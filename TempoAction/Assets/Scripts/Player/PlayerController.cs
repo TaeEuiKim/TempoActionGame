@@ -19,6 +19,7 @@ public class PlayerController
     private bool _isGrounded;
     private bool _isOnMonster;
     private bool _isDoubleJumping;
+    private bool _isBackDash;
     public bool isDashing;
     public bool isMove;
     public bool isJump;
@@ -134,10 +135,15 @@ public class PlayerController
         if (PlayerInputManager.Instance.downArrow && !PlayerInputManager.Instance.isCommand)
         {
             _player.Ani.SetBool("IsBackDash", true);
+            _isBackDash = true;
         }
         else
         {
-            _player.Ani.SetBool("IsBackDash", false);
+            if (!isDashing)
+            {
+                _player.Ani.SetBool("IsBackDash", false);
+                _isBackDash = false;
+            }
         }
 
         if (!isDashing)
@@ -244,11 +250,11 @@ public class PlayerController
             return;
         }
 
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (PlayerInputManager.Instance.move.x < 0)
         {
             _dashDirection = -1f;
         }
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (PlayerInputManager.Instance.move.x > 0)
         {
             _dashDirection = 1f;
         }
@@ -269,7 +275,7 @@ public class PlayerController
         RaycastHit hit;
 
         float dir = 1;
-        if (_player.Ani.GetBool("IsBackDash"))
+        if (_isBackDash)
         {
             dir = -1;
         }
@@ -332,6 +338,7 @@ public class PlayerController
 
         isMove = true;
         isJump = true;
+        _player.Ani.SetBool("IsCommandTime", false);
         PlayerInputManager.Instance.ResetCommandKey();
         yield return null;
     }

@@ -231,6 +231,8 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         float timeRemaining = animationLength - currentPlayTime - 0.12f; // 남은 시간 계산
 
+        _player.Ani.SetBool("IsCommandTime", true);
+
         _player.Controller.OnCommandTime(timeRemaining, AttackCount);
     }
 
