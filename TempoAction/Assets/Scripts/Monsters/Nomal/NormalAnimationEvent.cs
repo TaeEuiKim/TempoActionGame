@@ -20,12 +20,12 @@ public class NormalAnimationEvent : MonoBehaviour
 
     private void Finish()
     {
-        //if (!_monster.TrySkillAttack())
-        //{
-        //    _monster.CurrentPerceptionState = Define.PerceptionType.IDLE;
-        //}
-
-        _monster.CurrentPerceptionState = Define.PerceptionType.IDLE;
+        if (!_monster.TrySkillAttack())
+        {
+            _monster.Ani.SetBool("Hit", false);
+            _monster.CurrentPerceptionState = Define.PerceptionType.IDLE;
+            _monster.StartHitTimer();
+        }
     }
 
     private void RunStopFinish()
