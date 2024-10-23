@@ -153,6 +153,8 @@ public class PlayerAnimationEvent : MonoBehaviour
             _player.Rb.isKinematic = false;
             _player.Ani.SetFloat("VerticalSpeed", 0);
         }
+
+        _player.Attack.ChangeCurrentAttackState(Define.AttackState.FINISH);
     }
 
     private void JumpFalling()
@@ -221,7 +223,15 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     private void CheckCommand(int AttackCount)
     {
-        _player.Controller.OnCommandTime(1f, AttackCount);
+        AnimatorStateInfo stateInfo = _player.Ani.GetCurrentAnimatorStateInfo(0); // 레이어 0에서 재생 중인 애니메이션 상태
+
+        // 현재 애니메이션의 남은 시간 계산
+        float animationLength = stateInfo.length; // 애니메이션 전체 길이
+        float currentPlayTime = stateInfo.normalizedTime * animationLength; // 현재 재생된 시간 (normalizedTime은 0에서 1 사이의 값)
+
+        float timeRemaining = animationLength - currentPlayTime - 0.12f; // 남은 시간 계산
+
+        _player.Controller.OnCommandTime(timeRemaining, AttackCount);
     }
 
     private void LeftFootEffect()

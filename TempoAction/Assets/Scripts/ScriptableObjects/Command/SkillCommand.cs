@@ -14,6 +14,8 @@ public class CommandData
 {
     [Header("스킬 아이디")]
     public int SkillId;
+    [Header("스킬 카운트")]
+    public int SkillCount;
     [Header("스킬 커맨드")]
     public KeyCode[] KeyCodes;
 }

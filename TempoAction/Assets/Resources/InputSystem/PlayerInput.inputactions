@@ -112,11 +112,33 @@
                 },
                 {
                     "name": "right",
-                    "id": "fcfe95b8-67b9-4526-84b5-5d0bc98d6400",
+                    "id": "d08b2901-6bd5-4760-be82-f39ffd0b2f70",
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "b2766045-88bf-4f82-a4f4-45633aaef3ec",
+                    "path": "<HID::Nintendo Co., Ltd. E1 Light>/hat/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Joystick",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "f470a921-4944-4eb2-888a-ede8e611ee4e",
+                    "path": "<HID::Nintendo Co., Ltd. E1 Light>/hat/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Joystick",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -178,6 +200,17 @@
                 },
                 {
                     "name": "",
+                    "id": "0f2be62f-d30a-4fdd-b0b6-1b254759eb33",
+                    "path": "<HID::Nintendo Co., Ltd. E1 Light>/hat/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Joystick",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "19d5d921-df29-42d7-9ed6-06b0fd25eed8",
                     "path": "<Keyboard>/leftCtrl",
                     "interactions": "",
@@ -200,11 +233,33 @@
                 },
                 {
                     "name": "",
+                    "id": "0f365ff4-074c-4653-8b0a-27120d80fb55",
+                    "path": "<HID::Nintendo Co., Ltd. E1 Light>/button4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Joystick",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "cbaad3bf-4b7c-4bb1-b535-559585447953",
                     "path": "<Keyboard>/downArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
+                    "action": "DownArrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7f781053-8ceb-4db6-841b-ad1688405fe6",
+                    "path": "<HID::Nintendo Co., Ltd. E1 Light>/hat/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Joystick",
                     "action": "DownArrow",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -222,11 +277,33 @@
                 },
                 {
                     "name": "",
+                    "id": "e30fc05f-1902-46b0-b85e-ade0238603c4",
+                    "path": "<HID::Nintendo Co., Ltd. E1 Light>/hat/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Joystick",
+                    "action": "LeftArrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "291876ed-2852-4530-a90f-2e269be95d57",
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
+                    "action": "RightArrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "77a7bd5a-4056-4ff0-a4db-56954d8a694e",
+                    "path": "<HID::Nintendo Co., Ltd. E1 Light>/hat/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Joystick",
                     "action": "RightArrow",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -244,11 +321,33 @@
                 },
                 {
                     "name": "",
+                    "id": "84623639-592b-49f3-8e29-812ac7b36cf8",
+                    "path": "<HID::Nintendo Co., Ltd. E1 Light>/button3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Joystick",
+                    "action": "KeyZ",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "89c8bd88-044a-4801-b269-7481896f8323",
                     "path": "<Keyboard>/x",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ddebd0a7-3803-4b21-81d5-8738a2563b31",
+                    "path": "<HID::Nintendo Co., Ltd. E1 Light>/button2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Joystick",
                     "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false

@@ -161,12 +161,12 @@ public class PlayerController
             return;
         }
 
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (PlayerInputManager.Instance.move.x < 0)
         {
             Direction = -1f;
             _dashDirection = -1f;
         }
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (PlayerInputManager.Instance.move.x > 0)
         {
             Direction = 1f;
             _dashDirection = 1f;
@@ -425,11 +425,25 @@ public class PlayerController
                     _player.SkillManager.SkillSlots[0].UseSkillInstant(_player);
                 }
                 _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
-
                 return true;
             }
         }
 
         return false;
+    }
+
+    private void UseCommandSkill(int attackCount)
+    {
+        switch (attackCount)
+        {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            default:
+                break;
+        }
     }
 }
