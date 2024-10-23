@@ -24,10 +24,7 @@ public class Normal_SkillAttackState : Normal_State
             _monster.Ani?.SetBool("Skill", true);
         }
 
-        slot.UseSkillInstant(_monster, () =>
-        {
-            _monster.CurrentPerceptionState = Define.PerceptionType.IDLE;
-        });
+        slot.UseSkillInstant(_monster);
     }
 
     public override void Stay()

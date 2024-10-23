@@ -41,9 +41,9 @@ public class NormalMonster : Monster
 
     [Space]
     [Header("피격 대기시간")]
-    [SerializeField] private float hittingTime = 0.5f;
+    [SerializeField] private float hittingTime = 0.3f;
     private float _hitTimer = 0f;
-    private bool isHit = false;
+    public bool isHit = false;
 
     #endregion
 
@@ -240,10 +240,13 @@ public class NormalMonster : Monster
         base.TakeDamage(value);
         if (Stat.Hp > 0)
         {
-            if (!Ani.GetBool("Hit"))
+            if (!isHit)
             {
-                Ani.SetBool("Hit", true);
-                CurrentPerceptionState = Define.PerceptionType.HIT;
+                isHit = true;
+                if (CurrentPerceptionState != Define.PerceptionType.HIT)
+                {
+                    CurrentPerceptionState = Define.PerceptionType.HIT;
+                }
             }
         }
         else if (Stat.Hp <= 0)
@@ -261,7 +264,8 @@ public class NormalMonster : Monster
         if (slots.Length > 0)
         {
             CurrentSkillSlots = slots;
-            if (CurrentSkillSlots[0].skillRunner.skillData.SkillEffectValue * SkillData.cm2m >= distance)
+            if (CurrentSkillSlots[0].skillRunner.skillData.SkillEffectValue * SkillData.cm2m >= distance
+                && CurrentSkillSlots[0].IsUsable(_SkillManager))
             {
                 CurrentPerceptionState = Define.PerceptionType.SKILLATTACK;
                 return true;
@@ -284,6 +288,11 @@ public class NormalMonster : Monster
     {
         Rb.useGravity = true;
         GetComponent<BoxCollider>().enabled = true;
+    }
+
+    public void StartHitTimer()
+    {
+        StartCoroutine(CheckHitTimer());
     }
 
     private IEnumerator CheckHitTimer()
