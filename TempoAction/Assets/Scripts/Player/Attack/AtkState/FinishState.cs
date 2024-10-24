@@ -17,9 +17,10 @@ public class FinishState : PlayerAttackState
     public override void Enter()
     {
         _player.Ani.SetBool("FinishState", true);
+        _player.Ani.SetBool("IsAttack", false);
 
         _player.Attack.ResetMainTempoQueue(); // 메인 템포 큐 초기화
-        _player.Ani.SetBool("IsAttack", false);
+        
         _player.Controller.isMove = true;
     }
 

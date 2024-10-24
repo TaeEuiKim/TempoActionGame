@@ -7,7 +7,6 @@ using System.Linq;
 public class PlayerController
 {
     private Player _player;
-    private SkillCommand _skillCommand;
 
     [Header("키 입력 기록 리스트")]
     private List<KeyCode> keyInputs = new List<KeyCode>();
@@ -19,6 +18,7 @@ public class PlayerController
     private bool _isGrounded;
     private bool _isOnMonster;
     private bool _isDoubleJumping;
+    private bool _isBackDash;
     public bool isDashing;
     public bool isMove;
     public bool isJump;
@@ -53,7 +53,6 @@ public class PlayerController
     public PlayerController(Player player)
     {
         _player = player;
-        _skillCommand = player._skillCommand;
     }
 
     public void Initialize()
@@ -134,10 +133,15 @@ public class PlayerController
         if (PlayerInputManager.Instance.downArrow && !PlayerInputManager.Instance.isCommand)
         {
             _player.Ani.SetBool("IsBackDash", true);
+            _isBackDash = true;
         }
         else
         {
-            _player.Ani.SetBool("IsBackDash", false);
+            if (!isDashing)
+            {
+                _player.Ani.SetBool("IsBackDash", false);
+                _isBackDash = false;
+            }
         }
 
         if (!isDashing)
@@ -161,12 +165,12 @@ public class PlayerController
             return;
         }
 
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (PlayerInputManager.Instance.move.x < 0)
         {
             Direction = -1f;
             _dashDirection = -1f;
         }
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (PlayerInputManager.Instance.move.x > 0)
         {
             Direction = 1f;
             _dashDirection = 1f;
@@ -244,11 +248,11 @@ public class PlayerController
             return;
         }
 
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (PlayerInputManager.Instance.move.x < 0)
         {
             _dashDirection = -1f;
         }
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (PlayerInputManager.Instance.move.x > 0)
         {
             _dashDirection = 1f;
         }
@@ -269,7 +273,7 @@ public class PlayerController
         RaycastHit hit;
 
         float dir = 1;
-        if (_player.Ani.GetBool("IsBackDash"))
+        if (_isBackDash)
         {
             dir = -1;
         }
@@ -305,35 +309,6 @@ public class PlayerController
         yield return new WaitForSeconds(invincibilityTime);
 
         _player.GetComponent<Collider>().enabled = true;
-    }
-
-    public void OnCommandTime(float checkTime, int attackCount)
-    {
-        isJump = false;
-        isMove = false;
-
-        PlayerInputManager.Instance.isCommand = true;
-        CoroutineRunner.Instance.StartCoroutine(CheckCommandTime(checkTime, attackCount));
-    }
-
-    private IEnumerator CheckCommandTime(float checkTime, int attackCount)
-    {
-        float checkTimer = 0f;
-        while (checkTimer < checkTime)
-        {
-            if (CheckAttackCommand(PlayerInputManager.Instance.GetCommandKey(), attackCount))
-            {
-                break;
-            }
-
-            checkTimer += Time.deltaTime;
-            yield return null;
-        }
-
-        isMove = true;
-        isJump = true;
-        PlayerInputManager.Instance.ResetCommandKey();
-        yield return null;
     }
 
     private void Stop()
@@ -403,33 +378,6 @@ public class PlayerController
             if (keyInputs[0] == keyInputs[1])
             {
                 keyInputs.Clear();
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private bool CheckAttackCommand(List<KeyCode> keyList, int attackCount)
-    {
-        // AttackCount와 일치하는 스킬 아이디가 있는지 검사
-        var commandData = _skillCommand.commandDatas
-            .FirstOrDefault(data => data.SkillId == attackCount);
-
-        if (commandData != null && commandData.KeyCodes.Length == keyList.Count)
-        {
-            // 키가 다 같으면
-            if (keyList.Zip(commandData.KeyCodes, (key1, key2) => key1 == key2).All(isEqual => isEqual))
-            {
-                _player.Ani.SetInteger("CommandCount", attackCount);
-                _player.Ani.SetBool("IsCommand", true);
-
-                if (attackCount == 2)
-                {
-                    _player.SkillManager.SkillSlots[0].UseSkillInstant(_player);
-                }
-                _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
-
                 return true;
             }
         }

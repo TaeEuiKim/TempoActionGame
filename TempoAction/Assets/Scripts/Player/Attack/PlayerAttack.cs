@@ -80,8 +80,9 @@ public class PlayerAttack
         if (_currentAttackState != Define.AttackState.ATTACK)
         { 
             // 공격 키 입력
-            if (Input.GetKeyDown(KeyCode.X) && _player.Ani.GetBool("isGrounded"))
+            if (PlayerInputManager.Instance.attack && _player.Ani.GetBool("isGrounded"))
             {
+                PlayerInputManager.Instance.attack = false;
                 AttackMainTempo();
             }
         }

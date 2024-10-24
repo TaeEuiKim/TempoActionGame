@@ -13,6 +13,7 @@ public class Player : CharacterBase
 
     private PlayerAttack _attack;
     private PlayerController _controller;
+    private PlayerCommandController _commandController;
 
     [SerializeField] private Define.PlayerState _currentState = Define.PlayerState.NONE;
     private Dictionary<Define.PlayerState, PlayerState> _stateStorage = new Dictionary<Define.PlayerState, PlayerState>();
@@ -43,6 +44,7 @@ public class Player : CharacterBase
     public PlayerStat PlayerSt { get { return _playerStat; } }
     public PlayerAttack Attack { get { return _attack; } }
     public PlayerController Controller { get { return _controller; } }
+    public PlayerCommandController CommandController { get { return _commandController; } }
     public Define.PlayerState CurrentState
     {
         get
@@ -86,6 +88,7 @@ public class Player : CharacterBase
         copySkill = FindObjectOfType<CopySkill>();
         _attack = new PlayerAttack(this);
         _controller = new PlayerController(this);
+        _commandController = new PlayerCommandController(this, _skillCommand);
     }
 
     private void Start()
