@@ -50,7 +50,15 @@ public class PlayerCommandController
         var matchingSkillId = _skillCommand.commandDatas
             .Where(cd => cd.PossibleSkillId.Contains(skillid))
             .Where(cd => cd.KeyCodes.Length == keyList.Count &&
-                         keyList.Zip(cd.KeyCodes, (key1, key2) => key1 == key2).All(isEqual => isEqual))
+                         keyList.Zip(cd.KeyCodes, (key1, key2) =>
+                         {
+                             KeyCode tempKey = key2;
+                             if (_player.IsLeftDirection() && key2 == KeyCode.RightArrow)
+                             {
+                                 tempKey = KeyCode.LeftArrow;
+                             }
+                             return key1 == tempKey;
+                         }).All(isEqual => isEqual))
             .Select(cd => cd.SkillId)
             .FirstOrDefault(CheckUseSkill);
 
