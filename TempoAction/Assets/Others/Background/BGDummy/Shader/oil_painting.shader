@@ -3,7 +3,7 @@ Shader "Custom/LitOilPainting"
     Properties
     {
         _MainTex("Texture", 2D) = "white" {}
-        _Radius("Radius", Range(0, 10)) = 1
+        _Radius("Radius", Range(0, 20)) = 1
         _Glossiness("Smoothness", Range(0, 1)) = 0.5
         _Metallic("Metallic", Range(0, 1)) = 0.0
         _NormalMap("Normal Map", 2D) = "bump" {}
