@@ -135,6 +135,7 @@ public class PlayerAnimationEvent : MonoBehaviour
         _player.Attack.CheckDelay = delay;
         _player.Attack.ChangeCurrentAttackState(Define.AttackState.CHECK);
         _player.Ani.SetBool("IsCommand", false);
+        _player.Ani.SetInteger("CommandCount", 0);
         PlayerInputManager.Instance.isCommand = false;
     }
 
@@ -221,7 +222,7 @@ public class PlayerAnimationEvent : MonoBehaviour
         }
     }
 
-    private void CheckCommand(int AttackCount)
+    private void CheckCommand(int SkillId)
     {
         AnimatorStateInfo stateInfo = _player.Ani.GetCurrentAnimatorStateInfo(0); // 레이어 0에서 재생 중인 애니메이션 상태
 
@@ -231,9 +232,9 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         float timeRemaining = animationLength - currentPlayTime - 0.12f; // 남은 시간 계산
 
-        _player.Ani.SetBool("IsCommandTime", true);
+        _player.Ani.SetBool("IsCommand", true);
 
-        _player.Controller.OnCommandTime(timeRemaining, AttackCount);
+        _player.CommandController.StartCommandTime(timeRemaining, SkillId);
     }
 
     private void LeftFootEffect()

@@ -16,7 +16,7 @@ public class UIManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (_player.Ani.GetBool("IsCommandTime"))
+        if (_player.Ani.GetBool("IsCommand"))
         {
             if (_player.IsLeftDirection())
             {

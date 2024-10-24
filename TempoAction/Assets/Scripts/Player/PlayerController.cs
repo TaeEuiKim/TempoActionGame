@@ -7,7 +7,6 @@ using System.Linq;
 public class PlayerController
 {
     private Player _player;
-    private SkillCommand _skillCommand;
 
     [Header("키 입력 기록 리스트")]
     private List<KeyCode> keyInputs = new List<KeyCode>();
@@ -54,7 +53,6 @@ public class PlayerController
     public PlayerController(Player player)
     {
         _player = player;
-        _skillCommand = player._skillCommand;
     }
 
     public void Initialize()
@@ -313,36 +311,6 @@ public class PlayerController
         _player.GetComponent<Collider>().enabled = true;
     }
 
-    public void OnCommandTime(float checkTime, int attackCount)
-    {
-        isJump = false;
-        isMove = false;
-
-        PlayerInputManager.Instance.isCommand = true;
-        CoroutineRunner.Instance.StartCoroutine(CheckCommandTime(checkTime, attackCount));
-    }
-
-    private IEnumerator CheckCommandTime(float checkTime, int attackCount)
-    {
-        float checkTimer = 0f;
-        while (checkTimer < checkTime)
-        {
-            if (CheckAttackCommand(PlayerInputManager.Instance.GetCommandKey(), attackCount))
-            {
-                break;
-            }
-
-            checkTimer += Time.deltaTime;
-            yield return null;
-        }
-
-        isMove = true;
-        isJump = true;
-        _player.Ani.SetBool("IsCommandTime", false);
-        PlayerInputManager.Instance.ResetCommandKey();
-        yield return null;
-    }
-
     private void Stop()
     {
         _player.Rb.velocity = new Vector2(0, _player.Rb.velocity.y);
@@ -415,46 +383,5 @@ public class PlayerController
         }
 
         return false;
-    }
-
-    private bool CheckAttackCommand(List<KeyCode> keyList, int attackCount)
-    {
-        // AttackCount와 일치하는 스킬 아이디가 있는지 검사
-        var commandData = _skillCommand.commandDatas
-            .FirstOrDefault(data => data.SkillId == attackCount);
-
-        if (commandData != null && commandData.KeyCodes.Length == keyList.Count)
-        {
-            // 키가 다 같으면
-            if (keyList.Zip(commandData.KeyCodes, (key1, key2) => key1 == key2).All(isEqual => isEqual))
-            {
-                _player.Ani.SetInteger("CommandCount", attackCount);
-                _player.Ani.SetBool("IsCommand", true);
-
-                if (attackCount == 2)
-                {
-                    _player.SkillManager.SkillSlots[0].UseSkillInstant(_player);
-                }
-                _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private void UseCommandSkill(int attackCount)
-    {
-        switch (attackCount)
-        {
-            case 0:
-                break;
-            case 1:
-                break;
-            case 2:
-                break;
-            default:
-                break;
-        }
     }
 }
