@@ -7,6 +7,9 @@ public class MiddleAnimationEvent : MonoBehaviour
 {
     [SerializeField] private MiddleMonster _monster;
 
+    [Header("경채 총구")]
+    [SerializeField] private Transform gun;
+
     private void Attack()
     {
         _monster.OnAttackAction?.Invoke();
@@ -37,10 +40,27 @@ public class MiddleAnimationEvent : MonoBehaviour
           {
               ///transform.parent.DOMoveX(hit.point.x, 0.1f);
           }*/
+    }
 
+    private void SetGyeongChaeAimCount(int count)
+    {
+        _monster.Ani.SetInteger("AimAttackCount", count);
+    }
 
+    private void SetGyeongChaeEffect(int count)
+    {
+        if (count == 0)
+        {
+            GameObject explosion = ObjectPool.Instance.Spawn("fung_gyung", 1);
 
-        // 디버그용 레이 그리기
-        Debug.DrawRay(rayOrigin, rayDirection * _monster.CurrentSkill.Info.range, Color.green);
+            explosion.transform.position = gun.transform.position;
+        }
+        else if (count == 1)
+        {
+            GameObject smoke = ObjectPool.Instance.Spawn("gyung_smoke", 1);
+
+            smoke.transform.position = gun.transform.position;
+        }
+
     }
 }
