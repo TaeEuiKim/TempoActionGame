@@ -14,7 +14,11 @@ public class PlayerAnimationEvent : MonoBehaviour
     [SerializeField] private Transform rightHandTrans;
     [SerializeField] private Transform leftFootTrans;
     [SerializeField] private Transform rightFootTrans;
+    [SerializeField] private Transform rightHandTrail;
+
     private CameraController _cameraController;
+
+    [SerializeField] Vector3 tempVec;
 
     private void Start()
     {
@@ -29,53 +33,96 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         if (hitMonsters.Length <= 0) return;
 
-        // 히트 파티클 생성
-        GameObject hitParticle = ObjectPool.Instance.Spawn("P_Punch", 1);
-        GameObject hitParticle2 = ObjectPool.Instance.Spawn("P_PunchAttack", 1);
-
         foreach (Collider monsterCollider in hitMonsters)
         {
             Monster monster = monsterCollider.GetComponent<Monster>();
-
-            switch (_player.Ani.GetInteger("AtkCount"))
+            if (_player.Ani.GetBool("IsCommand"))
             {
-                case 0:
-                    hitParticle.transform.position = leftHandTrans.position;
-                    hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                    hitParticle2.transform.position = leftHandTrans.position;
-                    hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                    hitParticle.transform.rotation = leftHandTrans.rotation;
-                    hitParticle2.transform.rotation = leftHandTrans.rotation;
-                    break;
-                case 1:
-                    hitParticle.transform.position = rightHandTrans.position;
-                    hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                    hitParticle2.transform.position = rightHandTrans.position;
-                    hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                    hitParticle.transform.rotation = rightHandTrans.rotation;
-                    hitParticle2.transform.rotation = rightHandTrans.rotation;
-                    break;
-                case 2:
-                    hitParticle.transform.position = leftHandTrans.position;
-                    hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                    hitParticle2.transform.position = leftHandTrans.position;
-                    hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                    hitParticle.transform.rotation = leftHandTrans.rotation;
-                    hitParticle2.transform.rotation = leftHandTrans.rotation;
-                    break;
-                case 3:
-                    hitParticle.transform.position = leftHandTrans.position;
-                    hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                    hitParticle2.transform.position = leftHandTrans.position;
-                    hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                    hitParticle.transform.rotation = leftHandTrans.rotation;
-                    hitParticle2.transform.rotation = leftHandTrans.rotation;
-                    break;
-                case 4:
-                    GameObject hitParticle3 = ObjectPool.Instance.Spawn("FX_PunchAttackSphere", 1);
+                GameObject hitParticle;
+                GameObject hitParticle2;
+                GameObject hitParticle3;
 
-                    hitParticle3.transform.position = monsterCollider.ClosestPoint(_player.HitPoint.position);
-                    break;
+                switch (_player.Ani.GetInteger("CommandCount"))
+                {
+                    case 1:
+                        hitParticle = ObjectPool.Instance.Spawn("P_SmashAttack_01", 1);
+                        hitParticle2 = ObjectPool.Instance.Spawn("P_SmashAttack_02", 1);
+                        hitParticle.transform.position = leftHandTrans.position + new Vector3(-0.3f * _player.CharacterModel.localScale.x, 0);
+                        hitParticle2.transform.position = leftHandTrans.position + new Vector3(-0.3f * _player.CharacterModel.localScale.x, 0);
+                        if (_player.CharacterModel.localScale.x < 0)
+                        {
+                            hitParticle.transform.rotation = leftHandTrans.rotation * Quaternion.Euler(tempVec);
+                            hitParticle2.transform.rotation = leftHandTrans.rotation * Quaternion.Euler(tempVec);
+                        }
+                        else
+                        {
+                            hitParticle.transform.rotation = leftHandTrans.rotation;
+                            hitParticle2.transform.rotation = leftHandTrans.rotation;
+                        }
+                        break;
+                    case 2:
+                        rightHandTrail.gameObject.SetActive(true);
+                        hitParticle = ObjectPool.Instance.Spawn("P_SmashAttack2", 1);
+                        hitParticle2 = ObjectPool.Instance.Spawn("P_SmashHit", 1);
+                        hitParticle3 = ObjectPool.Instance.Spawn("P_dust", 1);
+
+                        hitParticle.transform.position = rightHandTrans.position + new Vector3(-0.7f * _player.CharacterModel.localScale.x, 0);
+                        hitParticle2.transform.position = rightHandTrans.position + new Vector3(-0.7f * _player.CharacterModel.localScale.x, 0);
+                        hitParticle3.transform.position = leftFootTrans.position + new Vector3(-0.4f * _player.CharacterModel.localScale.x, -0.2f);
+
+                        hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                        hitParticle3.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+
+                        //hitParticle.transform.rotation = rightHandTrans.rotation;
+                        break;
+                    default:
+                        hitParticle = ObjectPool.Instance.Spawn("FX_PunchAttackSphere", 1);
+
+                        hitParticle.transform.position = monsterCollider.ClosestPoint(_player.HitPoint.position);
+                        break;
+                }
+            }
+            else
+            {
+                // 히트 파티클 생성
+                GameObject hitParticle = ObjectPool.Instance.Spawn("P_Punch", 1);
+                GameObject hitParticle2 = ObjectPool.Instance.Spawn("P_PunchAttack", 1);
+
+                switch (_player.Ani.GetInteger("AtkCount"))
+                {
+                    case 0:
+                        hitParticle.transform.position = leftHandTrans.position;
+                        hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                        hitParticle2.transform.position = leftHandTrans.position;
+                        hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                        hitParticle.transform.rotation = leftHandTrans.rotation;
+                        hitParticle2.transform.rotation = leftHandTrans.rotation;
+                        break;
+                    case 1:
+                        hitParticle.transform.position = rightHandTrans.position;
+                        hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                        hitParticle2.transform.position = rightHandTrans.position;
+                        hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                        hitParticle.transform.rotation = rightHandTrans.rotation;
+                        hitParticle2.transform.rotation = rightHandTrans.rotation;
+                        break;
+                    case 2:
+                        hitParticle.transform.position = leftHandTrans.position;
+                        hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                        hitParticle2.transform.position = leftHandTrans.position;
+                        hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                        hitParticle.transform.rotation = leftHandTrans.rotation;
+                        hitParticle2.transform.rotation = leftHandTrans.rotation;
+                        break;
+                    case 3:
+                        hitParticle.transform.position = leftHandTrans.position;
+                        hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                        hitParticle2.transform.position = leftHandTrans.position;
+                        hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                        hitParticle.transform.rotation = leftHandTrans.rotation;
+                        hitParticle2.transform.rotation = leftHandTrans.rotation;
+                        break;
+                }
             }
 
             HitMainTempo(monster);
@@ -139,6 +186,14 @@ public class PlayerAnimationEvent : MonoBehaviour
         PlayerInputManager.Instance.isCommand = false;
     }
 
+    private void RemoveTrail()
+    {
+        if (rightHandTrail.gameObject.activeSelf)
+        {
+            rightHandTrail.gameObject.SetActive(false);
+        }
+    }
+
     private void JumpRock()
     {
         if (_player.Ani.GetFloat("VerticalSpeed") <= -15)
@@ -200,7 +255,18 @@ public class PlayerAnimationEvent : MonoBehaviour
         {
             if (_player.Ani.GetBool("IsCommand"))
             {
-                transform.parent.DOMoveX(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x), 0.3f);
+                switch (_player.Ani.GetInteger("CommandCount"))
+                {
+                    case 1:
+                    case 2:
+                        transform.parent.DOMoveX(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x), 0.3f);
+                        break;
+                    case 4:
+                        Vector3 targetPos = new Vector3(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x)
+                                                       , transform.parent.position.y + 4f, 0);
+                        transform.parent.DOMove(targetPos, 0.7f);
+                        break;
+                }
             }
             else
             {

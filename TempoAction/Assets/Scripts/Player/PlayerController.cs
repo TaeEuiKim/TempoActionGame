@@ -96,19 +96,19 @@ public class PlayerController
             _dashTimer += Time.deltaTime;
         }
 
-        if (_player.Attack.CurrentAttackkState == Define.AttackState.ATTACK)
-        {
-            Stop();
-
-            return;
-        }
-
         if (!(_isGrounded = Physics.CheckSphere(_player.GroundCheckPoint.position, _player.GroundCheckRadius, _player.GroundLayer)))
         {
             _isGrounded = Physics.CheckSphere(_player.GroundCheckPoint.position, _player.GroundCheckRadius, _player.WallLayer);
         }
         _isOnMonster = Physics.CheckSphere(_player.GroundCheckPoint.position, _player.GroundCheckRadius, _player.MonsterLayer);
         _player.Ani.SetBool("isGrounded", _isGrounded);
+
+        if (_player.Attack.CurrentAttackkState == Define.AttackState.ATTACK)
+        {
+            Stop();
+
+            return;
+        }
 
         if (_isGrounded)
         {

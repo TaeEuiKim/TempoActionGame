@@ -15,6 +15,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     public bool jump;
 
     [Header("Player Command Values")]
+    public bool upArrow;
     public bool downArrow;
     public bool leftArrow;
     public bool rightArrow;
@@ -101,6 +102,14 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
         }
     }
 
+    public void OnUpArrow(InputValue value)
+    {
+        if (isCommand && value.isPressed)
+        {
+            commandValue.Add(KeyCode.UpArrow);
+        }
+    }
+
     public void OnKeyZ(InputValue value)
     {
         if (value.isPressed && isCommand)
@@ -163,5 +172,12 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     {
         rightArrow = input;
         RightArrowEvent.TriggerEvent(true);
+    }
+
+    public readonly GenericEventSystem<bool> UpArrowEvent = new();
+    public void UpArrowInput(bool input)
+    {
+        upArrow = input;
+        UpArrowEvent.TriggerEvent(true);
     }
 }

@@ -78,6 +78,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "UpArrow",
+                    "type": "Value",
+                    "id": "8a33243f-ee5d-43b1-beb0-06554996fb84",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "KeyZ",
                     "type": "Button",
                     "id": "124eba94-f181-4de6-af50-017e73d6247c",
@@ -349,6 +358,28 @@
                     "processors": "",
                     "groups": "Joystick",
                     "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ebb710f8-ce08-4990-8bc7-cf35936a5266",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "UpArrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c7f89232-80ad-4aa2-8901-22b5d2c1d5a1",
+                    "path": "<HID::Nintendo Co., Ltd. E1 Light>/hat/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Joystick",
+                    "action": "UpArrow",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
