@@ -306,13 +306,13 @@ public class PlayerAnimationEvent : MonoBehaviour
     private void LeftFootEffect()
     {
         GameObject effect = ObjectPool.Instance.Spawn("FX_Walk", 1);
-        effect.transform.position = leftFootTrans.position;
+        effect.transform.position = leftFootTrans.position + new Vector3(0, -0.2f);
     }
 
     private void RightFootEffect()
     {
         GameObject effect = ObjectPool.Instance.Spawn("FX_Walk", 1);
-        effect.transform.position = rightFootTrans.position;
+        effect.transform.position = rightFootTrans.position + new Vector3(0, -0.2f);
     }
 
     private void TurnOnPlayerEffect(string effectName)
@@ -324,12 +324,12 @@ public class PlayerAnimationEvent : MonoBehaviour
                 effect = ObjectPool.Instance.Spawn(effectName, 1.5f);
                 if (_player.IsLeftDirection())
                 {
-                    effect.transform.position = _player.transform.position + new Vector3(6, 0.5f);
+                    effect.transform.position = _player.transform.position + new Vector3(7, 1.2f);
                 }
                 else
                 {
                     effect.transform.localScale = new Vector3(-1, 0, 0);
-                    effect.transform.position = _player.transform.position + new Vector3(-7, 0.5f);
+                    effect.transform.position = _player.transform.position + new Vector3(-7, 0.1f);
                 }
                 break;
             case "in_chen":
@@ -339,15 +339,9 @@ public class PlayerAnimationEvent : MonoBehaviour
         }
     }
 
-    // 시간 크기 변경
-    private void ChangeTimeScale(float value)
+    private void TurnFire(bool isDisappear)
     {
-        Time.timeScale = value;
-    }
-    // 시간 크기 복구
-    private void ReturnTimeScale()
-    {
-        Time.timeScale = 1;
+        _player.SkillObject.SetActive(isDisappear);
     }
 
     //타임라인 실행 함수

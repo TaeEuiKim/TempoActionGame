@@ -39,8 +39,8 @@ public class Player : CharacterBase
     [SerializeField] private List<TempoAttackData> _mainTempoAttackDatas;
     [SerializeField] private List<TempoAttackData> _pointTempoAttackDatas;
 
-    [Header("스킬")]
-    [SerializeField] private GameObject[] _skillObject;
+    [Header("도깨비 불")]
+    [SerializeField] private GameObject _skillObject;
 
     private CopySkill copySkill;
 
@@ -78,7 +78,7 @@ public class Player : CharacterBase
     public List<TempoAttackData> PointTempoAttackDatas { get => _pointTempoAttackDatas; }
     public PlayerView View { get => _view; }
 
-    public GameObject[] SkillObject { get => _skillObject; }
+    public GameObject SkillObject { get => _skillObject; }
 
     [HideInInspector] public bool isTurn = false;
     [HideInInspector] public float stunTime = 0f;
@@ -134,6 +134,17 @@ public class Player : CharacterBase
                 _attack.Update();
                 _controller.Update();
                 break;
+        }
+
+        if (CharacterModel.localScale.x > 0 && _skillObject.transform.localPosition.x < 0)
+        {
+            _skillObject.transform.DOKill();
+            _skillObject.transform.DOLocalMoveX(0.68f, 0.3f);
+        }
+        else if (CharacterModel.localScale.x < 0 && _skillObject.transform.localPosition.x > 0)
+        {
+            _skillObject.transform.DOKill();
+            _skillObject.transform.DOLocalMoveX(-0.68f, 0.3f);
         }
     }
 
