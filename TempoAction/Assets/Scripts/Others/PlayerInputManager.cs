@@ -53,7 +53,10 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
 
     public void OnAttack(InputValue value)
     {
-        AttackInput(value.isPressed);
+        if (!isCommand)
+        {
+            AttackInput(value.isPressed);
+        }
     }
 
     public void OnDash(InputValue value)

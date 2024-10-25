@@ -182,8 +182,9 @@ public class Player : CharacterBase
         transform.DOMove(point,t);
     }
 
-    public void TakeStun(float t)
+    public void TakeStun(float t, int dir)
     {
+        Controller.Direction = dir;
         CurrentState = Define.PlayerState.STUN;
         stunTime = t;
     }

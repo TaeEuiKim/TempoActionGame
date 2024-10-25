@@ -46,6 +46,8 @@ public class PlayerAnimationEvent : MonoBehaviour
                 switch (_player.Ani.GetInteger("CommandCount"))
                 {
                     case 1:
+                        ControllTimerScale(0.2f, 0.3f);
+
                         hitParticle = ObjectPool.Instance.Spawn("P_SmashAttack_01", 1);
                         hitParticle2 = ObjectPool.Instance.Spawn("P_SmashAttack_02", 1);
                         hitParticle.transform.position = leftHandTrans.position + new Vector3(-0.3f * _player.CharacterModel.localScale.x, 0);
@@ -62,6 +64,8 @@ public class PlayerAnimationEvent : MonoBehaviour
                         }
                         break;
                     case 2:
+                        ControllTimerScale(0.2f, 0.3f);
+
                         rightHandTrail.gameObject.SetActive(true);
                         hitParticle = ObjectPool.Instance.Spawn("P_SmashAttack2", 1);
                         hitParticle2 = ObjectPool.Instance.Spawn("P_SmashHit", 1);
@@ -71,15 +75,25 @@ public class PlayerAnimationEvent : MonoBehaviour
                         hitParticle2.transform.position = rightHandTrans.position + new Vector3(0f * _player.CharacterModel.localScale.x, 0);
                         hitParticle3.transform.position = leftFootTrans.position + new Vector3(-0.4f * _player.CharacterModel.localScale.x, -0.2f);
 
-                        hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                        if (_player.CharacterModel.localScale.x < 0)
+                        {
+                            hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(-1, -1, 1));
+                        }
+                        else
+                        {
+                            hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(1, 1, 1));
+                        }
+
                         hitParticle3.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
 
                         //hitParticle.transform.rotation = rightHandTrans.rotation;
                         break;
                     case 4:
+                        ControllTimerScale(0.2f, 0.3f);
+
                         hitParticle = ObjectPool.Instance.Spawn("P_MainChar_SmashShoryukenAttack", 1);
 
-                        hitParticle.transform.position = _player.transform.position + new Vector3(1f * -_player.CharacterModel.localScale.x, 1f);
+                        hitParticle.transform.position = _player.transform.position + new Vector3(1.3f * -_player.CharacterModel.localScale.x, 1f);
 
                         if (_player.CharacterModel.localScale.x < 0)
                         {
@@ -141,7 +155,8 @@ public class PlayerAnimationEvent : MonoBehaviour
     }
     private void HitMainTempo(Monster monster)
     {
-        PlayerSfx(Define.PlayerSfxType.MAIN);
+        ControllTimerScale(0.1f, 0.005f);
+
         CameraShaking(0.2f);
         // 메인 템포일 때 데미지 처리
         monster.TakeDamage(_player.GetTotalDamage());
@@ -371,6 +386,19 @@ public class PlayerAnimationEvent : MonoBehaviour
                 effect.transform.position = _player.transform.position + new Vector3(0.3f * -_player.CharacterModel.localScale.x, 0);
                 break;
         }
+    }
+
+    private void ControllTimerScale(float scale, float time)
+    {
+        Time.timeScale = scale;
+        StartCoroutine(StartRevertTimeScale(time));
+    }
+
+    private IEnumerator StartRevertTimeScale(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        Time.timeScale = 1;
     }
 
     //타임라인 실행 함수

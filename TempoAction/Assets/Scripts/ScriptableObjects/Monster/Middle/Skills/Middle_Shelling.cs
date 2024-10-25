@@ -88,6 +88,7 @@ public class Middle_Shelling : Middle_Skill
         rocket.bombSize = bombSize;
         rocket.bombType = bombType;
         rocket.TotalDamage = Info.damage;
+        rocket.MonsterDamage = monsterDamage;
         rocket.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
         RaycastHit ray;

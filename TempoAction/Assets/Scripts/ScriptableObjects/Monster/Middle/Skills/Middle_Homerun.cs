@@ -116,7 +116,13 @@ public class Middle_Homerun : Middle_Skill
                 Debug.Log("후방 홈런 성공");
                 player.GetComponent<Player>().TakeDamage(_info.damage, true);
                 player.GetComponent<Player>().Knockback(GetKnockBackPosition(), _backKnockBackDuration);
-                player.GetComponent<Player>().TakeStun(1f);
+
+                int dir = 1;
+                if ((_monster.transform.position - _monster.Player.transform.position).x > 0)
+                {
+                    dir = -1;
+                }
+                player.GetComponent<Player>().TakeStun(1f, dir);
 
                 // 히트 파티클 생성
                 GameObject hitParticle = ObjectPool.Instance.Spawn("FX_HomerunAttack@P", 1); ;
@@ -141,7 +147,14 @@ public class Middle_Homerun : Middle_Skill
                 Debug.Log("전방 홈런 성공");
                 player.GetComponent<Player>().TakeDamage(_info.damage, true);
                 player.GetComponent<Player>().Knockback(GetKnockBackPosition(), _frontKnockBackDuration);
-                player.GetComponent<Player>().TakeStun(1f);
+
+                int dir = 1;
+                if ((_monster.transform.position - _monster.Player.transform.position).x > 0)
+                {
+                    dir = -1;
+                }
+
+                player.GetComponent<Player>().TakeStun(1f, dir);
 
                 // 히트 파티클 생성
                 GameObject hitParticle = ObjectPool.Instance.Spawn("FX_HomerunAttack@P", 1); ;

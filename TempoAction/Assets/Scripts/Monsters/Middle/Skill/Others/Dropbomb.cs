@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
+using Unity.Jobs.LowLevel.Unsafe;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -86,6 +87,19 @@ public class Dropbomb : MonoBehaviour
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
+            Collider[] hitPlayer = Physics.OverlapBox(transform.position, new Vector3(3, 3, 1) / 2, transform.rotation, 1 >> 11 | 1 >> 10);
+            foreach (Collider collider in hitPlayer)
+            {
+                if (collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+                {
+                    collider.GetComponent<Player>().TakeDamage(TotalDamage, true);
+                }
+                if (collider.gameObject.layer == LayerMask.NameToLayer("Monster"))
+                {
+                    collider.GetComponent<Monster>().TakeDamage(monsterDamage);
+                }
+            }
+
             effect.transform.position = transform.position - new Vector3(0, 3.5f);
         }
 

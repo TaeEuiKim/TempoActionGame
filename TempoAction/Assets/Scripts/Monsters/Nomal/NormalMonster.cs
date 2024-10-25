@@ -237,6 +237,7 @@ public class NormalMonster : Monster
 
     public override void TakeDamage(float value)
     {
+        base.TakeDamage(value);
         if (Stat.Hp <= 0)
         {
             CurrentPerceptionState = Define.PerceptionType.DEATH;

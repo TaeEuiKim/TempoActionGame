@@ -167,7 +167,14 @@ public class Middle_Takedown : Middle_Skill
                 Debug.Log("내려찍기 피니쉬 성공");
                 player.GetComponent<Player>().TakeDamage(_finishDamage, true);
                 player.GetComponent<Player>().Knockback(GetKnockBackPosition(), _knockBackDuration);
-                player.GetComponent<Player>().TakeStun(1f);
+
+                int dir = 1;
+                if ((_monster.transform.position - _monster.Player.transform.position).x > 0)
+                {
+                    dir = -1;
+                }
+
+                player.GetComponent<Player>().TakeStun(1f, dir);
                 _isHit = true;
             }
         }
