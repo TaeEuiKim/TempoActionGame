@@ -186,6 +186,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 74d779c4c6aa99346ae8ae131f088dec, type: 2}
+  - {fileID: 2100000, guid: 88379c2c49908e1419c52fa85184b7c6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4610,6 +4611,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: ab5517daccadcff429f4d37a5520ffe4, type: 2}
+  - {fileID: 2100000, guid: 88379c2c49908e1419c52fa85184b7c6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6774,6 +6776,7 @@ MonoBehaviour:
   leftFootTrans: {fileID: 5757387042089013430}
   rightFootTrans: {fileID: 1932881887605463654}
   rightHandTrail: {fileID: 6540820747345360054}
+  rimShader: {fileID: 2100000, guid: 88379c2c49908e1419c52fa85184b7c6, type: 2}
   tempVec: {x: 0, y: 180, z: 0}
 --- !u!1 &8199578652032327289
 GameObject:
