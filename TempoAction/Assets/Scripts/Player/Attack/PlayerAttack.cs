@@ -86,6 +86,13 @@ public class PlayerAttack
                 AttackMainTempo();
             }
         }
+        else
+        {
+            if (PlayerInputManager.Instance.attack)
+            {
+                PlayerInputManager.Instance.attack = false;
+            }
+        }
 
         _attackStateStorage[_currentAttackState]?.Stay();
     }

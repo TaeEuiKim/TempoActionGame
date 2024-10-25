@@ -7,6 +7,7 @@ public class SkillObject : MonoBehaviour
     public string skillName;
     private ISkillRoot skill;
     private PlayerSkillManager playerSkillManager;
+    private Player _player;
 
     public void Initialize(ISkillRoot skill)
     {
@@ -25,21 +26,14 @@ public class SkillObject : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerSkillManager = other.GetComponent<PlayerSkillManager>();
+            _player = other.GetComponent<Player>();
+
             if (playerSkillManager)
             {
                 playerSkillManager.InteractObject(this);
                 playerSkillManager.AddSkill(GetSkill());
-            }
-        }
-    }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            if (playerSkillManager)
-            {
-                playerSkillManager.DeInteractObject();
+                _player.SkillObject.gameObject.SetActive(true);
             }
         }
     }

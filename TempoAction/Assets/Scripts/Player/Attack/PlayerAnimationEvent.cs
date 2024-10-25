@@ -15,6 +15,7 @@ public class PlayerAnimationEvent : MonoBehaviour
     [SerializeField] private Transform leftFootTrans;
     [SerializeField] private Transform rightFootTrans;
     [SerializeField] private Transform rightHandTrail;
+    [SerializeField] private Material rimShader;
 
     private CameraController _cameraController;
 
@@ -45,6 +46,8 @@ public class PlayerAnimationEvent : MonoBehaviour
                 switch (_player.Ani.GetInteger("CommandCount"))
                 {
                     case 1:
+                        ControllTimerScale(0.2f, 0.3f);
+
                         hitParticle = ObjectPool.Instance.Spawn("P_SmashAttack_01", 1);
                         hitParticle2 = ObjectPool.Instance.Spawn("P_SmashAttack_02", 1);
                         hitParticle.transform.position = leftHandTrans.position + new Vector3(-0.3f * _player.CharacterModel.localScale.x, 0);
@@ -61,19 +64,41 @@ public class PlayerAnimationEvent : MonoBehaviour
                         }
                         break;
                     case 2:
+                        ControllTimerScale(0.2f, 0.3f);
+
                         rightHandTrail.gameObject.SetActive(true);
                         hitParticle = ObjectPool.Instance.Spawn("P_SmashAttack2", 1);
                         hitParticle2 = ObjectPool.Instance.Spawn("P_SmashHit", 1);
                         hitParticle3 = ObjectPool.Instance.Spawn("P_dust", 1);
 
-                        hitParticle.transform.position = rightHandTrans.position + new Vector3(-0.7f * _player.CharacterModel.localScale.x, 0);
-                        hitParticle2.transform.position = rightHandTrans.position + new Vector3(-0.7f * _player.CharacterModel.localScale.x, 0);
+                        hitParticle.transform.position = rightHandTrans.position + new Vector3(0f * _player.CharacterModel.localScale.x, 0);
+                        hitParticle2.transform.position = rightHandTrans.position + new Vector3(0f * _player.CharacterModel.localScale.x, 0);
                         hitParticle3.transform.position = leftFootTrans.position + new Vector3(-0.4f * _player.CharacterModel.localScale.x, -0.2f);
 
-                        hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                        if (_player.CharacterModel.localScale.x < 0)
+                        {
+                            hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(-1, -1, 1));
+                        }
+                        else
+                        {
+                            hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(1, 1, 1));
+                        }
+
                         hitParticle3.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
 
                         //hitParticle.transform.rotation = rightHandTrans.rotation;
+                        break;
+                    case 4:
+                        ControllTimerScale(0.2f, 0.3f);
+
+                        hitParticle = ObjectPool.Instance.Spawn("P_MainChar_SmashShoryukenAttack", 1);
+
+                        hitParticle.transform.position = _player.transform.position + new Vector3(1.3f * -_player.CharacterModel.localScale.x, 1f);
+
+                        if (_player.CharacterModel.localScale.x < 0)
+                        {
+                            hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(-1, -1, 1));
+                        }
                         break;
                     default:
                         hitParticle = ObjectPool.Instance.Spawn("FX_PunchAttackSphere", 1);
@@ -130,6 +155,8 @@ public class PlayerAnimationEvent : MonoBehaviour
     }
     private void HitMainTempo(Monster monster)
     {
+        ControllTimerScale(0.1f, 0.005f);
+
         CameraShaking(0.2f);
         // 메인 템포일 때 데미지 처리
         monster.TakeDamage(_player.GetTotalDamage());
@@ -306,23 +333,71 @@ public class PlayerAnimationEvent : MonoBehaviour
     private void LeftFootEffect()
     {
         GameObject effect = ObjectPool.Instance.Spawn("FX_Walk", 1);
-        effect.transform.position = leftFootTrans.position;
+        effect.transform.position = leftFootTrans.position + new Vector3(0, -0.2f);
     }
 
     private void RightFootEffect()
     {
         GameObject effect = ObjectPool.Instance.Spawn("FX_Walk", 1);
-        effect.transform.position = rightFootTrans.position;
+        effect.transform.position = rightFootTrans.position + new Vector3(0, -0.2f);
     }
 
-    // 시간 크기 변경
-    private void ChangeTimeScale(float value)
+    private void TurnFire(int isDisappear)
     {
-        Time.timeScale = value;
+        if (isDisappear == 0)
+        {
+            rimShader.SetFloat("_Float", 1.84f);
+            _player.SkillObject.SetActive(false);
+        }
+        else
+        {
+            rimShader.SetFloat("_Float", 0f);
+            GameObject effect = ObjectPool.Instance.Spawn("do_disappear", 1);
+            effect.transform.position = _player.SkillObject.transform.position;
+            _player.SkillObject.SetActive(true);
+        }
     }
-    // 시간 크기 복구
-    private void ReturnTimeScale()
+
+    private void TurnOnPlayerEffect(string effectName)
     {
+        GameObject effect;
+        switch (effectName)
+        {
+            case "chen_rush":
+                effect = ObjectPool.Instance.Spawn(effectName, 1.5f);
+                if (_player.IsLeftDirection())
+                {
+                    effect.transform.position = _player.transform.position + new Vector3(7, 1.2f);
+                }
+                else
+                {
+                    effect.transform.localScale = new Vector3(-1, 0, 0);
+                    effect.transform.position = _player.transform.position + new Vector3(-7, 0.1f);
+                }
+                break;
+            case "in_chen":
+                effect = ObjectPool.Instance.Spawn(effectName, 1.25f, rightHandTrans);
+                effect.transform.position = rightHandTrans.position;
+                effect.transform.rotation = rightHandTrans.rotation;
+                break;
+            case "P_ShoryukenJumpDust":
+                effect = ObjectPool.Instance.Spawn("P_ShoryukenJumpDust", 1);
+
+                effect.transform.position = _player.transform.position + new Vector3(0.3f * -_player.CharacterModel.localScale.x, 0);
+                break;
+        }
+    }
+
+    private void ControllTimerScale(float scale, float time)
+    {
+        Time.timeScale = scale;
+        StartCoroutine(StartRevertTimeScale(time));
+    }
+
+    private IEnumerator StartRevertTimeScale(float time)
+    {
+        yield return new WaitForSeconds(time);
+
         Time.timeScale = 1;
     }
 

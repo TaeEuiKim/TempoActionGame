@@ -90,8 +90,14 @@ public abstract class SkillRunnerBase : ScriptableObject
         }
         else
         {
-            effect.transform.position = character.transform.position;
+            effect.transform.position = character.transform.position + new Vector3(0, 0.5f);
         }
+        effect.SetActive(true);
+    }
+
+    protected void ActiveEffectToCharacter(CharacterBase character, GameObject effect, Vector3 targetPos)
+    {
+        effect.transform.position = targetPos;
         effect.SetActive(true);
     }
 
@@ -136,10 +142,10 @@ public abstract class SkillRunnerBase : ScriptableObject
     /// <param name="targetPos">계산된 목표 위치</param>
     /// <param name="distanceToWall">벽으로부터 떨어진 거리</param>
     /// <returns>(targetPos - initialPos) (+ distanceToWall) 벡터가, Wall과 충돌한다면, Wall까지의 거리 벡터, 아니라면 목표 위치 반환</returns>
-    protected Vector3 GetTargetPosByCoillision(Vector3 initialPos, Vector3 direction, Vector3 targetPos, float distanceToWall = 0.6f)
+    protected Vector3 GetTargetPosByCoillision(Vector3 initialPos, Vector3 direction, Vector3 targetPos, int layer, float distanceToWall = 0.6f)
     {
         // ���� ���� ���� with Wall
-        if (Physics.Raycast(new Ray(initialPos, direction), out RaycastHit wallHit, (targetPos - initialPos).magnitude + distanceToWall, 1 << 13)) // 13은 Wall
+        if (Physics.Raycast(new Ray(initialPos, direction), out RaycastHit wallHit, (targetPos - initialPos).magnitude + distanceToWall, layer)) // 13은 Wall
         {
             var wallGap = wallHit.point + wallHit.normal * distanceToWall;
             return wallGap;

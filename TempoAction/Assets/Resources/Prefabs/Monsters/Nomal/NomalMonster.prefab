@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -372,6 +372,7 @@ MonoBehaviour:
   _hitPoint: {fileID: 382572079243178425}
   _colliderSize: {x: 1, y: 1, z: 1}
   hittingTime: 1
+  isHit: 0
 --- !u!114 &1298170471948164286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -444,7 +445,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.5, y: 1, z: 0.5}
-  m_Center: {x: 0, y: 0.6, z: 0}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1001 &7186739939450651848
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -5,6 +5,7 @@ using System.Collections;
 using UnityEngine.TextCore.Text;
 using UnityEngine.Events;
 using Unity.VisualScripting;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 [CreateAssetMenu(fileName = "SwordQuickDrawRunner", menuName = "ScriptableObjects/Skill/Runner/SwordQuickDrawRunner", order = 1)]
 public class SwordQuickDrawRunner : SkillRunnerBase
@@ -64,6 +65,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
     public override IEnumerator SkillCoroutine(CharacterBase character)
     {
         bool isLeftDir = character.IsLeftDirection();
+        int playerLayer = LayerMask.NameToLayer("Player");
 
         GameObject ready = readyEffect;
         GameObject dash = dashEffect[isLeftDir ? 0 : 1];
@@ -74,8 +76,24 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         // 히트박스
         character.ColliderManager.SetActiveCollider(false, Define.ColliderType.PERSISTANCE);
 
-        // 준비 이펙트
-        ActiveEffectToCharacter(character, ready);
+        if (character.gameObject.layer != playerLayer)
+        {
+            // 준비 이펙트
+            ActiveEffectToCharacter(character, ready);
+        }
+        else
+        {
+            Vector3 pos = new Vector3();
+            if (!character.GetComponent<Player>().SkillObject.activeInHierarchy)
+            {
+                pos = character.transform.position + new Vector3(-1, 1);
+            }
+            else
+            {
+                pos = character.GetComponent<Player>().SkillObject.transform.position;
+            }
+            ActiveEffectToCharacter(character, ready, pos);
+        }
 
         // 선딜
         yield return preDelayWFS;
@@ -95,7 +113,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         List<CharacterBase> hittedCharacters = new List<CharacterBase>();
 
         // 도착 지점 갱신 with Wall
-        targetPos = GetTargetPosByCoillision(initialPos, direction * movingDistance, targetPos);
+        targetPos = GetTargetPosByCoillision(initialPos, direction * movingDistance, targetPos, 1 << 13);
 
         // 돌진 이펙트 시작
         ActiveEffectToCharacter(character, dash);
@@ -115,9 +133,36 @@ public class SwordQuickDrawRunner : SkillRunnerBase
             if (Physics.Raycast(ray, out RaycastHit characterHit, collisiionDepth, layerMask))
             {
                 hittedCharacters.Add(characterHit.transform.GetComponent<CharacterBase>());
+                if (character.gameObject.layer == playerLayer)
+                {
+                    GameObject hitEffect = ObjectPool.Instance.Spawn("P_MonsterSmashHit", 1);
+                    hitEffect.transform.position = characterHit.transform.position + new Vector3(0, 1f);
+                }
             }
 
             character.transform.position = Vector3.Lerp(initialPos, targetPos, curTime / regenTime * (originalMovingDistance / movingDistance));
+        }
+
+        if (character.gameObject.layer == playerLayer)
+        {
+            Player player = character.gameObject.GetComponent<Player>();
+            Collider[] hitMonsters = Physics.OverlapBox(player.HitPoint.position, player.ColliderSize / 2, player.HitPoint.rotation, player.MonsterLayer);
+
+            foreach (Collider collider in hitMonsters)
+            {
+                GameObject finishHitEffect = ObjectPool.Instance.Spawn("P_MainChar_BaldoSkillAttack", 1);
+                finishHitEffect.transform.position = character.transform.position + new Vector3(0.3f * -character.CharacterModel.localScale.x, 1.2f);
+                if (character.CharacterModel.localScale.x < 0)
+                {
+                    finishHitEffect.GetComponent<FlipSlash>().OnFlip(new Vector3(-1, -1, 1));
+                }
+                else
+                {
+                    finishHitEffect.GetComponent<FlipSlash>().OnFlip(new Vector3(1, 1, 1));
+                }
+
+                collider.transform.GetComponent<CharacterBase>().TakeDamage(skillData.SkillDamage * 1.3f);
+            }
         }
 
         // 캐릭터 타격
@@ -138,6 +183,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         //ActiveEffectToCharacter(character, sword);
         dash.SetActive(false);
         ready.SetActive(false);
+
         rigid.useGravity = true;
         Debug.Log("QuickDraw End");
 

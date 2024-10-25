@@ -15,25 +15,6 @@ public class PlayerView : MonoBehaviour
     private Image[] _mainSkillIcons;
     private Image[] _subSkillIcons;
 
-    private void Awake()
-    {
-        ResetSlot();
-    }
-
-    private void ResetSlot()
-    {
-        _mainSkillIcons = new Image[MainSkillSlots.Length];
-        _subSkillIcons = new Image[SubSkillSlots.Length];
-        for (int i = 0; i < MainSkillSlots.Length; i++)
-        {
-            _mainSkillIcons[i] = MainSkillSlots[i].GetComponent<Image>();
-        }
-        for (int i = 0; i < SubSkillSlots.Length; i++)
-        {
-            _subSkillIcons[i] = SubSkillSlots[i].GetComponent<Image>();
-        }
-    }
-
     public void ChangeMainSkillIcon(int value, bool isRemove)
     {
         if(_mainSkillIcons.Length <= value) { return; }

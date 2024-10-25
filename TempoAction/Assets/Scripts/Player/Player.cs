@@ -39,6 +39,9 @@ public class Player : CharacterBase
     [SerializeField] private List<TempoAttackData> _mainTempoAttackDatas;
     [SerializeField] private List<TempoAttackData> _pointTempoAttackDatas;
 
+    [Header("µµ±úºñ ºÒ")]
+    [SerializeField] private GameObject _skillObject;
+
     private CopySkill copySkill;
 
     public PlayerStat PlayerSt { get { return _playerStat; } }
@@ -74,6 +77,8 @@ public class Player : CharacterBase
     public List<TempoAttackData> MainTempoAttackDatas { get => _mainTempoAttackDatas; }
     public List<TempoAttackData> PointTempoAttackDatas { get => _pointTempoAttackDatas; }
     public PlayerView View { get => _view; }
+
+    public GameObject SkillObject { get => _skillObject; }
 
     [HideInInspector] public bool isTurn = false;
     [HideInInspector] public float stunTime = 0f;
@@ -130,6 +135,17 @@ public class Player : CharacterBase
                 _controller.Update();
                 break;
         }
+
+        if (CharacterModel.localScale.x > 0 && _skillObject.transform.localPosition.x < 0)
+        {
+            _skillObject.transform.DOKill();
+            _skillObject.transform.DOLocalMoveX(0.68f, 0.3f);
+        }
+        else if (CharacterModel.localScale.x < 0 && _skillObject.transform.localPosition.x > 0)
+        {
+            _skillObject.transform.DOKill();
+            _skillObject.transform.DOLocalMoveX(-0.68f, 0.3f);
+        }
     }
 
     public float GetTotalDamage(bool value = true)
@@ -166,8 +182,9 @@ public class Player : CharacterBase
         transform.DOMove(point,t);
     }
 
-    public void TakeStun(float t)
+    public void TakeStun(float t, int dir)
     {
+        Controller.Direction = dir;
         CurrentState = Define.PlayerState.STUN;
         stunTime = t;
     }

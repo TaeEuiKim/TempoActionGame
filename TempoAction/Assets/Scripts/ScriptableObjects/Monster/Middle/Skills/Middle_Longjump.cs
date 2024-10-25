@@ -100,7 +100,7 @@ public class Middle_Longjump : Middle_Skill
 
         GameObject hitParticle = ObjectPool.Instance.Spawn("FX_ChungJump@P", 1); ;
 
-        hitParticle.transform.position = new Vector3(_monster.transform.position.x, 1.1f, _monster.transform.position.z);
+        hitParticle.transform.position = new Vector3(_monster.transform.position.x, 0.1f, _monster.transform.position.z);
 
         isFlying = true;
     }
@@ -120,7 +120,7 @@ public class Middle_Longjump : Middle_Skill
 
         GameObject hitParticle = ObjectPool.Instance.Spawn("FX_ChungLanding@P", 1); ;
 
-        hitParticle.transform.position = new Vector3(_monster.transform.position.x + (_monster.Direction * 1.5f), 1.1f, _monster.transform.position.z);
+        hitParticle.transform.position = new Vector3(_monster.transform.position.x + (_monster.Direction * 1.5f), 0.1f, _monster.transform.position.z);
 
         Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _hitScale / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 
@@ -130,7 +130,14 @@ public class Middle_Longjump : Middle_Skill
 
             Debug.Log("멀리뛰기 피니쉬 성공");
             player.GetComponent<Player>().TakeDamage(_finishDamage, true);
-            player.GetComponent<Player>().TakeStun(1f);
+
+            int dir = 1;
+            if ((_monster.transform.position - _monster.Player.transform.position).x > 0)
+            {
+                dir = -1;
+            }
+
+            player.GetComponent<Player>().TakeStun(1f, dir);
         }
 
         CoroutineRunner.Instance.StartCoroutine(FinishTimer());

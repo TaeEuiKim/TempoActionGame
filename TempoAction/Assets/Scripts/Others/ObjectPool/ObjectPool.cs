@@ -1,11 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ObjectPool : Singleton<ObjectPool>
 {
-    [SerializeField] private List<GameObject> _prefabStorage = new List<GameObject>();  // 미리 생성할 객체의 프리팹
-    [SerializeField] private int _initialSize = 10;  // 초기 생성할 객체의 수
+    [Header("미리 생성할 객체의 프리팹")]
+    [SerializeField] private List<NameingClass> _prefabStorges = new List<NameingClass>();
+    //[SerializeField] private List<GameObject> _prefabStorage = new List<GameObject>();
+    [Header("초기 생성할 객체의 수")]
+    [SerializeField] private int _initialSize = 10;
 
     private Dictionary<string, Queue<GameObject>> pool = new Dictionary<string, Queue<GameObject>>();
     private CharacterManager _characterManager;
@@ -14,18 +19,31 @@ public class ObjectPool : Singleton<ObjectPool>
     {
         _characterManager = FindObjectOfType<CharacterManager>();
 
-        foreach (GameObject prefab in _prefabStorage)
+        foreach (NameingClass nc in _prefabStorges)
         {
-            CreatePool(prefab);
+            foreach (GameObject prefab in nc.objects)
+            {
+                CreatePool(prefab);
+            }
         }
+
+        //foreach (GameObject prefab in _prefabStorage)
+        //{
+        //    CreatePool(prefab);
+        //}
     }
 
     public void CreatePool(GameObject prefab)
     {
         if (!FindPrefab(prefab.name))
         {
-            _prefabStorage.Add(prefab);
+            _prefabStorges[_prefabStorges.Count].objects.Add(prefab);
         }
+
+        //if (!FindPrefab(prefab.name))
+        //{
+        //    _prefabStorage.Add(prefab);
+        //}
 
         Queue<GameObject> queue = new Queue<GameObject>();
 
@@ -109,35 +127,61 @@ public class ObjectPool : Singleton<ObjectPool>
         string poolName = RemoveClone(obj.name) + "Pool";
 
         obj.transform.SetParent(GetPool(poolName));
-        obj.transform.localPosition = Vector3.zero;
-        obj.transform.localRotation = Quaternion.identity;
+        //obj.transform.localPosition = Vector3.zero;
+        //obj.transform.localRotation = Quaternion.identity;
         //obj.transform.localScale = Vector3.one;
     }
 
     public GameObject GetPrefab(string name)
     {
-        foreach (GameObject prefab in _prefabStorage)
+        foreach (NameingClass nc in _prefabStorges)
         {
-            if (prefab.name == name)
+            foreach (GameObject prefab in nc.objects)
             {
-                return prefab;
+                if (prefab.name == name)
+                {
+                    return prefab;
+                }
             }
         }
 
         return null;
+
+        //foreach (GameObject prefab in _prefabStorage)
+        //{
+        //    if (prefab.name == name)
+        //    {
+        //        return prefab;
+        //    }
+        //}
+
+        //return null;
     }
 
     public bool FindPrefab(string name)
     {
-        foreach (GameObject prefab in _prefabStorage)
+        foreach (NameingClass nc in _prefabStorges)
         {
-            if (prefab.name == name)
+            foreach (GameObject prefab in nc.objects)
             {
-                return true;
+                if (prefab.name == name)
+                {
+                    return true;
+                }
             }
         }
 
         return false;
+
+        //foreach (GameObject prefab in _prefabStorage)
+        //{
+        //    if (prefab.name == name)
+        //    {
+        //        return true;
+        //    }
+        //}
+
+        //return false;
     }
 
     public Transform GetPool(string name)
@@ -175,4 +219,11 @@ public class ObjectPool : Singleton<ObjectPool>
 
         return name;
     }
+}
+
+[Serializable]
+public class NameingClass
+{
+    public string name;
+    [SerializeField] public List<GameObject> objects = new List<GameObject>(); 
 }
