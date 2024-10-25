@@ -64,6 +64,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
     public override IEnumerator SkillCoroutine(CharacterBase character)
     {
         bool isLeftDir = character.IsLeftDirection();
+        int playerLayer = LayerMask.NameToLayer("Player");
 
         GameObject ready = readyEffect;
         GameObject dash = dashEffect[isLeftDir ? 0 : 1];
@@ -74,8 +75,24 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         // 히트박스
         character.ColliderManager.SetActiveCollider(false, Define.ColliderType.PERSISTANCE);
 
-        // 준비 이펙트
-        ActiveEffectToCharacter(character, ready);
+        if (character.gameObject.layer != playerLayer)
+        {
+            // 준비 이펙트
+            ActiveEffectToCharacter(character, ready);
+        }
+        else
+        {
+            Vector3 pos = new Vector3();
+            if (character.GetComponent<Player>().SkillObject[0] == null)
+            {
+                pos = character.transform.position + new Vector3(-1, 1);
+            }
+            else
+            {
+                pos = character.GetComponent<Player>().SkillObject[0].transform.position;
+            }
+            ActiveEffectToCharacter(character, ready, pos);
+        }
 
         // 선딜
         yield return preDelayWFS;
@@ -94,8 +111,15 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         Vector3 targetPos = initialPos + direction * movingDistance;
         List<CharacterBase> hittedCharacters = new List<CharacterBase>();
 
-        // 도착 지점 갱신 with Wall
-        targetPos = GetTargetPosByCoillision(initialPos, direction * movingDistance, targetPos);
+        if (character.gameObject.layer != playerLayer)
+        {
+            // 도착 지점 갱신 with Wall
+            targetPos = GetTargetPosByCoillision(initialPos, direction * movingDistance, targetPos, 1 << 13);
+        }
+        else
+        {
+            targetPos = GetTargetPosByCoillision(initialPos, direction * movingDistance, targetPos, 1 << 13 | 1 << 10);
+        }
 
         // 돌진 이펙트 시작
         ActiveEffectToCharacter(character, dash);
@@ -125,6 +149,11 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         {
             float damageAmount = skillData.SkillDamage;
 
+            if (character.gameObject.layer == playerLayer)
+            {
+                GameObject hitEffect = ObjectPool.Instance.Spawn("P_SmashHit", 1);
+                hitEffect.transform.position = hittedCharacter.transform.position + new Vector3(0, 1f);
+            }
             hittedCharacter.TakeDamage(damageAmount);
         }
 
@@ -138,6 +167,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         //ActiveEffectToCharacter(character, sword);
         dash.SetActive(false);
         ready.SetActive(false);
+
         rigid.useGravity = true;
         Debug.Log("QuickDraw End");
 

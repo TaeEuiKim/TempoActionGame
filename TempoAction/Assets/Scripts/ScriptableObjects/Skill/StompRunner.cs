@@ -44,7 +44,7 @@ public class StompRunner : SkillRunnerBase
         character.ColliderManager.SetActiveCollider(false, Define.ColliderType.PERSISTANCE);
 
         // 목표 위치 계산
-        targetPos = GetTargetPosByCoillision(initialPos, direction, targetPos, halfColliderSize + colliderSizeForTarget);
+        targetPos = GetTargetPosByCoillision(initialPos, direction, targetPos, 1 << 13, halfColliderSize + colliderSizeForTarget);
 
         // 포물선 운동 시작
         while (curTime <= regenTime)

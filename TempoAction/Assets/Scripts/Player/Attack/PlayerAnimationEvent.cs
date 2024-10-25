@@ -315,6 +315,30 @@ public class PlayerAnimationEvent : MonoBehaviour
         effect.transform.position = rightFootTrans.position;
     }
 
+    private void TurnOnPlayerEffect(string effectName)
+    {
+        GameObject effect;
+        switch (effectName)
+        {
+            case "chen_rush":
+                effect = ObjectPool.Instance.Spawn(effectName, 1.5f);
+                if (_player.IsLeftDirection())
+                {
+                    effect.transform.position = _player.transform.position + new Vector3(6, 0.5f);
+                }
+                else
+                {
+                    effect.transform.localScale = new Vector3(-1, 0, 0);
+                    effect.transform.position = _player.transform.position + new Vector3(-7, 0.5f);
+                }
+                break;
+            case "in_chen":
+                effect = ObjectPool.Instance.Spawn(effectName, 1.25f, rightHandTrans);
+                effect.transform.position = rightHandTrans.position;
+                break;
+        }
+    }
+
     // 시간 크기 변경
     private void ChangeTimeScale(float value)
     {
