@@ -45,6 +45,10 @@ public class NormalMonster : Monster
     private float _hitTimer = 0f;
     public bool isHit = false;
 
+    [Space]
+    [Header("상태 전환 조건")]
+    public StateChangeConditions stateConditions;
+
     #endregion
 
     #region 프로퍼티
@@ -68,6 +72,12 @@ public class NormalMonster : Monster
         }
         set
         {
+            // 입력된 값이 저장소에 없으면 상태를 전환하지 않음
+            if (!_perceptionStateStorage.ContainsKey(value)) { return; }
+
+            // 변경 불가한 상태라면 상태를 전환하지 않음
+            if (stateConditions == null || !stateConditions.GetChangable((int)_currentPerceptionState, (int)value)) { return; }
+
             if (_perceptionStateStorage.ContainsKey(_currentPerceptionState))
             {
                 _perceptionStateStorage[_currentPerceptionState]?.Exit();
@@ -152,10 +162,11 @@ public class NormalMonster : Monster
         _skillManager.OnUpdate(this);
 
         // 인식 범위 안에 들어왔을 때
-        if (_perceptionStateStorage[_currentPerceptionState].IsEntered)
+        /*if (_perceptionStateStorage[_currentPerceptionState].IsEntered)
         {
             _perceptionStateStorage[_currentPerceptionState]?.Stay();
-        }
+        }*/
+        _perceptionStateStorage[_currentPerceptionState]?.Stay();
     }
 
     #region AggroLegacy
