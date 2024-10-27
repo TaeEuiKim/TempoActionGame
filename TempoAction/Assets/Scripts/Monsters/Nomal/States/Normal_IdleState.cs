@@ -15,8 +15,6 @@ public class Normal_IdleState : Normal_State
 
     public override void Stay()
     {
-        return;
-
         _monster.Direction = -(_monster.Player.position.x - _monster.transform.position.x);
 
         float distance = Vector3.Distance(_monster.transform.position, _monster.Target.position);
