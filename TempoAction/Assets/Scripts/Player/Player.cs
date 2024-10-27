@@ -121,6 +121,8 @@ public class Player : CharacterBase
             _currentState = Define.PlayerState.DIE;
         }
 
+        if(!_stateStorage.ContainsKey(_currentState)) { return; }
+
         _stateStorage[_currentState]?.Stay();
         switch (_currentState)
         {
