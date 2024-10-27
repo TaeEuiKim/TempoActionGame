@@ -72,11 +72,13 @@ public class PlayerView : MonoBehaviour
 
     public void OnGameoverUI()
     {
-        _gameoverUI.SetActive(true);
+        _gameoverUI?.SetActive(true);
     }
 
     public void UpdateHpBar(float value)
     {
+        if(_hpBarImage == null) { return; }
+
         _hpBarImage.fillAmount = value;
     }
 }
