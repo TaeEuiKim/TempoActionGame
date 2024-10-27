@@ -159,6 +159,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         CameraShaking(0.2f);
         // 메인 템포일 때 데미지 처리
+        PlayerSfx(Define.PlayerSfxType.MAIN);
         monster.TakeDamage(_player.GetTotalDamage());
     }
 
@@ -412,7 +413,7 @@ public class PlayerAnimationEvent : MonoBehaviour
         switch (type)
         {
             case Define.PlayerSfxType.MAIN:
-                SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_RhythmCombo_Hit_" + (_player.Attack.CurrentTempoData.attackNumber + 1), transform);
+                SoundManager.Instance.PlayOneShot("event:/Hit", transform);
                 break;
             case Define.PlayerSfxType.POINT:
                 SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_PointTempo_Hit", transform);

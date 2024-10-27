@@ -463,8 +463,8 @@ MonoBehaviour:
   switchSettingsMigration: 1
   HasSourceProject: 1
   HasPlatforms: 1
-  sourceProjectPath: Assets/SFX_FMOD_PJE/SFX_FMOD_PJE.fspro
-  sourceBankPath: Assets/SFX_FMOD_PJE/Build
+  sourceProjectPath: Assets/SFX/SFX.fspro
+  sourceBankPath: Assets/SFX/Build
   sourceBankPathUnformatted: 
   BankRefreshCooldown: 5
   ShowBankRefreshWindow: 1
@@ -488,11 +488,7 @@ MonoBehaviour:
   MasterBanks:
   - Master
   Banks:
-  - Character
-  - Enemy_A
-  - Enemy_B
-  - Enemy_Elite
-  - UI
+  - FX
   BanksToLoad: []
   LiveUpdatePort: 9264
   EnableMemoryTracking: 0

@@ -139,6 +139,10 @@ public class CameraController : MonoBehaviour
                 _PlayerCamera[0].Follow = null;
                 _PlayerCamera[0].transform.SetParent(null);
                 break;
+            case Define.CameraType.DEAD:
+                _PlayerCamera[0].gameObject.SetActive(false);
+                _PlayerCamera[2].gameObject.SetActive(true);
+                break;
             case Define.CameraType.NONE:
                 break;
         }
