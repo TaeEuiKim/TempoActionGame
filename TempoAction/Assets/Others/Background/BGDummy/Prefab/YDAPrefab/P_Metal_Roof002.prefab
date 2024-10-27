@@ -81,12 +81,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: b2b8aa6b0dda714488c32953506e1666, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: b2b8aa6b0dda714488c32953506e1666, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: b18d06a174c842f4d8c3d811da30ed73, type: 2}
+      objectReference: {fileID: 2100000, guid: 790afcb251c996e43b581c5fda40cd6f, type: 2}
     - target: {fileID: 919132149155446097, guid: b2b8aa6b0dda714488c32953506e1666, type: 3}
       propertyPath: m_Name
       value: M_Metal_Roof002
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b2b8aa6b0dda714488c32953506e1666, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
