@@ -5,8 +5,8 @@ using UnityEngine;
 public abstract class Normal_State
 {
     protected NormalMonster _monster;
-    protected bool _isEntered;
-    public bool IsEntered { get => _isEntered; }
+    /*protected bool _isEntered;
+    public bool IsEntered { get => _isEntered; }*/
     public Normal_State(NormalMonster monster)
     {
         _monster = monster;
@@ -14,11 +14,11 @@ public abstract class Normal_State
 
     public virtual void Enter()
     {
-        _isEntered = true;
+        //_isEntered = true;
     }
     public abstract void Stay();
     public virtual void Exit()
     {
-        _isEntered = false;
+        //_isEntered = false;
     }
 }
