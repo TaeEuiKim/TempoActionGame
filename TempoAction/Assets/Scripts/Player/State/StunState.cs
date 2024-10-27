@@ -31,6 +31,11 @@ public class StunState : PlayerState
 
     public override void Stay()
     {
+        if (_player.PlayerSt.Hp <= 0)
+        {
+            _player.CurrentState = Define.PlayerState.DIE;
+        }
+
         if (_timer < _player.stunTime) // 스턴 상태일 때
         {
             _timer += Time.deltaTime;

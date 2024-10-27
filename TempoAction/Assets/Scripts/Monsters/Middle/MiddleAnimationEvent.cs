@@ -61,6 +61,14 @@ public class MiddleAnimationEvent : MonoBehaviour
 
             smoke.transform.position = gun.transform.position;
         }
+    }
 
+    private void GyeongChaeSpawnRocket()
+    {
+        GameObject rocket = ObjectPool.Instance.Spawn("Rocket");
+        rocket.transform.position = gun.transform.position + new Vector3(0, 0.3f, -0.8f);
+        rocket.transform.rotation = Quaternion.Euler(140, 0, 0);
+        Vector3 moveVec = new Vector3(rocket.transform.position.x, 30, rocket.transform.position.z - 3f);
+        rocket.transform.DOMove(moveVec, 3.5f);
     }
 }

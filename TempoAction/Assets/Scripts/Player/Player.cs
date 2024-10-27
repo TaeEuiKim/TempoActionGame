@@ -15,6 +15,8 @@ public class Player : CharacterBase
     private PlayerController _controller;
     private PlayerCommandController _commandController;
 
+    private CameraController _cameraController;
+
     [SerializeField] private Define.PlayerState _currentState = Define.PlayerState.NONE;
     private Dictionary<Define.PlayerState, PlayerState> _stateStorage = new Dictionary<Define.PlayerState, PlayerState>();
 
@@ -91,6 +93,7 @@ public class Player : CharacterBase
         _playerStat = (PlayerStat)Stat;
 
         copySkill = FindObjectOfType<CopySkill>();
+        _cameraController = FindObjectOfType<CameraController>();
         _attack = new PlayerAttack(this);
         _controller = new PlayerController(this);
         _commandController = new PlayerCommandController(this, _skillCommand);
@@ -128,7 +131,11 @@ public class Player : CharacterBase
                 _rb.velocity = new Vector2(0, _rb.velocity.y);
                 break;
             case Define.PlayerState.DIE:
+                IsInvincible = true;
+
                 _view.OnGameoverUI();
+                Ani.SetBool("IsDie", true);
+                _cameraController.SetCameraSetting(Define.CameraType.DEAD);
                 break;
             case Define.PlayerState.NONE:
                 _attack.Update();
@@ -179,12 +186,17 @@ public class Player : CharacterBase
     //³Ë¹é ÇÔ¼ö
     public void Knockback(Vector3 point, float t = 0)
     {
+        if (IsInvincible)
+        {
+            return;
+        }
+
         transform.DOMove(point,t);
     }
 
     public void TakeStun(float t, int dir)
     {
-        Controller.Direction = dir;
+        Controller.Direction = -dir;
         CurrentState = Define.PlayerState.STUN;
         stunTime = t;
     }
