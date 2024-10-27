@@ -82,15 +82,18 @@ public class PlayerCommandController
                     return true;
                 }
                 break;
-            case 1: case 4:
+            case 1:
                 if (skillid == count + 1)
                 {
                     return true;
                 }
                 break;
-            case 2: case 5:
+            case 2: 
+            case 4:
                 if (skillid == count + 1)
                 {
+                    Debug.LogError("3");
+
                     UseSkill(skillid);
                     return true;
                 }
@@ -109,6 +112,17 @@ public class PlayerCommandController
             case 3:
                 if (_player.SkillManager.SkillSlots[0].Skill != null)
                 {
+                    _player.Ani.SetBool("IsCommandSkill", true);
+                    _player.SkillManager.SkillSlots[0].UseSkillInstant(_player);
+                    _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
+                }
+                break;
+            case 5:
+                Debug.LogError("1");
+                if (_player.SkillManager.SkillSlots[0].Skill != null)
+                {
+                    Debug.LogError("2");
+
                     _player.Ani.SetBool("IsCommandSkill", true);
                     _player.SkillManager.SkillSlots[0].UseSkillInstant(_player);
                     _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
