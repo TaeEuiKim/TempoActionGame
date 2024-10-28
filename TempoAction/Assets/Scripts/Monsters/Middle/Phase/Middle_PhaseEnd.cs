@@ -60,7 +60,7 @@ public class Middle_PhaseEnd : Middle_PhaseState
                     alpha += Time.fixedDeltaTime;
                     _manager.endSprites[i].color = new Color(1, 1, 1, alpha);
 
-                    yield return new WaitForSeconds(0.1f);
+                    yield return null;
                 }
             }
             else

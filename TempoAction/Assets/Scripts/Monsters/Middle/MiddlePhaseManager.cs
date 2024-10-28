@@ -91,7 +91,7 @@ public class MiddlePhaseManager : MonoBehaviour
             {
                 startSprites[i].fillAmount += Time.fixedDeltaTime;
 
-                yield return new WaitForSeconds(0.1f);
+                yield return null;
             }
 
             yield return new WaitForSeconds(2f);
