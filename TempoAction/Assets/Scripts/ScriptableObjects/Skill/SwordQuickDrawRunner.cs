@@ -73,7 +73,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         rigid.useGravity = false;
 
         // 히트박스
-        character.ColliderManager.SetActiveCollider(false, Define.ColliderType.PERSISTANCE);
+        //character.ColliderManager.SetActiveCollider(false, Define.ColliderType.PERSISTANCE);
 
         if (character.gameObject.layer != playerLayer)
         {
@@ -107,6 +107,11 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         // 돌진 시작
         while ((character.transform.position - targetPos).magnitude > 0.1f && curTime <= regenTime)
         {
+            if (character.Stat.Hp <= 0)
+            {
+                yield break;
+            }
+
             yield return null;
 
             curTime += Time.deltaTime;
@@ -162,7 +167,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         // 초기화
         character.transform.position = targetPos;
         rigid.velocity = Vector3.zero;
-        character.ColliderManager.SetActiveCollider(true, Define.ColliderType.PERSISTANCE);
+        //character.ColliderManager.SetActiveCollider(true, Define.ColliderType.PERSISTANCE);
 
         yield return new WaitForSeconds(0.2f);
         // 이펙트 종료 및 검 이펙트 재생
@@ -170,7 +175,14 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         dash.SetActive(false);
         ready.SetActive(false);
 
-        rigid.useGravity = true;
+        if (character.gameObject.layer == LayerMask.NameToLayer("Monster") && character.Ani.GetBool("Death"))
+        {
+            rigid.useGravity = false;
+        }
+        else
+        {
+            rigid.useGravity = true;
+        }
         Debug.Log("QuickDraw End");
 
         yield return new WaitForSeconds(0.4f); // 발도술 이펙트 끝나기를 기다림

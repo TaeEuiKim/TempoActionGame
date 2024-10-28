@@ -96,7 +96,7 @@ public class VerticalFallRunner : SkillRunnerBase
         if (skillData.SkillCastingTarget == Define.SkillTarget.PC)
         {
             NormalMonster monster = character.GetComponent<NormalMonster>();
-            Collider[] hittedCharacter = Physics.OverlapBox(monster.HitPoint.position, monster.HitPoint.localScale / 2, monster.HitPoint.rotation, monster.PlayerLayer);
+            Collider[] hittedCharacter = Physics.OverlapBox(monster.HitPoint.position, (monster.HitPoint.localScale * 2) / 2, monster.HitPoint.rotation, monster.PlayerLayer);
 
             foreach (var hitCharacter in hittedCharacter)
             {

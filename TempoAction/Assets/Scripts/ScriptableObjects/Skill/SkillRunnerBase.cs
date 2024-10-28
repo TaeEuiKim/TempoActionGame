@@ -84,6 +84,11 @@ public abstract class SkillRunnerBase : ScriptableObject
     /// <param name="effect">적용할 이펙트</param>
     protected void ActiveEffectToCharacter(CharacterBase character, GameObject effect)
     {
+        if (character.Stat.Hp <= 0)
+        {
+            return;
+        }
+
         if (character.gameObject.layer != LayerMask.NameToLayer("Player"))
         {
             effect.transform.position = character.transform.position + new Vector3(0, 1);
