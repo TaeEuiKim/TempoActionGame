@@ -40,7 +40,7 @@ public class Normal_TraceState : Normal_State
         _monster.Rb.velocity = tempVelocity;
         _monster.Direction = -dir;
 
-        if (_monster.TrySkillAttack()) 
+        if (_monster.TryAttack()) 
         {
             return; 
         }

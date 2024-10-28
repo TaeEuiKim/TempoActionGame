@@ -1,7 +1,10 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class NormalMonster : Monster
 {
@@ -45,6 +48,10 @@ public class NormalMonster : Monster
     private float _hitTimer = 0f;
     public bool isHit = false;
 
+    [Space]
+    [Header("상태 전환 조건")]
+    public StateChangeConditions stateConditions;
+
     #endregion
 
     #region 프로퍼티
@@ -68,13 +75,14 @@ public class NormalMonster : Monster
         }
         set
         {
-            if (_perceptionStateStorage.ContainsKey(_currentPerceptionState))
+            // 변경 불가한 상태라면 상태를 전환하지 않음
+            // 단, 아예 Conditions이 할당되지 않은 경우에는 해당 기능을 사용하지 않는 것으로 간주 -> 실행 가능
+            if (stateConditions != null)
             {
-                _perceptionStateStorage[_currentPerceptionState]?.Exit();
+                if (!stateConditions.GetChangable((int)_currentPerceptionState, (int)value)) { return; }
             }
-            PreviousPerceptionState = _currentPerceptionState;
-            _currentPerceptionState = value;
-            _perceptionStateStorage[_currentPerceptionState]?.Enter();
+
+            ForceChangeState(value);
         }
     }
 
@@ -126,6 +134,7 @@ public class NormalMonster : Monster
         _perceptionStateStorage.Add(Define.PerceptionType.GUARD, new Normal_GuardState(this));
         _perceptionStateStorage.Add(Define.PerceptionType.DETECTIONM, new Normal_Detectionm(this));
         _perceptionStateStorage.Add(Define.PerceptionType.SKILLATTACK, new Normal_SkillAttackState(this));
+        _perceptionStateStorage.Add(Define.PerceptionType.NORMALATTACK, new Normal_NormalAttackState(this));
         _perceptionStateStorage.Add(Define.PerceptionType.DEATH, new Normal_Death(this));
 
         CurrentPerceptionState = Define.PerceptionType.IDLE;
@@ -152,11 +161,14 @@ public class NormalMonster : Monster
         _skillManager.OnUpdate(this);
 
         // 인식 범위 안에 들어왔을 때
-        if (_perceptionStateStorage[_currentPerceptionState].IsEntered)
+        /*if (_perceptionStateStorage[_currentPerceptionState].IsEntered)
         {
             _perceptionStateStorage[_currentPerceptionState]?.Stay();
-        }
+        }*/
+        _perceptionStateStorage[_currentPerceptionState]?.Stay();
     }
+
+
 
     #region AggroLegacy
     /*// 부채꼴 안에 플레이어가 있는지 확인
@@ -242,6 +254,13 @@ public class NormalMonster : Monster
         {
             CurrentPerceptionState = Define.PerceptionType.DEATH;
         }
+        else
+        {
+            if (isHit) { return; }
+
+            isHit = true;
+            CurrentPerceptionState = Define.PerceptionType.HIT;
+        }
         return;
 
         if (Stat.Hp > 0)
@@ -261,8 +280,8 @@ public class NormalMonster : Monster
         }
     }
 
-    // 성공적으로 스킬공격 상태로 넘어갔는지 반환
-    public bool TrySkillAttack()
+    // 스킬 공격 발동 가능한지 반환
+    public bool GetSkillAttackUsable()
     {
         var slots = _SkillManager.GetUsableSkillSlots();
         float distance = Vector3.Distance(transform.position, Player.position);
@@ -273,12 +292,55 @@ public class NormalMonster : Monster
             if (CurrentSkillSlots[0].skillRunner.skillData.SkillEffectValue * SkillData.cm2m >= distance
                 && CurrentSkillSlots[0].IsUsable(_SkillManager))
             {
-                CurrentPerceptionState = Define.PerceptionType.SKILLATTACK;
                 return true;
             }
         }
 
         return false;
+    }
+
+    // 일반 공격 발동 가능한지 반환
+    public bool GetNormalAttackUsable()
+    {
+        float distance = Vector3.Distance(transform.position, Player.position);
+
+        if (MonsterSt.AttackRange >= distance && isAttack)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    // 스킬 또는 일반 공격에 성공했는지 반환
+    public bool TryAttack()
+    {
+        if(GetSkillAttackUsable())
+        {
+            CurrentPerceptionState = Define.PerceptionType.SKILLATTACK;
+            return true;
+        }
+        else if(GetNormalAttackUsable())
+        {
+            CurrentPerceptionState = Define.PerceptionType.NORMALATTACK;
+            return true;
+        }
+
+        return false;
+    }
+
+    public void ForceChangeState(Define.PerceptionType nextState)
+    {
+        // 입력된 값이 저장소에 없으면 상태를 전환하지 않음
+        if (!_perceptionStateStorage.ContainsKey(nextState)) { return; }
+
+        if (_perceptionStateStorage.ContainsKey(_currentPerceptionState))
+        {
+            _perceptionStateStorage[_currentPerceptionState]?.Exit();
+        }
+        PreviousPerceptionState = _currentPerceptionState;
+        _currentPerceptionState = nextState;
+        _perceptionStateStorage[_currentPerceptionState]?.Enter();
     }
 
     /*    #region View

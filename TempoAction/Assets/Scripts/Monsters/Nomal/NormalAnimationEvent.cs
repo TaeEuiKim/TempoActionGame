@@ -19,7 +19,7 @@ public class NormalAnimationEvent : MonoBehaviour
 
     private void Finish()
     {
-        if (!_monster.TrySkillAttack())
+        if (!_monster.GetSkillAttackUsable())
         {
             _monster.Ani.SetBool("Hit", false);
             _monster.CurrentPerceptionState = Define.PerceptionType.IDLE;

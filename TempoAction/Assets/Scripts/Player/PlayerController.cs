@@ -226,6 +226,9 @@ public class PlayerController
                 _isGrounded = false;
 
                 GameObject effect = ObjectPool.Instance.Spawn("FX_Jump", 1);
+
+                if (effect == null) { return; }
+
                 effect.transform.position = _player.transform.position + new Vector3(0, 0.2f);
             }
             else
