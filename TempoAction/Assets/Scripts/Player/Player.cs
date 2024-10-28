@@ -43,6 +43,7 @@ public class Player : CharacterBase
 
     [Header("µµ±úºñ ºÒ")]
     [SerializeField] private GameObject _skillObject;
+    public bool isRockFireObj = false;
 
     private CopySkill copySkill;
 
@@ -144,13 +145,16 @@ public class Player : CharacterBase
                 _controller.Update();
                 break;
         }
+    }
 
-        if (CharacterModel.localScale.x > 0 && _skillObject.transform.localPosition.x < 0)
+    private void LateUpdate()
+    {
+        if (CharacterModel.localScale.x > 0 && _skillObject.transform.localPosition.x < 0 && !isRockFireObj)
         {
             _skillObject.transform.DOKill();
             _skillObject.transform.DOLocalMoveX(0.68f, 0.3f);
         }
-        else if (CharacterModel.localScale.x < 0 && _skillObject.transform.localPosition.x > 0)
+        else if (CharacterModel.localScale.x < 0 && _skillObject.transform.localPosition.x > 0 && !isRockFireObj)
         {
             _skillObject.transform.DOKill();
             _skillObject.transform.DOLocalMoveX(-0.68f, 0.3f);

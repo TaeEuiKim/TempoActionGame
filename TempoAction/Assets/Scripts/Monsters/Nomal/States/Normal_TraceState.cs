@@ -38,7 +38,15 @@ public class Normal_TraceState : Normal_State
         var tempVelocity = new Vector2(dir * _monster.Stat.WalkSpeed * Time.deltaTime, _monster.Rb.velocity.y);
 
         _monster.Rb.velocity = tempVelocity;
-        _monster.Direction = -dir;
+
+        if (_monster.monsterType == Define.NormalMonsterType.BALDO)
+        {
+            _monster.Direction = -dir;
+        }
+        else if (_monster.monsterType == Define.NormalMonsterType.KUNG)
+        {
+            _monster.Direction = dir;
+        }
 
         if (_monster.TryAttack()) 
         {

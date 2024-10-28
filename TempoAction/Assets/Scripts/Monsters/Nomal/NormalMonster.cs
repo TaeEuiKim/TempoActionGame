@@ -52,6 +52,10 @@ public class NormalMonster : Monster
     [Header("상태 전환 조건")]
     public StateChangeConditions stateConditions;
 
+    [Space]
+    [Header("몬스터 타입")]
+    public Define.NormalMonsterType monsterType;
+
     #endregion
 
     #region 프로퍼티
@@ -262,22 +266,6 @@ public class NormalMonster : Monster
             CurrentPerceptionState = Define.PerceptionType.HIT;
         }
         return;
-
-        if (Stat.Hp > 0)
-        {
-            if (!isHit)
-            {
-                isHit = true;
-                if (CurrentPerceptionState != Define.PerceptionType.HIT)
-                {
-                    CurrentPerceptionState = Define.PerceptionType.HIT;
-                }
-            }
-        }
-        else if (Stat.Hp <= 0)
-        {
-            CurrentPerceptionState = Define.PerceptionType.DEATH;
-        }
     }
 
     // 스킬 공격 발동 가능한지 반환
@@ -378,6 +366,16 @@ public class NormalMonster : Monster
         }
     }
 
+    public override bool IsLeftDirection()
+    {
+        if (monsterType == Define.NormalMonsterType.KUNG)
+        {
+            return Direction != 1;
+        }
+
+        return Direction != -1;
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -389,50 +387,4 @@ public class NormalMonster : Monster
             Gizmos.DrawLine(new Vector3(SpawnPoint.x - _moveRange, transform.position.y, 0), new Vector3(SpawnPoint.x + _moveRange, transform.position.y, 0));
         }
     }
-
-   /* private void OnDrawGizmosSelected()
-    {
-        int _segments = 10;
-
-        for (int j = _perceptionRanges.Count - 1; j >= 0; j--)
-        {
-            Gizmos.color = _perceptionRanges[j].color;
-
-            // 시작 각도와 끝 각도 설정
-            float halfAngle = _perceptionAngle / 2.0f;
-            float startAngle = -halfAngle;
-            float endAngle = halfAngle;
-
-            // 중심점에서부터 시작
-            Vector3 startPosition = transform.position;
-
-            // 각도 간격 계산
-            float angleStep = _perceptionAngle / _segments;
-
-            float length = _perceptionDistance * ((float)_perceptionRanges[j].range_Ratio / 100.0f);
-
-            // 부채꼴을 그리기 위해 시작점 계산
-            Vector3 firstPoint = startPosition + Quaternion.Euler(0, 0, startAngle) * new Vector3(_direction, 0, 0) * length;
-            Vector3 lastPoint = startPosition + Quaternion.Euler(0, 0, endAngle) * new Vector3(_direction, 0, 0) * length;
-
-            Gizmos.DrawLine(startPosition, firstPoint);
-
-            // 각도를 돌면서 부채꼴을 그리기
-            for (int i = 1; i <= _segments; i++)
-            {
-                float currentAngle = startAngle + i * angleStep;
-                Vector3 nextPoint = startPosition + Quaternion.Euler(0, 0, currentAngle) * new Vector3(_direction, 0, 0) * length;
-
-                // 선을 그리기
-
-                Gizmos.DrawLine(firstPoint, nextPoint);
-
-                // 다음 점을 현재 점으로 갱신
-                firstPoint = nextPoint;
-            }
-
-            // 마지막 선을 중심으로 그리기
-            Gizmos.DrawLine(startPosition, lastPoint);
-        }
-    }*/
 }

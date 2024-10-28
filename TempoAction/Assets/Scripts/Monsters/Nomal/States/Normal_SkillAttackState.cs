@@ -17,12 +17,16 @@ public class Normal_SkillAttackState : Normal_AttackState
 
         var slot = SelectSlot(slots);
 
-        _monster.Direction = -((_monster.Target.transform.position - _monster.transform.position).x);
-
-        if (slot.skillRunner.skillData.SkillId == 210)
+        if (_monster.monsterType == Define.NormalMonsterType.BALDO)
         {
-            _monster.Ani?.SetBool("Skill", true);
+            _monster.Direction = -((_monster.Target.transform.position - _monster.transform.position).x);
         }
+        else if (_monster.monsterType == Define.NormalMonsterType.KUNG)
+        {
+            _monster.Direction = (_monster.Target.transform.position - _monster.transform.position).x;
+        }
+
+        _monster.Ani?.SetBool("Skill", true);
 
         slot.UseSkillInstant(_monster);
     }

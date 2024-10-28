@@ -15,7 +15,14 @@ public class Normal_IdleState : Normal_State
 
     public override void Stay()
     {
-        _monster.Direction = -(_monster.Player.position.x - _monster.transform.position.x);
+        if (_monster.monsterType == Define.NormalMonsterType.BALDO)
+        {
+            _monster.Direction = -(_monster.Player.position.x - _monster.transform.position.x);
+        }
+        else if (_monster.monsterType == Define.NormalMonsterType.KUNG)
+        {
+            _monster.Direction = _monster.Player.position.x - _monster.transform.position.x;
+        }
 
         float distance = Vector3.Distance(_monster.transform.position, _monster.Target.position);
 

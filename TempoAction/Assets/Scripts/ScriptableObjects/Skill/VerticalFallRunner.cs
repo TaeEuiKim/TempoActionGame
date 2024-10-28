@@ -58,17 +58,17 @@ public class VerticalFallRunner : SkillRunnerBase
 
             rayOrigin = character.transform.position; // 무조건 Bottom을 기준으로 해야 아래로 쏠 수 있음.
 
-            ray = new Ray(rayOrigin, Vector3.down);
-            Debug.DrawRay(rayOrigin, Vector3.down, Color.blue);
+            //ray = new Ray(rayOrigin, Vector3.down);
+            //Debug.DrawRay(rayOrigin, Vector3.down, Color.blue);
 
-            float collisiionDepth = skillData.SkillHitboxSize * SkillData.cm2m;
-            int layerMask = SkillTargetToLayerMask(skillData.SkillCastingTarget);
-            if (Physics.Raycast(ray, out RaycastHit characterHit, collisiionDepth, layerMask))
-            {
-                hittedCharacters.Add(characterHit.transform.GetComponent<CharacterBase>());
-                groundPos = character.transform.position;
-                break;
-            }
+            //float collisiionDepth = skillData.SkillHitboxSize * SkillData.cm2m;
+            //int layerMask = SkillTargetToLayerMask(skillData.SkillCastingTarget);
+            //if (Physics.Raycast(ray, out RaycastHit characterHit, collisiionDepth, layerMask))
+            //{
+            //    hittedCharacters.Add(characterHit.transform.GetComponent<CharacterBase>());
+            //    groundPos = character.transform.position;
+            //    break;
+            //}
 
             float yPos = character.transform.position.y;            // 현재 높이
             float curYSpeed = ySpeed * Time.deltaTime;              // 착지 속도
@@ -87,12 +87,35 @@ public class VerticalFallRunner : SkillRunnerBase
 
         // #*********** 후처리 ***********# // 
         // 캐릭터 타격
-        foreach (var hittedCharacter in hittedCharacters.Distinct())
-        {
-            float damageAmount = skillData.SkillDamage * character.Stat.Damage;
+        //foreach (var hittedCharacter in hittedCharacters.Distinct())
+        //{
+        //    float damageAmount = skillData.SkillDamage * character.Stat.Damage;
 
-            hittedCharacter.TakeDamage(damageAmount);
+        //    hittedCharacter.TakeDamage(damageAmount);
+        //}
+        if (skillData.SkillCastingTarget == Define.SkillTarget.PC)
+        {
+            NormalMonster monster = character.GetComponent<NormalMonster>();
+            Collider[] hittedCharacter = Physics.OverlapBox(monster.HitPoint.position, monster.HitPoint.localScale / 2, monster.HitPoint.rotation, monster.PlayerLayer);
+
+            foreach (var hitCharacter in hittedCharacter)
+            {
+                hitCharacter.GetComponent<CharacterBase>().TakeDamage(skillData.SkillDamage);
+            }
         }
+        else if (skillData.SkillCastingTarget == Define.SkillTarget.MON)
+        {
+            int dir = character.IsLeftDirection() ? -1 : 1;
+
+            Player player = character.GetComponent<Player>();
+            Collider[] hittedCharacter = Physics.OverlapBox(player.HitPoint.position + new Vector3(dir, 0), player.HitPoint.localScale / 2, player.HitPoint.rotation, player.MonsterLayer);
+
+            foreach (var hitCharacter in hittedCharacter)
+            {
+                hitCharacter.GetComponent<CharacterBase>().TakeDamage(skillData.SkillDamage);
+            }
+        }
+
 
         // 초기화
         character.transform.position = groundPos == Vector3.zero ? character.transform.position : groundPos;
