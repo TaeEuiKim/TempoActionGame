@@ -333,12 +333,18 @@ public class PlayerAnimationEvent : MonoBehaviour
     private void LeftFootEffect()
     {
         GameObject effect = ObjectPool.Instance.Spawn("FX_Walk", 1);
+
+        if(effect == null) { return; }
+
         effect.transform.position = leftFootTrans.position + new Vector3(0, -0.2f);
     }
 
     private void RightFootEffect()
     {
         GameObject effect = ObjectPool.Instance.Spawn("FX_Walk", 1);
+
+        if (effect == null) { return; }
+
         effect.transform.position = rightFootTrans.position + new Vector3(0, -0.2f);
     }
 
