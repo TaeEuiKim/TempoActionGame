@@ -16,6 +16,12 @@ public class VerticalFallRunner : SkillRunnerBase
             skill.UseSkillCount();
         }
 
+        if (skillData.SkillCastingTarget == Define.SkillTarget.MON)
+        {
+            TestSound.Instance.PlaySound("Skill2_Effect");
+            TestSound.Instance.PlaySound("Skill2_Voice");
+        }
+
         Rigidbody rigid = character.Rb;
         rigid.useGravity = false;
 
@@ -109,6 +115,11 @@ public class VerticalFallRunner : SkillRunnerBase
 
             Player player = character.GetComponent<Player>();
             Collider[] hittedCharacter = Physics.OverlapBox(player.HitPoint.position + new Vector3(dir, 0), player.HitPoint.localScale / 2, player.HitPoint.rotation, player.MonsterLayer);
+
+            if (hittedCharacter.Length > 0)
+            {
+                TestSound.Instance.PlaySound("Skill2_Hit");
+            }
 
             foreach (var hitCharacter in hittedCharacter)
             {
