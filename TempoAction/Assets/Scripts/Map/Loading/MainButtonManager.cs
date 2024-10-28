@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class MainButtonManager : MonoBehaviour
 {
     [SerializeField] private CopySkill copy;
+    [SerializeField] private GameObject ExitUI;
 
     private void Start()
     {
@@ -22,6 +23,16 @@ public class MainButtonManager : MonoBehaviour
     public void OnLoadScene(string sceneName)
     {
         LoadManager.LoadScene(sceneName);
+    }
+
+    public void OnExitUI()
+    {
+        ExitUI.SetActive(true);
+    }
+
+    public void OffExitUI()
+    {
+        ExitUI.SetActive(false);
     }
 
     public void OnExitGame()
