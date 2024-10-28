@@ -460,14 +460,19 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     private IEnumerator FollowOniFire()
     {
-        float dir = 1.5f;
+        float dir = 1f;
         if (!_player.IsLeftDirection())
         {
-            dir = -1.5f;
+            dir = 0;
         }
 
         while (_player.isRockFireObj)
         {
+            if (!_player.IsLeftDirection() && dir < 1)
+            {
+                dir += Time.fixedDeltaTime;
+            }
+
             _player.SkillObject.transform.localPosition = headOrigin.transform.localPosition + new Vector3(dir, 0.5f);
 
             yield return null;
