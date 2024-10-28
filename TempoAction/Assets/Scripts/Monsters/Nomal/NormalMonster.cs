@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -77,7 +78,11 @@ public class NormalMonster : Monster
             if (!_perceptionStateStorage.ContainsKey(value)) { return; }
 
             // 변경 불가한 상태라면 상태를 전환하지 않음
-            if (stateConditions == null || !stateConditions.GetChangable((int)_currentPerceptionState, (int)value)) { return; }
+            // 단, 아예 Conditions이 할당되지 않은 경우에는 해당 기능을 사용하지 않는 것으로 간주 -> 실행 가능
+            if (stateConditions != null)
+            {
+                if (!stateConditions.GetChangable((int)_currentPerceptionState, (int)value)) { return; }
+            }
 
             if (_perceptionStateStorage.ContainsKey(_currentPerceptionState))
             {
@@ -256,6 +261,13 @@ public class NormalMonster : Monster
         if (Stat.Hp <= 0)
         {
             CurrentPerceptionState = Define.PerceptionType.DEATH;
+        }
+        else
+        {
+            if (isHit) { return; }
+
+            isHit = true;
+            CurrentPerceptionState = Define.PerceptionType.HIT;
         }
         return;
 
