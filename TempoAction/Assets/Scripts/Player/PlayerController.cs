@@ -216,13 +216,13 @@ public class PlayerController
             if (!_isGrounded && !_isDoubleJumping)
             {
                 _player.Ani.SetTrigger("isJumping");
-                _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
+                _player.Rb.velocity = new Vector3(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
                 _isDoubleJumping = true;
             }
             if (_isGrounded)
             {
                 _player.Ani.SetTrigger("isJumping");
-                _player.Rb.velocity = new Vector2(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
+                _player.Rb.velocity = new Vector3(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
                 _isGrounded = false;
 
                 GameObject effect = ObjectPool.Instance.Spawn("FX_Jump", 1);

@@ -87,7 +87,7 @@ public class Middle_Takedown : Middle_Skill
 
     IEnumerator MoveToPlayer()
     {
-        yield return new WaitForSecondsRealtime(0.9f);
+        yield return new WaitForSecondsRealtime(1.1f);
 
         _monster.Direction = _monster.Player.transform.position.x - _monster.transform.position.x;
         _monster.CharacterModel.localScale = new Vector3(-_monster.Direction, 1, 1);
@@ -155,18 +155,19 @@ public class Middle_Takedown : Middle_Skill
 
         foreach (Collider player in hitPlayer)
         {
-            if (player.GetComponent<Player>().IsInvincible) return;
+            var _player = player.GetComponent<Player>();
+            if (_player.IsInvincible) return;
 
             if (count < _attackCount)
             {
                 Debug.Log("내려찍기 성공");
-                player.GetComponent<Player>().TakeDamage(_info.damage, true);
+                _player.TakeDamage(_info.damage, true);
             }
             else
             {
                 Debug.Log("내려찍기 피니쉬 성공");
-                player.GetComponent<Player>().TakeDamage(_finishDamage, true);
-                player.GetComponent<Player>().Knockback(GetKnockBackPosition(), _knockBackDuration);
+                _player.TakeDamage(_finishDamage, true);
+                _player.Knockback(GetKnockBackPosition(), _knockBackDuration);
 
                 int dir = 1;
                 if ((_monster.transform.position - _monster.Player.transform.position).x > 0)
@@ -174,7 +175,7 @@ public class Middle_Takedown : Middle_Skill
                     dir = -1;
                 }
 
-                player.GetComponent<Player>().TakeStun(1f, dir);
+                _player.TakeStun(1f, dir);
                 _isHit = true;
             }
         }

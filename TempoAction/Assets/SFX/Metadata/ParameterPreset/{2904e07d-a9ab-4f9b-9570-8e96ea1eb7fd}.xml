@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{2904e07d-a9ab-4f9b-9570-8e96ea1eb7fd}">
+		<property name="name">
+			<value>Punch_Power</value>
+		</property>
+		<relationship name="folder">
+			<destination>{035e7232-93ab-4fe0-b2c0-15e9942e4839}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{27f1fa09-f2d1-420d-9a1b-51b99dfe32bd}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{27f1fa09-f2d1-420d-9a1b-51b99dfe32bd}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

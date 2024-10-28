@@ -63,22 +63,6 @@ public class Middle_Shelling : Middle_Skill
     }
 
     // 로켓 스폰 위치 Y : 15
-    private void SpawnCameraRocket()
-    {
-        for (int i = -2; i <= 2; ++i)
-        {
-            if (i == 0)
-            {
-                i++;
-            }
-
-            GameObject rocket = ObjectPool.Instance.Spawn("Rocket");
-            rocket.transform.position = _monster.transform.position + new Vector3(i * 0.7f, 1);
-            Vector3 moveVec = new Vector3(rocket.transform.position.x + i, 30, rocket.transform.position.z);
-            rocket.transform.DOMove(moveVec, 2);
-        }
-    }
-
     private void SpawnRocket()
     {
         float _y = 23;
@@ -101,10 +85,8 @@ public class Middle_Shelling : Middle_Skill
 
     IEnumerator OnRocketCamera()
     {
-        yield return new WaitForSeconds(2f);
-        SpawnCameraRocket();
+        yield return new WaitForSeconds(0.16f);
 
-        yield return new WaitForSeconds(2f);
 
         for (int i = 0; i < 5; ++i)
         {
@@ -112,7 +94,6 @@ public class Middle_Shelling : Middle_Skill
             yield return new WaitForSeconds(0.7f);
         }
 
-        yield return new WaitForSeconds(3f);
         IsCompleted = false;
         _monster.FinishSkill();
     }

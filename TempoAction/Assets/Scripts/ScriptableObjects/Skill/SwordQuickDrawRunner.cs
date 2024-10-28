@@ -5,7 +5,6 @@ using System.Collections;
 using UnityEngine.TextCore.Text;
 using UnityEngine.Events;
 using Unity.VisualScripting;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 [CreateAssetMenu(fileName = "SwordQuickDrawRunner", menuName = "ScriptableObjects/Skill/Runner/SwordQuickDrawRunner", order = 1)]
 public class SwordQuickDrawRunner : SkillRunnerBase
