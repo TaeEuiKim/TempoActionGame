@@ -207,11 +207,11 @@ public class Middle_Takedown : Middle_Skill
     {
         if (_monster.CharacterModel.localScale.x > 0)
         {
-            obj.transform.position = _monster.transform.position - new Vector3(1f, -2.5f);
+            obj.transform.position = _monster.transform.position - new Vector3(1f, -2.6f);
         }
         else if (_monster.CharacterModel.localScale.x < 0)
         {
-            obj.transform.position = _monster.transform.position - new Vector3(-1f, -2.5f);
+            obj.transform.position = _monster.transform.position - new Vector3(-1f, -2.6f);
         }
 
         obj.GetComponent<FlipSlash>().OnFlip(_monster.CharacterModel.localScale);

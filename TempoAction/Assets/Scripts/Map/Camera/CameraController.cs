@@ -54,6 +54,9 @@ public class CameraController : MonoBehaviour
             case Define.CameraType.MIDDLEBOSS:
                 TurnOnFadeOut(false, "START");
                 break;
+            case Define.CameraType.UNDERGROUND:
+                TurnOnFadeOut(false, "UNDERGROUND");
+                break;
             case Define.CameraType.NONE:
                 break;
         }
@@ -112,6 +115,10 @@ public class CameraController : MonoBehaviour
         if (SceneName == "START")
         {
             LoadManager.LoadScene("MiddleBossStage");
+        }
+        else if (SceneName == "UNDERGROUND")
+        {
+            LoadManager.LoadScene("UndergroundStage");
         }
 
         yield break;
