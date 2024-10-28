@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Normal_SkillAttackState : Normal_State
+public class Normal_SkillAttackState : Normal_AttackState
 {
     public Normal_SkillAttackState(NormalMonster monster) : base(monster) { }
 
@@ -29,6 +29,7 @@ public class Normal_SkillAttackState : Normal_State
 
     public override void Stay()
     {
+        base.Stay();
     }
 
     public override void Exit()

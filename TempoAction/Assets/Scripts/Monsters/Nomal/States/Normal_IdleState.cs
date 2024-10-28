@@ -26,15 +26,8 @@ public class Normal_IdleState : Normal_State
                 _monster.Ani.SetBool("Attack", false);
             }
         }
-        else
-        {
-            if (distance <= _monster.MonsterSt.AttackRange && _monster.isAttack)
-            {
-                _monster.CurrentPerceptionState = Define.PerceptionType.DETECTIONM;
-            }
-        }
-
-        if (distance > _monster.MonsterSt.AttackRange && distance <= _monster.PerceptionDistance * SkillData.cm2m)
+        // 공격 범위 밖, 인지 범위 내(추격)
+        else if (distance > _monster.MonsterSt.AttackRange && distance <= _monster.PerceptionDistance * SkillData.cm2m)
         {
             _monster.CurrentPerceptionState = Define.PerceptionType.TRACE;
         }
