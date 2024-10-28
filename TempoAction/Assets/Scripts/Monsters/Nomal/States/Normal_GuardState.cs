@@ -56,7 +56,7 @@ public class Normal_GuardState : Normal_State
             _monster.Direction = direction.x;
         }*/
 
-        _monster.TrySkillAttack();
+        _monster.TryAttack();
     }
 
     private Vector3 GetMovingPos()

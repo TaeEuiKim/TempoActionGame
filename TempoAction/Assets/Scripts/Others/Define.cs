@@ -69,7 +69,7 @@ public class Define
     public enum PerceptionType
     {
        /* PATROL, BOUNDARY, DETECTIONM, */ // legacy
-        IDLE, GUARD, HIT, DETECTIONM, SKILLATTACK, TRACE, DEATH
+        IDLE, GUARD, HIT, DETECTIONM, SKILLATTACK, NORMALATTACK, TRACE, DEATH
     }
 
     #region 엘리트 몬스터

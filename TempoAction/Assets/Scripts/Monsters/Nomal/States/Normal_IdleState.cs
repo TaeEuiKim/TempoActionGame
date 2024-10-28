@@ -19,7 +19,7 @@ public class Normal_IdleState : Normal_State
 
         float distance = Vector3.Distance(_monster.transform.position, _monster.Target.position);
 
-        if (_monster.TrySkillAttack())
+        if (_monster.TryAttack())
         {
             if (_monster.Ani.GetBool("Attack"))
             {

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -169,6 +170,8 @@ public class NormalMonster : Monster
         _perceptionStateStorage[_currentPerceptionState]?.Stay();
     }
 
+
+
     #region AggroLegacy
     /*// 부채꼴 안에 플레이어가 있는지 확인
     private void CheckPerceptionState() 
@@ -272,8 +275,8 @@ public class NormalMonster : Monster
         }
     }
 
-    // 성공적으로 스킬공격 상태로 넘어갔는지 반환
-    public bool TrySkillAttack()
+    // 스킬 공격 발동 가능한지 반환
+    public bool GetSkillAttackUsable()
     {
         var slots = _SkillManager.GetUsableSkillSlots();
         float distance = Vector3.Distance(transform.position, Player.position);
@@ -284,9 +287,41 @@ public class NormalMonster : Monster
             if (CurrentSkillSlots[0].skillRunner.skillData.SkillEffectValue * SkillData.cm2m >= distance
                 && CurrentSkillSlots[0].IsUsable(_SkillManager))
             {
-                CurrentPerceptionState = Define.PerceptionType.SKILLATTACK;
                 return true;
             }
+        }
+
+        return false;
+    }
+
+    // 일반 공격 발동 가능한지 반환
+    public bool GetNormalAttackUsable()
+    {
+        float distance = Vector3.Distance(transform.position, Player.position);
+        var monStat = (MonsterStat)Stat;
+
+        if(monStat == null) {  return false; }
+        if (monStat.NormalAttackDistance >= distance
+                && CurrentSkillSlots[0].IsUsable(_SkillManager))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    // 스킬 또는 일반 공격에 성공했는지 반환
+    public bool TryAttack()
+    {
+        if(GetSkillAttackUsable())
+        {
+            CurrentPerceptionState = Define.PerceptionType.SKILLATTACK;
+            return true;
+        }
+        else if(GetNormalAttackUsable())
+        {
+            CurrentPerceptionState = Define.PerceptionType.NORMALATTACK;
+            return true;
         }
 
         return false;
