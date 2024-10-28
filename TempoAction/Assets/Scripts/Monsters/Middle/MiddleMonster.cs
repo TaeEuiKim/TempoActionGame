@@ -181,6 +181,14 @@ public class MiddleMonster : Monster
 
     #endregion ½ºÅ³
 
+    public override void TakeDamage(float value)
+    {
+        base.TakeDamage(value);
+        if (MonsterSt.Hp <= 0)
+        {
+            ChangeCurrentState(Define.MiddleMonsterState.DIE);
+        }
+    }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
