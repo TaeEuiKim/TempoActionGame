@@ -137,6 +137,7 @@ public class NormalMonster : Monster
         _perceptionStateStorage.Add(Define.PerceptionType.GUARD, new Normal_GuardState(this));
         _perceptionStateStorage.Add(Define.PerceptionType.DETECTIONM, new Normal_Detectionm(this));
         _perceptionStateStorage.Add(Define.PerceptionType.SKILLATTACK, new Normal_SkillAttackState(this));
+        _perceptionStateStorage.Add(Define.PerceptionType.NORMALATTACK, new Normal_NormalAttackState(this));
         _perceptionStateStorage.Add(Define.PerceptionType.DEATH, new Normal_Death(this));
 
         CurrentPerceptionState = Define.PerceptionType.IDLE;
@@ -298,11 +299,8 @@ public class NormalMonster : Monster
     public bool GetNormalAttackUsable()
     {
         float distance = Vector3.Distance(transform.position, Player.position);
-        var monStat = (MonsterStat)Stat;
 
-        if(monStat == null) {  return false; }
-        if (monStat.NormalAttackDistance >= distance
-                && CurrentSkillSlots[0].IsUsable(_SkillManager))
+        if (MonsterSt.AttackRange >= distance && isAttack)
         {
             return true;
         }

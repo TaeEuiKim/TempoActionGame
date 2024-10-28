@@ -11,8 +11,6 @@ public class MonsterStat : Stat
 
     public float AttackRange { get => _attackRange; }
     public float AttackDelay { get => _attackDelay; }
-    public float NormalAttackCooldown { get => _normalAttackCooldown; }
-    public float NormalAttackDistance { get => _normalAttackDistance; }
 
 
     public override void Init()
