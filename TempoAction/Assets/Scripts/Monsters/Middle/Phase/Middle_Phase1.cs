@@ -19,6 +19,11 @@ public class Middle_Phase1 : Middle_PhaseState
     {
         _manager.Monster.Stay();
         _manager.Monster2.Stay();
+
+        if (_manager.Monster2.MonsterSt.Hp <= 0)
+        {
+            _manager.ChangeStageState(Define.MiddlePhaseState.FINISH);
+        }
     }
 
     public override void Exit()
