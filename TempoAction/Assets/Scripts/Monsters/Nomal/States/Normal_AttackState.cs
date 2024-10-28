@@ -8,4 +8,10 @@ public class Normal_AttackState : Normal_State
     {
         
     }
+
+    public override void Exit()
+    {
+        base.Exit();
+        _monster.Ani?.SetBool("Attack", false);
+    }
 }

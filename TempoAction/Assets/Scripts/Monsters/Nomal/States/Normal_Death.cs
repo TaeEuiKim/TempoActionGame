@@ -31,8 +31,8 @@ public class Normal_Death : Normal_State
 
     public override void Stay()
     {
-        if (_monster.Ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f &&
-            _monster.Ani.GetCurrentAnimatorStateInfo(0).IsName("AC_BaldoMon_Death"))
+        if (_monster.Ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f
+            && _monster.Ani.GetCurrentAnimatorStateInfo(0).IsTag("Death"))
         {
             ObjectPool.Instance.Remove(_monster.gameObject);
         }
@@ -47,11 +47,10 @@ public class Normal_Death : Normal_State
     {
         isItem = true;
 
-        GameObject sword = ObjectPool.Instance.Spawn("Sword");
-        sword.transform.position = _monster.transform.position + new Vector3(0, 3f);
         NormalSkill sw = new NormalSkill(_monster.skillData);
 
-        var so = sword.GetComponent<SkillObject>();
-        so.Initialize(sw);
+        ISkillRoot skill = sw;
+
+        _monster.Player.GetComponent<PlayerSkillManager>().AddSkill(skill);
     }
 }

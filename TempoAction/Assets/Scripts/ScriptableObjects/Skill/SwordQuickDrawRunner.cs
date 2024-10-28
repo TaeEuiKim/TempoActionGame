@@ -80,19 +80,6 @@ public class SwordQuickDrawRunner : SkillRunnerBase
             // 준비 이펙트
             ActiveEffectToCharacter(character, ready);
         }
-        else
-        {
-            Vector3 pos = new Vector3();
-            if (!character.GetComponent<Player>().SkillObject.activeInHierarchy)
-            {
-                pos = character.transform.position + new Vector3(-1, 1);
-            }
-            else
-            {
-                pos = character.GetComponent<Player>().SkillObject.transform.position;
-            }
-            ActiveEffectToCharacter(character, ready, pos);
-        }
 
         // 선딜
         yield return preDelayWFS;

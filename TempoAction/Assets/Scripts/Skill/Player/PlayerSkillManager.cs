@@ -120,23 +120,34 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
     {
         if(newSkill == null) { return; }
 
-        // 스킬 슬롯에서 빈 자리 탐색
-        for(int i = 0; i < SkillSlots.Length; i++)
+        if (newSkill.GetSkillId() == 51)
         {
-            // 빈 곳이 있을 경우
-            if (SkillSlots[i].Skill == null)
-            {
-                // 등록
-                SkillSlots[i].OnRemoved.AddListener(RemoveSkill);
-                SkillSlots[i].SetSkill(newSkill);
-                if (newSkill.GetSkillId() == 51)
-                {
-                    _view.ChangeMainSkillIcon(i, false);
-                }
-
-                return;
-            }
+            SkillSlots[0].OnRemoved.AddListener(RemoveSkill);
+            SkillSlots[0].SetSkill(newSkill);
         }
+        else if (newSkill.GetSkillId() == 55)
+        {
+            SkillSlots[1].OnRemoved.AddListener(RemoveSkill);
+            SkillSlots[1].SetSkill(newSkill);
+        }
+
+        // 스킬 슬롯에서 빈 자리 탐색
+        //for(int i = 0; i < SkillSlots.Length; i++)
+        //{
+        //    // 빈 곳이 있을 경우
+        //    if (SkillSlots[i].Skill == null)
+        //    {
+        //        // 등록
+        //        SkillSlots[i].OnRemoved.AddListener(RemoveSkill);
+        //        SkillSlots[i].SetSkill(newSkill);
+        //        if (newSkill.GetSkillId() == 51)
+        //        {
+        //            _view.ChangeMainSkillIcon(i, false);
+        //        }
+
+        //        return;
+        //    }
+        //}
         
         // 자리가 없다면 큐(예비 스킬)에 등록
         reserveSlots.Enqueue(newSkill);

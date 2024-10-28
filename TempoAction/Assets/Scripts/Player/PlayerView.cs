@@ -17,47 +17,47 @@ public class PlayerView : MonoBehaviour
 
     public void ChangeMainSkillIcon(int value, bool isRemove)
     {
-        if(_mainSkillIcons.Length <= value) { return; }
-        if (_mainSkillIcons[value] == null) { return; }
+        //if(_mainSkillIcons.Length <= value) { return; }
+        //if (_mainSkillIcons[value] == null) { return; }
 
-        if (isRemove)
-        {
-            _mainSkillIcons[value].sprite = _skillBackIcon;
-            Debug.Log("메인 제거");
-        }
-        else
-        {
-            _mainSkillIcons[value].sprite = _skillSprite[value];
-        }
+        //if (isRemove)
+        //{
+        //    _mainSkillIcons[value].sprite = _skillBackIcon;
+        //    Debug.Log("메인 제거");
+        //}
+        //else
+        //{
+        //    _mainSkillIcons[value].sprite = _skillSprite[value];
+        //}
     }
 
     public void ChangeSubSkillIcon(int value, bool isRemove)
     {
-        if (_subSkillIcons.Length <= value) { return; }
-        if (_subSkillIcons[value] == null) { return; }
+        //if (_subSkillIcons.Length <= value) { return; }
+        //if (_subSkillIcons[value] == null) { return; }
 
-        if (isRemove)
-        {
-            _subSkillIcons[value].sprite = _skillBackIcon;
-        }
-        else
-        {
-            _subSkillIcons[value].sprite = _skillSprite[value];
-        }
+        //if (isRemove)
+        //{
+        //    _subSkillIcons[value].sprite = _skillBackIcon;
+        //}
+        //else
+        //{
+        //    _subSkillIcons[value].sprite = _skillSprite[value];
+        //}
     }
 
     public void SetSkillIcon(Image[] mainIcon, Image[] subIcon)
     {
         //ResetSlot();
-        for (int i = 0; i < mainIcon.Length; ++i)
-        {
-            _mainSkillIcons[i].sprite = mainIcon[i].sprite;
-        }
+        //for (int i = 0; i < mainIcon.Length; ++i)
+        //{
+        //    _mainSkillIcons[i].sprite = mainIcon[i].sprite;
+        //}
 
-        for (int i = 0; i < subIcon.Length; ++i)
-        {
-            _subSkillIcons[i].sprite = subIcon[i].sprite;
-        }
+        //for (int i = 0; i < subIcon.Length; ++i)
+        //{
+        //    _subSkillIcons[i].sprite = subIcon[i].sprite;
+        //}
     }
 
     public Image[] GetMainIcon()

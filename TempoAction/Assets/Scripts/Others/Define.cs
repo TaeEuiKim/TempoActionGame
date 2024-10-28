@@ -110,6 +110,15 @@ public class Define
     }
     #endregion
 
+    #region 일반 몬스터
+
+    public enum NormalMonsterType
+    {
+        BALDO, KUNG, NONE
+    }
+
+    #endregion
+
     #endregion
 
     #region Skill

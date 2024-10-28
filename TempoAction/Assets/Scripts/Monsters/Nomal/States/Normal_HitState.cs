@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Normal_HitState : Normal_State
 {
+    AnimatorStateInfo animatorStateInfo;
+
     public Normal_HitState(NormalMonster monster) : base(monster) { }
 
     public override void Enter()
@@ -25,6 +27,12 @@ public class Normal_HitState : Normal_State
 
     public override void Stay() 
     {
+        if (_monster.Ani.GetCurrentAnimatorStateInfo(0).length >= 0.56f && _monster.Ani.GetCurrentAnimatorStateInfo(0).IsTag("Hit"))
+        {
+            _monster.Ani.SetBool("Hit", false);
+            _monster.CurrentPerceptionState = Define.PerceptionType.IDLE;
+            _monster.StartHitTimer();
+        }
     }
 
     public override void Exit()

@@ -6,20 +6,26 @@ using Cinemachine;
 using Unity.VisualScripting;
 using System.Threading;
 using UnityEngine.UIElements;
+using System.Linq;
 
 public class PlayerAnimationEvent : MonoBehaviour
 {
     [SerializeField] private Player _player;
+
     [SerializeField] private Transform leftHandTrans;
     [SerializeField] private Transform rightHandTrans;
     [SerializeField] private Transform leftFootTrans;
     [SerializeField] private Transform rightFootTrans;
     [SerializeField] private Transform rightHandTrail;
+    [SerializeField] private Transform headOrigin;
+
     [SerializeField] private Material rimShader;
 
     private CameraController _cameraController;
 
     [SerializeField] Vector3 tempVec;
+
+    private Vector3 originFire;
 
     private void Start()
     {
@@ -276,7 +282,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitPos, _player.Attack.CurrentTempoData.distance, _player.BlockLayer))
         {
-            float closestMonsterX = hitPos.point.x + (-rayDirection.x * 1f);
+            float closestMonsterX = hitPos.point.x + (-rayDirection.x * 0.5f);
             transform.parent.DOMoveX(closestMonsterX, 0.3f);
         }
         else
@@ -353,21 +359,28 @@ public class PlayerAnimationEvent : MonoBehaviour
     {
         if (isDisappear == 0)
         {
+            GameObject disappearEffect = ObjectPool.Instance.Spawn("do_disappear", 1f);
+            disappearEffect.transform.position = _player.SkillObject.transform.position;
+
             rimShader.SetFloat("_Float", 1.84f);
             _player.SkillObject.SetActive(false);
         }
         else
         {
-            rimShader.SetFloat("_Float", 0f);
             GameObject effect = ObjectPool.Instance.Spawn("do_disappear", 1);
             effect.transform.position = _player.SkillObject.transform.position;
+
+            rimShader.SetFloat("_Float", 0f);
             _player.SkillObject.SetActive(true);
         }
     }
 
     private void TurnOnPlayerEffect(string effectName)
     {
+        float dis = 0;
+
         GameObject effect;
+        GameObject effect2;
         switch (effectName)
         {
             case "chen_rush":
@@ -392,6 +405,72 @@ public class PlayerAnimationEvent : MonoBehaviour
 
                 effect.transform.position = _player.transform.position + new Vector3(0.3f * -_player.CharacterModel.localScale.x, 0);
                 break;
+            case "chen_burn_flame-round1":
+                effect2 = ObjectPool.Instance.Spawn(effectName, 1f);
+                if (_player.IsLeftDirection())
+                {
+                    dis = 0f;
+                }
+                else
+                {
+                    dis = 1f;
+                }
+                effect2.transform.position = _player.transform.position + new Vector3(-2f + dis, 0);
+                break;
+            case "chen_burn_flame-round2":
+                effect = ObjectPool.Instance.Spawn(effectName, 1f);
+                if (_player.IsLeftDirection())
+                {
+                    dis = -0.5f;
+                }
+                else
+                {
+                    dis = 0.5f;
+                }
+                effect.transform.position = _player.transform.position + new Vector3(2f + dis, 0);
+                break;
+            case "chen_fall":
+                effect = ObjectPool.Instance.Spawn(effectName, 1f);
+                effect.transform.position = _player.transform.position;
+                break;
+        }
+    }
+
+    private void SetOniFireFollow(int isFollow)
+    {
+        if (isFollow == 0)
+        {
+            _player.isRockFireObj = true;
+            StartCoroutine(FollowOniFire());
+        }
+        else
+        {
+            _player.isRockFireObj = false;
+
+            if (_player.IsLeftDirection())
+            {
+                _player.SkillObject.transform.DOLocalMoveX(0.68f, 0.3f);
+            }
+            else
+            {
+                _player.SkillObject.transform.DOLocalMoveX(-0.68f, 0.3f);
+            }
+        }
+    }
+
+    private IEnumerator FollowOniFire()
+    {
+        float dir = 1.5f;
+        if (!_player.IsLeftDirection())
+        {
+            dir = -1.5f;
+        }
+
+        while (_player.isRockFireObj)
+        {
+            _player.SkillObject.transform.localPosition = headOrigin.transform.localPosition + new Vector3(dir, 0.5f);
+
+            yield return null;
         }
     }
 
