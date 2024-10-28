@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class NormalMonster : Monster
 {
@@ -74,9 +75,6 @@ public class NormalMonster : Monster
         }
         set
         {
-            // 입력된 값이 저장소에 없으면 상태를 전환하지 않음
-            if (!_perceptionStateStorage.ContainsKey(value)) { return; }
-
             // 변경 불가한 상태라면 상태를 전환하지 않음
             // 단, 아예 Conditions이 할당되지 않은 경우에는 해당 기능을 사용하지 않는 것으로 간주 -> 실행 가능
             if (stateConditions != null)
@@ -84,13 +82,7 @@ public class NormalMonster : Monster
                 if (!stateConditions.GetChangable((int)_currentPerceptionState, (int)value)) { return; }
             }
 
-            if (_perceptionStateStorage.ContainsKey(_currentPerceptionState))
-            {
-                _perceptionStateStorage[_currentPerceptionState]?.Exit();
-            }
-            PreviousPerceptionState = _currentPerceptionState;
-            _currentPerceptionState = value;
-            _perceptionStateStorage[_currentPerceptionState]?.Enter();
+            ForceChangeState(value);
         }
     }
 
@@ -335,6 +327,20 @@ public class NormalMonster : Monster
         }
 
         return false;
+    }
+
+    public void ForceChangeState(Define.PerceptionType nextState)
+    {
+        // 입력된 값이 저장소에 없으면 상태를 전환하지 않음
+        if (!_perceptionStateStorage.ContainsKey(nextState)) { return; }
+
+        if (_perceptionStateStorage.ContainsKey(_currentPerceptionState))
+        {
+            _perceptionStateStorage[_currentPerceptionState]?.Exit();
+        }
+        PreviousPerceptionState = _currentPerceptionState;
+        _currentPerceptionState = nextState;
+        _perceptionStateStorage[_currentPerceptionState]?.Enter();
     }
 
     /*    #region View
