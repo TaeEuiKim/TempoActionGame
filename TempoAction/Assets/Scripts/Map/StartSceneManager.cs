@@ -18,7 +18,7 @@ public class StartSceneManager : MonoBehaviour
 
     private void Start()
     {
-        _fire.SetActive(false);
+        //_fire.SetActive(false);
         StartCoroutine(StartCutScene());
     }
 

@@ -154,6 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _monster: {fileID: 5084343532810798280}
+  gun: {fileID: 0}
 --- !u!95 &6472051093080867228
 Animator:
   serializedVersion: 5
@@ -1730,6 +1731,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: b854ad717e6aee2489743a89f68c2562, type: 2}
+  - {fileID: 2100000, guid: 1bc399d30bd05504eb58b1bb5a6a3936, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1927,7 +1929,9 @@ MonoBehaviour:
   _stat: {fileID: 11400000, guid: 9f91f833c9bd8d84f9756584fbea0fdf, type: 2}
   _characterModel: {fileID: 1463432801698866788}
   _colliderManager:
+    mainCollider: {fileID: 0}
     colliders: []
+  _rayOffset: {x: 0, y: 0, z: 0}
   <_SkillManager>k__BackingField: {fileID: 0}
   _playerLayer:
     serializedVersion: 2
@@ -2746,7 +2750,8 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7f33464dfc486b84da67e06b723600dd, type: 2}
+  - {fileID: 2100000, guid: cc6d3096a3964a6498d4b4609e92e490, type: 2}
+  - {fileID: 2100000, guid: 1bc399d30bd05504eb58b1bb5a6a3936, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3246,7 +3251,8 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b854ad717e6aee2489743a89f68c2562, type: 2}
+  - {fileID: 2100000, guid: a9d4be4e8d189f74fb9d7c5e2c8f2f85, type: 2}
+  - {fileID: 2100000, guid: 1bc399d30bd05504eb58b1bb5a6a3936, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3407,7 +3413,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b854ad717e6aee2489743a89f68c2562, type: 2}
+  - {fileID: 2100000, guid: a9d4be4e8d189f74fb9d7c5e2c8f2f85, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

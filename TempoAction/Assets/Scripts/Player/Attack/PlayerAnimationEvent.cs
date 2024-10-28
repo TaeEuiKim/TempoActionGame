@@ -54,6 +54,8 @@ public class PlayerAnimationEvent : MonoBehaviour
                     case 1:
                         ControllTimerScale(0.2f, 0.3f);
 
+                        TestSound.Instance.PlaySound("Smash1_Hit");
+
                         hitParticle = ObjectPool.Instance.Spawn("P_SmashAttack_01", 1);
                         hitParticle2 = ObjectPool.Instance.Spawn("P_SmashAttack_02", 1);
                         hitParticle.transform.position = leftHandTrans.position + new Vector3(-0.3f * _player.CharacterModel.localScale.x, 0);
@@ -71,6 +73,8 @@ public class PlayerAnimationEvent : MonoBehaviour
                         break;
                     case 2:
                         ControllTimerScale(0.2f, 0.3f);
+
+                        TestSound.Instance.PlaySound("Smash1_2_Hit");
 
                         rightHandTrail.gameObject.SetActive(true);
                         hitParticle = ObjectPool.Instance.Spawn("P_SmashAttack2", 1);
@@ -96,6 +100,8 @@ public class PlayerAnimationEvent : MonoBehaviour
                         break;
                     case 4:
                         ControllTimerScale(0.2f, 0.3f);
+
+                        TestSound.Instance.PlaySound("Smash2_Hit");
 
                         hitParticle = ObjectPool.Instance.Spawn("P_MainChar_SmashShoryukenAttack", 1);
 
@@ -362,6 +368,7 @@ public class PlayerAnimationEvent : MonoBehaviour
             GameObject disappearEffect = ObjectPool.Instance.Spawn("do_disappear", 1f);
             disappearEffect.transform.position = _player.SkillObject.transform.position;
 
+            TestSound.Instance.PlaySound("Skill1");
             rimShader.SetFloat("_Float", 1.84f);
             _player.SkillObject.SetActive(false);
         }
@@ -370,6 +377,7 @@ public class PlayerAnimationEvent : MonoBehaviour
             GameObject effect = ObjectPool.Instance.Spawn("do_disappear", 1);
             effect.transform.position = _player.SkillObject.transform.position;
 
+            TestSound.Instance.PlaySound("Skill1");
             rimShader.SetFloat("_Float", 0f);
             _player.SkillObject.SetActive(true);
         }

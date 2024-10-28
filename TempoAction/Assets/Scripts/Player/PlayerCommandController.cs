@@ -77,14 +77,27 @@ public class PlayerCommandController
         switch (count)
         {
             case 0:
-                if (skillid == 1 || skillid == 4 || skillid == 7)
+                if (skillid == 1)
                 {
+                    TestSound.Instance.PlaySound("Smash1");
+                    TestSound.Instance.PlaySound("Smash1_Voice");
+                    return true;
+                }
+                if (skillid == 4)
+                {
+                    TestSound.Instance.PlaySound("Smash2");
+                    TestSound.Instance.PlaySound("Smash2_Voice");
                     return true;
                 }
                 break;
             case 1:
                 if (skillid == count + 1)
                 {
+                    if (skillid == 2)
+                    {
+                        TestSound.Instance.PlaySound("Smash1_2");
+                        TestSound.Instance.PlaySound("Smash1_2_Voice");
+                    }
                     return true;
                 }
                 break;

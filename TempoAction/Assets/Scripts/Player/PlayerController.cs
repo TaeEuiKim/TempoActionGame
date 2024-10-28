@@ -217,12 +217,14 @@ public class PlayerController
             {
                 _player.Ani.SetTrigger("isJumping");
                 _player.Rb.velocity = new Vector3(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
+                TestSound.Instance.PlaySound("DoubleJump");
                 _isDoubleJumping = true;
             }
             if (_isGrounded)
             {
                 _player.Ani.SetTrigger("isJumping");
                 _player.Rb.velocity = new Vector3(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
+                TestSound.Instance.PlaySound("Jump");
                 _isGrounded = false;
 
                 GameObject effect = ObjectPool.Instance.Spawn("FX_Jump", 1);
@@ -260,10 +262,9 @@ public class PlayerController
             _dashDirection = 1f;
         }
 
-        isDashing = true;
+        //isDashing = true;
         _player.transform.DOKill();
         _player.Ani.SetFloat("Speed", 0);
-        _player.Rb.velocity = Vector3.zero;
         _player.Attack.ChangeCurrentAttackState(Define.AttackState.FINISH);
 
         // 커맨드 초기화

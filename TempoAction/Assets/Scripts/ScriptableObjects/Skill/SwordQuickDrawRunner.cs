@@ -103,6 +103,11 @@ public class SwordQuickDrawRunner : SkillRunnerBase
 
         // 돌진 이펙트 시작
         ActiveEffectToCharacter(character, dash);
+        if (skillData.SkillCastingTarget == Define.SkillTarget.MON)
+        {
+            TestSound.Instance.PlaySound("Skill1_Voice");
+            TestSound.Instance.PlaySound("Skill1_Effect");
+        }
 
         // 돌진 시작
         while ((character.transform.position - targetPos).magnitude > 0.1f && curTime <= regenTime)
@@ -157,6 +162,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
             float damageAmount = skillData.SkillDamage;
 
             hittedCharacter.TakeDamage(damageAmount);
+            TestSound.Instance.PlaySound("Skill1_Hit");
         }
 
         // 초기화
