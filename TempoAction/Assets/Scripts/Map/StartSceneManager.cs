@@ -18,6 +18,8 @@ public class StartSceneManager : MonoBehaviour
 
     private void Start()
     {
+        TestSound.Instance.PlaySound("Start");
+
         //_fire.SetActive(false);
         StartCoroutine(StartCutScene());
     }

@@ -15,15 +15,6 @@ public class TestSound : Singleton<TestSound>
     void Start()
     {
         source = GetComponent<AudioSource>();
-
-        switch (sceneName)
-        {
-            case "START":
-                PlaySound("Start");
-                break;
-            default:
-                break;
-        }
     }
 
     public void PlaySound(string soundName)
@@ -113,6 +104,18 @@ public class TestSound : Singleton<TestSound>
             case "Smash2_Voice":
                 sources[21].clip = soundSources[5].audioClips[2];
                 sources[21].Play();
+                break;
+            case "TitleBGM":
+                sources[22].clip = soundSources[1].audioClips[1];
+                sources[22].Play();
+                break;
+            case "UndergroundBGM":
+                sources[23].clip = soundSources[1].audioClips[2];
+                sources[23].Play();
+                break;
+            case "MiddleBGM":
+                sources[24].clip = soundSources[1].audioClips[3];
+                sources[24].Play();
                 break;
             default:
                 break;

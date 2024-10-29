@@ -4233,7 +4233,7 @@ MonoBehaviour:
     m_Bits: 9216
   _hitPoint: {fileID: 2349604887415842202}
   _endPoint: {fileID: 5116601304433795336}
-  _colliderSize: {x: 1, y: 1, z: 1}
+  _colliderSize: {x: 2, y: 1, z: 1}
   _monsterLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -4246,6 +4246,8 @@ MonoBehaviour:
   _pointTempoAttackDatas: []
   _skillObject: {fileID: 8826795305499070001}
   isRockFireObj: 0
+  skillData: {fileID: 11400000, guid: 2de9be8ee3bf2244ea8ee7b4c27f6672, type: 2}
+  skillData2: {fileID: 11400000, guid: 44561dc996ebd1243a3446dad6c3c10e, type: 2}
   isTurn: 0
   stunTime: 0
 --- !u!114 &8535561133280563900

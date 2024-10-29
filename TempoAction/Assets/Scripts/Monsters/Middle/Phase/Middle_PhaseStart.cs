@@ -20,6 +20,8 @@ public class Middle_PhaseStart : Middle_PhaseState
 
         _manager.Monster2.Ani.SetBool("Walk", true);
         _manager.Monster2.transform.DOMoveX(_manager._middlePoint[Define.MiddleMonsterPoint.CSPAWNPOINT].position.x, 3f);
+
+        TestSound.Instance.PlaySound("MiddleBGM");
     }
 
     public override void Stay()

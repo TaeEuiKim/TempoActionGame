@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a19041a8802d80241a468d8f8fd3315e, type: 3}
   m_Name: Monster2Stat
   m_EditorClassIdentifier: 
-  _maxHp: 0
+  _maxHp: 300
   _defense: 0
-  _walkSpeed: 0
-  _sprintSpeed: 0
-  _damage: 0
-  _attackRange: 0
-  _attackDelay: 0
+  _walkSpeed: 30
+  _sprintSpeed: 1
+  _damage: 15
+  _attackRange: 2
+  _attackDelay: 2.5
   _normalAttackCooldown: 0
   _normalAttackDistance: 0

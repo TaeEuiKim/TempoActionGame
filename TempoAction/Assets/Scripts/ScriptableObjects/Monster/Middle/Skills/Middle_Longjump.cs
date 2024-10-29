@@ -68,19 +68,19 @@ public class Middle_Longjump : Middle_Skill
             _monster.Ani.SetBool("Longjump", true);
         }
 
-        if (!isHit && isFlying)
-        {
-            Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
+        //if (!isHit && isFlying)
+        //{
+        //    Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 
-            foreach (Collider player in hitPlayer)
-            {
-                if (player.GetComponent<Player>().IsInvincible) return;
+        //    foreach (Collider player in hitPlayer)
+        //    {
+        //        if (player.GetComponent<Player>().IsInvincible) return;
 
-                Debug.Log("멀리뛰기 성공");
-                player.GetComponent<Player>().TakeDamage(_info.damage, true);
-                isHit = true;
-            }
-        }
+        //        Debug.Log("멀리뛰기 성공");
+        //        player.GetComponent<Player>().TakeDamage(_info.damage, true);
+        //        isHit = true;
+        //    }
+        //}
     }
 
     public override void Exit()
@@ -129,7 +129,7 @@ public class Middle_Longjump : Middle_Skill
             if (player.GetComponent<Player>().IsInvincible) return;
 
             Debug.Log("멀리뛰기 피니쉬 성공");
-            player.GetComponent<Player>().TakeDamage(_finishDamage, true);
+            player.GetComponent<Player>().TakeDamage(_finishDamage);
 
             int dir = 1;
             if ((_monster.transform.position - _monster.Player.transform.position).x > 0)

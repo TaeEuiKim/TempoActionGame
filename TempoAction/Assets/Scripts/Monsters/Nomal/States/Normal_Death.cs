@@ -25,7 +25,7 @@ public class Normal_Death : Normal_State
 
         if (!isItem)
         {
-            SpawnItem();
+            //SpawnItem();
         }
     }
 
