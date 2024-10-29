@@ -60,7 +60,7 @@ public class Shelling : MonoBehaviour
         }
 
         GameObject effect = ObjectPool.Instance.Spawn("BombEffect", 1);
-        effect.transform.position = transform.position + new Vector3(0, 0f);
+        effect.transform.position = transform.position + new Vector3(0, -0.5f);
         ObjectPool.Instance.Remove(this.gameObject);
     }
 

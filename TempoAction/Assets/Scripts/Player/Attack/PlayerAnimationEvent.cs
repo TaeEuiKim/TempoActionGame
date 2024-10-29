@@ -116,6 +116,7 @@ public class PlayerAnimationEvent : MonoBehaviour
                         hitParticle = ObjectPool.Instance.Spawn("FX_PunchAttackSphere", 1);
 
                         hitParticle.transform.position = monsterCollider.ClosestPoint(_player.HitPoint.position);
+                        CameraShaking(0.12f);
                         break;
                 }
             }
@@ -134,6 +135,7 @@ public class PlayerAnimationEvent : MonoBehaviour
                         hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
                         hitParticle.transform.rotation = leftHandTrans.rotation;
                         hitParticle2.transform.rotation = leftHandTrans.rotation;
+                        CameraShaking(0.12f);
                         break;
                     case 1:
                         hitParticle.transform.position = rightHandTrans.position;
@@ -142,6 +144,7 @@ public class PlayerAnimationEvent : MonoBehaviour
                         hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
                         hitParticle.transform.rotation = rightHandTrans.rotation;
                         hitParticle2.transform.rotation = rightHandTrans.rotation;
+                        CameraShaking(0.12f);
                         break;
                     case 2:
                         hitParticle.transform.position = leftHandTrans.position;
@@ -150,6 +153,7 @@ public class PlayerAnimationEvent : MonoBehaviour
                         hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
                         hitParticle.transform.rotation = leftHandTrans.rotation;
                         hitParticle2.transform.rotation = leftHandTrans.rotation;
+                        CameraShaking(0.12f);
                         break;
                     case 3:
                         hitParticle.transform.position = leftHandTrans.position;
@@ -158,6 +162,7 @@ public class PlayerAnimationEvent : MonoBehaviour
                         hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
                         hitParticle.transform.rotation = leftHandTrans.rotation;
                         hitParticle2.transform.rotation = leftHandTrans.rotation;
+                        CameraShaking(0.12f);
                         break;
                 }
             }
@@ -169,7 +174,6 @@ public class PlayerAnimationEvent : MonoBehaviour
     {
         ControllTimerScale(0.1f, 0.005f);
 
-        CameraShaking(0.2f);
         // 메인 템포일 때 데미지 처리
         PlayerSfx(Define.PlayerSfxType.MAIN);
         monster.TakeDamage(_player.GetTotalDamage());

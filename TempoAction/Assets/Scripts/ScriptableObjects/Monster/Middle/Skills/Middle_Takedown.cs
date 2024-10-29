@@ -125,6 +125,10 @@ public class Middle_Takedown : Middle_Skill
         _monster.CharacterModel.localScale = new Vector3(-_monster.Direction, 1, 1);
         dis = Vector3.Distance(_monster.transform.position, _monster.Player.transform.position - new Vector3(_monster.Direction, 0, 0));
         float thirdDis = dis;
+        if (thirdDis > 5)
+        {
+            thirdDis = 5f;
+        }
 
         if (_monster.CharacterModel.transform.localScale.x < 0)
         {
@@ -161,12 +165,12 @@ public class Middle_Takedown : Middle_Skill
             if (count < _attackCount)
             {
                 Debug.Log("내려찍기 성공");
-                _player.TakeDamage(_info.damage, true);
+                _player.TakeDamage(_info.damage);
             }
             else
             {
                 Debug.Log("내려찍기 피니쉬 성공");
-                _player.TakeDamage(_finishDamage, true);
+                _player.TakeDamage(_finishDamage);
                 _player.Knockback(GetKnockBackPosition(), _knockBackDuration);
 
                 int dir = 1;
@@ -207,11 +211,11 @@ public class Middle_Takedown : Middle_Skill
     {
         if (_monster.CharacterModel.localScale.x > 0)
         {
-            obj.transform.position = _monster.transform.position - new Vector3(1f, -2.5f);
+            obj.transform.position = _monster.transform.position - new Vector3(1f, -2.6f);
         }
         else if (_monster.CharacterModel.localScale.x < 0)
         {
-            obj.transform.position = _monster.transform.position - new Vector3(-1f, -2.5f);
+            obj.transform.position = _monster.transform.position - new Vector3(-1f, -2.6f);
         }
 
         obj.GetComponent<FlipSlash>().OnFlip(_monster.CharacterModel.localScale);

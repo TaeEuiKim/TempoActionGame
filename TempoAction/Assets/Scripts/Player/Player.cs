@@ -45,6 +45,9 @@ public class Player : CharacterBase
     [SerializeField] private GameObject _skillObject;
     public bool isRockFireObj = false;
 
+    [SerializeField] public SkillRunnerBase skillData;
+    [SerializeField] public SkillRunnerBase skillData2;
+
     private CopySkill copySkill;
 
     public PlayerStat PlayerSt { get { return _playerStat; } }
@@ -110,11 +113,20 @@ public class Player : CharacterBase
         _stateStorage.Add(Define.PlayerState.STUN, new StunState(this));
         _stateStorage.Add(Define.PlayerState.NONE, new NoneState(this));
 
-        if (copySkill != null && copySkill.LoadSkillSlots() != null)
-        {
-            GetComponent<PlayerSkillManager>().LoadSkill(copySkill.LoadSkillSlots(), copySkill.LoadReserveSlots());
-            _view.SetSkillIcon(copySkill.LoadMainIcon(), copySkill.LoadSubIcon());
-        }
+        //if (copySkill != null && copySkill.LoadSkillSlots() != null)
+        //{
+        //    GetComponent<PlayerSkillManager>().LoadSkill(copySkill.LoadSkillSlots(), copySkill.LoadReserveSlots());
+        //    _view.SetSkillIcon(copySkill.LoadMainIcon(), copySkill.LoadSubIcon());
+        //}
+
+        NormalSkill sw = new NormalSkill(skillData);
+        NormalSkill se = new NormalSkill(skillData2);
+
+        ISkillRoot skill = sw;
+        ISkillRoot skill2 = se;
+
+        GetComponent<PlayerSkillManager>().AddSkill(skill);
+        GetComponent<PlayerSkillManager>().AddSkill(skill2);
     }
 
     protected override void Update()

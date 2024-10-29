@@ -48,6 +48,10 @@ MonoBehaviour:
   spawnPoint: {fileID: 0}
   fadePanel: {fileID: 0}
   _SceneCamera: {fileID: 0}
-  _PlayerCamera: {fileID: 0}
-  Impulse: 0.5
-  Frequency: 0.5
+  _PlayerCamera:
+  - {fileID: 0}
+  Impulse: 1
+  Frequency: 1
+  noiseSettings:
+  - {fileID: 11400000, guid: 1e5b1096a58080042ac27d91aa1d4251, type: 2}
+  - {fileID: 11400000, guid: 6130b14be2207484b88bbeb332b86ccc, type: 2}

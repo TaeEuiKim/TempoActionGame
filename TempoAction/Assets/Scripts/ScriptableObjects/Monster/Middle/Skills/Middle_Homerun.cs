@@ -114,7 +114,7 @@ public class Middle_Homerun : Middle_Skill
                 if (player.GetComponent<Player>().IsInvincible) return;
 
                 Debug.Log("饶规 权繁 己傍");
-                player.GetComponent<Player>().TakeDamage(_info.damage, true);
+                player.GetComponent<Player>().TakeDamage(_info.damage);
                 player.GetComponent<Player>().Knockback(GetKnockBackPosition(), _backKnockBackDuration);
 
                 int dir = 1;
@@ -145,7 +145,7 @@ public class Middle_Homerun : Middle_Skill
                 if (player.GetComponent<Player>().IsInvincible) return;
 
                 Debug.Log("傈规 权繁 己傍");
-                player.GetComponent<Player>().TakeDamage(_info.damage, true);
+                player.GetComponent<Player>().TakeDamage(_info.damage);
                 player.GetComponent<Player>().Knockback(GetKnockBackPosition(), _frontKnockBackDuration);
 
                 int dir = 1;

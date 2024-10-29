@@ -57,6 +57,10 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
         {
             AttackInput(value.isPressed);
         }
+        else if (value.isPressed && isCommand)
+        {
+            commandValue.Add(KeyCode.X);
+        }
     }
 
     public void OnDash(InputValue value)

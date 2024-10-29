@@ -83,7 +83,14 @@ public class PlayerAttack
             if (PlayerInputManager.Instance.attack && _player.Ani.GetBool("isGrounded"))
             {
                 PlayerInputManager.Instance.attack = false;
-                AttackMainTempo();
+                if (PlayerInputManager.Instance.isCommand)
+                {
+                    return;
+                }
+                else
+                {
+                    AttackMainTempo();
+                }
             }
         }
         else
