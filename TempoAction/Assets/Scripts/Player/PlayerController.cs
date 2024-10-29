@@ -253,6 +253,11 @@ public class PlayerController
             return;
         }
 
+        // 커맨드 초기화
+        PlayerInputManager.Instance.ResetCommandKey();
+        _player.Ani.SetBool("IsCommand", false);
+        isJump = false;
+
         if (PlayerInputManager.Instance.move.x < 0)
         {
             _dashDirection = -1f;
@@ -266,10 +271,6 @@ public class PlayerController
         _player.transform.DOKill();
         _player.Ani.SetFloat("Speed", 0);
         _player.Attack.ChangeCurrentAttackState(Define.AttackState.FINISH);
-
-        // 커맨드 초기화
-        PlayerInputManager.Instance.isCommand = false;
-        _player.Ani.SetBool("IsCommand", false);
 
         CoroutineRunner.Instance.StartCoroutine(DashInvincibility(_player.PlayerSt.DashDuration));
         //_player.Rb.velocity = Vector2.zero;
@@ -288,14 +289,13 @@ public class PlayerController
             Physics.Raycast(_player.transform.position + new Vector3(0, 0.5f), Vector3.right * _dashDirection * dir, out hit, _player.PlayerSt.DashDistance, _player.GroundLayer))
         {
             dashPosition = (hit.point - new Vector3(0, 0.5f)) - (Vector3.right * _dashDirection * dir) * 0.2f;  // 곱하는 수 만큼 벽에서 떨어짐
-            isMove = true;
         }
         else  // 벽이 없으면 대쉬 거리만큼 앞으로 이동
         {      
             dashPosition = _player.transform.position + (Vector3.right * _dashDirection * dir) * _player.PlayerSt.DashDistance;
         }
 
-        _player.Rb.DOMove(dashPosition, _player.PlayerSt.DashDuration);
+        _player.Rb.DOMove(dashPosition, _player.PlayerSt.DashDuration).OnComplete(() => isJump = true);
 
         _player.Ani.SetTrigger("Dash");
 
@@ -308,11 +308,11 @@ public class PlayerController
 
         yield return new WaitForSeconds(duration / 4);
 
-        _player.GetComponent<Collider>().enabled = false;
+        _player.IsInvincible = true;
 
         yield return new WaitForSeconds(invincibilityTime);
 
-        _player.GetComponent<Collider>().enabled = true;
+        _player.IsInvincible = false;
     }
 
     private void Stop()

@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using FMOD;
 
-public class CameraController : MonoBehaviour
+public class CameraController : Singleton<CameraController>
 {
     [Header("Component")]
     public GameObject player;
@@ -199,5 +199,15 @@ public class CameraController : MonoBehaviour
         ch.m_AmplitudeGain = 0;
         //_CurCamera.m_LookAt = player.transform;
         yield return null;
+    }
+
+    public void SetCameraDamping(float amount)
+    {
+        if (_PlayerCamera[0] == null)
+        {
+            return;
+        }
+
+        _PlayerCamera[0].GetCinemachineComponent<CinemachineTransposer>().m_XDamping = amount;
     }
 }
