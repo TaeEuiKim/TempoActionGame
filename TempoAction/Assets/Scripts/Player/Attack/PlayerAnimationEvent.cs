@@ -265,8 +265,6 @@ public class PlayerAnimationEvent : MonoBehaviour
     private void FinishDash()
     {
         _player.Ani.SetBool("IsBackDash", false);
-        _player.Controller.isDashing = false;
-        _player.Controller.isMove = true;
     }
 
     // 공격 사거리 안에 적이 있으면 적 앞으로 이동하는 이벤트 함수

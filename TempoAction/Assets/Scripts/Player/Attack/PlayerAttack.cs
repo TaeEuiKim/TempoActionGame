@@ -117,8 +117,6 @@ public class PlayerAttack
     {
         if (_player.Ani.GetBool("isGrounded"))
         {
-            _player.Controller.isMove = false;
-
             _currentTempoData = _mainTempoQueue.Dequeue();
 
             ChangeCurrentAttackState(Define.AttackState.ATTACK);

@@ -17,14 +17,6 @@ public class Shelling : MonoBehaviour
         timer = 0f;
     }
 
-    private void LateUpdate()
-    {
-        if (transform.position.y > 27)
-        {
-            ObjectPool.Instance.Remove(this.gameObject);
-        }
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))

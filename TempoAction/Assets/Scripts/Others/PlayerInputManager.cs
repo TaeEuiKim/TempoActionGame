@@ -37,6 +37,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
 
     public void ResetCommandKey()
     {
+        isCommand = false;
         commandValue.Clear();
     }
 

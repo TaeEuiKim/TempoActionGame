@@ -31,7 +31,10 @@ public class PlayerCommandController
         {
             if (CheckAttackCommand(PlayerInputManager.Instance.GetCommandKey(), skillid))
             {
-                break;
+                Debug.LogError("1");
+                _player.Controller.isMove = true;
+                _player.Controller.isJump = true;
+                yield break;
             }
 
             checkTimer += Time.deltaTime;
@@ -40,27 +43,34 @@ public class PlayerCommandController
 
         _player.Controller.isMove = true;
         _player.Controller.isJump = true;
-        PlayerInputManager.Instance.ResetCommandKey();
         yield return null;
     }
 
     private bool CheckAttackCommand(List<KeyCode> keyList, int skillid)
     {
         // 이전 스킬이 연계가 가능한 스킬인지, skillid와 일치하는 스킬 아이디인지 검사, 입력된 키가 전부 같으면 해당 스킬아이디 반환
+        //var matchingSkillId = _skillCommand.commandDatas
+        //    .Where(cd => cd.PossibleSkillId.Contains(skillid))
+        //    .Where(cd => cd.KeyCodes.Length == keyList.Count &&
+        //                 keyList.Zip(cd.KeyCodes, (key1, key2) =>
+        //                 {
+        //                     KeyCode tempKey = key2;
+        //                     if (_player.IsLeftDirection() && key2 == KeyCode.RightArrow)
+        //                     {
+        //                         tempKey = KeyCode.LeftArrow;
+        //                     }
+        //                     return key1 == tempKey;
+        //                 }).All(isEqual => isEqual))
+        //    .Select(cd => cd.SkillId)
+        //    .FirstOrDefault(CheckUseSkill);
+
         var matchingSkillId = _skillCommand.commandDatas
             .Where(cd => cd.PossibleSkillId.Contains(skillid))
-            .Where(cd => cd.KeyCodes.Length == keyList.Count &&
-                         keyList.Zip(cd.KeyCodes, (key1, key2) =>
-                         {
-                             KeyCode tempKey = key2;
-                             if (_player.IsLeftDirection() && key2 == KeyCode.RightArrow)
-                             {
-                                 tempKey = KeyCode.LeftArrow;
-                             }
-                             return key1 == tempKey;
-                         }).All(isEqual => isEqual))
+            .Where(cd => ContainsSubsequence(keyList, cd.KeyCodes))
             .Select(cd => cd.SkillId)
             .FirstOrDefault(CheckUseSkill);
+
+        var skillId = _skillCommand.commandDatas;
 
         if (matchingSkillId != default)
         {
@@ -71,8 +81,22 @@ public class PlayerCommandController
         return false;
     }
 
+    private bool ContainsSubsequence(List<KeyCode> source, KeyCode[] target)
+    {
+        if (target.Length == 0 || source.Count < target.Length)
+            return false;
+
+        bool isLeftDir = _player.IsLeftDirection();
+        List<KeyCode> adjustedTarget = target.Select(key => (isLeftDir && key == KeyCode.RightArrow) ? KeyCode.LeftArrow : key).ToList();
+
+        return Enumerable.Range(0, source.Count - adjustedTarget.Count + 1)
+            .Any(i => source.Skip(i).Take(adjustedTarget.Count + 1)
+            .SequenceEqual(adjustedTarget));
+    }
+
     private bool CheckUseSkill(int skillid)
     {
+        PlayerInputManager.Instance.ResetCommandKey();
         int count = _player.Ani.GetInteger("CommandCount");
         switch (count)
         {

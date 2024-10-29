@@ -80,6 +80,10 @@ public class SwordQuickDrawRunner : SkillRunnerBase
             // 준비 이펙트
             ActiveEffectToCharacter(character, ready);
         }
+        else
+        {
+            CameraController.Instance.SetCameraDamping(9);
+        }
 
         // 선딜
         yield return preDelayWFS;
@@ -180,6 +184,11 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         //ActiveEffectToCharacter(character, sword);
         dash.SetActive(false);
         ready.SetActive(false);
+
+        if (character.gameObject.layer == playerLayer)
+        {
+            CameraController.Instance.SetCameraDamping(1);
+        }
 
         if (character.gameObject.layer == LayerMask.NameToLayer("Monster") && character.Ani.GetBool("Death"))
         {
