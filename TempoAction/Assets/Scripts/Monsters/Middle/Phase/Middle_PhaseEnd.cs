@@ -13,6 +13,7 @@ public class Middle_PhaseEnd : Middle_PhaseState
     {
         _manager.Monster2.Ani.SetBool("Death", true);
 
+        TestSound.Instance.StopBGMSound("MiddleBGM");
         CoroutineRunner.Instance.StartCoroutine(StartCutScene());
     }
 
@@ -48,31 +49,19 @@ public class Middle_PhaseEnd : Middle_PhaseState
 
         yield return new WaitForSeconds(2f);
 
-        alpha = 0;
 
         for (int i = 0; i < _manager.endSprites.Length; i++)
         {
-            if (i == 3)
+            alpha = 0;
+            while (_manager.endSprites[i].color.a < 1)
             {
-                while (_manager.endSprites[i].color.a < 1)
-                {
-                    alpha += Time.fixedDeltaTime;
-                    _manager.endSprites[i].color = new Color(1, 1, 1, alpha);
+                alpha += Time.fixedDeltaTime;
+                _manager.endSprites[i].color = new Color(1, 1, 1, alpha);
 
-                    yield return null;
-                }
-            }
-            else
-            {
-                while (_manager.endSprites[i].fillAmount < 1)
-                {
-                    _manager.endSprites[i].fillAmount += Time.fixedDeltaTime;
-
-                    yield return null;
-                }
+                yield return null;
             }
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
         }
     }
 }

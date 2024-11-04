@@ -16,48 +16,65 @@ public class StartSceneManager : MonoBehaviour
     [Header("페이드 패널")]
     [SerializeField] private Image FadePanel;
 
+    [Header("플레이어")]
+    [SerializeField] private Player _player;
+
+    private bool isCutScene;
+
     private void Start()
     {
-        TestSound.Instance.PlaySound("Start");
+        SetPlayerControll(true);
 
-        //_fire.SetActive(false);
         StartCoroutine(StartCutScene());
+    }
+
+    private void LateUpdate()
+    {
+        if (PlayerInputManager.Instance.cancel && isCutScene)
+        {
+            PlayerInputManager.Instance.cancel = false;
+            StopCoroutine(StartCutScene());
+            sceneUI.SetActive(false);
+
+            StartCoroutine(FadeOut());
+        }
     }
 
     private IEnumerator StartCutScene()
     {
         float alpha = 0;
+        isCutScene = true;
 
         yield return new WaitForSeconds(2f);
 
         for (int i = 0; i < sprites.Length; i++)
         {
-            if (i == 0)
+            while (sprites[i].color.a < 1)
             {
-                while (sprites[i].color.a < 1)
-                {
-                    alpha += Time.fixedDeltaTime;
-                    sprites[i].color = new Color(1, 1, 1, alpha);
+                alpha += Time.fixedDeltaTime;
+                sprites[i].color = new Color(1, 1, 1, alpha);
 
-                    yield return null;
-                }
-            }
-            else
-            {
-                while (sprites[i].fillAmount < 1)
-                {
-                    sprites[i].fillAmount += Time.fixedDeltaTime;
-
-                    yield return null;
-                }
+                yield return null;
             }
 
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(1f);
+
+            alpha = 0;
         }
 
         sceneUI.SetActive(false);
 
         yield return new WaitForSeconds(1f);
+
+        StartCoroutine(FadeOut());
+    }
+
+    private IEnumerator FadeOut()
+    {
+        float alpha = 1;
+        isCutScene = false;
+
+        SetPlayerControll(false);
 
         while (FadePanel.color.a > 0)
         {
@@ -66,5 +83,14 @@ public class StartSceneManager : MonoBehaviour
 
             yield return null;
         }
+
+        TestSound.Instance.PlaySound("Start");
+
+        yield return null;
+    }
+
+    private void SetPlayerControll(bool isKnockBack)
+    {
+        _player.PlayerSt.IsKnockedBack = isKnockBack;
     }
 }
