@@ -255,7 +255,7 @@ public class Player : CharacterBase
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(_hitPoint.position, _colliderSize);
+        Gizmos.DrawWireCube(_hitPoint.position, _hitPoint.localScale);
     }
 
     private void OnDrawGizmosSelected()

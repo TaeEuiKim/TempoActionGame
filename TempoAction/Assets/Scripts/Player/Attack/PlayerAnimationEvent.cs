@@ -243,7 +243,7 @@ public class PlayerAnimationEvent : MonoBehaviour
         _player.Attack.ChangeCurrentAttackState(Define.AttackState.CHECK);
         _player.Ani.SetBool("IsCommand", false);
         _player.Ani.SetInteger("CommandCount", 0);
-        PlayerInputManager.Instance.isCommand = false;
+        PlayerInputManager.Instance.ResetCommandKey();
     }
 
     private void RemoveTrail()
@@ -354,7 +354,7 @@ public class PlayerAnimationEvent : MonoBehaviour
         float animationLength = stateInfo.length; // 애니메이션 전체 길이
         float currentPlayTime = stateInfo.normalizedTime * animationLength; // 현재 재생된 시간 (normalizedTime은 0에서 1 사이의 값)
 
-        float timeRemaining = animationLength - currentPlayTime - 0.12f; // 남은 시간 계산
+        float timeRemaining = animationLength - currentPlayTime - 0.2f; // 남은 시간 계산
 
         _player.Ani.SetBool("IsCommand", true);
 

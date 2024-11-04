@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using Unity.VisualScripting;
 using System.Linq;
+using Cinemachine.Utility;
 public class PlayerController
 {
     private Player _player;
@@ -27,6 +28,9 @@ public class PlayerController
     private float _dashTimer;
     protected float _direction;
     protected float _dashDirection;
+
+    private RaycastHit slopeHit;
+
     public float Direction
     {
         get => _direction;
@@ -195,11 +199,32 @@ public class PlayerController
         }
         else
         {
-            tempVelocity = new Vector2(_direction * _player.Stat.SprintSpeed, _player.Rb.velocity.y);
+            bool isSlope = IsOnSlope();
+            Vector3 dir = new Vector3(_direction, 0);
+            Vector3 velocity = isSlope ? AdjustDirectionToSlope(dir) : dir;
+
+            tempVelocity = new Vector3(_direction * _player.Stat.SprintSpeed, _player.Rb.velocity.y) + velocity;
             _player.Ani.SetFloat("Speed", Mathf.Abs(tempVelocity.x));
         }
 
         _player.Rb.velocity = tempVelocity;
+    }
+
+    private Vector3 AdjustDirectionToSlope(Vector3 dir)
+    {
+        return Vector3.ProjectOnPlane(dir, slopeHit.normal).normalized;
+    }
+
+    private bool IsOnSlope()
+    {
+        Ray ray = new Ray(_player.transform.position, Vector3.down);
+        if (Physics.Raycast(ray, out slopeHit, 2f, _player.GroundLayer))
+        {
+            var angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+            return angle != 0f && angle < 45;
+        }
+
+        return false;
     }
 
 
@@ -345,19 +370,6 @@ public class PlayerController
 
         // 장애물이 없음
         return true;
-    }
-
-    public bool IsOnSlope()
-    {
-        RaycastHit slopeHit;
-        Ray ray = new Ray(_player.transform.position, Vector3.down);
-        if (Physics.Raycast(ray, out slopeHit, 3f, _player.GroundLayer))
-        {
-            var angle = Vector3.Angle(Vector3.up, slopeHit.normal);
-            //return angle != 0f && angle < 
-        }
-
-        return false;
     }
 
     private void RecordInput(KeyCode key)

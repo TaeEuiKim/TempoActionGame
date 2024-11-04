@@ -31,9 +31,7 @@ public class PlayerCommandController
         {
             if (CheckAttackCommand(PlayerInputManager.Instance.GetCommandKey(), skillid))
             {
-                _player.Controller.isMove = true;
-                _player.Controller.isJump = true;
-                yield break;
+                break;
             }
 
             checkTimer += Time.deltaTime;
@@ -42,6 +40,7 @@ public class PlayerCommandController
 
         _player.Controller.isMove = true;
         _player.Controller.isJump = true;
+
         yield return null;
     }
 
