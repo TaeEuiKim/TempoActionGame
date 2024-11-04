@@ -171,11 +171,6 @@ public class Player : CharacterBase
             _skillObject.transform.DOKill();
             _skillObject.transform.DOLocalMoveX(-0.68f, 0.3f);
         }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Heal(1);
-        }
     }
 
     public float GetTotalDamage(bool value = true)
