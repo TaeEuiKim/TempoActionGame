@@ -171,6 +171,11 @@ public class Player : CharacterBase
             _skillObject.transform.DOKill();
             _skillObject.transform.DOLocalMoveX(-0.68f, 0.3f);
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Heal(1);
+        }
     }
 
     public float GetTotalDamage(bool value = true)
@@ -221,7 +226,17 @@ public class Player : CharacterBase
 
     public void Heal(float value)
     {
-        _stat.Hp += value;
+        GameObject effect = ObjectPool.Instance.Spawn("FX_Heal", 1f, transform);
+        effect.transform.position = transform.position + new Vector3(0, 1f, -1f);
+
+        if (_stat.Hp + value > _stat.MaxHp)
+        {
+            _stat.Hp = _stat.MaxHp;
+        }
+        else
+        {
+            _stat.Hp += value;
+        }
         UpdateHealth();
     }
 

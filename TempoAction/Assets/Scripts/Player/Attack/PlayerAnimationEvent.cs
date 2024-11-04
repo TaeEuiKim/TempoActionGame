@@ -26,10 +26,26 @@ public class PlayerAnimationEvent : MonoBehaviour
     [SerializeField] Vector3 tempVec;
 
     private Vector3 originFire;
+    private bool isTurn = false;
 
     private void Start()
     {
         _cameraController = FindObjectOfType<CameraController>();
+    }
+
+    private void LateUpdate()
+    {
+        if (isTurn && !_player.Ani.GetBool("IsCommand"))
+        {
+            GameObject effect = ObjectPool.Instance.Spawn("do_disappear", 1);
+            effect.transform.position = _player.SkillObject.transform.position;
+
+            TestSound.Instance.PlaySound("Skill1");
+            rimShader.SetFloat("_Float", 0f);
+            _player.SkillObject.SetActive(true);
+
+            isTurn = false;
+        }
     }
 
     #region Hit
@@ -345,6 +361,8 @@ public class PlayerAnimationEvent : MonoBehaviour
         _player.CommandController.StartCommandTime(timeRemaining, SkillId);
     }
 
+    #region Effect
+
     private void LeftFootEffect()
     {
         GameObject effect = ObjectPool.Instance.Spawn("FX_Walk", 1);
@@ -363,18 +381,30 @@ public class PlayerAnimationEvent : MonoBehaviour
         effect.transform.position = rightFootTrans.position + new Vector3(0, -0.2f);
     }
 
-    private void TurnFire(int isDisappear)
+    private void TurnFire(float appearTime)
     {
-        if (isDisappear == 0)
+        if (isTurn)
         {
-            GameObject disappearEffect = ObjectPool.Instance.Spawn("do_disappear", 1f);
-            disappearEffect.transform.position = _player.SkillObject.transform.position;
-
-            TestSound.Instance.PlaySound("Skill1");
-            rimShader.SetFloat("_Float", 1.84f);
-            _player.SkillObject.SetActive(false);
+            StopCoroutine(TurnOnFire(appearTime));
         }
-        else
+
+        GameObject disappearEffect = ObjectPool.Instance.Spawn("do_disappear", 1f);
+        disappearEffect.transform.position = _player.SkillObject.transform.position;
+
+        TestSound.Instance.PlaySound("Skill1");
+        rimShader.SetFloat("_Float", 1.84f);
+        _player.SkillObject.SetActive(false);
+
+        StartCoroutine(TurnOnFire(appearTime));
+    }
+
+    private IEnumerator TurnOnFire(float appearTime)
+    {
+        isTurn = true;
+
+        yield return new WaitForSeconds(appearTime);
+
+        if (isTurn)
         {
             GameObject effect = ObjectPool.Instance.Spawn("do_disappear", 1);
             effect.transform.position = _player.SkillObject.transform.position;
@@ -382,7 +412,11 @@ public class PlayerAnimationEvent : MonoBehaviour
             TestSound.Instance.PlaySound("Skill1");
             rimShader.SetFloat("_Float", 0f);
             _player.SkillObject.SetActive(true);
+
+            isTurn = false;
         }
+
+        yield return null;
     }
 
     private void TurnOnPlayerEffect(string effectName)
@@ -489,6 +523,8 @@ public class PlayerAnimationEvent : MonoBehaviour
         }
     }
 
+    #endregion
+
     private void ControllTimerScale(float scale, float time)
     {
         Time.timeScale = scale;
@@ -506,6 +542,12 @@ public class PlayerAnimationEvent : MonoBehaviour
     private void StartTimeline(string name)
     {
         TimelineManager.Instance.PlayTimeline(name);
+    }
+
+    private void LockPlayer(int isLock)
+    {
+        bool _lock = isLock == 0 ? false : true;
+        _player.PlayerSt.IsKnockedBack = _lock;
     }
 
     private void PlayerSfx(Define.PlayerSfxType type)

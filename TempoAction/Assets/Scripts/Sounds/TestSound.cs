@@ -121,6 +121,24 @@ public class TestSound : Singleton<TestSound>
                 break;
         }
     }
+
+    public void StopBGMSound(string name)
+    {
+        switch (name)
+        {
+            case "TitleBGM":
+                sources[22].Stop();
+                break;
+            case "UndergroundBGM":
+                sources[23].Stop();
+                break;
+            case "MiddleBGM":
+                sources[24].Stop();
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 [Serializable]

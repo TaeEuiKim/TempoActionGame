@@ -180,6 +180,7 @@ public class CameraController : Singleton<CameraController>
         if (_player.Ani.GetInteger("CommandCount") == 3 || _player.Ani.GetInteger("CommandCount") == 5)
         {
             ch.m_NoiseProfile = noiseSettings[0];
+            _player.Ani.SetInteger("CommandCount", 0);
         }
         else
         {

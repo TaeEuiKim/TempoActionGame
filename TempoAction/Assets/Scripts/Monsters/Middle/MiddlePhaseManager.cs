@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.UI;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class MiddlePhaseManager : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class MiddlePhaseManager : MonoBehaviour
     [SerializeField] private Define.MiddlePhaseState _currentPhaseState = Define.MiddlePhaseState.NONE;
     private Dictionary<Define.MiddlePhaseState, Middle_PhaseState> _phaseStateStorage = new Dictionary<Define.MiddlePhaseState, Middle_PhaseState>();
 
+    // ÄÆ¾À
     [Header("½ÃÀÛ ÄÆ¾À ¿ÀºêÁ§Æ®")]
     [SerializeField] public UnityEngine.UI.Image[] startSprites;
     [Header("¸¶¹«¸® ÄÆ¾À ¿ÀºêÁ§Æ®")]
@@ -27,6 +29,7 @@ public class MiddlePhaseManager : MonoBehaviour
     [SerializeField] public GameObject endSceneUI;
     [Header("ÆäÀÌµå ÆÐ³Î")]
     [SerializeField] public UnityEngine.UI.Image FadePanel;
+    private bool isCutScene;
 
     private List<float> _targetHealthList = new List<float>();
     private int _targetHealthIndex = 0;
@@ -69,6 +72,15 @@ public class MiddlePhaseManager : MonoBehaviour
         {
             _phaseStateStorage[_currentPhaseState]?.Stay();
         }
+
+        if (isCutScene && PlayerInputManager.Instance.cancel)
+        {
+            PlayerInputManager.Instance.cancel = false;
+            StopCoroutine(CutSceneStart());
+            startSceneUI.SetActive(false);
+
+            StartCoroutine(FadeOut());
+        }
     }
 
     public void ChangeStageState(Define.MiddlePhaseState state)
@@ -84,24 +96,39 @@ public class MiddlePhaseManager : MonoBehaviour
     private IEnumerator CutSceneStart()
     {
         float alpha = 0;
+        isCutScene = true;
+        SetPlayerControll(true);
 
         yield return new WaitForSeconds(2f);
 
         for (int i = 0; i < startSprites.Length; i++)
         {
-            while (startSprites[i].fillAmount < 1)
+            while (startSprites[i].color.a < 1)
             {
-                startSprites[i].fillAmount += Time.fixedDeltaTime;
+                alpha += Time.fixedDeltaTime;
+                startSprites[i].color = new Color(1, 1, 1, alpha);
 
                 yield return null;
             }
 
-            yield return new WaitForSeconds(2f);
+            alpha = 0;
+
+            yield return new WaitForSeconds(1f);
         }
 
         startSceneUI.SetActive(false);
 
         yield return new WaitForSeconds(1f);
+
+        StartCoroutine(FadeOut());
+    }
+
+    private IEnumerator FadeOut()
+    {
+        float alpha = 1;
+        isCutScene = false;
+
+        SetPlayerControll(false);
 
         while (FadePanel.color.a > 0)
         {
@@ -112,5 +139,12 @@ public class MiddlePhaseManager : MonoBehaviour
         }
 
         ChangeStageState(Define.MiddlePhaseState.START);
+
+        yield return null;
+    }
+
+    private void SetPlayerControll(bool isKnockBack)
+    {
+        Monster.Player.GetComponent<Player>().PlayerSt.IsKnockedBack = isKnockBack;
     }
 }

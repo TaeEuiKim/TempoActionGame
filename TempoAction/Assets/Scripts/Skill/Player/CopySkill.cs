@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class CopySkill : MonoBehaviour
 {
-    private Image[] playerMainIcons;
-    private Image[] playerSubIcons;
     private SkillSlot[] copySkillSlots;
     private Queue<ISkillRoot> copyReserveSlots;
 
@@ -15,20 +13,16 @@ public class CopySkill : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
-    public void SaveSkillSlots(SkillSlot[] skillSlots, Queue<ISkillRoot> reserveSlots, Image[] main, Image[] sub)
+    public void SaveSkillSlots(SkillSlot[] skillSlots, Queue<ISkillRoot> reserveSlots)
     {
         copySkillSlots = skillSlots;
         copyReserveSlots = reserveSlots;
-        playerMainIcons = main;
-        playerSubIcons = sub;
     }
 
     public void SetSkillSlots()
     {
         copySkillSlots = null;
         copyReserveSlots = null;
-        playerMainIcons = null;
-        playerSubIcons = null;
     }
 
     public SkillSlot[] LoadSkillSlots()
@@ -43,15 +37,5 @@ public class CopySkill : MonoBehaviour
     public Queue<ISkillRoot> LoadReserveSlots()
     {
         return copyReserveSlots;
-    }
-
-    public Image[] LoadMainIcon()
-    {
-        return playerMainIcons;
-    }
-
-    public Image[] LoadSubIcon()
-    {
-        return playerSubIcons;
     }
 }

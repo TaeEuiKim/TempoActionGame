@@ -21,6 +21,9 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     public bool rightArrow;
     private bool keyZ;
 
+    [Header("Option")]
+    public bool cancel;
+
     [Header("Important Command Setting")]
     public List<KeyCode> commandValue;
     public bool isCommand;
@@ -125,6 +128,11 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
             commandValue.Add(KeyCode.Z);
         }
     }
+
+    public void OnCancel(InputValue value)
+    {
+        CancelInput(value.isPressed);
+    }
 #endif
     public readonly GenericEventSystem<Vector2> MoveEvent = new();
     public void MoveInput(Vector2 input)
@@ -187,5 +195,12 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     {
         upArrow = input;
         UpArrowEvent.TriggerEvent(true);
+    }
+
+    public readonly GenericEventSystem<bool> CancelEvent = new();
+    public void CancelInput(bool input)
+    {
+        cancel = input;
+        CancelEvent.TriggerEvent(true);
     }
 }
