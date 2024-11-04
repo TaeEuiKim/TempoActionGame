@@ -80,16 +80,19 @@ public class PlayerAttack
         if (_currentAttackState != Define.AttackState.ATTACK)
         { 
             // 공격 키 입력
-            if (PlayerInputManager.Instance.attack && _player.Ani.GetBool("isGrounded"))
+            if (PlayerInputManager.Instance.attack)
             {
                 PlayerInputManager.Instance.attack = false;
-                if (PlayerInputManager.Instance.isCommand)
+                if (_player.Ani.GetBool("isGrounded"))
                 {
-                    return;
-                }
-                else
-                {
-                    AttackMainTempo();
+                    if (PlayerInputManager.Instance.isCommand)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        AttackMainTempo();
+                    }
                 }
             }
         }

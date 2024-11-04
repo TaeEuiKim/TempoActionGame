@@ -31,7 +31,6 @@ public class PlayerCommandController
         {
             if (CheckAttackCommand(PlayerInputManager.Instance.GetCommandKey(), skillid))
             {
-                Debug.LogError("1");
                 _player.Controller.isMove = true;
                 _player.Controller.isJump = true;
                 yield break;
