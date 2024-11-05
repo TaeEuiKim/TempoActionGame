@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.UI;
 using static UnityEditor.Experimental.GraphView.GraphView;
+using DG.Tweening;
 
 public class MiddlePhaseManager : MonoBehaviour
 {
@@ -31,9 +32,17 @@ public class MiddlePhaseManager : MonoBehaviour
     [SerializeField] public UnityEngine.UI.Image FadePanel;
     private bool isCutScene;
 
+    [Space]
+    [Header("중간 보스 시작 UI")]
+    [SerializeField] public UnityEngine.UI.Image smashImg;
+    [Header("중간 보스 시작 UI2")]
+    [SerializeField] public UnityEngine.UI.Image outImg;
+
     private List<float> _targetHealthList = new List<float>();
     private int _targetHealthIndex = 0;
     [HideInInspector] public CameraController _cameraController;
+
+    private WaitForSeconds waitOneForSeconds = new WaitForSeconds(1f);
 
     public MiddleMonster Monster { get => _monster; }
     public MiddleMonster Monster2 { get => _monster2; }
@@ -113,12 +122,12 @@ public class MiddlePhaseManager : MonoBehaviour
 
             alpha = 0;
 
-            yield return new WaitForSeconds(1f);
+            yield return waitOneForSeconds;
         }
 
         startSceneUI.SetActive(false);
 
-        yield return new WaitForSeconds(1f);
+        yield return waitOneForSeconds;
 
         StartCoroutine(FadeOut());
     }
@@ -137,6 +146,38 @@ public class MiddlePhaseManager : MonoBehaviour
 
             yield return null;
         }
+
+
+        float speed = 13f;
+
+        smashImg.gameObject.SetActive(true);
+
+        while (smashImg.transform.localScale.x > 1.5f)
+        {
+            smashImg.transform.localScale = new Vector3(smashImg.transform.localScale.x - Time.deltaTime * speed, smashImg.transform.localScale.y - Time.deltaTime * speed, 1);
+
+            yield return null;
+        }
+
+        smashImg.transform.localScale = Vector3.one;
+
+        yield return waitOneForSeconds;
+
+        outImg.gameObject.SetActive(true);
+
+        while (outImg.transform.localScale.x > 1.5f)
+        {
+            outImg.transform.localScale = new Vector3(outImg.transform.localScale.x - Time.deltaTime * speed, outImg.transform.localScale.y - Time.deltaTime * speed, 1);
+
+            yield return null;
+        }
+
+        outImg.transform.localScale = Vector3.one;
+
+        yield return waitOneForSeconds;
+
+        outImg.gameObject.SetActive(false);
+        smashImg.gameObject.SetActive(false);
 
         ChangeStageState(Define.MiddlePhaseState.START);
 
