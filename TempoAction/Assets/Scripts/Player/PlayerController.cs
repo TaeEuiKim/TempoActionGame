@@ -199,34 +199,12 @@ public class PlayerController
         }
         else
         {
-            bool isSlope = IsOnSlope();
-            Vector3 dir = new Vector3(_direction, 0);
-            Vector3 velocity = isSlope ? AdjustDirectionToSlope(dir) : dir;
-
-            tempVelocity = new Vector3(_direction * _player.Stat.SprintSpeed, _player.Rb.velocity.y) + velocity;
+            tempVelocity = new Vector3(_direction * _player.Stat.SprintSpeed, _player.Rb.velocity.y);
             _player.Ani.SetFloat("Speed", Mathf.Abs(tempVelocity.x));
         }
 
         _player.Rb.velocity = tempVelocity;
     }
-
-    private Vector3 AdjustDirectionToSlope(Vector3 dir)
-    {
-        return Vector3.ProjectOnPlane(dir, slopeHit.normal).normalized;
-    }
-
-    private bool IsOnSlope()
-    {
-        Ray ray = new Ray(_player.transform.position, Vector3.down);
-        if (Physics.Raycast(ray, out slopeHit, 2f, _player.GroundLayer))
-        {
-            var angle = Vector3.Angle(Vector3.up, slopeHit.normal);
-            return angle != 0f && angle < 45;
-        }
-
-        return false;
-    }
-
 
     public void Jump(bool useKeyDown = true)
     {
