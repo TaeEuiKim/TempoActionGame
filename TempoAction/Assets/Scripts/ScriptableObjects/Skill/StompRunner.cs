@@ -55,30 +55,44 @@ public class StompRunner : SkillRunnerBase
             float completeRatio = curTime / regenTime;
 
             /// 최고 높이까지 도달한 이후에 충돌 처리를 수행
-            if(completeRatio > 0.5f)
-            {
-                Vector3 rayOrigin = character.transform.position; // 무조건 Bottom을 기준으로 해야 아래로 쏠 수 있음.
-                Ray ray = new Ray(rayOrigin, Vector3.down);
-                Debug.DrawRay(rayOrigin, Vector3.down, Color.blue);
-                float collisiionDepth = skillData.SkillHitboxSize * SkillData.cm2m;
-                int layerMask = SkillTargetToLayerMask(skillData.SkillCastingTarget);
-                if (Physics.Raycast(ray, out RaycastHit characterHit, collisiionDepth, layerMask))
-                {
-                    hittedCharacters.Add(characterHit.transform.GetComponent<CharacterBase>());
-                }
-            }
+            //if(completeRatio > 0.5f)
+            //{
+            //    Vector3 rayOrigin = character.transform.position; // 무조건 Bottom을 기준으로 해야 아래로 쏠 수 있음.
+            //    Ray ray = new Ray(rayOrigin, Vector3.down);
+            //    Debug.DrawRay(rayOrigin, Vector3.down, Color.blue);
+            //    float collisiionDepth = skillData.SkillHitboxSize * SkillData.cm2m;
+            //    int layerMask = SkillTargetToLayerMask(skillData.SkillCastingTarget);
+            //    if (Physics.Raycast(ray, out RaycastHit characterHit, collisiionDepth, layerMask))
+            //    {
+            //        hittedCharacters.Add(characterHit.transform.GetComponent<CharacterBase>());
+            //    }
+            //}
 
             Vector3 nextPos = EvaluateParabola(initialPos, targetPos, 3, completeRatio); // 3은 임시 값 추후 높이 값으로 수정 필요
             character.transform.position = nextPos;
         }
 
-        // 캐릭터 타격
-        foreach (var hittedCharacter in hittedCharacters.Distinct())
+        yield return new WaitForSeconds(0.2f);
+
+        NormalMonster monster = character.GetComponent<NormalMonster>();
+        Vector3 originScale = monster.HitPoint.localScale;
+
+        monster.HitPoint.localScale = new Vector3(3, 3, 1);
+        Collider[] hittedCharacter = Physics.OverlapBox(monster.HitPoint.position, monster.HitPoint.localScale / 2, monster.HitPoint.rotation, monster.PlayerLayer);
+        monster.HitPoint.localScale = originScale;
+
+        foreach (var hitCharacter in hittedCharacter)
         {
-            float damageAmount = skillData.SkillDamage * character.Stat.Damage;
-            Debug.LogError("1");
-            hittedCharacter.TakeDamage(damageAmount);
+            hitCharacter.GetComponent<CharacterBase>().TakeDamage(skillData.SkillDamage);
         }
+
+        // 캐릭터 타격
+        //foreach (var hittedCharacter in hittedCharacters.Distinct())
+        //{
+        //    float damageAmount = skillData.SkillDamage * character.Stat.Damage;
+
+        //    hittedCharacter.TakeDamage(damageAmount);
+        //}
 
         var targetsInRanged = Physics.SphereCastAll(character.transform.position, 5, Vector3.up, 0, SkillTargetToLayerMask(skillData.SkillCastingTarget));
 
