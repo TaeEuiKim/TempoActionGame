@@ -46,6 +46,15 @@ public class StompRunner : SkillRunnerBase
         // 목표 위치 계산
         targetPos = GetTargetPosByCoillision(initialPos, direction, targetPos, 1 << 13, halfColliderSize + colliderSizeForTarget);
 
+        if (character.transform.position.x - targets[0].transform.position.x > 0)
+        {
+            character.CharacterModel.localScale = new Vector3(-1, 1, 1);
+        }
+        else if (character.transform.position.x - targets[0].transform.position.x < 0)
+        {
+            character.CharacterModel.localScale = new Vector3(1, 1, 1);
+        }
+
         // 포물선 운동 시작
         while (curTime <= regenTime)
         {
@@ -72,7 +81,7 @@ public class StompRunner : SkillRunnerBase
             character.transform.position = nextPos;
         }
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
 
         NormalMonster monster = character.GetComponent<NormalMonster>();
         Vector3 originScale = monster.HitPoint.localScale;

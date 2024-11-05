@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Normal_HitState : Normal_State
 {
-    AnimatorStateInfo animatorStateInfo;
+    private bool _isGrounded;
+    private float timer = 0;
 
     public Normal_HitState(NormalMonster monster) : base(monster) { }
 
@@ -27,16 +29,36 @@ public class Normal_HitState : Normal_State
 
     public override void Stay() 
     {
-        if (_monster.Ani.GetCurrentAnimatorStateInfo(0).length >= 0.56f && _monster.Ani.GetCurrentAnimatorStateInfo(0).IsTag("Hit"))
+        if (_monster.isHiting)
         {
-            _monster.Ani.SetBool("Hit", false);
-            _monster.CurrentPerceptionState = Define.PerceptionType.IDLE;
-            _monster.StartHitTimer();
+            if (!(_isGrounded = Physics.CheckSphere(_monster.GroundCheckPoint.position, _monster.GroundCheckRadius, _monster.GroundLayer | _monster.WallLayer))
+                && timer < 1f)
+            {
+                timer = 0;
+                _monster.Ani.SetInteger("HitCount", 1);
+            }
+            else
+            {
+                timer += Time.deltaTime;
+                if (timer >= 1f)
+                {
+                    _monster.Ani.SetInteger("HitCount", 3);
+                }
+                else
+                {
+                    _monster.Ani.SetInteger("HitCount", 2);
+                }
+            }
         }
+
     }
 
     public override void Exit()
     {
         base.Exit();
+
+        _monster.isHit = false;
+        _monster.isHiting = false;
+        timer = 0;
     }
 }

@@ -47,6 +47,12 @@ public class NormalMonster : Monster
     [SerializeField] private float hittingTime = 0.3f;
     private float _hitTimer = 0f;
     public bool isHit = false;
+    public bool isHiting = false;
+
+    [Space]
+    [Header("움직임")]
+    [SerializeField] private Transform _groundCheckPoint;
+    [SerializeField] private float _groundCheckRadius = 0.2f;
 
     [Space]
     [Header("상태 전환 조건")]
@@ -65,6 +71,9 @@ public class NormalMonster : Monster
     public float MoveRange { get => _moveRange; }
     public Transform HitPoint { get => _hitPoint; set => _hitPoint = value; }
     public Vector3 ColliderSize { get => _colliderSize; set => _colliderSize = value; }
+    public Transform GroundCheckPoint { get => _groundCheckPoint; }
+    public float GroundCheckRadius { get => _groundCheckRadius; }
+
 
 
     public float PerceptionDistance { get => _perceptionDistance; }
@@ -260,7 +269,13 @@ public class NormalMonster : Monster
         }
         else
         {
-            if (isHit) { return; }
+            if (isHit && Ani.GetCurrentAnimatorStateInfo(0).IsTag("Hit"))
+            {
+                Rb.velocity = Vector3.zero;
+                Rb.AddForce(new Vector3(0, 3f), ForceMode.VelocityChange);
+                isHiting = true;
+                return;
+            }
 
             isHit = true;
             CurrentPerceptionState = Define.PerceptionType.HIT;
@@ -385,6 +400,14 @@ public class NormalMonster : Monster
         {
             Gizmos.color = Color.green;
             Gizmos.DrawLine(new Vector3(SpawnPoint.x - _moveRange, transform.position.y, 0), new Vector3(SpawnPoint.x + _moveRange, transform.position.y, 0));
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (_groundCheckPoint)
+        {
+            Gizmos.DrawWireSphere(_groundCheckPoint.position, _groundCheckRadius);
         }
     }
 }

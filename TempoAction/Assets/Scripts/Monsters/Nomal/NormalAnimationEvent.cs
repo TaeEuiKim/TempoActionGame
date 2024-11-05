@@ -27,6 +27,12 @@ public class NormalAnimationEvent : MonoBehaviour
         }
     }
 
+    private void HitFinish()
+    {
+        _monster.Ani.SetBool("Hit", false);
+        _monster.CurrentPerceptionState = Define.PerceptionType.IDLE;
+    }
+
     private void RunStopFinish()
     {
         _monster.Ani.SetBool("RunStop", false);

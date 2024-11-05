@@ -339,7 +339,7 @@ public class PlayerController
     {
         // 레이캐스트로 장애물 감지
         RaycastHit hit;
-        if (Physics.Raycast(_player.transform.position, Vector2.right * _dashDirection, out hit, 0.5f, _player.BlockLayer))
+        if (Physics.Raycast(_player.transform.position, Vector2.right * _dashDirection, out hit, 0.5f, _player.WallLayer))
         {
             // 장애물이 레이캐스트 범위 안에 있음
             //Debug.Log("장애물 감지: " + hit.collider.name);

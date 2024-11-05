@@ -7,6 +7,7 @@ public abstract class Monster : CharacterBase
 {
     [field:SerializeField] public MonsterSkillManager _SkillManager { get; protected set; }
     [SerializeField] protected LayerMask _playerLayer;
+    [SerializeField] protected LayerMask _groundLayer;
     [SerializeField] protected LayerMask _wallLayer;
     [SerializeField] public SkillRunnerBase skillData;
     protected MonsterStat _monsterStat;
@@ -27,6 +28,7 @@ public abstract class Monster : CharacterBase
     public MonsterStat MonsterSt { get => _monsterStat; set => _monsterStat = value; }
     public LayerMask PlayerLayer { get => _playerLayer; }
     public LayerMask WallLayer { get => _wallLayer; }
+    public LayerMask GroundLayer { get => _groundLayer; }
     public float Direction
     {
         get => _direction;

@@ -301,7 +301,7 @@ public class PlayerAnimationEvent : MonoBehaviour
     {
         _player.Ani.SetFloat("Speed", 0);
 
-        Vector3 rayOrigin = new Vector3(transform.parent.position.x, transform.parent.position.y, transform.parent.position.z);
+        Vector3 rayOrigin = new Vector3(transform.parent.position.x, transform.parent.position.y + 0.5f, transform.parent.position.z);
         Vector3 rayDirection = transform.localScale.x < 0 ? transform.right : transform.right * -1;
 
         if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitPos, _player.Attack.CurrentTempoData.distance, _player.BlockLayer))
