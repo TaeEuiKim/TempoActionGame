@@ -111,21 +111,23 @@ public class PlayerCommandController
                     TestSound.Instance.PlaySound("Smash2_Voice");
                     return true;
                 }
+                if (skillid == 7)
+                {
+                    return true;
+                }
                 break;
             case 1:
-                if (skillid == count + 1)
+                if (skillid == 2)
                 {
-                    if (skillid == 2)
-                    {
-                        TestSound.Instance.PlaySound("Smash1_2");
-                        TestSound.Instance.PlaySound("Smash1_2_Voice");
-                    }
+                    TestSound.Instance.PlaySound("Smash1_2");
+                    TestSound.Instance.PlaySound("Smash1_2_Voice");
+
                     return true;
                 }
                 break;
             case 2: 
             case 4:
-                if (skillid == count + 1)
+                if (skillid == 5)
                 {
                     UseSkill(skillid);
                     return true;

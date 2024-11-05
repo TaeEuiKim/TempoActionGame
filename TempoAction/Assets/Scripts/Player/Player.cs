@@ -37,6 +37,7 @@ public class Player : CharacterBase
     [SerializeField] private Transform _endPoint;    // ³Ë¹é ÁöÁ¡
     [SerializeField] private Vector3 _colliderSize;
     [SerializeField] private LayerMask _monsterLayer;
+    [SerializeField] private LayerMask _bossLayer;
 
     [SerializeField] private List<TempoAttackData> _mainTempoAttackDatas;
     [SerializeField] private List<TempoAttackData> _pointTempoAttackDatas;
@@ -80,6 +81,7 @@ public class Player : CharacterBase
     public Transform EndPoint { get => _endPoint; }
     public Vector3 ColliderSize { get => _colliderSize; }
     public LayerMask MonsterLayer { get => _monsterLayer; }
+    public LayerMask BossLayer { get => _bossLayer; }
     public List<TempoAttackData> MainTempoAttackDatas { get => _mainTempoAttackDatas; }
     public List<TempoAttackData> PointTempoAttackDatas { get => _pointTempoAttackDatas; }
     public PlayerView View { get => _view; }

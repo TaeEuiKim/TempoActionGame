@@ -128,6 +128,9 @@ public class PlayerAnimationEvent : MonoBehaviour
                             hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(-1, -1, 1));
                         }
                         break;
+                    case 7:
+                        
+                        break;
                     default:
                         hitParticle = ObjectPool.Instance.Spawn("FX_PunchAttackSphere", 1);
 
@@ -317,6 +320,7 @@ public class PlayerAnimationEvent : MonoBehaviour
                 {
                     case 1:
                     case 2:
+                    case 7:
                         transform.parent.DOMoveX(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x), 0.3f);
                         break;
                     case 4:
