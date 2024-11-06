@@ -133,7 +133,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
                         hitParticle = ObjectPool.Instance.Spawn("FX_Smash3", 1);
 
-                        hitParticle.transform.position = monsterCollider.ClosestPoint(_player.HitPoint.position) + new Vector3(0, -0.5f);
+                        hitParticle.transform.position = monsterCollider.ClosestPoint(monster.transform.position) + new Vector3(-0.2f, 0);
 
                         //if (_player.CharacterModel.localScale.x < 0)
                         //{

@@ -20,12 +20,13 @@ public class StartSceneManager : MonoBehaviour
     [SerializeField] private Player _player;
 
     private bool isCutScene;
+    private Coroutine cutSceneCoroutine;
 
     private void Start()
     {
         SetPlayerControll(true);
 
-        StartCoroutine(StartCutScene());
+        cutSceneCoroutine = StartCoroutine(StartCutScene());
     }
 
     private void LateUpdate()
@@ -33,10 +34,7 @@ public class StartSceneManager : MonoBehaviour
         if (PlayerInputManager.Instance.cancel && isCutScene)
         {
             PlayerInputManager.Instance.cancel = false;
-            StopCoroutine(StartCutScene());
-            sceneUI.SetActive(false);
-
-            StartCoroutine(FadeOut());
+            SkipCutScene();
         }
     }
 
@@ -87,6 +85,17 @@ public class StartSceneManager : MonoBehaviour
         TestSound.Instance.PlaySound("Start");
 
         yield return null;
+    }
+
+    public void SkipCutScene()
+    {
+        if (cutSceneCoroutine != null)
+        {
+            StopCoroutine(cutSceneCoroutine);
+        }
+        sceneUI.SetActive(false);
+
+        StartCoroutine(FadeOut());
     }
 
     private void SetPlayerControll(bool isKnockBack)
