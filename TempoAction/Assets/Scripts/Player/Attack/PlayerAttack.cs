@@ -118,7 +118,7 @@ public class PlayerAttack
     #region 메인 템포
     public void AttackMainTempo() // 공격 실행
     {
-        if (_player.Ani.GetBool("isGrounded"))
+        if (_player.Ani.GetBool("isGrounded") && _mainTempoQueue.Count > 0)
         {
             _currentTempoData = _mainTempoQueue.Dequeue();
 
@@ -129,7 +129,6 @@ public class PlayerAttack
             {
                 ResetMainTempoQueue();
             }
-            //isAttack = false;
         }
     }
 

@@ -52,7 +52,7 @@ public class PlayerAnimationEvent : MonoBehaviour
     // 플레이어 타격 위치에 사용하는 이벤트 함수
     private void Hit()
     {
-        Collider[] hitMonsters = Physics.OverlapBox(_player.HitPoint.position, _player.ColliderSize / 2, _player.HitPoint.rotation, _player.MonsterLayer);
+        Collider[] hitMonsters = Physics.OverlapBox(_player.HitPoint.position, _player.HitPoint.localScale / 2, _player.HitPoint.rotation, _player.MonsterLayer | _player.BossLayer);
 
         if (hitMonsters.Length <= 0) return;
 
@@ -129,7 +129,16 @@ public class PlayerAnimationEvent : MonoBehaviour
                         }
                         break;
                     case 7:
-                        
+                        ControllTimerScale(0.2f, 0.3f);
+
+                        hitParticle = ObjectPool.Instance.Spawn("FX_Smash3", 1);
+
+                        hitParticle.transform.position = monsterCollider.ClosestPoint(_player.HitPoint.position) + new Vector3(0, -0.5f);
+
+                        //if (_player.CharacterModel.localScale.x < 0)
+                        //{
+                        //    hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(-1, -1, 1));
+                        //}
                         break;
                     default:
                         hitParticle = ObjectPool.Instance.Spawn("FX_PunchAttackSphere", 1);
@@ -239,14 +248,15 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     #endregion
 
-    // 메인 템포 애니메이션 끝에 추가하는 이벤트 함수
+    // 공격 애니메이션 끝에 추가하는 이벤트 함수
     private void Finish(float delay)
     {
         _player.Attack.CheckDelay = delay;
+
         _player.Attack.ChangeCurrentAttackState(Define.AttackState.CHECK);
-        _player.Ani.SetBool("IsCommand", false);
-        _player.Ani.SetInteger("CommandCount", 0);
-        PlayerInputManager.Instance.ResetCommandKey();
+        //_player.Ani.SetBool("IsCommand", false);
+        //_player.Ani.SetInteger("CommandCount", 0);
+        //PlayerInputManager.Instance.ResetCommandKey();
     }
 
     private void RemoveTrail()
@@ -307,7 +317,13 @@ public class PlayerAnimationEvent : MonoBehaviour
         Vector3 rayOrigin = new Vector3(transform.parent.position.x, transform.parent.position.y + 0.5f, transform.parent.position.z);
         Vector3 rayDirection = transform.localScale.x < 0 ? transform.right : transform.right * -1;
 
-        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitPos, _player.Attack.CurrentTempoData.distance, _player.BlockLayer))
+        float dis = 2;
+        if (_player.Attack.CurrentTempoData != null)
+        {
+            dis = _player.Attack.CurrentTempoData.distance;
+        }
+
+        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitPos, dis, _player.BlockLayer))
         {
             float closestMonsterX = hitPos.point.x + (-rayDirection.x * 0.5f);
             transform.parent.DOMoveX(closestMonsterX, 0.3f);
@@ -362,7 +378,33 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         _player.Ani.SetBool("IsCommand", true);
 
-        _player.CommandController.StartCommandTime(timeRemaining, SkillId);
+        _player.CommandController.StartCommandTime(timeRemaining, SkillId, false);
+    }
+
+    private void BackStepCheckCommand(int SkillId)
+    {
+        _player.Ani.SetBool("IsCommand", true);
+
+        _player.CommandController.StartCommandTime(0.3f, SkillId, true);
+        StartCoroutine(CheckStepCommandTime());
+    }
+
+    private IEnumerator CheckStepCommandTime()
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        if (_player.Ani.GetBool("IsCommand") && _player.Ani.GetInteger("CommandCount") == 0)
+        {
+            PlayerInputManager.Instance.isCommand = false;
+            PlayerInputManager.Instance.downArrow = false;
+            _player.Ani.SetBool("IsCommand", false);
+        }
+    }
+
+    private void ChangeAttackState()
+    {
+        _player.Controller.SetBackDash();
+        _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
     }
 
     #region Effect

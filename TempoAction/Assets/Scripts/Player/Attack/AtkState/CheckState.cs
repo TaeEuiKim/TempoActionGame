@@ -39,10 +39,7 @@ public class CheckState : PlayerAttackState
     }
     public override void Exit()
     {
-        if (_player.Ani.GetBool("CheckState"))
-        {
-            _player.Ani.SetBool("CheckState", false);
-        }
+        _player.Ani.SetBool("CheckState", false);
 
         if (_player.Attack.CheckDelay <= 0 && !isChange)
         {

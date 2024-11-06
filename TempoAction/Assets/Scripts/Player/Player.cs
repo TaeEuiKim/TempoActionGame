@@ -179,11 +179,11 @@ public class Player : CharacterBase
     {
         if (value)
         {
-            return _stat.Damage + _attack.CurrentTempoData.maxDamage;
+            return _stat.Damage;
         }
         else
         {
-            return _stat.Damage + _attack.CurrentTempoData.minDamage;
+            return _stat.Damage;
         }   
     }
 

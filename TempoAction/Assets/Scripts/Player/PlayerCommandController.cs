@@ -14,22 +14,22 @@ public class PlayerCommandController
         _skillCommand = command;
     }
 
-    public void StartCommandTime(float checkTime, int skillid)
+    public void StartCommandTime(float checkTime, int skillid, bool isBackDash)
     {
         _player.Controller.isMove = false;
         _player.Controller.isJump = false;
 
         PlayerInputManager.Instance.isCommand = true;
 
-        CoroutineRunner.Instance.StartCoroutine(CheckCommandTime(checkTime, skillid));
+        CoroutineRunner.Instance.StartCoroutine(CheckCommandTime(checkTime, skillid, isBackDash));
     }
 
-    private IEnumerator CheckCommandTime(float checkTime, int skillid)
+    private IEnumerator CheckCommandTime(float checkTime, int skillid, bool isBackDash)
     {
         float checkTimer = 0f;
         while (checkTimer < checkTime)
         {
-            if (CheckAttackCommand(PlayerInputManager.Instance.GetCommandKey(), skillid))
+            if (CheckAttackCommand(PlayerInputManager.Instance.GetCommandKey(), skillid, isBackDash))
             {
                 break;
             }
@@ -44,7 +44,7 @@ public class PlayerCommandController
         yield return null;
     }
 
-    private bool CheckAttackCommand(List<KeyCode> keyList, int skillid)
+    private bool CheckAttackCommand(List<KeyCode> keyList, int skillid, bool isBackDash)
     {
         // 이전 스킬이 연계가 가능한 스킬인지, skillid와 일치하는 스킬 아이디인지 검사, 입력된 키가 전부 같으면 해당 스킬아이디 반환
         //var matchingSkillId = _skillCommand.commandDatas
@@ -63,6 +63,7 @@ public class PlayerCommandController
         //    .FirstOrDefault(CheckUseSkill);
 
         var matchingSkillId = _skillCommand.commandDatas
+            .Where(cd => (isBackDash && cd.IsBack) || !cd.IsBack)
             .Where(cd => cd.PossibleSkillId.Contains(skillid))
             .Where(cd => ContainsSubsequence(keyList, cd.KeyCodes))
             .Select(cd => cd.SkillId)
@@ -127,7 +128,7 @@ public class PlayerCommandController
                 break;
             case 2: 
             case 4:
-                if (skillid == 5)
+                if (skillid == 5 || skillid == 3)
                 {
                     UseSkill(skillid);
                     return true;
