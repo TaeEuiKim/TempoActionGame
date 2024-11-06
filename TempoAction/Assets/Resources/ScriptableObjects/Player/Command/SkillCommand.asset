@@ -15,19 +15,29 @@ MonoBehaviour:
   commandDatas:
   - SkillId: 1
     PossibleSkillId: 00000000
+    IsBack: 0
     KeyCodes: 1301000078000000
   - SkillId: 2
     PossibleSkillId: 01000000
+    IsBack: 0
     KeyCodes: 78000000
   - SkillId: 3
     PossibleSkillId: 02000000
+    IsBack: 0
     KeyCodes: 130100001301000078000000
   - SkillId: 4
     PossibleSkillId: 00000000
+    IsBack: 0
     KeyCodes: 1101000078000000
   - SkillId: 5
     PossibleSkillId: 04000000
+    IsBack: 0
     KeyCodes: 1201000078000000
   - SkillId: 6
     PossibleSkillId: 05000000
+    IsBack: 0
     KeyCodes: 1201000078000000
+  - SkillId: 7
+    PossibleSkillId: 00000000
+    IsBack: 1
+    KeyCodes: 78000000

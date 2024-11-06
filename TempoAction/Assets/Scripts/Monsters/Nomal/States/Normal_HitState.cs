@@ -57,6 +57,7 @@ public class Normal_HitState : Normal_State
     {
         base.Exit();
 
+        _monster.Ani.SetBool("Hit", false);
         _monster.isHit = false;
         _monster.isHiting = false;
         timer = 0;

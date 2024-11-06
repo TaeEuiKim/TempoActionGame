@@ -31,6 +31,7 @@ public class MiddlePhaseManager : MonoBehaviour
     [Header("페이드 패널")]
     [SerializeField] public UnityEngine.UI.Image FadePanel;
     private bool isCutScene;
+    private Coroutine cutSceneCoroutine;
 
     [Space]
     [Header("중간 보스 시작 UI")]
@@ -72,7 +73,7 @@ public class MiddlePhaseManager : MonoBehaviour
 
         //ChangeStageState(Define.MiddlePhaseState.START);
 
-        StartCoroutine(CutSceneStart());
+        cutSceneCoroutine = StartCoroutine(CutSceneStart());
     }
 
     private void Update()
@@ -85,10 +86,7 @@ public class MiddlePhaseManager : MonoBehaviour
         if (isCutScene && PlayerInputManager.Instance.cancel)
         {
             PlayerInputManager.Instance.cancel = false;
-            StopCoroutine(CutSceneStart());
-            startSceneUI.SetActive(false);
-
-            StartCoroutine(FadeOut());
+            SkipCutScene();
         }
     }
 
@@ -128,7 +126,7 @@ public class MiddlePhaseManager : MonoBehaviour
         startSceneUI.SetActive(false);
 
         yield return waitOneForSeconds;
-
+        Debug.LogError("1");
         StartCoroutine(FadeOut());
     }
 
@@ -182,6 +180,17 @@ public class MiddlePhaseManager : MonoBehaviour
         ChangeStageState(Define.MiddlePhaseState.START);
 
         yield return null;
+    }
+
+    public void SkipCutScene()
+    {
+        if (cutSceneCoroutine != null)
+        {
+            StopCoroutine(cutSceneCoroutine);
+        }
+        startSceneUI.SetActive(false);
+
+        StartCoroutine(FadeOut());
     }
 
     private void SetPlayerControll(bool isKnockBack)

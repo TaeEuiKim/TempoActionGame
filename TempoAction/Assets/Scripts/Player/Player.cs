@@ -37,6 +37,7 @@ public class Player : CharacterBase
     [SerializeField] private Transform _endPoint;    // ³Ë¹é ÁöÁ¡
     [SerializeField] private Vector3 _colliderSize;
     [SerializeField] private LayerMask _monsterLayer;
+    [SerializeField] private LayerMask _bossLayer;
 
     [SerializeField] private List<TempoAttackData> _mainTempoAttackDatas;
     [SerializeField] private List<TempoAttackData> _pointTempoAttackDatas;
@@ -80,6 +81,7 @@ public class Player : CharacterBase
     public Transform EndPoint { get => _endPoint; }
     public Vector3 ColliderSize { get => _colliderSize; }
     public LayerMask MonsterLayer { get => _monsterLayer; }
+    public LayerMask BossLayer { get => _bossLayer; }
     public List<TempoAttackData> MainTempoAttackDatas { get => _mainTempoAttackDatas; }
     public List<TempoAttackData> PointTempoAttackDatas { get => _pointTempoAttackDatas; }
     public PlayerView View { get => _view; }
@@ -177,11 +179,11 @@ public class Player : CharacterBase
     {
         if (value)
         {
-            return _stat.Damage + _attack.CurrentTempoData.maxDamage;
+            return _stat.Damage;
         }
         else
         {
-            return _stat.Damage + _attack.CurrentTempoData.minDamage;
+            return _stat.Damage;
         }   
     }
 
@@ -200,6 +202,8 @@ public class Player : CharacterBase
         _stat.Hp -= (_stat.MaxHp * (value / 100));
         UpdateHealth();
     }
+
+    private IE
 
     //³Ë¹é ÇÔ¼ö
     public void Knockback(Vector3 point, float t = 0)

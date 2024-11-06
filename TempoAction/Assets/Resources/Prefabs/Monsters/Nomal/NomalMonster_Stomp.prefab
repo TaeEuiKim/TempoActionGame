@@ -201,9 +201,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ce9eeceb35c8a845b9c41f185240d61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hpBarImage: {fileID: 0}
-  _nomalMonsterCanvas: {fileID: 0}
-  _perceptionGauge: {fileID: 0}
+  _hpBarImage: {fileID: 6274434507370233143}
+  _nomalMonsterCanvas: {fileID: 4760648547414362679}
+  _perceptionGauge: {fileID: 3463786882350192495}
 --- !u!114 &7807729576138826469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -319,7 +319,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.4, y: 1, z: 0.5}
+  m_Size: {x: 0.6, y: 1, z: 0.5}
   m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &5219796026279933152
 GameObject:

@@ -1841,7 +1841,7 @@ GameObject:
   - component: {fileID: 8819824192733280397}
   - component: {fileID: 5084343532810798280}
   - component: {fileID: 7795894189632671301}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Cheong
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1936,6 +1936,9 @@ MonoBehaviour:
   _playerLayer:
     serializedVersion: 2
     m_Bits: 2048
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
   _wallLayer:
     serializedVersion: 2
     m_Bits: 8192

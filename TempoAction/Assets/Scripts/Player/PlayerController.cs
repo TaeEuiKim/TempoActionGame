@@ -104,8 +104,20 @@ public class PlayerController
         {
             _isGrounded = Physics.CheckSphere(_player.GroundCheckPoint.position, _player.GroundCheckRadius, _player.WallLayer);
         }
-        _isOnMonster = Physics.CheckSphere(_player.GroundCheckPoint.position, _player.GroundCheckRadius, _player.MonsterLayer);
+        _isOnMonster = Physics.CheckSphere(_player.GroundCheckPoint.position, _player.GroundCheckRadius, _player.BossLayer);
         _player.Ani.SetBool("isGrounded", _isGrounded);
+
+        if (PlayerInputManager.Instance.downArrow && !PlayerInputManager.Instance.isCommand)
+        {
+            _isBackDash = true;
+        }
+        else
+        {
+            if (!isDashing)
+            {
+                _isBackDash = false;
+            }
+        }
 
         if (_player.Attack.CurrentAttackkState == Define.AttackState.ATTACK)
         {
@@ -132,20 +144,6 @@ public class PlayerController
         {
             Vector3 force = new Vector3(-_player.CharacterModel.localScale.x * 10f, -5f);
             _player.Rb.AddForce(force, ForceMode.VelocityChange);
-        }
-
-        if (PlayerInputManager.Instance.downArrow && !PlayerInputManager.Instance.isCommand)
-        {
-            _player.Ani.SetBool("IsBackDash", true);
-            _isBackDash = true;
-        }
-        else
-        {
-            if (!isDashing)
-            {
-                _player.Ani.SetBool("IsBackDash", false);
-                _isBackDash = false;
-            }
         }
 
         if (!isDashing)
@@ -285,6 +283,7 @@ public class PlayerController
         {
             dir = -1;
         }
+        _player.Ani.SetBool("IsBackDash", _isBackDash);
 
         _player.CharacterModel.localScale = new Vector3(-_dashDirection, 1, -1);
 
@@ -298,7 +297,7 @@ public class PlayerController
             dashPosition = _player.transform.position + (Vector3.right * _dashDirection * dir) * _player.PlayerSt.DashDistance;
         }
 
-        _player.Rb.DOMove(dashPosition, _player.PlayerSt.DashDuration).OnComplete(() => isJump = true);
+        _player.Rb.DOMove(dashPosition, _player.PlayerSt.DashDuration).OnComplete(() => { isJump = true; isMove = true; });
 
         _player.Ani.SetTrigger("Dash");
 
@@ -377,5 +376,11 @@ public class PlayerController
         }
 
         return false;
+    }
+
+    public void SetBackDash()
+    {
+        _isBackDash = false;
+        PlayerInputManager.Instance.downArrow = false;
     }
 }
