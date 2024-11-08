@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class PlayerView : MonoBehaviour
 {
     [SerializeField] private Image _hpBarImage;
+    [SerializeField] private Image _steminaBarImage;
+    [SerializeField] private Image _ultimateBarImage;
     [SerializeField] private GameObject _gameoverUI;
     [SerializeField] private GameObject[] MainSkillSlots;
     [SerializeField] private GameObject[] SubSkillSlots;
@@ -14,6 +16,8 @@ public class PlayerView : MonoBehaviour
 
     private Image[] _mainSkillIcons;
     private Image[] _subSkillIcons;
+
+    private bool isUltimate = false;
 
     public void ChangeMainSkillIcon(int value, bool isRemove)
     {
@@ -75,10 +79,51 @@ public class PlayerView : MonoBehaviour
         _gameoverUI?.SetActive(true);
     }
 
+    public void UpdateUltimateGauge(float value)
+    {
+        if (!_ultimateBarImage) { return; }
+
+        StartCoroutine(ChangeUltimateGauge(value));
+    }
+
+    private IEnumerator ChangeUltimateGauge(float value)
+    {
+        while (_hpBarImage.fillAmount > value)
+        {
+            _ultimateBarImage.fillAmount -= Time.deltaTime;
+
+            yield return null;
+        }
+
+        if (_ultimateBarImage.fillAmount < value)
+        {
+            _ultimateBarImage.fillAmount = value;
+        }
+
+        yield return null;
+    }
+
     public void UpdateHpBar(float value)
     {
-        if(_hpBarImage == null) { return; }
+        if(!_hpBarImage) { return; }
 
-        _hpBarImage.fillAmount = value;
+        StartCoroutine(UpdateHealthBar(value));
+    }
+
+    private IEnumerator UpdateHealthBar(float value)
+    {
+        while (_hpBarImage.fillAmount > value)
+        {
+            _hpBarImage.fillAmount -= Time.deltaTime;
+
+            yield return null;
+        }
+
+        if (_hpBarImage.fillAmount < value)
+        {
+            _hpBarImage.fillAmount = value;
+        }
+
+        yield return null;
     }
 }

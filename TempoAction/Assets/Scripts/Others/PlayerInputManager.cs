@@ -23,6 +23,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
 
     [Header("Option")]
     public bool cancel;
+    public bool ultimate;
 
     [Header("Important Command Setting")]
     public List<KeyCode> commandValue;
@@ -133,6 +134,11 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     {
         CancelInput(value.isPressed);
     }
+
+    public void OnUltimate(InputValue value)
+    {
+        UltimateInput(value.isPressed);
+    }
 #endif
     public readonly GenericEventSystem<Vector2> MoveEvent = new();
     public void MoveInput(Vector2 input)
@@ -202,5 +208,12 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     {
         cancel = input;
         CancelEvent.TriggerEvent(true);
+    }
+
+    public readonly GenericEventSystem<bool> UltimateEvent = new();
+    public void UltimateInput(bool input)
+    {
+        ultimate = input;
+        UltimateEvent.TriggerEvent(true);
     }
 }
