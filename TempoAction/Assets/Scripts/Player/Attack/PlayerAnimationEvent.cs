@@ -20,6 +20,7 @@ public class PlayerAnimationEvent : MonoBehaviour
     [SerializeField] private Transform headOrigin;
 
     [SerializeField] private Material rimShader;
+    [SerializeField] private AnimationCurveScriptable animCurve;
 
     private CameraController _cameraController;
 
@@ -64,6 +65,7 @@ public class PlayerAnimationEvent : MonoBehaviour
                 GameObject hitParticle;
                 GameObject hitParticle2;
                 GameObject hitParticle3;
+                GameObject hitParticle4;
 
                 switch (_player.Ani.GetInteger("CommandCount"))
                 {
@@ -134,62 +136,130 @@ public class PlayerAnimationEvent : MonoBehaviour
                         hitParticle = ObjectPool.Instance.Spawn("FX_Smash3", 1);
 
                         hitParticle.transform.position = monsterCollider.ClosestPoint(monster.transform.position) + new Vector3(-0.2f, 0);
-
-                        //if (_player.CharacterModel.localScale.x < 0)
-                        //{
-                        //    hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(-1, -1, 1));
-                        //}
                         break;
                     default:
-                        hitParticle = ObjectPool.Instance.Spawn("FX_PunchAttackSphere", 1);
+                        hitParticle = !_player.Controller.isUltimate ? ObjectPool.Instance.Spawn("FX_PunchAttackSphere", 1) : ObjectPool.Instance.Spawn("FX_FeverTimePunchSphere", 1);
 
                         hitParticle.transform.position = monsterCollider.ClosestPoint(_player.HitPoint.position);
+
+                        if (_player.Controller.isUltimate)
+                        {
+                            hitParticle2 = ObjectPool.Instance.Spawn("FX_PunchBackDust", 1);
+                            hitParticle2.transform.position = _player.transform.position;
+
+                            hitParticle2.transform.localScale = new Vector3(_player.CharacterModel.localScale.x, 1, 1);
+                        }
+
                         CameraShaking(0.12f);
                         break;
                 }
             }
             else
             {
-                // 히트 파티클 생성
-                GameObject hitParticle = ObjectPool.Instance.Spawn("P_Punch", 1);
-                GameObject hitParticle2 = ObjectPool.Instance.Spawn("P_PunchAttack", 1);
+                GameObject hitParticle = null;
+                GameObject hitParticle2 = null;
+                GameObject hitParticle3 = null;
+
+                if (!_player.Controller.isUltimate)
+                {
+                    // 히트 파티클 생성
+                    hitParticle = ObjectPool.Instance.Spawn("P_Punch", 1);
+                    hitParticle2 = ObjectPool.Instance.Spawn("P_PunchAttack", 1);
+                }
+                else
+                {
+                    hitParticle = ObjectPool.Instance.Spawn("FX_FeverTimePunch", 1);
+                    hitParticle3 = ObjectPool.Instance.Spawn("FX_PunchBackDust", 1);
+                }
 
                 switch (_player.Ani.GetInteger("AtkCount"))
                 {
                     case 0:
-                        hitParticle.transform.position = leftHandTrans.position;
-                        hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                        hitParticle2.transform.position = leftHandTrans.position;
-                        hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                        hitParticle.transform.rotation = leftHandTrans.rotation;
-                        hitParticle2.transform.rotation = leftHandTrans.rotation;
+                        if (!_player.Controller.isUltimate)
+                        {
+                            hitParticle.transform.position = leftHandTrans.position;
+                            hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                            hitParticle2.transform.position = leftHandTrans.position;
+                            hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                            hitParticle.transform.rotation = leftHandTrans.rotation;
+                            hitParticle2.transform.rotation = leftHandTrans.rotation;
+                        }
+                        else
+                        {
+                            hitParticle.transform.position = leftHandTrans.position;
+                            hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                            hitParticle3.transform.position = _player.transform.position;
+                            hitParticle3.transform.localScale = new Vector3(_player.CharacterModel.localScale.x, 1, 1);
+
+                            hitParticle.transform.rotation = leftHandTrans.rotation;
+                        }
+
                         CameraShaking(0.12f);
                         break;
                     case 1:
-                        hitParticle.transform.position = rightHandTrans.position;
-                        hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                        hitParticle2.transform.position = rightHandTrans.position;
-                        hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                        hitParticle.transform.rotation = rightHandTrans.rotation;
-                        hitParticle2.transform.rotation = rightHandTrans.rotation;
+                        if (!_player.Controller.isUltimate)
+                        {
+                            hitParticle.transform.position = rightHandTrans.position;
+                            hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                            hitParticle2.transform.position = rightHandTrans.position;
+                            hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                            hitParticle.transform.rotation = rightHandTrans.rotation;
+                            hitParticle2.transform.rotation = rightHandTrans.rotation;
+                        }
+                        else
+                        {
+                            hitParticle.transform.position = rightHandTrans.position;
+                            hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                            hitParticle3.transform.position = _player.transform.position;
+                            hitParticle3.transform.localScale = new Vector3(_player.CharacterModel.localScale.x, 1, 1);
+
+                            hitParticle.transform.rotation = rightHandTrans.rotation;
+                        }
+
                         CameraShaking(0.12f);
                         break;
                     case 2:
-                        hitParticle.transform.position = leftHandTrans.position;
-                        hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                        hitParticle2.transform.position = leftHandTrans.position;
-                        hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                        hitParticle.transform.rotation = leftHandTrans.rotation;
-                        hitParticle2.transform.rotation = leftHandTrans.rotation;
+                        if (!_player.Controller.isUltimate)
+                        {
+                            hitParticle.transform.position = leftHandTrans.position;
+                            hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                            hitParticle2.transform.position = leftHandTrans.position;
+                            hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                            hitParticle.transform.rotation = leftHandTrans.rotation;
+                            hitParticle2.transform.rotation = leftHandTrans.rotation;
+                        }
+                        else
+                        {
+                            hitParticle.transform.position = leftHandTrans.position;
+                            hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                            hitParticle3.transform.position = _player.transform.position;
+                            hitParticle3.transform.localScale = new Vector3(_player.CharacterModel.localScale.x, 1, 1);
+
+                            hitParticle.transform.rotation = leftHandTrans.rotation;
+                        }
+
                         CameraShaking(0.12f);
                         break;
                     case 3:
-                        hitParticle.transform.position = leftHandTrans.position;
-                        hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                        hitParticle2.transform.position = leftHandTrans.position;
-                        hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                        hitParticle.transform.rotation = leftHandTrans.rotation;
-                        hitParticle2.transform.rotation = leftHandTrans.rotation;
+                        if (!_player.Controller.isUltimate)
+                        {
+                            hitParticle.transform.position = leftHandTrans.position;
+                            hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                            hitParticle2.transform.position = leftHandTrans.position;
+                            hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                            hitParticle.transform.rotation = leftHandTrans.rotation;
+                            hitParticle2.transform.rotation = leftHandTrans.rotation;
+                        }
+                        else
+                        {
+                            hitParticle.transform.position = leftHandTrans.position;
+                            hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                            hitParticle3.transform.position = _player.transform.position;
+                            hitParticle3.transform.localScale = new Vector3(_player.CharacterModel.localScale.x, 1, 1);
+
+                            hitParticle.transform.rotation = leftHandTrans.rotation;
+                        }
+
                         CameraShaking(0.12f);
                         break;
                 }
@@ -198,6 +268,32 @@ public class PlayerAnimationEvent : MonoBehaviour
             HitMainTempo(monster);
         }
     }
+
+    private void UltimateHit()
+    {
+        Collider[] hitMonsters = Physics.OverlapBox(_player.HitPoint.position, _player.HitPoint.localScale / 2, _player.HitPoint.rotation, _player.MonsterLayer | _player.BossLayer);
+
+        if (hitMonsters.Length <= 0) return;
+
+        foreach (Collider monsterCollider in hitMonsters)
+        {
+            Monster monster = monsterCollider.GetComponent<Monster>();
+
+            switch (_player.Ani.GetInteger("AtkCount"))
+            {
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+
+                    break;
+            }
+
+            HitMainTempo(monster);
+        }
+    }
+
     private void HitMainTempo(Monster monster)
     {
         ControllTimerScale(0.1f, 0.005f);
@@ -355,11 +451,12 @@ public class PlayerAnimationEvent : MonoBehaviour
                     case 2:
                     case 3:
                     default:
-                        transform.parent.DOMoveX(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x), 0.3f);
+                        transform.parent.DOMoveX(transform.parent.position.x + animCurve.curves[0].xDis * -_player.CharacterModel.localScale.x, animCurve.curves[0].curveTime)
+                                        .SetEase(animCurve.curves[0].xCurve);
                         break;
                     case 4:
-                        transform.parent.DOMoveX(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x), 0.3f);
-                        //_player.Rb.AddForce(Vector3.right * _player.Controller.Direction * moveDistance, ForceMode.VelocityChange);
+                        transform.parent.DOMoveX(transform.parent.position.x + animCurve.curves[1].xDis * -_player.CharacterModel.localScale.x, animCurve.curves[1].curveTime)
+                                        .SetEase(animCurve.curves[1].xCurve);
                         break;
                 }
             }
