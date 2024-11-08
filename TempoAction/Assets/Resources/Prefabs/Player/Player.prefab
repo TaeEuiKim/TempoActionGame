@@ -2162,7 +2162,7 @@ Transform:
   m_GameObject: {fileID: 2837664387018571843}
   serializedVersion: 2
   m_LocalRotation: {x: 0.045362964, y: -0.00043585149, z: 0.000019791893, w: 0.99897045}
-  m_LocalPosition: {x: -0.43333685, y: 0.9166666, z: 10.966665}
+  m_LocalPosition: {x: -0.43333328, y: 0.9166666, z: 10.966665}
   m_LocalScale: {x: 0.3951944, y: 0.3951944, z: 0.3951944}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4140,6 +4140,7 @@ GameObject:
   - component: {fileID: 2794289016763969858}
   - component: {fileID: 2810099149246924853}
   - component: {fileID: 2368480239450363128}
+  - component: {fileID: 3978002831251576751}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -4239,6 +4240,9 @@ MonoBehaviour:
   _monsterLayer:
     serializedVersion: 2
     m_Bits: 1024
+  _bossLayer:
+    serializedVersion: 2
+    m_Bits: 0
   _mainTempoAttackDatas:
   - {fileID: 11400000, guid: 0834447d28b270847a61568da105227e, type: 2}
   - {fileID: 11400000, guid: 009c58b46442c0843a3fb59ff11684ae, type: 2}
@@ -4424,6 +4428,24 @@ MonoBehaviour:
   m_DistantDisable: 0
   m_ReferenceObject: {fileID: 0}
   m_DistanceToObject: 20
+--- !u!114 &3978002831251576751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5513155559230452658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92bba904c0ddc924a9de915607b7d4dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeTime: 1
+  meshRefreshRate: 0.07
+  mat: {fileID: 2100000, guid: 4cda86a879e18134a8e675a16503d449, type: 2}
+  shaderVarRef: _alpha
+  shaderVarRate: 0.1
+  shaderVarRefreshRate: 0.07
 --- !u!1 &5534128122234043370
 GameObject:
   m_ObjectHideFlags: 0

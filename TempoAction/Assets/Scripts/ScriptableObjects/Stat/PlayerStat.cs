@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +18,15 @@ public class PlayerStat : Stat
     [Header("스턴")]
     [SerializeField] private float _stunDelay; // 과부화 시 스턴까지 걸리는 시간
     [SerializeField] private float _stunTime; // 스턴 상태 시간
- 
+
+    [Header("궁극기 관련")]
+    [SerializeField] private float _maxUltimateGauge;
+    private float _curUltimateGauge;
+
+    [Header("스테미너")]
+    [SerializeField] private float _maxStamina;
+    private float _stamina;
+
     public bool IsKnockedBack { get; set; } = false;
         
     public float Hp
@@ -45,29 +54,30 @@ public class PlayerStat : Stat
     public float DashDelay { get => _dashDelay; }
     public float DashDistance { get => _dashDistance; }
     public float DashDuration { get => _dashDuration; }
-    //public float MaxStamina { get => _maxStamina; }
-    //public float Stamina
-    //{
-    //    get
-    //    {
-    //        return _stamina;
-    //    }
-    //    set
-    //    {
-    //        _stamina = value;
+    public float MaxStamina { get => _maxStamina; }
+    public float Stamina
+    {
+        get
+        {
+            return _stamina;
+        }
+        set
+        {
+            _stamina = value;
 
-    //        if (_stamina >= _maxStamina)
-    //        {
-    //            _stamina = _maxStamina;
-    //        }
-    //        else if (_stamina < 0)
-    //        {
-    //            _stamina = 0;
-    //        }
-    //    }
-    //}
+            if (_stamina >= _maxStamina)
+            {
+                _stamina = _maxStamina;
+            }
+            else if (_stamina < 0)
+            {
+                _stamina = 0;
+            }
+        }
+    }
     public float StunDelay { get => _stunDelay; }// 스턴 상태 시간
     public float StunTime { get => _stunTime; }// 스턴 상태 시간
+    public float CurUltimateGauge { get => _curUltimateGauge; set => _curUltimateGauge = value; }
 
     public override void Init()
     {
