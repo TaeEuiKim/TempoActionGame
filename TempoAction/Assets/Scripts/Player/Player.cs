@@ -203,8 +203,6 @@ public class Player : CharacterBase
         UpdateHealth();
     }
 
-    private IE
-
     //³Ë¹é ÇÔ¼ö
     public void Knockback(Vector3 point, float t = 0)
     {
