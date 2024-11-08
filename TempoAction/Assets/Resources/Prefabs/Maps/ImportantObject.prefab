@@ -142,6 +142,7 @@ MonoBehaviour:
   leftArrow: 0
   rightArrow: 0
   cancel: 0
+  ultimate: 0
   commandValue: 
   isCommand: 0
 --- !u!1 &2328356441629596681
@@ -240,6 +241,9 @@ MonoBehaviour:
     - {fileID: 8061109393460876880, guid: 43b65efb9b920374496a71df5228f74f, type: 3}
     - {fileID: 8181106513782722310, guid: 4f7102a96b2fef3428aa12db20d0fd67, type: 3}
     - {fileID: 1490320298333168282, guid: ea396e9adda030c43ae37815a3f9fc45, type: 3}
+    - {fileID: 1490320298333168282, guid: ae807f7a8e441764985dc673af729538, type: 3}
+    - {fileID: 1490320298333168282, guid: ce9afa17abe3cce489a9cb83ccaf7fe6, type: 3}
+    - {fileID: 4374164065940181436, guid: 26a03137922b0ba43918df7dffc9f3c4, type: 3}
   - name: PlayerSkill
     objects:
     - {fileID: 2998883735474440670, guid: c503f520f81e1bf4ea7aee8f68286c87, type: 3}

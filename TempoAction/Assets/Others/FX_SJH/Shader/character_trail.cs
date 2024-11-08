@@ -15,8 +15,8 @@ public class CharacterTrail : MonoBehaviour
     public float shaderVarRate = 0.1f;
     public float shaderVarRefreshRate = 0.05f;
 
+    public SkinnedMeshRenderer[] skinnedMeshRenderers;
     private bool isTrailActive;
-    private SkinnedMeshRenderer[] skinnedMeshRenderers;
 
     void Update()
     {
@@ -37,10 +37,7 @@ public class CharacterTrail : MonoBehaviour
         while (timeActive > 0)
         {
             timeActive -= meshRefreshRate;
-
-            if (skinnedMeshRenderers == null)
-                skinnedMeshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
-
+            Debug.LogError(timeActive);
             foreach (var skinnedMeshRenderer in skinnedMeshRenderers)
             {
                 GameObject gObj = ObjectPool.Instance.Spawn("TrailMesh", 1f);
@@ -81,6 +78,7 @@ public class CharacterTrail : MonoBehaviour
             yield return new WaitForSeconds(meshRefreshRate);
         }
 
+        GetComponentInParent<Player>().Controller.isUltimate = false;
         isTrailActive = false;
     }
 

@@ -4140,7 +4140,6 @@ GameObject:
   - component: {fileID: 2794289016763969858}
   - component: {fileID: 2810099149246924853}
   - component: {fileID: 2368480239450363128}
-  - component: {fileID: 3978002831251576751}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -4178,6 +4177,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hpBarImage: {fileID: 0}
+  _steminaBarImage: {fileID: 0}
+  _ultimateBarImage: {fileID: 0}
   _gameoverUI: {fileID: 0}
   MainSkillSlots:
   - {fileID: 0}
@@ -4428,24 +4429,6 @@ MonoBehaviour:
   m_DistantDisable: 0
   m_ReferenceObject: {fileID: 0}
   m_DistanceToObject: 20
---- !u!114 &3978002831251576751
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5513155559230452658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92bba904c0ddc924a9de915607b7d4dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  activeTime: 1
-  meshRefreshRate: 0.07
-  mat: {fileID: 2100000, guid: 4cda86a879e18134a8e675a16503d449, type: 2}
-  shaderVarRef: _alpha
-  shaderVarRate: 0.1
-  shaderVarRefreshRate: 0.07
 --- !u!1 &5534128122234043370
 GameObject:
   m_ObjectHideFlags: 0
@@ -6809,6 +6792,7 @@ GameObject:
   - component: {fileID: 8910211008713852491}
   - component: {fileID: 5180615940106990589}
   - component: {fileID: 8985233940537711847}
+  - component: {fileID: 7682094364672708297}
   m_Layer: 0
   m_Name: PlayerModel
   m_TagString: Untagged
@@ -6884,7 +6868,31 @@ MonoBehaviour:
   rightHandTrail: {fileID: 6540820747345360054}
   headOrigin: {fileID: 8822805436469365820}
   rimShader: {fileID: 2100000, guid: 88379c2c49908e1419c52fa85184b7c6, type: 2}
+  animCurve: {fileID: 11400000, guid: c6669d05d95b9004a8faf26c7853b22b, type: 2}
   tempVec: {x: 0, y: 180, z: 0}
+--- !u!114 &7682094364672708297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8137086541196057841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92bba904c0ddc924a9de915607b7d4dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeTime: 1
+  meshRefreshRate: 0.07
+  mat: {fileID: 2100000, guid: 4cda86a879e18134a8e675a16503d449, type: 2}
+  shaderVarRef: _alpha
+  shaderVarRate: 0.1
+  shaderVarRefreshRate: 0.07
+  skinnedMeshRenderers:
+  - {fileID: 7233028618205561791}
+  - {fileID: 5671351642172333902}
+  - {fileID: 4225653347909137020}
+  - {fileID: 6616386330283090673}
 --- !u!1 &8199578652032327289
 GameObject:
   m_ObjectHideFlags: 0

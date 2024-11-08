@@ -20,6 +20,8 @@ public class PlayerController
     private bool _isOnMonster;
     private bool _isDoubleJumping;
     private bool _isBackDash;
+
+    public bool isUltimate;
     public bool isDashing;
     public bool isMove;
     public bool isJump;
@@ -76,6 +78,8 @@ public class PlayerController
     public void Update()
     {
         if (_player.PlayerSt.IsKnockedBack) return;
+
+        InvokeUltimate();
 
         if (_dashTimer >= _player.PlayerSt.DashDelay)
         {
@@ -320,6 +324,21 @@ public class PlayerController
     private void Stop()
     {
         _player.Rb.velocity = new Vector2(0, _player.Rb.velocity.y);
+    }
+
+    private void InvokeUltimate()
+    {
+        if (PlayerInputManager.Instance.ultimate && !isUltimate)
+        {
+            PlayerInputManager.Instance.ultimate = false;
+            isUltimate = true;
+
+            _player.CharacterModel.GetComponent<CharacterTrail>().StartTrail(10f);
+        }
+        else if (PlayerInputManager.Instance.ultimate && isUltimate)
+        {
+            PlayerInputManager.Instance.ultimate = false;
+        }
     }
 
     private void Flip(float value)
