@@ -85,22 +85,17 @@ public class PlayerAttack
                 PlayerInputManager.Instance.attack = false;
                 if (_player.Ani.GetBool("isGrounded"))
                 {
-                    if (PlayerInputManager.Instance.isCommand)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        AttackMainTempo();
-                    }
+                    AttackMainTempo();
                 }
             }
+
         }
         else
         {
-            if (PlayerInputManager.Instance.attack)
+            if (PlayerInputManager.Instance.attack || PlayerInputManager.Instance.keyX)
             {
                 PlayerInputManager.Instance.attack = false;
+                PlayerInputManager.Instance.keyX = false;
             }
         }
 

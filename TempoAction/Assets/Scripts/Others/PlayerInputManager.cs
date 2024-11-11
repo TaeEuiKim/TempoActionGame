@@ -19,7 +19,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     public bool downArrow;
     public bool leftArrow;
     public bool rightArrow;
-    private bool keyZ;
+    public bool keyX;
 
     [Header("Option")]
     public bool cancel;
@@ -28,6 +28,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     [Header("Important Command Setting")]
     public List<KeyCode> commandValue;
     public bool isCommand;
+    public bool isDashCommand;
 
     private void Awake()
     {
@@ -42,6 +43,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     public void ResetCommandKey()
     {
         isCommand = false;
+        isDashCommand = false;
         commandValue.Clear();
     }
 
@@ -58,13 +60,13 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
 
     public void OnAttack(InputValue value)
     {
-        if (!isCommand)
+        if (!isDashCommand)
         {
             AttackInput(value.isPressed);
         }
-        else if (value.isPressed && isCommand)
+        else
         {
-            commandValue.Add(KeyCode.X);
+            commandValue.Add(KeyCode.Z);
         }
     }
 
@@ -80,14 +82,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
 
     public void OnDownArrow(InputValue value)
     {
-        if (!isCommand)
-        {
-            DownArrowInput(value.isPressed);
-        }
-        else if (value.isPressed && isCommand)
-        {
-            commandValue.Add(KeyCode.DownArrow);
-        }
+        DownArrowInput(value.isPressed);
     }
 
     public void OnLeftArrow(InputValue value)
@@ -122,11 +117,15 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
         }
     }
 
-    public void OnKeyZ(InputValue value)
+    public void OnKeyX(InputValue value)
     {
-        if (value.isPressed && isCommand)
+        if (!isCommand)
         {
-            commandValue.Add(KeyCode.Z);
+            KeyXInput(value.isPressed);
+        }
+        else if ((value.isPressed && isCommand) || isDashCommand)
+        {
+            commandValue.Add(KeyCode.X);
         }
     }
 
@@ -215,5 +214,12 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     {
         ultimate = input;
         UltimateEvent.TriggerEvent(true);
+    }
+
+    public readonly GenericEventSystem<bool> KeyXEvent = new();
+    public void KeyXInput(bool input)
+    {
+        keyX = input;
+        KeyXEvent.TriggerEvent(true);
     }
 }

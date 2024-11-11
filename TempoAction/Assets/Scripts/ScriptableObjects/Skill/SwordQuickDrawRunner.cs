@@ -90,7 +90,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
 
         if(CurrentSkill is NormalSkill skill)
         {
-            skill.UseSkillCount();
+            //skill.UseSkillCount();
         }
         // 돌진
         float curTime = 0;

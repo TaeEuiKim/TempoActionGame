@@ -61,7 +61,7 @@ public class PlayerCommandController
         //                 }).All(isEqual => isEqual))
         //    .Select(cd => cd.SkillId)
         //    .FirstOrDefault(CheckUseSkill);
-
+ 
         var matchingSkillId = _skillCommand.commandDatas
             .Where(cd => (isBackDash && cd.IsBack) || !cd.IsBack)
             .Where(cd => cd.PossibleSkillId.Contains(skillid))
@@ -99,38 +99,69 @@ public class PlayerCommandController
         int count = _player.Ani.GetInteger("CommandCount");
         switch (count)
         {
+            // 기본 공격 && 대쉬 연계
             case 0:
+            case 10:
+            case 20:
+            case 201:
                 if (skillid == 1)
                 {
                     TestSound.Instance.PlaySound("Smash1");
                     TestSound.Instance.PlaySound("Smash1_Voice");
                     return true;
                 }
-                if (skillid == 4)
+                if (skillid == 11)
                 {
-                    TestSound.Instance.PlaySound("Smash2");
-                    TestSound.Instance.PlaySound("Smash2_Voice");
+                    TestSound.Instance.PlaySound("Smash1_2");
+                    TestSound.Instance.PlaySound("Smash1_2_Voice");
                     return true;
                 }
-                if (skillid == 7)
+                if (skillid == 21)
+                {
+                    return true;
+                }
+                if (skillid == 101 || skillid == 201 || skillid == 202)
                 {
                     return true;
                 }
                 break;
+            // 1단 연계
             case 1:
                 if (skillid == 2)
                 {
-                    TestSound.Instance.PlaySound("Smash1_2");
-                    TestSound.Instance.PlaySound("Smash1_2_Voice");
+                    TestSound.Instance.PlaySound("Smash2");
+                    TestSound.Instance.PlaySound("Smash2_Voice");
 
                     return true;
                 }
                 break;
+            // 뎀프시롤 연계
+            case 21:
+            case 22:
+            case 23:
+            case 24:
+            case 25:
+            case 26:
+            case 27:
+                if (skillid == 21 || skillid == 22 || skillid == 23 || skillid == 24 || skillid == 25 || skillid == 26 || skillid == 27)
+                {
+                    return true;
+                }
+                break;
+            // 스킬 발동
             case 2: 
-            case 4:
-                if (skillid == 5 || skillid == 3)
+            case 11:
+                if (skillid == 12 || skillid == 3)
                 {
                     UseSkill(skillid);
+                    return true;
+                }
+                break;
+            // 대쉬 연계
+            case 100:
+            case 200:
+                if (skillid == 101 || skillid == 201 || skillid == 202)
+                {
                     return true;
                 }
                 break;
@@ -146,18 +177,18 @@ public class PlayerCommandController
         switch (skillid)
         {
             case 3:
-                if (_player.SkillManager.SkillSlots[0].Skill != null)
-                {
-                    _player.Ani.SetBool("IsCommandSkill", true);
-                    _player.SkillManager.SkillSlots[0].UseSkillInstant(_player);
-                    _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
-                }
-                break;
-            case 5:
                 if (_player.SkillManager.SkillSlots[1].Skill != null)
                 {
                     _player.Ani.SetBool("IsCommandSkill", true);
                     _player.SkillManager.SkillSlots[1].UseSkillInstant(_player);
+                    _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
+                }
+                break;
+            case 12:
+                if (_player.SkillManager.SkillSlots[0].Skill != null)
+                {
+                    _player.Ani.SetBool("IsCommandSkill", true);
+                    _player.SkillManager.SkillSlots[0].UseSkillInstant(_player);
                     _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
                 }
                 break;
