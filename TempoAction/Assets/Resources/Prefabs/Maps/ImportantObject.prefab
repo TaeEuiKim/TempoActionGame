@@ -141,10 +141,12 @@ MonoBehaviour:
   downArrow: 0
   leftArrow: 0
   rightArrow: 0
+  keyX: 0
   cancel: 0
   ultimate: 0
   commandValue: 
   isCommand: 0
+  isDashCommand: 0
 --- !u!1 &2328356441629596681
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,6 +264,10 @@ MonoBehaviour:
     - {fileID: 5427829226666399292, guid: b35b76d1b85b33f44aca920d1718cbdd, type: 3}
     - {fileID: 2887284701724324712, guid: 49751e96df2ce544faa4c7aede426392, type: 3}
     - {fileID: 2015599944154285852, guid: 95870db046badef418ff2c93b2af927a, type: 3}
+    - {fileID: 1630080433246547811, guid: 7d7da25d9a7699d47ac209b979d1fb69, type: 3}
+    - {fileID: 7973465471391147791, guid: 08604df8eed349548b36cc897aacef45, type: 3}
+    - {fileID: 561740801196353772, guid: c161e1e64031b0f428b299dada2dd33a, type: 3}
+    - {fileID: 5545494725711942548, guid: 4bfa3eede376bd54c8dd596515a58476, type: 3}
   - name: MiddleBoss
     objects:
     - {fileID: 4622881555719169984, guid: f32d23f9834b7ca49a173f98b2723686, type: 3}

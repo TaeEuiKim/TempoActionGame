@@ -111,7 +111,7 @@ public class PlayerController
         _isOnMonster = Physics.CheckSphere(_player.GroundCheckPoint.position, _player.GroundCheckRadius, _player.BossLayer);
         _player.Ani.SetBool("isGrounded", _isGrounded);
 
-        if (PlayerInputManager.Instance.downArrow && !PlayerInputManager.Instance.isCommand)
+        if (PlayerInputManager.Instance.downArrow)
         {
             _isBackDash = true;
         }

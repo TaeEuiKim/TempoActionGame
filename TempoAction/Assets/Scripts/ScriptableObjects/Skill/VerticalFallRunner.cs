@@ -9,13 +9,18 @@ using UnityEngine.TextCore.Text;
 [CreateAssetMenu(fileName = "VerticalFallRunner", menuName = "ScriptableObjects/Skill/Runner/VerticalFallRunner", order = 1)]
 public class VerticalFallRunner : SkillRunnerBase
 {
+    public override void Initialize()
+    {
+        base.Initialize();
+    }
+
     public override IEnumerator SkillCoroutine(CharacterBase character)
     {
         // #*********** 초기화 ***********# // 
         // 사용 횟수 차감
         if (CurrentSkill is NormalSkill skill)
         {
-            skill.UseSkillCount();
+            //skill.UseSkillCount();
         }
 
         if (skillData.SkillCastingTarget == Define.SkillTarget.MON)
