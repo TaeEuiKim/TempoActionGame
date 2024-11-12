@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine.TextCore.Text;
 
 public class Normal_Death : Normal_State
 {
-    private bool isItem = false;
+    private bool isSpawn = false;
 
     public Normal_Death(NormalMonster monster) : base(monster)
     {
@@ -23,9 +24,9 @@ public class Normal_Death : Normal_State
             _monster.Ani.SetBool("Death", true);
         }
 
-        if (!isItem)
+        if (!isSpawn)
         {
-            //SpawnItem();
+            SpawnUltimateGauge();
         }
     }
 
@@ -43,14 +44,11 @@ public class Normal_Death : Normal_State
         base.Exit();
     }
 
-    private void SpawnItem()
+    private void SpawnUltimateGauge()
     {
-        isItem = true;
+        isSpawn = true;
 
-        NormalSkill sw = new NormalSkill(_monster.skillData);
-
-        ISkillRoot skill = sw;
-
-        _monster.Player.GetComponent<PlayerSkillManager>().AddSkill(skill);
+        GameObject ultimateEffect = ObjectPool.Instance.Spawn("energy_ui_ball");
+        _monster.Player.GetComponent<Player>().View.MoveUltimateUI(ultimateEffect, _monster.ultimateValue / 100);
     }
 }

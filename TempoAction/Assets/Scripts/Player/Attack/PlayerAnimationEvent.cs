@@ -34,6 +34,8 @@ public class PlayerAnimationEvent : MonoBehaviour
     private GameObject dempInchenEffect;
     private bool isOnDemp;
 
+    private Coroutine tempCoroutine;
+
     private void Start()
     {
         _cameraController = FindObjectOfType<CameraController>();
@@ -59,8 +61,9 @@ public class PlayerAnimationEvent : MonoBehaviour
     private void Hit()
     {
         Collider[] hitMonsters = Physics.OverlapBox(_player.HitPoint.position, _player.HitPoint.localScale / 2, _player.HitPoint.rotation, _player.MonsterLayer | _player.BossLayer);
+        Collider[] hitObjects = Physics.OverlapBox(_player.HitPoint.position, _player.HitPoint.localScale / 2, _player.HitPoint.rotation, 1 << 8);
 
-        if (hitMonsters.Length <= 0) return;
+        if (hitMonsters.Length <= 0 && hitObjects.Length <= 0) return;
 
         foreach (Collider monsterCollider in hitMonsters)
         {
@@ -152,13 +155,105 @@ public class PlayerAnimationEvent : MonoBehaviour
 
             HitMainTempo(monster);
         }
+
+        foreach (Collider mapObject in hitObjects)
+        {
+            BaseObject obj = mapObject.GetComponent<BaseObject>();
+
+            GameObject hitParticle = null;
+            GameObject hitParticle2 = null;
+            GameObject hitParticle3 = null;
+
+            if (!_player.Controller.isUltimate && _player.Ani.GetInteger("AtkCount") != 2)
+            {
+                // 히트 파티클 생성
+                hitParticle = ObjectPool.Instance.Spawn("P_Punch", 1);
+                hitParticle2 = ObjectPool.Instance.Spawn("P_PunchAttack", 1);
+            }
+            else if (_player.Controller.isUltimate)
+            {
+                if (_player.Ani.GetInteger("AtkCount") != 2)
+                {
+                    hitParticle = ObjectPool.Instance.Spawn("FX_FeverTimePunch", 1);
+                }
+                hitParticle3 = ObjectPool.Instance.Spawn("FX_PunchBackDust", 1);
+            }
+
+            switch (_player.Ani.GetInteger("AtkCount"))
+            {
+                case 0:
+                    if (!_player.Controller.isUltimate)
+                    {
+                        hitParticle.transform.position = rightHandTrans.position;
+                        hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                        hitParticle2.transform.position = rightHandTrans.position;
+                        hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                        hitParticle.transform.rotation = rightHandTrans.rotation;
+                        hitParticle2.transform.rotation = rightHandTrans.rotation;
+                    }
+                    else
+                    {
+                        hitParticle.transform.position = rightHandTrans.position;
+                        hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                        hitParticle3.transform.position = _player.transform.position;
+                        hitParticle3.transform.localScale = new Vector3(_player.CharacterModel.localScale.x, 1, 1);
+
+                        hitParticle.transform.rotation = rightHandTrans.rotation;
+                    }
+
+                    CameraShaking(0.12f);
+                    break;
+                case 1:
+                    if (!_player.Controller.isUltimate)
+                    {
+                        hitParticle.transform.position = leftHandTrans.position;
+                        hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                        hitParticle2.transform.position = leftHandTrans.position;
+                        hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                        hitParticle.transform.rotation = leftHandTrans.rotation;
+                        hitParticle2.transform.rotation = leftHandTrans.rotation;
+                    }
+                    else
+                    {
+                        hitParticle.transform.position = leftHandTrans.position;
+                        hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+                        hitParticle3.transform.position = _player.transform.position;
+                        hitParticle3.transform.localScale = new Vector3(_player.CharacterModel.localScale.x, 1, 1);
+
+                        hitParticle.transform.rotation = leftHandTrans.rotation;
+                    }
+
+                    CameraShaking(0.12f);
+                    break;
+                case 2:
+                    hitParticle = !_player.Controller.isUltimate ? ObjectPool.Instance.Spawn("FX_PunchAttackSphere", 1) : ObjectPool.Instance.Spawn("FX_FeverTimePunchSphere", 1);
+
+                    hitParticle.transform.position = mapObject.ClosestPoint(_player.HitPoint.position);
+
+                    if (_player.Controller.isUltimate)
+                    {
+                        hitParticle2 = ObjectPool.Instance.Spawn("FX_PunchBackDust", 1);
+                        hitParticle2.transform.position = _player.transform.position;
+                        hitParticle2.transform.localScale = new Vector3(_player.CharacterModel.localScale.x, 1, 1);
+
+                        hitParticle3.transform.position = _player.transform.position;
+                        hitParticle3.transform.localScale = new Vector3(_player.CharacterModel.localScale.x, 1, 1);
+                    }
+
+                    CameraShaking(0.12f);
+                    break;
+            }
+
+            HitObject(obj);
+        }
     }
 
     private void CommandHit()
     {
         Collider[] hitMonsters = Physics.OverlapBox(_player.HitPoint.position, _player.HitPoint.localScale / 2, _player.HitPoint.rotation, _player.MonsterLayer | _player.BossLayer);
+        Collider[] hitObjects = Physics.OverlapBox(_player.HitPoint.position, _player.HitPoint.localScale / 2, _player.HitPoint.rotation, 1 << 8);
 
-        if (hitMonsters.Length <= 0) return;
+        if (hitMonsters.Length <= 0 && hitObjects.Length <= 0) return;
 
         foreach (Collider monsterCollider in hitMonsters)
         {
@@ -169,6 +264,109 @@ public class PlayerAnimationEvent : MonoBehaviour
             GameObject hitParticle3;
 
             ControllTimerScale(0.1f, 0.01f);
+
+            switch (_player.Ani.GetInteger("CommandCount"))
+            {
+                case 1:
+                    TestSound.Instance.PlaySound("Smash1_Hit");
+
+                    hitParticle = ObjectPool.Instance.Spawn("P_SmashAttack_01", 1);
+                    hitParticle2 = ObjectPool.Instance.Spawn("P_SmashAttack_02", 1);
+                    hitParticle.transform.position = leftHandTrans.position + new Vector3(-0.3f * _player.CharacterModel.localScale.x, 0);
+                    hitParticle2.transform.position = leftHandTrans.position + new Vector3(-0.3f * _player.CharacterModel.localScale.x, 0);
+                    if (_player.CharacterModel.localScale.x < 0)
+                    {
+                        hitParticle.transform.rotation = leftHandTrans.rotation * Quaternion.Euler(tempVec);
+                        hitParticle2.transform.rotation = leftHandTrans.rotation * Quaternion.Euler(tempVec);
+                    }
+                    else
+                    {
+                        hitParticle.transform.rotation = leftHandTrans.rotation;
+                        hitParticle2.transform.rotation = leftHandTrans.rotation;
+                    }
+                    break;
+                case 2:
+                    TestSound.Instance.PlaySound("Smash2_Hit");
+
+                    hitParticle = ObjectPool.Instance.Spawn("P_MainChar_SmashShoryukenAttack", 1);
+
+                    hitParticle.transform.position = _player.transform.position + new Vector3(1.3f * -_player.CharacterModel.localScale.x, 1f);
+
+                    if (_player.CharacterModel.localScale.x < 0)
+                    {
+                        hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(-1, -1, 1));
+                    }
+                    break;
+                case 11:
+                    TestSound.Instance.PlaySound("Smash1_2_Hit");
+
+                    rightHandTrail.gameObject.SetActive(true);
+                    hitParticle = ObjectPool.Instance.Spawn("P_SmashAttack2", 1);
+                    hitParticle2 = ObjectPool.Instance.Spawn("P_SmashHit", 1);
+                    hitParticle3 = ObjectPool.Instance.Spawn("P_dust", 1);
+
+                    hitParticle.transform.position = rightHandTrans.position + new Vector3(0f * _player.CharacterModel.localScale.x, 0);
+                    hitParticle2.transform.position = rightHandTrans.position + new Vector3(0f * _player.CharacterModel.localScale.x, 0);
+                    hitParticle3.transform.position = leftFootTrans.position + new Vector3(-0.4f * _player.CharacterModel.localScale.x, -0.2f);
+
+                    if (_player.CharacterModel.localScale.x < 0)
+                    {
+                        hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(-1, -1, 1));
+                    }
+                    else
+                    {
+                        hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(1, 1, 1));
+                    }
+
+                    hitParticle3.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
+
+                    //hitParticle.transform.rotation = rightHandTrans.rotation;
+                    break;
+                case 21:
+                case 22:
+                case 23:
+                case 24:
+                case 25:
+                case 26:
+                case 27:
+                    hitParticle = ObjectPool.Instance.Spawn("FX_PC_OraoraPunch", 0.5f);
+
+                    if (_player.IsLeftDirection())
+                    {
+                        hitParticle.transform.position = _player.transform.position + new Vector3(1f, 0.7f, 4f);
+                        hitParticle.transform.localScale = new Vector3(1, 1, 1);
+                        hitParticle2 = ObjectPool.Instance.Spawn("orora_dust3", 1);
+                        hitParticle2.transform.position = _player.transform.position + new Vector3(-0.5f, 0.2f);
+                    }
+                    else
+                    {
+                        hitParticle.transform.position = _player.transform.position + new Vector3(-0.3f, 0.7f, 4f);
+                        hitParticle.transform.localScale = new Vector3(-1, 1, 1);
+                        hitParticle2 = ObjectPool.Instance.Spawn("orora_dust3_2", 1);
+                        hitParticle2.transform.position = _player.transform.position + new Vector3(0.5f, 0.2f);
+                    }
+                    break;
+                case 101:
+                    hitParticle = ObjectPool.Instance.Spawn("FX_Smash3", 1);
+
+                    hitParticle.transform.position = monsterCollider.ClosestPoint(monster.transform.position) + new Vector3(-0.2f, 0);
+                    break;
+                case 201:
+                case 202:
+
+                    break;
+            }
+
+            HitMainTempo(monster);
+        }
+
+        foreach (Collider mapObject in hitObjects)
+        {
+            BaseObject obj = mapObject.GetComponent<BaseObject>();
+
+            GameObject hitParticle;
+            GameObject hitParticle2;
+            GameObject hitParticle3;
 
             switch (_player.Ani.GetInteger("CommandCount"))
             {
@@ -254,39 +452,36 @@ public class PlayerAnimationEvent : MonoBehaviour
                 case 101:
                     hitParticle = ObjectPool.Instance.Spawn("FX_Smash3", 1);
 
-                    hitParticle.transform.position = monsterCollider.ClosestPoint(monster.transform.position) + new Vector3(-0.2f, 0);
+                    hitParticle.transform.position = mapObject.ClosestPoint(obj.transform.position) + new Vector3(-0.2f, 0);
                     break;
                 case 201:
 
                     break;
             }
 
-            HitMainTempo(monster);
+            HitObject(obj);
         }
     }
 
     private void UltimateHit()
     {
         Collider[] hitMonsters = Physics.OverlapBox(_player.HitPoint.position, _player.HitPoint.localScale / 2, _player.HitPoint.rotation, _player.MonsterLayer | _player.BossLayer);
+        Collider[] hitObjects = Physics.OverlapBox(_player.HitPoint.position, _player.HitPoint.localScale / 2, _player.HitPoint.rotation, 1 << 8);
 
-        if (hitMonsters.Length <= 0) return;
+        if (hitMonsters.Length <= 0 && hitObjects.Length <= 0) return;
 
         foreach (Collider monsterCollider in hitMonsters)
         {
             Monster monster = monsterCollider.GetComponent<Monster>();
 
-            switch (_player.Ani.GetInteger("AtkCount"))
-            {
-                case 0:
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-
-                    break;
-            }
-
             HitMainTempo(monster);
+        }
+
+        foreach (Collider mapObject in hitObjects)
+        {
+            BaseObject obj = mapObject.GetComponent<BaseObject>();
+
+            HitObject(obj);
         }
     }
 
@@ -297,6 +492,11 @@ public class PlayerAnimationEvent : MonoBehaviour
         // 메인 템포일 때 데미지 처리
         PlayerSfx(Define.PlayerSfxType.MAIN);
         monster.TakeDamage(_player.GetTotalDamage());
+    }
+
+    private void HitObject(BaseObject obj)
+    {
+        obj.TakeDamage(_player.GetTotalDamage());
     }
 
     private void CameraShaking(float shakeTime)
@@ -512,6 +712,42 @@ public class PlayerAnimationEvent : MonoBehaviour
     {
         _player.Controller.SetBackDash();
         _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
+    }
+
+    private void ChangeNormalAttackState(int attackCount)
+    {
+        if (tempCoroutine != null)
+        {
+            StopCoroutine(tempCoroutine);
+        }
+        _player.Controller.SetBackDash();
+        _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
+        PlayerInputManager.Instance.isKeyZ = true;
+        tempCoroutine = StartCoroutine(CheckNormalAttackKey(attackCount));
+    }
+
+    private IEnumerator CheckNormalAttackKey(int attackCount)
+    {
+        float timer = 0f;
+
+        while (timer <= 1.3f)
+        {
+            timer += Time.deltaTime;
+
+            if (PlayerInputManager.Instance.attack)
+            {
+                PlayerInputManager.Instance.isKeyZ = false;
+                PlayerInputManager.Instance.attack = false;
+                _player.Attack.AttackMainTempo();
+                _player.Attack.AttackMainTempo();
+
+                _player.Ani.SetInteger("CommandCount", 0);
+
+                yield break;
+            }
+
+            yield return null;
+        }
     }
 
     #region Effect

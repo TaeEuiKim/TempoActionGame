@@ -1,3 +1,4 @@
+using Palmmedia.ReportGenerator.Core.Reporting.Builders;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     public List<KeyCode> commandValue;
     public bool isCommand;
     public bool isDashCommand;
+    public bool isKeyZ;
 
     private void Awake()
     {
@@ -44,6 +46,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     {
         isCommand = false;
         isDashCommand = false;
+
         commandValue.Clear();
     }
 

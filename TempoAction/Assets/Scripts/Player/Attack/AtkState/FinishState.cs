@@ -21,6 +21,7 @@ public class FinishState : PlayerAttackState
         _player.Ani.SetBool("IsCommand", false);
 
         _player.Ani.SetInteger("CommandCount", 0);
+        _player.Ani.SetInteger("AtkCount", 0);
 
         PlayerInputManager.Instance.ResetCommandKey();
 

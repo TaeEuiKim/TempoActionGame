@@ -15,6 +15,7 @@ public class Dropbomb : MonoBehaviour
 
     private float timer = 0f;
     private bool isGrounded = true;
+    private bool isNonAuto = false;
     private Rigidbody rb;
 
     private Transform player;                // 타겟의 Transform
@@ -42,8 +43,14 @@ public class Dropbomb : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (!isGrounded)
+        if (!isGrounded && !isNonAuto)
         {
+            timer += Time.deltaTime;
+            if (timer > 2f)
+            {
+                isNonAuto = true;
+            }
+
             // 중력 적용
             rb.velocity += Vector3.up * Time.fixedDeltaTime;
 

@@ -147,6 +147,7 @@ MonoBehaviour:
   commandValue: 
   isCommand: 0
   isDashCommand: 0
+  isKeyZ: 0
 --- !u!1 &2328356441629596681
 GameObject:
   m_ObjectHideFlags: 0
@@ -278,8 +279,9 @@ MonoBehaviour:
     - {fileID: 7624007171093808909, guid: 09cba46f670fdca49bc7a8961ca65d69, type: 3}
     - {fileID: 1557046992035449774, guid: 1ace12aef7e8b0e4bb5bc23fcc5ad54e, type: 3}
     - {fileID: 6765671980721317467, guid: bb676555e2242ea45945de4ff5087a8e, type: 3}
-    - {fileID: 4440785258314057717, guid: e24143b3583277444aa587f0cf94d92f, type: 3}
-    - {fileID: 6779617021140220293, guid: 486e8622beab2d948873796ada28b2c0, type: 3}
+    - {fileID: 4440785258314057717, guid: 5b229ca039705e64396b1728387c9715, type: 3}
+    - {fileID: 6779617021140220293, guid: 116ee37b5e6cfcb489c637a6c4a6588b, type: 3}
+    - {fileID: 1750160534667867109, guid: f96687445480c2040958598e238af21d, type: 3}
     - {fileID: 775341336449625635, guid: 468a54bff4d066d46996bd80e95fa5c5, type: 3}
     - {fileID: 13837899338106596, guid: 65111fffb6e594343a2aa390de4875f1, type: 3}
     - {fileID: 2717008632272505882, guid: b43dc434f160c574f9e3d973c9074c57, type: 3}
@@ -292,11 +294,16 @@ MonoBehaviour:
     - {fileID: 3330592716064290014, guid: e93ad2c43ca03744dbf309aeee3e13b2, type: 3}
     - {fileID: 304336246989555252, guid: 2167c04e84c4ee940b8409ab744f4d58, type: 3}
     - {fileID: 8339262307147446454, guid: 024955778a3035a4f967b5620635630b, type: 3}
+    - {fileID: 9029766264749156638, guid: 2d293b8c4c0c71d41b7898f01991438f, type: 3}
+    - {fileID: 1666091606184207147, guid: c43fc2c2293c8fd49ae5766229083d14, type: 3}
   - name: Other
     objects:
     - {fileID: 6770057413027233438, guid: 48f0cf7e67ca2564f811ea7e223f72a2, type: 3}
     - {fileID: 6575808294690664542, guid: 0ca6a651fb91fa4479149b15885d6a8f, type: 3}
     - {fileID: 6953297970335525215, guid: 47550add7ff878540aca017ca2fc23b3, type: 3}
+    - {fileID: 3809239047602695987, guid: 4a60ac98a32fa844a837cb2897228afc, type: 3}
+    - {fileID: 2755924506796540044, guid: 0f5303bb01fd3c340b61901458b347cc, type: 3}
+    - {fileID: 774152704723969033, guid: f222ab85920bbb547875ae76eb26a918, type: 3}
   _initialSize: 10
 --- !u!1 &5223205995965158177
 GameObject:

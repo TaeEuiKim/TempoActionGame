@@ -62,6 +62,12 @@ public class NormalMonster : Monster
     [Header("몬스터 타입")]
     public Define.NormalMonsterType monsterType;
 
+    [Space]
+    [Header("궁극기 이펙트")]
+    [SerializeField] public GameObject ultimateEffect;
+    [Header("궁극기 채워지는 양")]
+    [SerializeField] public float ultimateValue;
+
     #endregion
 
     #region 프로퍼티

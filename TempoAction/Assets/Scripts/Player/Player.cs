@@ -46,6 +46,11 @@ public class Player : CharacterBase
     [SerializeField] private GameObject _skillObject;
     public bool isRockFireObj = false;
 
+    [Header("±Ã±Ø±â")]
+    [SerializeField] public GameObject MoveEffect;
+
+    [Space]
+
     [SerializeField] public SkillRunnerBase skillData;
     [SerializeField] public SkillRunnerBase skillData2;
 
@@ -95,7 +100,7 @@ public class Player : CharacterBase
     {
         base.Awake();
 
-        _view = GetComponent<PlayerView>();
+        _view = FindObjectOfType<PlayerView>();
         _playerStat = (PlayerStat)Stat;
 
         copySkill = FindObjectOfType<CopySkill>();
