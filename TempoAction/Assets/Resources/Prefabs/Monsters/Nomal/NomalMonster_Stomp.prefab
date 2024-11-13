@@ -249,7 +249,7 @@ MonoBehaviour:
   stateConditions: {fileID: 11400000, guid: 430911e20125a044092ba1caa74bf47b, type: 2}
   monsterType: 1
   ultimateEffect: {fileID: 0}
-  ultimateValue: 5
+  ultimateValue: 15
 --- !u!114 &6149916463832138144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -264,11 +264,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MaxSkillSlot>k__BackingField: 1
   <SkillSlots>k__BackingField:
-  - rid: 6381323680832290830
+  - rid: 8352282048404389888
   references:
     version: 2
     RefIds:
-    - rid: 6381323680832290830
+    - rid: 8352282048404389888
       type: {class: MonsterSkillSlot, ns: , asm: Assembly-CSharp}
       data:
         OnRemoved:

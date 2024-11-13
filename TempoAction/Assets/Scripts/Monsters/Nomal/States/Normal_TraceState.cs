@@ -43,7 +43,7 @@ public class Normal_TraceState : Normal_State
         {
             _monster.Direction = -dir;
         }
-        else if (_monster.monsterType == Define.NormalMonsterType.KUNG)
+        else if (_monster.monsterType == Define.NormalMonsterType.KUNG || _monster.monsterType == Define.NormalMonsterType.MON3)
         {
             _monster.Direction = dir;
         }

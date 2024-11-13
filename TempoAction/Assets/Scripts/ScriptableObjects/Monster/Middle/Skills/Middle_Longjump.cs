@@ -98,22 +98,23 @@ public class Middle_Longjump : Middle_Skill
     {
         if (!isFlying)
         {
-            _monster.transform.DOMoveY(15f, 1.2f);
-            _monster.Rb.useGravity = false;
-
             GameObject hitParticle = ObjectPool.Instance.Spawn("FX_ChungJump@P", 1);
 
-            hitParticle.transform.position = new Vector3(_monster.transform.position.x, 1.7f, _monster.transform.position.z);
+            hitParticle.transform.position = new Vector3(_monster.transform.position.x, 1.4f, _monster.transform.position.z);
+
+            _monster.transform.DOMoveY(15f, 1.2f);
+            _monster.Rb.useGravity = false;
 
             isFlying = true;
         }
         else
         {
-            attackPos = _monster.Player.transform.position.x - _monster.Direction;
+            attackPos = _monster.Player.transform.position.x;
+            _monster.CharacterModel.localScale = new Vector3(_monster.transform.position.x - _monster.Player.transform.position.x > 0 ? 1 : -1, 1, 1);
 
             GameObject hitParticle2 = ObjectPool.Instance.Spawn("FX_ChungLandingPoint", 1);
 
-            hitParticle2.transform.position = new Vector3(attackPos + _monster.Direction * 1.5f, 1.3f, _monster.transform.position.z);
+            hitParticle2.transform.position = new Vector3(attackPos, 1.3f, _monster.transform.position.z);
         }
     }
 
@@ -129,12 +130,23 @@ public class Middle_Longjump : Middle_Skill
         _monster.Rb.useGravity = true;
 
         Vector3 pos = _monster.transform.position;
-        pos.x = attackPos;
+        if (_monster.CharacterModel.localScale.x > 0)
+        {
+            pos.x = attackPos + 2.5f;
+        }
+        else
+        {
+            pos.x = attackPos - 2.5f;
+        }
         _monster.transform.position = pos;
 
-        _monster.transform.DOMoveY(0.97f, 0.3f);
+        _monster.transform.DOKill();
+        _monster.transform.DOMoveY(1, 0.3f).OnComplete(() =>
+        {
+            _monster.Rb.velocity = Vector3.zero;
+        });
 
-        Vector3 hitPos = new Vector3(_monster.HitPoint.position.x, 0.97f, _monster.HitPoint.position.z);
+        Vector3 hitPos = new Vector3(attackPos, 0.97f, _monster.HitPoint.position.z);
 
         _monster.HitPoint.localPosition = new Vector3(_hitPoint.x, _hitPoint.y);
         _monster.ColliderSize = new Vector3(_hitScale.x, _hitScale.y, _hitScale.z);
@@ -142,7 +154,7 @@ public class Middle_Longjump : Middle_Skill
 
         GameObject hitParticle = ObjectPool.Instance.Spawn("FX_ChungLanding@P", 1);
 
-        hitParticle.transform.position = new Vector3(_monster.transform.position.x + (_monster.Direction * 1.5f), 1.2f, _monster.transform.position.z);
+        hitParticle.transform.position = new Vector3(attackPos, 1.2f, _monster.transform.position.z);
 
         Collider[] hitPlayer = Physics.OverlapBox(hitPos, _hitScale / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 

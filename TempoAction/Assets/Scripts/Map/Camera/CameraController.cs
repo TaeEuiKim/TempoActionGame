@@ -204,7 +204,7 @@ public class CameraController : Singleton<CameraController>
 
     public void SetCameraDamping(float amount)
     {
-        if (_PlayerCamera[0] == null)
+        if (_PlayerCamera[0] == null || !_PlayerCamera[0].gameObject.activeSelf)
         {
             return;
         }

@@ -10,6 +10,8 @@ public class Dropbomb : MonoBehaviour
 {
     [SerializeField] private Vector3 ro;
 
+    public GameObject cutScene;
+
     public float TotalDamage;
     private float monsterDamage;
 
@@ -46,7 +48,7 @@ public class Dropbomb : MonoBehaviour
         if (!isGrounded && !isNonAuto)
         {
             timer += Time.deltaTime;
-            if (timer > 2f)
+            if (timer > 2.5f)
             {
                 isNonAuto = true;
             }
@@ -78,9 +80,10 @@ public class Dropbomb : MonoBehaviour
 
         GameObject effect = ObjectPool.Instance.Spawn("TraceEffect", 1);
 
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Monster"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Boss"))
         {
             effect.transform.position = collision.transform.position - new Vector3(0, 2.5f);
+            collision.transform.GetComponent<MiddleMonster>().StartMiddleCut();
             collision.transform.GetComponent<Monster>().TakeDamage(monsterDamage);
         }
 

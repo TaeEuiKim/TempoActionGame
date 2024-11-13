@@ -21,7 +21,7 @@ public class Middle_Takedown : Middle_Skill
     [SerializeField] private float _knockBackDuration;
     [SerializeField] int _attackCount;
 
-    [Header("피니쉬 공격 데미지 체력(%)")]
+    [Header("피니쉬 공격 데미지 체력")]
     [SerializeField] float _finishDamage;
 
     public override void Init(MiddleMonster monster)

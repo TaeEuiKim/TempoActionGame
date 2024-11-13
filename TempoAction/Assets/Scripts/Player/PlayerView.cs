@@ -116,10 +116,7 @@ public class PlayerView : MonoBehaviour
             yield return time;
         }
 
-        if (_ultimateIllusionBarImage.fillAmount > fillAmount)
-        {
-            _ultimateIllusionBarImage.fillAmount = fillAmount;
-        }
+        _ultimateIllusionBarImage.fillAmount = fillAmount;
 
         while (_ultimateBarImage.fillAmount < fillAmount)
         {
@@ -128,10 +125,7 @@ public class PlayerView : MonoBehaviour
             yield return time;
         }
 
-        if (_ultimateBarImage.fillAmount > value)
-        {
-            _ultimateBarImage.fillAmount = value;
-        }
+        _ultimateBarImage.fillAmount = value;
 
         yield return null;
     }
@@ -147,7 +141,7 @@ public class PlayerView : MonoBehaviour
     {
         float time = 0.01f;
         WaitForSeconds seconds = new WaitForSeconds(time);
-        float fillAmount = value;
+        float fillAmount = value + 0.05f;
         if (fillAmount < 0)
         {
             fillAmount = 0;
@@ -160,10 +154,7 @@ public class PlayerView : MonoBehaviour
             yield return seconds;
         }
 
-        if (_hpBarImage.fillAmount < fillAmount)
-        {
-            _hpBarImage.fillAmount = fillAmount;
-        }
+        _hpBarImage.fillAmount = fillAmount;
 
         while (_hpIllusionBarImage.fillAmount >= fillAmount)
         {
@@ -172,10 +163,7 @@ public class PlayerView : MonoBehaviour
             yield return seconds;
         }
 
-        if (_hpIllusionBarImage.fillAmount < fillAmount)
-        {
-            _hpIllusionBarImage.fillAmount = fillAmount;
-        }
+        _hpIllusionBarImage.fillAmount = fillAmount;
 
         yield return null;
     }
@@ -191,7 +179,7 @@ public class PlayerView : MonoBehaviour
     {
         float time = 0.01f;
         WaitForSeconds seconds = new WaitForSeconds(time);
-        float fillAmount = value;
+        float fillAmount = value + 0.05f;
         if (fillAmount < 0)
         {
             fillAmount = 0;
@@ -204,10 +192,7 @@ public class PlayerView : MonoBehaviour
             yield return seconds;
         }
 
-        if (_steminaBarImage.fillAmount < fillAmount)
-        {
-            _steminaBarImage.fillAmount = fillAmount;
-        }
+        _steminaBarImage.fillAmount = fillAmount;
 
         while (_steminaIllusionBarImage.fillAmount >= fillAmount)
         {
@@ -216,10 +201,7 @@ public class PlayerView : MonoBehaviour
             yield return seconds;
         }
 
-        if (_steminaIllusionBarImage.fillAmount < fillAmount)
-        {
-            _steminaIllusionBarImage.fillAmount = fillAmount;
-        }
+        _steminaIllusionBarImage.fillAmount = fillAmount;
 
         yield return null;
     }

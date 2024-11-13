@@ -115,7 +115,7 @@ public class Define
 
     public enum NormalMonsterType
     {
-        BALDO, KUNG, NONE
+        BALDO, KUNG, MON3, NONE
     }
 
     #endregion
