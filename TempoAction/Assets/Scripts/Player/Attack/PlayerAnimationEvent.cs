@@ -158,7 +158,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         foreach (Collider mapObject in hitObjects)
         {
-            BaseObject obj = mapObject.GetComponent<BaseObject>();
+            DestoryObj obj = mapObject.GetComponent<DestoryObj>();
 
             GameObject hitParticle = null;
             GameObject hitParticle2 = null;
@@ -362,7 +362,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         foreach (Collider mapObject in hitObjects)
         {
-            BaseObject obj = mapObject.GetComponent<BaseObject>();
+            DestoryObj obj = mapObject.GetComponent<DestoryObj>();
 
             GameObject hitParticle;
             GameObject hitParticle2;
@@ -479,7 +479,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         foreach (Collider mapObject in hitObjects)
         {
-            BaseObject obj = mapObject.GetComponent<BaseObject>();
+            DestoryObj obj = mapObject.GetComponent<DestoryObj>();
 
             HitObject(obj);
         }
@@ -494,7 +494,7 @@ public class PlayerAnimationEvent : MonoBehaviour
         monster.TakeDamage(_player.GetTotalDamage());
     }
 
-    private void HitObject(BaseObject obj)
+    private void HitObject(DestoryObj obj)
     {
         obj.TakeDamage(_player.GetTotalDamage());
     }
