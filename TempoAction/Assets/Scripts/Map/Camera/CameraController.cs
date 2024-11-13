@@ -120,7 +120,7 @@ public class CameraController : Singleton<CameraController>
         }
         else if (SceneName == "UNDERGROUND")
         {
-            LoadManager.LoadScene("UndergroundStage");
+            LoadManager.PassLoadScene("UndergroundStage");
         }
 
         yield break;
