@@ -7618,17 +7618,33 @@ PrefabInstance:
     m_TransformParent: {fileID: 8910211008713852491}
     m_Modifications:
     - target: {fileID: 1060179485103019296, guid: 0f1650431519fcc478ad66cdf6ed48a6, type: 3}
+      propertyPath: moveWithTransform
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1060179485103019296, guid: 0f1650431519fcc478ad66cdf6ed48a6, type: 3}
       propertyPath: ShapeModule.m_SkinnedMeshRenderer
       value: 
       objectReference: {fileID: 7233028618205561791}
+    - target: {fileID: 3023618273921669256, guid: 0f1650431519fcc478ad66cdf6ed48a6, type: 3}
+      propertyPath: moveWithTransform
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3023618273921669256, guid: 0f1650431519fcc478ad66cdf6ed48a6, type: 3}
       propertyPath: ShapeModule.m_SkinnedMeshRenderer
       value: 
       objectReference: {fileID: 7233028618205561791}
     - target: {fileID: 3410455354518764654, guid: 0f1650431519fcc478ad66cdf6ed48a6, type: 3}
+      propertyPath: moveWithTransform
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3410455354518764654, guid: 0f1650431519fcc478ad66cdf6ed48a6, type: 3}
       propertyPath: ShapeModule.m_SkinnedMeshRenderer
       value: 
       objectReference: {fileID: 7233028618205561791}
+    - target: {fileID: 3425490071114014363, guid: 0f1650431519fcc478ad66cdf6ed48a6, type: 3}
+      propertyPath: moveWithTransform
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3425490071114014363, guid: 0f1650431519fcc478ad66cdf6ed48a6, type: 3}
       propertyPath: ShapeModule.m_SkinnedMeshRenderer
       value: 
