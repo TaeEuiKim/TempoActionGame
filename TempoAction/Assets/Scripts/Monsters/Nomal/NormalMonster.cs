@@ -62,6 +62,12 @@ public class NormalMonster : Monster
     [Header("몬스터 타입")]
     public Define.NormalMonsterType monsterType;
 
+    [Space]
+    [Header("궁극기 이펙트")]
+    [SerializeField] public GameObject ultimateEffect;
+    [Header("궁극기 채워지는 양")]
+    [SerializeField] public float ultimateValue;
+
     #endregion
 
     #region 프로퍼티
@@ -171,7 +177,10 @@ public class NormalMonster : Monster
         //CheckPerceptionState(); // 게이지 증가 시키는 함수
         //UpdatePerceptionState(); // 게이지 확인 후 인식 상태 업데이트
 
-        _skillManager.OnUpdate(this);
+        if (_skillManager != null)
+        {
+            _skillManager.OnUpdate(this);
+        }
 
         // 인식 범위 안에 들어왔을 때
         /*if (_perceptionStateStorage[_currentPerceptionState].IsEntered)
@@ -286,6 +295,11 @@ public class NormalMonster : Monster
     // 스킬 공격 발동 가능한지 반환
     public bool GetSkillAttackUsable()
     {
+        if (_SkillManager == null)
+        {
+            return false;
+        }
+
         var slots = _SkillManager.GetUsableSkillSlots();
         float distance = Vector3.Distance(transform.position, Player.position);
 
@@ -383,7 +397,7 @@ public class NormalMonster : Monster
 
     public override bool IsLeftDirection()
     {
-        if (monsterType == Define.NormalMonsterType.KUNG)
+        if (monsterType == Define.NormalMonsterType.KUNG || monsterType == Define.NormalMonsterType.MON3)
         {
             return Direction != 1;
         }

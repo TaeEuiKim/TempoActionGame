@@ -76,26 +76,28 @@ public class PlayerAttack
         //    }
         //}
 
-       
-        if (_currentAttackState != Define.AttackState.ATTACK)
-        { 
-            // 공격 키 입력
-            if (PlayerInputManager.Instance.attack)
-            {
-                PlayerInputManager.Instance.attack = false;
-                if (_player.Ani.GetBool("isGrounded"))
-                {
-                    AttackMainTempo();
-                }
-            }
-
-        }
-        else
+        if (!PlayerInputManager.Instance.isKeyZ)
         {
-            if (PlayerInputManager.Instance.attack || PlayerInputManager.Instance.keyX)
+            if (_currentAttackState != Define.AttackState.ATTACK)
+            { 
+                // 공격 키 입력
+                if (PlayerInputManager.Instance.attack)
+                {
+                    PlayerInputManager.Instance.attack = false;
+                    if (_player.Ani.GetBool("isGrounded"))
+                    {
+                        AttackMainTempo();
+                    }
+                }
+
+            }
+            else
             {
-                PlayerInputManager.Instance.attack = false;
-                PlayerInputManager.Instance.keyX = false;
+                if (PlayerInputManager.Instance.attack || PlayerInputManager.Instance.keyX)
+                {
+                    PlayerInputManager.Instance.attack = false;
+                    PlayerInputManager.Instance.keyX = false;
+                }
             }
         }
 
@@ -134,6 +136,14 @@ public class PlayerAttack
         foreach (TempoAttackData data in _player.MainTempoAttackDatas)
         {
             _mainTempoQueue.Enqueue(data);
+        }
+    }
+
+    public void SetMainTempoQueue(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            _mainTempoQueue.Dequeue();
         }
     }
 

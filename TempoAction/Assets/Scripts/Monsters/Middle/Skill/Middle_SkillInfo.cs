@@ -13,7 +13,7 @@ public class Middle_SkillInfo
     [Header("사거리 (경채는 조절X)")]
     public float range;
 
-    [Header("데미지 (체력 %)")]
+    [Header("데미지")]
     public float damage;
 
     [Header("스킬 우선순위")]

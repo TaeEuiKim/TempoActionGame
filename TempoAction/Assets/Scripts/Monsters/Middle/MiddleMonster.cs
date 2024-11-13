@@ -31,6 +31,9 @@ public class MiddleMonster : Monster
     [Header("패턴용 포인트")]
     public Dictionary<Define.MiddleMonsterPoint, Transform> middlePoint;
 
+    [Header("중간 컷씬")]
+    [SerializeField] public GameObject curScene;
+
     public Define.MiddleMonsterState CurrentState { get => _currentState; }
     public Define.MiddleMonsterName monsterName { get => _monsterName; }
     public Middle_Skill CurrentSkill { get => _currentSkill; }
@@ -180,6 +183,22 @@ public class MiddleMonster : Monster
     }
 
     #endregion 스킬
+
+    public void StartMiddleCut()
+    {
+        StartCoroutine(ExitCutScene());
+    }
+
+    private IEnumerator ExitCutScene()
+    {
+        curScene.SetActive(true);
+
+        yield return new WaitForSeconds(10f);
+
+        curScene.SetActive(false);
+
+        yield return null;
+    }
 
     public override void TakeDamage(float value)
     {

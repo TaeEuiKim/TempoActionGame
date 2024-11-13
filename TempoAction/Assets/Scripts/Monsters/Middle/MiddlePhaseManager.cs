@@ -35,9 +35,7 @@ public class MiddlePhaseManager : MonoBehaviour
 
     [Space]
     [Header("중간 보스 시작 UI")]
-    [SerializeField] public UnityEngine.UI.Image smashImg;
-    [Header("중간 보스 시작 UI2")]
-    [SerializeField] public UnityEngine.UI.Image outImg;
+    [SerializeField] public GameObject smashImg;
 
     private List<float> _targetHealthList = new List<float>();
     private int _targetHealthIndex = 0;
@@ -123,15 +121,19 @@ public class MiddlePhaseManager : MonoBehaviour
             yield return waitOneForSeconds;
         }
 
-        startSceneUI.SetActive(false);
-
         yield return waitOneForSeconds;
-        Debug.LogError("1");
+
         StartCoroutine(FadeOut());
     }
 
     private IEnumerator FadeOut()
     {
+        smashImg.SetActive(true);
+
+        yield return new WaitForSeconds(1.5f);
+
+        smashImg.SetActive(false);
+        
         float alpha = 1;
         isCutScene = false;
 
@@ -145,37 +147,9 @@ public class MiddlePhaseManager : MonoBehaviour
             yield return null;
         }
 
-
         float speed = 13f;
 
-        smashImg.gameObject.SetActive(true);
-
-        while (smashImg.transform.localScale.x > 1.5f)
-        {
-            smashImg.transform.localScale = new Vector3(smashImg.transform.localScale.x - Time.deltaTime * speed, smashImg.transform.localScale.y - Time.deltaTime * speed, 1);
-
-            yield return null;
-        }
-
-        smashImg.transform.localScale = Vector3.one;
-
         yield return waitOneForSeconds;
-
-        outImg.gameObject.SetActive(true);
-
-        while (outImg.transform.localScale.x > 1.5f)
-        {
-            outImg.transform.localScale = new Vector3(outImg.transform.localScale.x - Time.deltaTime * speed, outImg.transform.localScale.y - Time.deltaTime * speed, 1);
-
-            yield return null;
-        }
-
-        outImg.transform.localScale = Vector3.one;
-
-        yield return waitOneForSeconds;
-
-        outImg.gameObject.SetActive(false);
-        smashImg.gameObject.SetActive(false);
 
         ChangeStageState(Define.MiddlePhaseState.START);
 
@@ -184,10 +158,7 @@ public class MiddlePhaseManager : MonoBehaviour
 
     public void SkipCutScene()
     {
-        if (cutSceneCoroutine != null)
-        {
-            StopCoroutine(cutSceneCoroutine);
-        }
+        StopCoroutine(cutSceneCoroutine);
         startSceneUI.SetActive(false);
 
         StartCoroutine(FadeOut());

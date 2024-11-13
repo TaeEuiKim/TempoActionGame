@@ -19,7 +19,7 @@ public class Normal_IdleState : Normal_State
         {
             _monster.Direction = -(_monster.Player.position.x - _monster.transform.position.x);
         }
-        else if (_monster.monsterType == Define.NormalMonsterType.KUNG)
+        else if (_monster.monsterType == Define.NormalMonsterType.KUNG || _monster.monsterType == Define.NormalMonsterType.MON3)
         {
             _monster.Direction = _monster.Player.position.x - _monster.transform.position.x;
         }

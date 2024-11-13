@@ -333,6 +333,7 @@ public class PlayerController
             PlayerInputManager.Instance.ultimate = false;
             isUltimate = true;
 
+            _player.MoveEffect.SetActive(true);
             _player.CharacterModel.GetComponent<CharacterTrail>().StartTrail(10f);
         }
         else if (PlayerInputManager.Instance.ultimate && isUltimate)

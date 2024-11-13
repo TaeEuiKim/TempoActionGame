@@ -37,7 +37,7 @@ public class CharacterTrail : MonoBehaviour
         while (timeActive > 0)
         {
             timeActive -= meshRefreshRate;
-            Debug.LogError(timeActive);
+
             foreach (var skinnedMeshRenderer in skinnedMeshRenderers)
             {
                 GameObject gObj = ObjectPool.Instance.Spawn("TrailMesh", 1f);
@@ -79,6 +79,7 @@ public class CharacterTrail : MonoBehaviour
         }
 
         GetComponentInParent<Player>().Controller.isUltimate = false;
+        GetComponentInParent<Player>().MoveEffect.SetActive(false);
         isTrailActive = false;
     }
 

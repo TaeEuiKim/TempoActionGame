@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,8 +7,14 @@ using UnityEngine.UI;
 public class PlayerView : MonoBehaviour
 {
     [SerializeField] private Image _hpBarImage;
+    [SerializeField] private Image _hpIllusionBarImage;
+
     [SerializeField] private Image _steminaBarImage;
+    [SerializeField] private Image _steminaIllusionBarImage;
+
     [SerializeField] private Image _ultimateBarImage;
+    [SerializeField] private Image _ultimateIllusionBarImage;
+
     [SerializeField] private GameObject _gameoverUI;
     [SerializeField] private GameObject[] MainSkillSlots;
     [SerializeField] private GameObject[] SubSkillSlots;
@@ -79,6 +86,12 @@ public class PlayerView : MonoBehaviour
         _gameoverUI?.SetActive(true);
     }
 
+    public void MoveUltimateUI(GameObject obj, float value)
+    {
+        //obj.transform.DOMove(_ultimateBarImage.transform.position, 1f);
+        UpdateUltimateGauge(value);
+    }
+
     public void UpdateUltimateGauge(float value)
     {
         if (!_ultimateBarImage) { return; }
@@ -88,17 +101,31 @@ public class PlayerView : MonoBehaviour
 
     private IEnumerator ChangeUltimateGauge(float value)
     {
-        while (_hpBarImage.fillAmount > value)
+        float time = 0.01f;
+        WaitForSeconds seconds = new WaitForSeconds(time);
+        float fillAmount = _ultimateIllusionBarImage.fillAmount + value;
+        if (fillAmount > 1)
         {
-            _ultimateBarImage.fillAmount -= Time.deltaTime;
-
-            yield return null;
+            fillAmount = 1;
         }
 
-        if (_ultimateBarImage.fillAmount < value)
+        while (_ultimateIllusionBarImage.fillAmount < fillAmount)
         {
-            _ultimateBarImage.fillAmount = value;
+            _ultimateIllusionBarImage.fillAmount += time;
+
+            yield return time;
         }
+
+        _ultimateIllusionBarImage.fillAmount = fillAmount;
+
+        while (_ultimateBarImage.fillAmount < fillAmount)
+        {
+            _ultimateBarImage.fillAmount += time;
+
+            yield return time;
+        }
+
+        _ultimateBarImage.fillAmount = value;
 
         yield return null;
     }
@@ -112,18 +139,76 @@ public class PlayerView : MonoBehaviour
 
     private IEnumerator UpdateHealthBar(float value)
     {
-        while (_hpBarImage.fillAmount > value)
+        float time = 0.01f;
+        WaitForSeconds seconds = new WaitForSeconds(time);
+        float fillAmount = value + 0.05f;
+        if (fillAmount < 0)
         {
-            _hpBarImage.fillAmount -= Time.deltaTime;
-
-            yield return null;
+            fillAmount = 0;
         }
 
-        if (_hpBarImage.fillAmount < value)
+        while (_hpBarImage.fillAmount >= fillAmount)
         {
-            _hpBarImage.fillAmount = value;
+            _hpBarImage.fillAmount -= time;
+
+            yield return seconds;
         }
+
+        _hpBarImage.fillAmount = fillAmount;
+
+        while (_hpIllusionBarImage.fillAmount >= fillAmount)
+        {
+            _hpIllusionBarImage.fillAmount -= time;
+
+            yield return seconds;
+        }
+
+        _hpIllusionBarImage.fillAmount = fillAmount;
 
         yield return null;
+    }
+
+    public void UpdateSteminaBar(float value)
+    {
+        if (!_steminaBarImage) { return; }
+
+        StartCoroutine(UpdateSteBar(value));
+    }
+
+    private IEnumerator UpdateSteBar(float value)
+    {
+        float time = 0.01f;
+        WaitForSeconds seconds = new WaitForSeconds(time);
+        float fillAmount = value + 0.05f;
+        if (fillAmount < 0)
+        {
+            fillAmount = 0;
+        }
+
+        while (_steminaBarImage.fillAmount >= fillAmount)
+        {
+            _steminaBarImage.fillAmount -= time;
+
+            yield return seconds;
+        }
+
+        _steminaBarImage.fillAmount = fillAmount;
+
+        while (_steminaIllusionBarImage.fillAmount >= fillAmount)
+        {
+            _steminaIllusionBarImage.fillAmount -= time;
+
+            yield return seconds;
+        }
+
+        _steminaIllusionBarImage.fillAmount = fillAmount;
+
+        yield return null;
+    }
+
+    public void AutoUpdateStemina(float value)
+    {
+        _steminaBarImage.fillAmount = value;
+        _steminaIllusionBarImage.fillAmount = value;
     }
 }

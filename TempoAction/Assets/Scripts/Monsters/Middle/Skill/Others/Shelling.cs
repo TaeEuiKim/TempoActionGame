@@ -1,3 +1,4 @@
+using JetBrains.Rider.Unity.Editor;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -11,10 +12,17 @@ public class Shelling : MonoBehaviour
     public LayerMask bombType { get; set; }
 
     private float timer = 0f;
+    private Rigidbody rb;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
 
     private void OnEnable()
     {
         timer = 0f;
+        rb.velocity = Vector3.zero;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -23,17 +31,6 @@ public class Shelling : MonoBehaviour
         {
             BombTimer();
         }
-
-        //if (collision.gameObject.CompareTag("Player"))
-        //{
-        //    GameObject effect = ObjectPool.Instance.Spawn("BombEffect", 1);
-        //    effect.transform.position = transform.position;
-        //    ObjectPool.Instance.Remove(this.gameObject);
-
-        //    if (collision.gameObject.GetComponent<Player>().IsInvincible) return;
-
-        //    collision.gameObject.GetComponent<Player>().TakeDamage(TotalDamage, true);
-        //}
     }
 
     private void BombTimer()
