@@ -101,7 +101,7 @@ public class PlayerView : MonoBehaviour
 
     private IEnumerator ChangeUltimateGauge(float value)
     {
-        float time = 0.01f;
+        float time = 0.1f;
         WaitForSeconds seconds = new WaitForSeconds(time);
         float fillAmount = _ultimateIllusionBarImage.fillAmount + value;
         if (fillAmount > 1)
@@ -125,9 +125,43 @@ public class PlayerView : MonoBehaviour
             yield return time;
         }
 
-        _ultimateBarImage.fillAmount = value;
+        _ultimateBarImage.fillAmount = fillAmount;
 
         yield return null;
+    }
+
+    public void UseUltimate()
+    {
+        StartCoroutine(ReduceUltimate());
+    }
+
+    private IEnumerator ReduceUltimate()
+    {
+        float time = 0.1f;
+        WaitForSeconds seconds = new WaitForSeconds(time);
+
+        while (_ultimateBarImage.fillAmount > 0)
+        {
+            _ultimateBarImage.fillAmount -= time;
+
+            yield return time;
+        }
+
+        _ultimateBarImage.fillAmount = 0;
+
+        while (_ultimateIllusionBarImage.fillAmount > 0)
+        {
+            _ultimateIllusionBarImage.fillAmount -= time;
+
+            yield return time;
+        }
+
+        _ultimateIllusionBarImage.fillAmount = 0;
+    }
+
+    public float GetUltimateGauge()
+    {
+        return _ultimateBarImage.fillAmount;
     }
 
     public void UpdateHpBar(float value)
@@ -146,7 +180,6 @@ public class PlayerView : MonoBehaviour
         {
             fillAmount = 0;
         }
-
         while (_hpBarImage.fillAmount >= fillAmount)
         {
             _hpBarImage.fillAmount -= time;
@@ -177,7 +210,7 @@ public class PlayerView : MonoBehaviour
 
     private IEnumerator UpdateSteBar(float value)
     {
-        float time = 0.01f;
+        float time = 0.001f;
         WaitForSeconds seconds = new WaitForSeconds(time);
         float fillAmount = value + 0.05f;
         if (fillAmount < 0)
