@@ -10,8 +10,6 @@ public class OniFire : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            _startSceneManager._fire.gameObject.SetActive(true);
-            transform.gameObject.SetActive(false);
         }
     }
 }

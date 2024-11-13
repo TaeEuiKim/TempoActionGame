@@ -20,6 +20,11 @@ public class LoadManager : MonoBehaviour
         SceneManager.LoadScene("LoadingScene");
     }
 
+    public static void PassLoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+
     IEnumerator LoadScene()
     {
         yield return new WaitForSeconds(1f);

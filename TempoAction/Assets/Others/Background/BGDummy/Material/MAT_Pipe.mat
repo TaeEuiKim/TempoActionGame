@@ -25,7 +25,6 @@ Material:
   m_Parent: {fileID: 2100000, guid: ec30b29bb1257eb41a84b98111df7940, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _METALLICSPECGLOSSMAP
   - _NORMALMAP
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -52,10 +51,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: cb4932a5e19c7d947a8629069c1cc58f, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _Metallic: 0.824
+    - _Smoothness: 0.149
     m_Colors: []
   m_BuildTextureStacks: []

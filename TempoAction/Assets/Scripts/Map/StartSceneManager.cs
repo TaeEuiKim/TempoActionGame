@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class StartSceneManager : MonoBehaviour
 {
-    [SerializeField] public GameObject _fire;
     [Header("ÄÆ¾À ¿ÀºêÁ§Æ®")]
     [SerializeField] public Image[] sprites;
 
