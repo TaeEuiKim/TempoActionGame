@@ -1,3 +1,4 @@
+using Palmmedia.ReportGenerator.Core.Reporting.Builders;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +20,17 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     public bool downArrow;
     public bool leftArrow;
     public bool rightArrow;
-    private bool keyZ;
+    public bool keyX;
+
+    [Header("Option")]
+    public bool cancel;
+    public bool ultimate;
 
     [Header("Important Command Setting")]
     public List<KeyCode> commandValue;
     public bool isCommand;
+    public bool isDashCommand;
+    public bool isKeyZ;
 
     private void Awake()
     {
@@ -37,6 +44,9 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
 
     public void ResetCommandKey()
     {
+        isCommand = false;
+        isDashCommand = false;
+
         commandValue.Clear();
     }
 
@@ -53,9 +63,13 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
 
     public void OnAttack(InputValue value)
     {
-        if (!isCommand)
+        if (!isDashCommand)
         {
             AttackInput(value.isPressed);
+        }
+        else
+        {
+            commandValue.Add(KeyCode.Z);
         }
     }
 
@@ -71,14 +85,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
 
     public void OnDownArrow(InputValue value)
     {
-        if (!isCommand)
-        {
-            DownArrowInput(value.isPressed);
-        }
-        else if (value.isPressed && isCommand)
-        {
-            commandValue.Add(KeyCode.DownArrow);
-        }
+        DownArrowInput(value.isPressed);
     }
 
     public void OnLeftArrow(InputValue value)
@@ -113,12 +120,26 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
         }
     }
 
-    public void OnKeyZ(InputValue value)
+    public void OnKeyX(InputValue value)
     {
-        if (value.isPressed && isCommand)
+        if (!isCommand)
         {
-            commandValue.Add(KeyCode.Z);
+            KeyXInput(value.isPressed);
         }
+        else if ((value.isPressed && isCommand) || isDashCommand)
+        {
+            commandValue.Add(KeyCode.X);
+        }
+    }
+
+    public void OnCancel(InputValue value)
+    {
+        CancelInput(value.isPressed);
+    }
+
+    public void OnUltimate(InputValue value)
+    {
+        UltimateInput(value.isPressed);
     }
 #endif
     public readonly GenericEventSystem<Vector2> MoveEvent = new();
@@ -182,5 +203,26 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     {
         upArrow = input;
         UpArrowEvent.TriggerEvent(true);
+    }
+
+    public readonly GenericEventSystem<bool> CancelEvent = new();
+    public void CancelInput(bool input)
+    {
+        cancel = input;
+        CancelEvent.TriggerEvent(true);
+    }
+
+    public readonly GenericEventSystem<bool> UltimateEvent = new();
+    public void UltimateInput(bool input)
+    {
+        ultimate = input;
+        UltimateEvent.TriggerEvent(true);
+    }
+
+    public readonly GenericEventSystem<bool> KeyXEvent = new();
+    public void KeyXInput(bool input)
+    {
+        keyX = input;
+        KeyXEvent.TriggerEvent(true);
     }
 }

@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using FMOD;
 
-public class CameraController : MonoBehaviour
+public class CameraController : Singleton<CameraController>
 {
     [Header("Component")]
     public GameObject player;
@@ -25,6 +25,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float Impulse;
     [SerializeField] private float Frequency;
     private float shakeTime = 0f;
+
+    [SerializeField] private NoiseSettings[] noiseSettings;
 
     private Quaternion saveCameraRotation;
 
@@ -53,6 +55,9 @@ public class CameraController : MonoBehaviour
                 break;
             case Define.CameraType.MIDDLEBOSS:
                 TurnOnFadeOut(false, "START");
+                break;
+            case Define.CameraType.UNDERGROUND:
+                TurnOnFadeOut(false, "UNDERGROUND");
                 break;
             case Define.CameraType.NONE:
                 break;
@@ -113,6 +118,10 @@ public class CameraController : MonoBehaviour
         {
             LoadManager.LoadScene("MiddleBossStage");
         }
+        else if (SceneName == "UNDERGROUND")
+        {
+            LoadManager.PassLoadScene("UndergroundStage");
+        }
 
         yield break;
     }
@@ -152,6 +161,10 @@ public class CameraController : MonoBehaviour
     public void VibrateForTime(float times)
     {
         _CurCamera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
+        if (SceneManager.GetActiveScene().name == "MiddleBossStage")
+        {
+            _CurCamera = _SceneCamera;
+        }
 
         //_CurCamera.m_LookAt = null;
         shakeTime = times;
@@ -161,6 +174,18 @@ public class CameraController : MonoBehaviour
     IEnumerator CameraShaking()
     {
         CinemachineBasicMultiChannelPerlin ch = _CurCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+
+        Player _player = player.GetComponent<Player>(); ;
+
+        if (_player.Ani.GetInteger("CommandCount") == 3 || _player.Ani.GetInteger("CommandCount") == 5)
+        {
+            ch.m_NoiseProfile = noiseSettings[0];
+            _player.Ani.SetInteger("CommandCount", 0);
+        }
+        else
+        {
+            ch.m_NoiseProfile = noiseSettings[1];
+        }
 
         while (shakeTime > 0)
         {
@@ -175,5 +200,15 @@ public class CameraController : MonoBehaviour
         ch.m_AmplitudeGain = 0;
         //_CurCamera.m_LookAt = player.transform;
         yield return null;
+    }
+
+    public void SetCameraDamping(float amount)
+    {
+        if (_PlayerCamera[0] == null || !_PlayerCamera[0].gameObject.activeSelf)
+        {
+            return;
+        }
+
+        _PlayerCamera[0].GetCinemachineComponent<CinemachineTransposer>().m_XDamping = amount;
     }
 }

@@ -68,19 +68,19 @@ public class Middle_Longjump : Middle_Skill
             _monster.Ani.SetBool("Longjump", true);
         }
 
-        if (!isHit && isFlying)
-        {
-            Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
+        //if (!isHit && isFlying)
+        //{
+        //    Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 
-            foreach (Collider player in hitPlayer)
-            {
-                if (player.GetComponent<Player>().IsInvincible) return;
+        //    foreach (Collider player in hitPlayer)
+        //    {
+        //        if (player.GetComponent<Player>().IsInvincible) return;
 
-                Debug.Log("멀리뛰기 성공");
-                player.GetComponent<Player>().TakeDamage(_info.damage, true);
-                isHit = true;
-            }
-        }
+        //        Debug.Log("멀리뛰기 성공");
+        //        player.GetComponent<Player>().TakeDamage(_info.damage, true);
+        //        isHit = true;
+        //    }
+        //}
     }
 
     public override void Exit()
@@ -96,13 +96,26 @@ public class Middle_Longjump : Middle_Skill
 
     private void Attack()
     {
-        _monster.transform.DOMoveX(attackPos, 1.2f);
+        if (!isFlying)
+        {
+            GameObject hitParticle = ObjectPool.Instance.Spawn("FX_ChungJump@P", 1);
 
-        GameObject hitParticle = ObjectPool.Instance.Spawn("FX_ChungJump@P", 1); ;
+            hitParticle.transform.position = new Vector3(_monster.transform.position.x, 1.4f, _monster.transform.position.z);
 
-        hitParticle.transform.position = new Vector3(_monster.transform.position.x, 0.1f, _monster.transform.position.z);
+            _monster.transform.DOMoveY(15f, 1.2f);
+            _monster.Rb.useGravity = false;
 
-        isFlying = true;
+            isFlying = true;
+        }
+        else
+        {
+            attackPos = _monster.Player.transform.position.x;
+            _monster.CharacterModel.localScale = new Vector3(_monster.transform.position.x - _monster.Player.transform.position.x > 0 ? 1 : -1, 1, 1);
+
+            GameObject hitParticle2 = ObjectPool.Instance.Spawn("FX_ChungLandingPoint", 1);
+
+            hitParticle2.transform.position = new Vector3(attackPos, 1.3f, _monster.transform.position.z);
+        }
     }
 
     IEnumerator FinishTimer()
@@ -114,22 +127,45 @@ public class Middle_Longjump : Middle_Skill
 
     private void Finish()
     {
+        _monster.Rb.useGravity = true;
+
+        Vector3 pos = _monster.transform.position;
+        if (_monster.CharacterModel.localScale.x > 0)
+        {
+            pos.x = attackPos + 2.5f;
+        }
+        else
+        {
+            pos.x = attackPos - 2.5f;
+        }
+        _monster.transform.position = pos;
+
+        _monster.transform.DOKill();
+        _monster.transform.DOMoveY(1, 0.3f).OnComplete(() =>
+        {
+            _monster.Rb.velocity = Vector3.zero;
+        });
+
+        Vector3 hitPos = new Vector3(attackPos, 0.97f, _monster.HitPoint.position.z);
+
         _monster.HitPoint.localPosition = new Vector3(_hitPoint.x, _hitPoint.y);
         _monster.ColliderSize = new Vector3(_hitScale.x, _hitScale.y, _hitScale.z);
         isFlying = false;
 
-        GameObject hitParticle = ObjectPool.Instance.Spawn("FX_ChungLanding@P", 1); ;
+        GameObject hitParticle = ObjectPool.Instance.Spawn("FX_ChungLanding@P", 1);
 
-        hitParticle.transform.position = new Vector3(_monster.transform.position.x + (_monster.Direction * 1.5f), 0.1f, _monster.transform.position.z);
+        hitParticle.transform.position = new Vector3(attackPos, 1.2f, _monster.transform.position.z);
 
-        Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _hitScale / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
+        Collider[] hitPlayer = Physics.OverlapBox(hitPos, _hitScale / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 
         foreach (Collider player in hitPlayer)
         {
-            if (player.GetComponent<Player>().IsInvincible) return;
+            Player p = player.GetComponent<Player>();
+
+            if (p.IsInvincible) return;
 
             Debug.Log("멀리뛰기 피니쉬 성공");
-            player.GetComponent<Player>().TakeDamage(_finishDamage, true);
+            p.TakeDamage(_finishDamage);
 
             int dir = 1;
             if ((_monster.transform.position - _monster.Player.transform.position).x > 0)
@@ -137,7 +173,7 @@ public class Middle_Longjump : Middle_Skill
                 dir = -1;
             }
 
-            player.GetComponent<Player>().TakeStun(1f, dir);
+            p.TakeStun(1f, dir);
         }
 
         CoroutineRunner.Instance.StartCoroutine(FinishTimer());

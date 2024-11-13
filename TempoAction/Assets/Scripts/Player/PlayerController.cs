@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using Unity.VisualScripting;
 using System.Linq;
+using Cinemachine.Utility;
 public class PlayerController
 {
     private Player _player;
@@ -19,6 +20,8 @@ public class PlayerController
     private bool _isOnMonster;
     private bool _isDoubleJumping;
     private bool _isBackDash;
+
+    public bool isUltimate;
     public bool isDashing;
     public bool isMove;
     public bool isJump;
@@ -27,6 +30,9 @@ public class PlayerController
     private float _dashTimer;
     protected float _direction;
     protected float _dashDirection;
+
+    private RaycastHit slopeHit;
+
     public float Direction
     {
         get => _direction;
@@ -73,6 +79,8 @@ public class PlayerController
     {
         if (_player.PlayerSt.IsKnockedBack) return;
 
+        InvokeUltimate();
+
         if (_dashTimer >= _player.PlayerSt.DashDelay)
         {
             if (PlayerInputManager.Instance.leftArrow)
@@ -100,8 +108,20 @@ public class PlayerController
         {
             _isGrounded = Physics.CheckSphere(_player.GroundCheckPoint.position, _player.GroundCheckRadius, _player.WallLayer);
         }
-        _isOnMonster = Physics.CheckSphere(_player.GroundCheckPoint.position, _player.GroundCheckRadius, _player.MonsterLayer);
+        _isOnMonster = Physics.CheckSphere(_player.GroundCheckPoint.position, _player.GroundCheckRadius, _player.BossLayer);
         _player.Ani.SetBool("isGrounded", _isGrounded);
+
+        if (PlayerInputManager.Instance.downArrow)
+        {
+            _isBackDash = true;
+        }
+        else
+        {
+            if (!isDashing)
+            {
+                _isBackDash = false;
+            }
+        }
 
         if (_player.Attack.CurrentAttackkState == Define.AttackState.ATTACK)
         {
@@ -128,20 +148,6 @@ public class PlayerController
         {
             Vector3 force = new Vector3(-_player.CharacterModel.localScale.x * 10f, -5f);
             _player.Rb.AddForce(force, ForceMode.VelocityChange);
-        }
-
-        if (PlayerInputManager.Instance.downArrow && !PlayerInputManager.Instance.isCommand)
-        {
-            _player.Ani.SetBool("IsBackDash", true);
-            _isBackDash = true;
-        }
-        else
-        {
-            if (!isDashing)
-            {
-                _player.Ani.SetBool("IsBackDash", false);
-                _isBackDash = false;
-            }
         }
 
         if (!isDashing)
@@ -195,13 +201,12 @@ public class PlayerController
         }
         else
         {
-            tempVelocity = new Vector2(_direction * _player.Stat.SprintSpeed, _player.Rb.velocity.y);
+            tempVelocity = new Vector3(_direction * _player.Stat.SprintSpeed, _player.Rb.velocity.y);
             _player.Ani.SetFloat("Speed", Mathf.Abs(tempVelocity.x));
         }
 
         _player.Rb.velocity = tempVelocity;
     }
-
 
     public void Jump(bool useKeyDown = true)
     {
@@ -217,12 +222,14 @@ public class PlayerController
             {
                 _player.Ani.SetTrigger("isJumping");
                 _player.Rb.velocity = new Vector3(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
+                TestSound.Instance.PlaySound("DoubleJump");
                 _isDoubleJumping = true;
             }
             if (_isGrounded)
             {
                 _player.Ani.SetTrigger("isJumping");
                 _player.Rb.velocity = new Vector3(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
+                TestSound.Instance.PlaySound("Jump");
                 _isGrounded = false;
 
                 GameObject effect = ObjectPool.Instance.Spawn("FX_Jump", 1);
@@ -251,6 +258,11 @@ public class PlayerController
             return;
         }
 
+        // 커맨드 초기화
+        PlayerInputManager.Instance.ResetCommandKey();
+        _player.Ani.SetBool("IsCommand", false);
+        isJump = false;
+
         if (PlayerInputManager.Instance.move.x < 0)
         {
             _dashDirection = -1f;
@@ -260,15 +272,10 @@ public class PlayerController
             _dashDirection = 1f;
         }
 
-        isDashing = true;
+        //isDashing = true;
         _player.transform.DOKill();
         _player.Ani.SetFloat("Speed", 0);
-        _player.Rb.velocity = Vector3.zero;
         _player.Attack.ChangeCurrentAttackState(Define.AttackState.FINISH);
-
-        // 커맨드 초기화
-        PlayerInputManager.Instance.isCommand = false;
-        _player.Ani.SetBool("IsCommand", false);
 
         CoroutineRunner.Instance.StartCoroutine(DashInvincibility(_player.PlayerSt.DashDuration));
         //_player.Rb.velocity = Vector2.zero;
@@ -280,6 +287,7 @@ public class PlayerController
         {
             dir = -1;
         }
+        _player.Ani.SetBool("IsBackDash", _isBackDash);
 
         _player.CharacterModel.localScale = new Vector3(-_dashDirection, 1, -1);
 
@@ -287,14 +295,13 @@ public class PlayerController
             Physics.Raycast(_player.transform.position + new Vector3(0, 0.5f), Vector3.right * _dashDirection * dir, out hit, _player.PlayerSt.DashDistance, _player.GroundLayer))
         {
             dashPosition = (hit.point - new Vector3(0, 0.5f)) - (Vector3.right * _dashDirection * dir) * 0.2f;  // 곱하는 수 만큼 벽에서 떨어짐
-            isMove = true;
         }
         else  // 벽이 없으면 대쉬 거리만큼 앞으로 이동
         {      
             dashPosition = _player.transform.position + (Vector3.right * _dashDirection * dir) * _player.PlayerSt.DashDistance;
         }
 
-        _player.Rb.DOMove(dashPosition, _player.PlayerSt.DashDuration);
+        _player.Rb.DOMove(dashPosition, _player.PlayerSt.DashDuration).OnComplete(() => { isJump = true; isMove = true; });
 
         _player.Ani.SetTrigger("Dash");
 
@@ -307,16 +314,32 @@ public class PlayerController
 
         yield return new WaitForSeconds(duration / 4);
 
-        _player.GetComponent<Collider>().enabled = false;
+        _player.IsInvincible = true;
 
         yield return new WaitForSeconds(invincibilityTime);
 
-        _player.GetComponent<Collider>().enabled = true;
+        _player.IsInvincible = false;
     }
 
     private void Stop()
     {
         _player.Rb.velocity = new Vector2(0, _player.Rb.velocity.y);
+    }
+
+    private void InvokeUltimate()
+    {
+        if (PlayerInputManager.Instance.ultimate && !isUltimate)
+        {
+            PlayerInputManager.Instance.ultimate = false;
+            isUltimate = true;
+
+            _player.MoveEffect.SetActive(true);
+            _player.CharacterModel.GetComponent<CharacterTrail>().StartTrail(10f);
+        }
+        else if (PlayerInputManager.Instance.ultimate && isUltimate)
+        {
+            PlayerInputManager.Instance.ultimate = false;
+        }
     }
 
     private void Flip(float value)
@@ -335,7 +358,7 @@ public class PlayerController
     {
         // 레이캐스트로 장애물 감지
         RaycastHit hit;
-        if (Physics.Raycast(_player.transform.position, Vector2.right * _dashDirection, out hit, 0.5f, _player.BlockLayer))
+        if (Physics.Raycast(_player.transform.position, Vector2.right * _dashDirection, out hit, 0.5f, _player.WallLayer))
         {
             // 장애물이 레이캐스트 범위 안에 있음
             //Debug.Log("장애물 감지: " + hit.collider.name);
@@ -344,19 +367,6 @@ public class PlayerController
 
         // 장애물이 없음
         return true;
-    }
-
-    public bool IsOnSlope()
-    {
-        RaycastHit slopeHit;
-        Ray ray = new Ray(_player.transform.position, Vector3.down);
-        if (Physics.Raycast(ray, out slopeHit, 3f, _player.GroundLayer))
-        {
-            var angle = Vector3.Angle(Vector3.up, slopeHit.normal);
-            //return angle != 0f && angle < 
-        }
-
-        return false;
     }
 
     private void RecordInput(KeyCode key)
@@ -386,5 +396,11 @@ public class PlayerController
         }
 
         return false;
+    }
+
+    public void SetBackDash()
+    {
+        _isBackDash = false;
+        PlayerInputManager.Instance.downArrow = false;
     }
 }

@@ -11,6 +11,7 @@ public class Middle_Die : Middle_State
 
     public override void Enter()
     {
+        _monster.Ani.SetBool("Death", true);
     }
 
     public override void Stay()

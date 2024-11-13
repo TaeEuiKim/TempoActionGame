@@ -148,13 +148,6 @@ public class PlayerSkillManager : MonoBehaviour, ISkillManager
         //        return;
         //    }
         //}
-        
-        // 자리가 없다면 큐(예비 스킬)에 등록
-        reserveSlots.Enqueue(newSkill);
-        if (newSkill.GetSkillId() == 51)
-        {
-            _view.ChangeSubSkillIcon(reserveSlots.Count - 1, false);
-        }
     }
 
     public void LoadSkill(SkillSlot[] skillSlots, Queue<ISkillRoot> reserveSlots)

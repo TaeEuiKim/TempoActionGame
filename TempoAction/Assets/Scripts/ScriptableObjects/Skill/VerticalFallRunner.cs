@@ -1,19 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 
 [CreateAssetMenu(fileName = "VerticalFallRunner", menuName = "ScriptableObjects/Skill/Runner/VerticalFallRunner", order = 1)]
 public class VerticalFallRunner : SkillRunnerBase
 {
+    public override void Initialize()
+    {
+        base.Initialize();
+    }
+
     public override IEnumerator SkillCoroutine(CharacterBase character)
     {
         // #*********** 초기화 ***********# // 
         // 사용 횟수 차감
         if (CurrentSkill is NormalSkill skill)
         {
-            skill.UseSkillCount();
+            //skill.UseSkillCount();
+        }
+
+        if (skillData.SkillCastingTarget == Define.SkillTarget.MON)
+        {
+            TestSound.Instance.PlaySound("Skill2_Effect");
+            TestSound.Instance.PlaySound("Skill2_Voice");
         }
 
         Rigidbody rigid = character.Rb;
@@ -93,43 +106,29 @@ public class VerticalFallRunner : SkillRunnerBase
 
         //    hittedCharacter.TakeDamage(damageAmount);
         //}
-        if (skillData.SkillCastingTarget == Define.SkillTarget.PC)
-        {
-            NormalMonster monster = character.GetComponent<NormalMonster>();
-            Collider[] hittedCharacter = Physics.OverlapBox(monster.HitPoint.position, monster.HitPoint.localScale / 2, monster.HitPoint.rotation, monster.PlayerLayer);
 
+        Player player = character.GetComponent<Player>();
+        int LeftDir = player.IsLeftDirection() ? -1 : 1;
+        Vector3 originScale = player.HitPoint.localScale;
+
+        player.HitPoint.localScale = new Vector3(3, 2, 1);
+        Collider[] hittedCharacter = Physics.OverlapBox(player.HitPoint.position + new Vector3(LeftDir * 0.7f, 0), player.HitPoint.localScale / 2, player.HitPoint.rotation, player.MonsterLayer);
+        player.HitPoint.localScale = originScale;
+
+        if (hittedCharacter.Length > 0)
+        {
+            TestSound.Instance.PlaySound("Skill2_Hit");
             foreach (var hitCharacter in hittedCharacter)
             {
                 hitCharacter.GetComponent<CharacterBase>().TakeDamage(skillData.SkillDamage);
             }
         }
-        else if (skillData.SkillCastingTarget == Define.SkillTarget.MON)
-        {
-            int dir = character.IsLeftDirection() ? -1 : 1;
-
-            Player player = character.GetComponent<Player>();
-            Collider[] hittedCharacter = Physics.OverlapBox(player.HitPoint.position + new Vector3(dir, 0), player.HitPoint.localScale / 2, player.HitPoint.rotation, player.MonsterLayer);
-
-            foreach (var hitCharacter in hittedCharacter)
-            {
-                hitCharacter.GetComponent<CharacterBase>().TakeDamage(skillData.SkillDamage);
-            }
-        }
-
 
         // 초기화
         character.transform.position = groundPos == Vector3.zero ? character.transform.position : groundPos;
         rigid.velocity = Vector3.zero;
         character.ColliderManager.SetActiveCollider(true, Define.ColliderType.PERSISTANCE);
         rigid.useGravity = true;
-
-        // 적을 밟았을 경우 재도약
-        if(hittedCharacters.Count > 0)
-        {
-            character.Ani?.SetTrigger("isJumping");
-            float? jumpPower = ((PlayerStat)(character.Stat))?.JumpForce;
-            rigid.velocity = Vector3.up * jumpPower.Value;
-        }
 
         Debug.Log("Vertical Fall End");
     }

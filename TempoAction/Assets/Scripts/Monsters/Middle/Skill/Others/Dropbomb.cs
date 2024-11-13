@@ -10,11 +10,14 @@ public class Dropbomb : MonoBehaviour
 {
     [SerializeField] private Vector3 ro;
 
+    public GameObject cutScene;
+
     public float TotalDamage;
     private float monsterDamage;
 
     private float timer = 0f;
     private bool isGrounded = true;
+    private bool isNonAuto = false;
     private Rigidbody rb;
 
     private Transform player;                // 타겟의 Transform
@@ -42,8 +45,14 @@ public class Dropbomb : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (!isGrounded)
+        if (!isGrounded && !isNonAuto)
         {
+            timer += Time.deltaTime;
+            if (timer > 2.5f)
+            {
+                isNonAuto = true;
+            }
+
             // 중력 적용
             rb.velocity += Vector3.up * Time.fixedDeltaTime;
 
@@ -71,9 +80,10 @@ public class Dropbomb : MonoBehaviour
 
         GameObject effect = ObjectPool.Instance.Spawn("TraceEffect", 1);
 
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Monster"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Boss"))
         {
             effect.transform.position = collision.transform.position - new Vector3(0, 2.5f);
+            collision.transform.GetComponent<MiddleMonster>().StartMiddleCut();
             collision.transform.GetComponent<Monster>().TakeDamage(monsterDamage);
         }
 

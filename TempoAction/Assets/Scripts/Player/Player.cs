@@ -37,6 +37,7 @@ public class Player : CharacterBase
     [SerializeField] private Transform _endPoint;    // ³Ë¹é ÁöÁ¡
     [SerializeField] private Vector3 _colliderSize;
     [SerializeField] private LayerMask _monsterLayer;
+    [SerializeField] private LayerMask _bossLayer;
 
     [SerializeField] private List<TempoAttackData> _mainTempoAttackDatas;
     [SerializeField] private List<TempoAttackData> _pointTempoAttackDatas;
@@ -44,6 +45,14 @@ public class Player : CharacterBase
     [Header("µµ±úºñ ºÒ")]
     [SerializeField] private GameObject _skillObject;
     public bool isRockFireObj = false;
+
+    [Header("±Ã±Ø±â")]
+    [SerializeField] public GameObject MoveEffect;
+
+    [Space]
+
+    [SerializeField] public SkillRunnerBase skillData;
+    [SerializeField] public SkillRunnerBase skillData2;
 
     private CopySkill copySkill;
 
@@ -77,6 +86,7 @@ public class Player : CharacterBase
     public Transform EndPoint { get => _endPoint; }
     public Vector3 ColliderSize { get => _colliderSize; }
     public LayerMask MonsterLayer { get => _monsterLayer; }
+    public LayerMask BossLayer { get => _bossLayer; }
     public List<TempoAttackData> MainTempoAttackDatas { get => _mainTempoAttackDatas; }
     public List<TempoAttackData> PointTempoAttackDatas { get => _pointTempoAttackDatas; }
     public PlayerView View { get => _view; }
@@ -90,7 +100,7 @@ public class Player : CharacterBase
     {
         base.Awake();
 
-        _view = GetComponent<PlayerView>();
+        _view = FindObjectOfType<PlayerView>();
         _playerStat = (PlayerStat)Stat;
 
         copySkill = FindObjectOfType<CopySkill>();
@@ -110,11 +120,20 @@ public class Player : CharacterBase
         _stateStorage.Add(Define.PlayerState.STUN, new StunState(this));
         _stateStorage.Add(Define.PlayerState.NONE, new NoneState(this));
 
-        if (copySkill != null && copySkill.LoadSkillSlots() != null)
-        {
-            GetComponent<PlayerSkillManager>().LoadSkill(copySkill.LoadSkillSlots(), copySkill.LoadReserveSlots());
-            _view.SetSkillIcon(copySkill.LoadMainIcon(), copySkill.LoadSubIcon());
-        }
+        //if (copySkill != null && copySkill.LoadSkillSlots() != null)
+        //{
+        //    GetComponent<PlayerSkillManager>().LoadSkill(copySkill.LoadSkillSlots(), copySkill.LoadReserveSlots());
+        //    _view.SetSkillIcon(copySkill.LoadMainIcon(), copySkill.LoadSubIcon());
+        //}
+
+        NormalSkill sw = new NormalSkill(skillData);
+        NormalSkill se = new NormalSkill(skillData2);
+
+        ISkillRoot skill = sw;
+        ISkillRoot skill2 = se;
+
+        GetComponent<PlayerSkillManager>().AddSkill(skill);
+        GetComponent<PlayerSkillManager>().AddSkill(skill2);
     }
 
     protected override void Update()
@@ -165,11 +184,11 @@ public class Player : CharacterBase
     {
         if (value)
         {
-            return _stat.Damage + _attack.CurrentTempoData.maxDamage;
+            return _stat.Damage;
         }
         else
         {
-            return _stat.Damage + _attack.CurrentTempoData.minDamage;
+            return _stat.Damage;
         }   
     }
 
@@ -209,7 +228,17 @@ public class Player : CharacterBase
 
     public void Heal(float value)
     {
-        _stat.Hp += value;
+        GameObject effect = ObjectPool.Instance.Spawn("FX_Heal", 1f, transform);
+        effect.transform.position = transform.position + new Vector3(0, 1f, -1f);
+
+        if (_stat.Hp + value > _stat.MaxHp)
+        {
+            _stat.Hp = _stat.MaxHp;
+        }
+        else
+        {
+            _stat.Hp += value;
+        }
         UpdateHealth();
     }
 
@@ -233,7 +262,7 @@ public class Player : CharacterBase
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(_hitPoint.position, _colliderSize);
+        Gizmos.DrawWireCube(_hitPoint.position, _hitPoint.localScale);
     }
 
     private void OnDrawGizmosSelected()

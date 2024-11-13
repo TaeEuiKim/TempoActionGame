@@ -76,21 +76,28 @@ public class PlayerAttack
         //    }
         //}
 
-       
-        if (_currentAttackState != Define.AttackState.ATTACK)
-        { 
-            // 공격 키 입력
-            if (PlayerInputManager.Instance.attack && _player.Ani.GetBool("isGrounded"))
-            {
-                PlayerInputManager.Instance.attack = false;
-                AttackMainTempo();
-            }
-        }
-        else
+        if (!PlayerInputManager.Instance.isKeyZ)
         {
-            if (PlayerInputManager.Instance.attack)
+            if (_currentAttackState != Define.AttackState.ATTACK)
+            { 
+                // 공격 키 입력
+                if (PlayerInputManager.Instance.attack)
+                {
+                    PlayerInputManager.Instance.attack = false;
+                    if (_player.Ani.GetBool("isGrounded"))
+                    {
+                        AttackMainTempo();
+                    }
+                }
+
+            }
+            else
             {
-                PlayerInputManager.Instance.attack = false;
+                if (PlayerInputManager.Instance.attack || PlayerInputManager.Instance.keyX)
+                {
+                    PlayerInputManager.Instance.attack = false;
+                    PlayerInputManager.Instance.keyX = false;
+                }
             }
         }
 
@@ -108,10 +115,8 @@ public class PlayerAttack
     #region 메인 템포
     public void AttackMainTempo() // 공격 실행
     {
-        if (_player.Ani.GetBool("isGrounded"))
+        if (_player.Ani.GetBool("isGrounded") && _mainTempoQueue.Count > 0)
         {
-            _player.Controller.isMove = false;
-
             _currentTempoData = _mainTempoQueue.Dequeue();
 
             ChangeCurrentAttackState(Define.AttackState.ATTACK);
@@ -121,7 +126,6 @@ public class PlayerAttack
             {
                 ResetMainTempoQueue();
             }
-            //isAttack = false;
         }
     }
 
@@ -132,6 +136,14 @@ public class PlayerAttack
         foreach (TempoAttackData data in _player.MainTempoAttackDatas)
         {
             _mainTempoQueue.Enqueue(data);
+        }
+    }
+
+    public void SetMainTempoQueue(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            _mainTempoQueue.Dequeue();
         }
     }
 

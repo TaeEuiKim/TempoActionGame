@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 
 public class ObjectPool : Singleton<ObjectPool>
@@ -199,12 +200,18 @@ public class ObjectPool : Singleton<ObjectPool>
 
     public bool FindPool(string name)
     {
+        StringBuilder stringBuilder = new StringBuilder();
+
         foreach (Transform pool in transform)
         {
-            if (pool.name == name + "Pool")
+            stringBuilder.Append(name);
+            stringBuilder.Append("Pool");
+
+            if (stringBuilder.Equals(pool.name))
             {
                 return true;
             }
+            stringBuilder.Clear();
         }
 
         return false;

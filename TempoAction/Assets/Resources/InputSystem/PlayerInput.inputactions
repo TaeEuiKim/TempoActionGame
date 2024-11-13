@@ -87,9 +87,27 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "KeyZ",
+                    "name": "KeyX",
                     "type": "Button",
                     "id": "124eba94-f181-4de6-af50-017e73d6247c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "37946e7a-b4bf-4816-b8a6-fc854a9de939",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Ultimate",
+                    "type": "Button",
+                    "id": "89d82f97-f119-4346-8987-4ea78522752c",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -148,6 +166,28 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "5b6b3f41-3eba-42dc-aecc-8934ecfe6f6e",
+                    "path": "<Gamepad>/rightStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Joystick;Gamepad",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "e813b117-7e89-44dd-8959-e70a39a3887c",
+                    "path": "<Gamepad>/rightStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Joystick;Gamepad",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -220,6 +260,17 @@
                 },
                 {
                     "name": "",
+                    "id": "a411df01-2a48-45de-a9ff-3b6e27c2067d",
+                    "path": "<Gamepad>/rightStick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Joystick;Gamepad",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "19d5d921-df29-42d7-9ed6-06b0fd25eed8",
                     "path": "<Keyboard>/leftCtrl",
                     "interactions": "",
@@ -253,6 +304,17 @@
                 },
                 {
                     "name": "",
+                    "id": "ba42ba81-02d4-403e-8197-14886a53b606",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Joystick;Gamepad",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "cbaad3bf-4b7c-4bb1-b535-559585447953",
                     "path": "<Keyboard>/downArrow",
                     "interactions": "",
@@ -269,6 +331,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick",
+                    "action": "DownArrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9a52c3cf-4f08-4015-bd8b-d7a2534bae63",
+                    "path": "<Gamepad>/rightStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Joystick;Gamepad",
                     "action": "DownArrow",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -297,6 +370,17 @@
                 },
                 {
                     "name": "",
+                    "id": "7f40df81-de7b-4da5-b85f-917cfb67705c",
+                    "path": "<Gamepad>/rightStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Joystick;Gamepad",
+                    "action": "LeftArrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "291876ed-2852-4530-a90f-2e269be95d57",
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",
@@ -319,12 +403,23 @@
                 },
                 {
                     "name": "",
+                    "id": "5d9a2752-6c27-4a40-ba40-a5cc952cf37b",
+                    "path": "<Gamepad>/rightStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Joystick;Gamepad",
+                    "action": "RightArrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "ae1eb32b-2382-4b80-83af-b142fa2dcd75",
-                    "path": "<Keyboard>/z",
+                    "path": "<Keyboard>/x",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "KeyZ",
+                    "action": "KeyX",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -335,14 +430,25 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick",
-                    "action": "KeyZ",
+                    "action": "KeyX",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "78bebc9a-ba6e-4758-a498-4f59640f909a",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Joystick;Gamepad",
+                    "action": "KeyX",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "89c8bd88-044a-4801-b269-7481896f8323",
-                    "path": "<Keyboard>/x",
+                    "path": "<Keyboard>/z",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -357,6 +463,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "07e25e6a-938e-4091-87e9-1adba0615d0d",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Joystick;Gamepad",
                     "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -380,6 +497,39 @@
                     "processors": "",
                     "groups": "Joystick",
                     "action": "UpArrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c9b8038e-6e3c-4857-ad95-cf9807622221",
+                    "path": "<Gamepad>/rightStick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Joystick;Gamepad",
+                    "action": "UpArrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4268a1dc-caaf-4b97-b4d8-4502d3853889",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5abd48ad-f8d9-4d89-8a33-668d922d6e42",
+                    "path": "<Keyboard>/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Ultimate",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

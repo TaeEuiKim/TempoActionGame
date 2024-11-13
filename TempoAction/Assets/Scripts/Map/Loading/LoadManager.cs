@@ -20,29 +20,30 @@ public class LoadManager : MonoBehaviour
         SceneManager.LoadScene("LoadingScene");
     }
 
+    public static void PassLoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+
     IEnumerator LoadScene()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
 
         AsyncOperation op = SceneManager.LoadSceneAsync(nextScene);
         op.allowSceneActivation = false;
         StartCoroutine(ChecKTimer(op));
 
-        float timer = 0f;
         while (!op.isDone)
         {
-            timer += Time.unscaledDeltaTime;
-            if (op.progress < 0.9f)
+            yield return null;
+
+            if (progressBar.fillAmount < op.progress && progressBar.fillAmount < 0.9f)
             {
-                progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, op.progress, timer);
-                if (progressBar.fillAmount >= op.progress)
-                {
-                    timer = 0f;
-                }
+                progressBar.fillAmount += Time.fixedDeltaTime;
             }
-            else
+            else if (op.progress >= 0.9f && progressBar.fillAmount >= 0.9f)
             {
-                progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, 1f, timer);
+                progressBar.fillAmount = 1f;
                 if (progressBar.fillAmount >= 1.0f)
                 {
                     op.allowSceneActivation = true;
@@ -50,13 +51,16 @@ public class LoadManager : MonoBehaviour
                 }
             }
         }
+
+        yield return null;
     }
 
+    // 로딩이 끝나지 않을 경우 예외처리
     IEnumerator ChecKTimer(AsyncOperation op)
     {
         float timer = 0f;
 
-        while (timer <= 10f)
+        while (timer <= 20f)
         {
             yield return null;
 

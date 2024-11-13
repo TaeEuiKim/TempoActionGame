@@ -47,6 +47,12 @@ public class NormalMonster : Monster
     [SerializeField] private float hittingTime = 0.3f;
     private float _hitTimer = 0f;
     public bool isHit = false;
+    public bool isHiting = false;
+
+    [Space]
+    [Header("움직임")]
+    [SerializeField] private Transform _groundCheckPoint;
+    [SerializeField] private float _groundCheckRadius = 0.2f;
 
     [Space]
     [Header("상태 전환 조건")]
@@ -55,6 +61,12 @@ public class NormalMonster : Monster
     [Space]
     [Header("몬스터 타입")]
     public Define.NormalMonsterType monsterType;
+
+    [Space]
+    [Header("궁극기 이펙트")]
+    [SerializeField] public GameObject ultimateEffect;
+    [Header("궁극기 채워지는 양")]
+    [SerializeField] public float ultimateValue;
 
     #endregion
 
@@ -65,6 +77,9 @@ public class NormalMonster : Monster
     public float MoveRange { get => _moveRange; }
     public Transform HitPoint { get => _hitPoint; set => _hitPoint = value; }
     public Vector3 ColliderSize { get => _colliderSize; set => _colliderSize = value; }
+    public Transform GroundCheckPoint { get => _groundCheckPoint; }
+    public float GroundCheckRadius { get => _groundCheckRadius; }
+
 
 
     public float PerceptionDistance { get => _perceptionDistance; }
@@ -162,7 +177,10 @@ public class NormalMonster : Monster
         //CheckPerceptionState(); // 게이지 증가 시키는 함수
         //UpdatePerceptionState(); // 게이지 확인 후 인식 상태 업데이트
 
-        _skillManager.OnUpdate(this);
+        if (_skillManager != null)
+        {
+            _skillManager.OnUpdate(this);
+        }
 
         // 인식 범위 안에 들어왔을 때
         /*if (_perceptionStateStorage[_currentPerceptionState].IsEntered)
@@ -260,7 +278,13 @@ public class NormalMonster : Monster
         }
         else
         {
-            if (isHit) { return; }
+            if (isHit && Ani.GetCurrentAnimatorStateInfo(0).IsTag("Hit"))
+            {
+                Rb.velocity = Vector3.zero;
+                Rb.AddForce(new Vector3(0, 3f), ForceMode.VelocityChange);
+                isHiting = true;
+                return;
+            }
 
             isHit = true;
             CurrentPerceptionState = Define.PerceptionType.HIT;
@@ -271,6 +295,11 @@ public class NormalMonster : Monster
     // 스킬 공격 발동 가능한지 반환
     public bool GetSkillAttackUsable()
     {
+        if (_SkillManager == null)
+        {
+            return false;
+        }
+
         var slots = _SkillManager.GetUsableSkillSlots();
         float distance = Vector3.Distance(transform.position, Player.position);
 
@@ -368,7 +397,7 @@ public class NormalMonster : Monster
 
     public override bool IsLeftDirection()
     {
-        if (monsterType == Define.NormalMonsterType.KUNG)
+        if (monsterType == Define.NormalMonsterType.KUNG || monsterType == Define.NormalMonsterType.MON3)
         {
             return Direction != 1;
         }
@@ -385,6 +414,14 @@ public class NormalMonster : Monster
         {
             Gizmos.color = Color.green;
             Gizmos.DrawLine(new Vector3(SpawnPoint.x - _moveRange, transform.position.y, 0), new Vector3(SpawnPoint.x + _moveRange, transform.position.y, 0));
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (_groundCheckPoint)
+        {
+            Gizmos.DrawWireSphere(_groundCheckPoint.position, _groundCheckRadius);
         }
     }
 }

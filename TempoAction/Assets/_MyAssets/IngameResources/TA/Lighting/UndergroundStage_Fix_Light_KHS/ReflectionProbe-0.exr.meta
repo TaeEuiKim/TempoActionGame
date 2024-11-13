@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:TempoAction/Assets/Others/FX_SNY/Texture/T_ChungIcon.png.meta
+guid: d3e611f92561321499d74d58149a06c6
+========
 guid: e27e970af0ff9ac4590eef5bd9bbd6f3
+>>>>>>>> Art_test:TempoAction/Assets/_MyAssets/IngameResources/TA/Lighting/UndergroundStage_Fix_Light_KHS/ReflectionProbe-0.exr.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -28,14 +32,14 @@ TextureImporter:
   ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
-  cubemapConvolution: 1
-  seamlessCubemap: 1
+  cubemapConvolution: 0
+  seamlessCubemap: 0
   textureFormat: 1
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 2
-    aniso: 0
+    filterMode: 1
+    aniso: 1
     mipBias: 0
     wrapU: 1
     wrapV: 1
@@ -55,7 +59,7 @@ TextureImporter:
   alphaIsTransparency: 0
   spriteTessellationDetail: -1
   textureType: 0
-  textureShape: 2
+  textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
   flipbookColumns: 1
@@ -73,7 +77,7 @@ TextureImporter:
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
-    compressionQuality: 100
+    compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
