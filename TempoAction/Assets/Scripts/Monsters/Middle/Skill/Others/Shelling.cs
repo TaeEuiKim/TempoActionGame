@@ -40,7 +40,7 @@ public class Shelling : MonoBehaviour
         {
             if (collider.gameObject.layer == LayerMask.NameToLayer("Player"))
             {
-                collider.GetComponent<Player>().TakeDamage(TotalDamage, true);
+                collider.GetComponent<Player>().TakeDamage(TotalDamage);
             }
             if (collider.gameObject.layer == LayerMask.NameToLayer("Monster"))
             {

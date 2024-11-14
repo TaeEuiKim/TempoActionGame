@@ -487,11 +487,19 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     private void HitMainTempo(Monster monster)
     {
+        float commandDamage = 0f;
+        int count = _player.Ani.GetInteger("CommandCount");
+
         ControllTimerScale(0.1f, 0.005f);
+
+        if (count != 0)
+        {
+            commandDamage = _player._skillCommand.GetDamage(count);
+        }
 
         // 메인 템포일 때 데미지 처리
         PlayerSfx(Define.PlayerSfxType.MAIN);
-        monster.TakeDamage(_player.GetTotalDamage());
+        monster.TakeDamage(_player.GetTotalDamage() + commandDamage);
     }
 
     private void HitObject(DestoryObj obj)
