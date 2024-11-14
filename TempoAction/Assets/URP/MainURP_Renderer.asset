@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   m_Settings:
-    AOMethod: 0
+    AOMethod: 1
     Downsample: 0
-    AfterOpaque: 0
+    AfterOpaque: 1
     Source: 1
     NormalSamples: 1
-    Intensity: 3
+    Intensity: 4
     DirectLightingStrength: 0.25
     Radius: 0.25
     Samples: 1
@@ -102,8 +102,8 @@ MonoBehaviour:
     failOperation: 0
     zFailOperation: 0
   m_ShadowTransparentReceive: 1
-  m_RenderingMode: 0
-  m_DepthPrimingMode: 0
+  m_RenderingMode: 2
+  m_DepthPrimingMode: 1
   m_CopyDepthMode: 1
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 1

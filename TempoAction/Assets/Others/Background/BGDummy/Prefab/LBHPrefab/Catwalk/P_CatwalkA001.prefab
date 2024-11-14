@@ -53,13 +53,25 @@ PrefabInstance:
       value: P_CatwalkA001
       objectReference: {fileID: 0}
     - target: {fileID: 6190955733822648800, guid: 9c38a5d85bedcc14dba97dd62de2a593, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6190955733822648800, guid: 9c38a5d85bedcc14dba97dd62de2a593, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 7793051ba39e1bc4fbb2f790fbf60c3f, type: 2}
     - target: {fileID: 9044756414676281428, guid: 9c38a5d85bedcc14dba97dd62de2a593, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044756414676281428, guid: 9c38a5d85bedcc14dba97dd62de2a593, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 7793051ba39e1bc4fbb2f790fbf60c3f, type: 2}
+    - target: {fileID: 9172578211941520385, guid: 9c38a5d85bedcc14dba97dd62de2a593, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9172578211941520385, guid: 9c38a5d85bedcc14dba97dd62de2a593, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
