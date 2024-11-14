@@ -633,13 +633,12 @@ public class PlayerAnimationEvent : MonoBehaviour
     }
 
     private void MoveAttack()
-
     {
         _player.Ani.SetFloat("Speed", 0);
 
         Vector3 rayOrigin = new Vector3(transform.parent.position.x, transform.parent.position.y + 0.5f, transform.parent.position.z);
-        Vector3 rayDirection = transform.localScale.x < 0 ? transform.right : transform.right * -1;
-
+        Vector3 rayDirection = _player.IsLeftDirection() ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
+        Debug.DrawRay(rayOrigin, rayDirection);
         float dis = 2f;
 
         if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitPos, dis, _player.BlockLayer))
