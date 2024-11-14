@@ -4434,7 +4434,7 @@ ParticleSystem:
     vector0_2:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 1
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -25415,7 +25415,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6060382848975367168, guid: 36892c76a48446740928404a5b563469, type: 3}
       propertyPath: CustomDataModule.vector0_2.scalar
-      value: 2
+      value: 4.86
       objectReference: {fileID: 0}
     - target: {fileID: 6060382848975367168, guid: 36892c76a48446740928404a5b563469, type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
