@@ -49,4 +49,5 @@ public abstract class CharacterBase : MonoBehaviour
     }
 
     public abstract void TakeDamage(float damage); 
+    public virtual void TakeDamage(float damage, bool isHpDamage) { }
 }

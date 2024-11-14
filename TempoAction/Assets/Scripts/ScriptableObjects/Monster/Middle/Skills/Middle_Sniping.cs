@@ -79,7 +79,7 @@ public class Middle_Sniping : Middle_Skill
         drum.GetComponent<Drum>().OffMarkSet();
         if (_monster.Player.GetComponent<Player>().IsInvincible) return;
 
-        _monster.Player.GetComponent<Player>().TakeDamage(_info.damage);
+        _monster.Player.GetComponent<Player>().TakeDamage(_info.damage, true);
     }
 
     private void Finish()

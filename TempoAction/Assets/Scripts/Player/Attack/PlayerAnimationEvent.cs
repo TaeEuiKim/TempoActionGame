@@ -158,7 +158,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         foreach (Collider mapObject in hitObjects)
         {
-            DestoryObj obj = mapObject.GetComponent<DestoryObj>();
+            BaseObject obj = mapObject.GetComponent<BaseObject>();
 
             GameObject hitParticle = null;
             GameObject hitParticle2 = null;
@@ -362,7 +362,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         foreach (Collider mapObject in hitObjects)
         {
-            DestoryObj obj = mapObject.GetComponent<DestoryObj>();
+            BaseObject obj = mapObject.GetComponent<BaseObject>();
 
             GameObject hitParticle;
             GameObject hitParticle2;
@@ -479,7 +479,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         foreach (Collider mapObject in hitObjects)
         {
-            DestoryObj obj = mapObject.GetComponent<DestoryObj>();
+            BaseObject obj = mapObject.GetComponent<BaseObject>();
 
             HitObject(obj);
         }
@@ -487,22 +487,14 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     private void HitMainTempo(Monster monster)
     {
-        float commandDamage = 0f;
-        int count = _player.Ani.GetInteger("CommandCount");
-
         ControllTimerScale(0.1f, 0.005f);
-
-        if (count != 0)
-        {
-            commandDamage = _player._skillCommand.GetDamage(count);
-        }
 
         // 메인 템포일 때 데미지 처리
         PlayerSfx(Define.PlayerSfxType.MAIN);
-        monster.TakeDamage(_player.GetTotalDamage() + commandDamage);
+        monster.TakeDamage(_player.GetTotalDamage());
     }
 
-    private void HitObject(DestoryObj obj)
+    private void HitObject(BaseObject obj)
     {
         obj.TakeDamage(_player.GetTotalDamage());
     }
@@ -633,12 +625,13 @@ public class PlayerAnimationEvent : MonoBehaviour
     }
 
     private void MoveAttack()
+
     {
         _player.Ani.SetFloat("Speed", 0);
 
         Vector3 rayOrigin = new Vector3(transform.parent.position.x, transform.parent.position.y + 0.5f, transform.parent.position.z);
-        Vector3 rayDirection = _player.IsLeftDirection() ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
-        Debug.DrawRay(rayOrigin, rayDirection);
+        Vector3 rayDirection = transform.localScale.x < 0 ? transform.right : transform.right * -1;
+
         float dis = 2f;
 
         if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitPos, dis, _player.BlockLayer))

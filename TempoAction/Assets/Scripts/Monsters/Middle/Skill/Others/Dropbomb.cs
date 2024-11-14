@@ -48,7 +48,7 @@ public class Dropbomb : MonoBehaviour
         if (!isGrounded && !isNonAuto)
         {
             timer += Time.deltaTime;
-            if (timer > 1.5f)
+            if (timer > 2.5f)
             {
                 isNonAuto = true;
             }
@@ -102,7 +102,7 @@ public class Dropbomb : MonoBehaviour
             {
                 if (collider.gameObject.layer == LayerMask.NameToLayer("Player"))
                 {
-                    collider.GetComponent<Player>().TakeDamage(TotalDamage);
+                    collider.GetComponent<Player>().TakeDamage(TotalDamage, true);
                 }
                 if (collider.gameObject.layer == LayerMask.NameToLayer("Monster"))
                 {

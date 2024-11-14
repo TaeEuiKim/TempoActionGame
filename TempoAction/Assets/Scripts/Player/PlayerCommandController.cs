@@ -8,8 +8,6 @@ public class PlayerCommandController
     private Player _player;
     private SkillCommand _skillCommand;
 
-    private bool isStemina = true;
-
     public PlayerCommandController(Player player, SkillCommand command)
     {
         _player = player;
@@ -71,6 +69,8 @@ public class PlayerCommandController
             .Select(cd => cd.SkillId)
             .FirstOrDefault(CheckUseSkill);
 
+        var skillId = _skillCommand.commandDatas;
+
         if (matchingSkillId != default)
         {
             _player.Ani.SetInteger("CommandCount", matchingSkillId);
@@ -97,14 +97,6 @@ public class PlayerCommandController
     {
         PlayerInputManager.Instance.ResetCommandKey();
         int count = _player.Ani.GetInteger("CommandCount");
-
-        bool e = _player.UseStemina(_player._skillCommand.GetStemina(skillid));
-
-        if (!e)
-        {
-            return false;
-        }
-
         switch (count)
         {
             // 기본 공격 && 대쉬 연계

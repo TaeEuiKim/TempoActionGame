@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using Unity.VisualScripting;
 
 public class PlayerAttack
 {
@@ -87,11 +86,6 @@ public class PlayerAttack
                     PlayerInputManager.Instance.attack = false;
                     if (_player.Ani.GetBool("isGrounded"))
                     {
-                        if (!_player.UseStemina(5))
-                        {
-                            return;
-                        }
-
                         AttackMainTempo();
                     }
                 }

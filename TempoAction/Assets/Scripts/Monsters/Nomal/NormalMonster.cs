@@ -45,10 +45,7 @@ public class NormalMonster : Monster
     [Space]
     [Header("피격 대기시간")]
     [SerializeField] private float hittingTime = 0.3f;
-    [Header("피격 쉐이더")]
-    [SerializeField] private Material hitShader;
     private float _hitTimer = 0f;
-    private Coroutine _hitCoroutine;
     public bool isHit = false;
     public bool isHiting = false;
 
@@ -275,18 +272,6 @@ public class NormalMonster : Monster
     public override void TakeDamage(float value)
     {
         base.TakeDamage(value);
-
-        if (hitShader != null)
-        {
-            hitShader.EnableKeyword("_ALPHATEST_ON");
-            hitShader.SetFloat("_AlphaClip", 1);
-            if (_hitCoroutine != null)
-            {
-                StopCoroutine(_hitCoroutine);
-            }
-            _hitCoroutine = StartCoroutine(TurnOffShader());
-        }
-
         if (Stat.Hp <= 0)
         {
             CurrentPerceptionState = Define.PerceptionType.DEATH;
@@ -305,15 +290,6 @@ public class NormalMonster : Monster
             CurrentPerceptionState = Define.PerceptionType.HIT;
         }
         return;
-    }
-
-    private IEnumerator TurnOffShader()
-    {
-        yield return new WaitForSeconds(0.5f);
-        hitShader.SetFloat("_AlphaClip", 0);
-        hitShader.DisableKeyword("_ALPHATEST_ON");
-
-        yield return null;
     }
 
     // 스킬 공격 발동 가능한지 반환
@@ -364,12 +340,6 @@ public class NormalMonster : Monster
         else if(GetNormalAttackUsable())
         {
             CurrentPerceptionState = Define.PerceptionType.NORMALATTACK;
-            if (monsterType == Define.NormalMonsterType.MON3)
-            {
-                int rand = Random.Range(0, 2);
-
-                Ani.SetInteger("AttackCount", rand == 0 ? 0 : 1);
-            }
             return true;
         }
 

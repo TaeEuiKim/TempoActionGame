@@ -101,7 +101,7 @@ public class PlayerView : MonoBehaviour
 
     private IEnumerator ChangeUltimateGauge(float value)
     {
-        float time = 0.1f;
+        float time = 0.01f;
         WaitForSeconds seconds = new WaitForSeconds(time);
         float fillAmount = _ultimateIllusionBarImage.fillAmount + value;
         if (fillAmount > 1)
@@ -125,43 +125,9 @@ public class PlayerView : MonoBehaviour
             yield return time;
         }
 
-        _ultimateBarImage.fillAmount = fillAmount;
+        _ultimateBarImage.fillAmount = value;
 
         yield return null;
-    }
-
-    public void UseUltimate()
-    {
-        StartCoroutine(ReduceUltimate());
-    }
-
-    private IEnumerator ReduceUltimate()
-    {
-        float time = 0.1f;
-        WaitForSeconds seconds = new WaitForSeconds(time);
-
-        while (_ultimateBarImage.fillAmount > 0)
-        {
-            _ultimateBarImage.fillAmount -= time;
-
-            yield return time;
-        }
-
-        _ultimateBarImage.fillAmount = 0;
-
-        while (_ultimateIllusionBarImage.fillAmount > 0)
-        {
-            _ultimateIllusionBarImage.fillAmount -= time;
-
-            yield return time;
-        }
-
-        _ultimateIllusionBarImage.fillAmount = 0;
-    }
-
-    public float GetUltimateGauge()
-    {
-        return _ultimateBarImage.fillAmount;
     }
 
     public void UpdateHpBar(float value)
@@ -175,82 +141,29 @@ public class PlayerView : MonoBehaviour
     {
         float time = 0.01f;
         WaitForSeconds seconds = new WaitForSeconds(time);
-
-        if (value < 0)
+        float fillAmount = value + 0.05f;
+        if (fillAmount < 0)
         {
-            value = 0;
+            fillAmount = 0;
         }
 
-        if (value > _hpBarImage.fillAmount)
+        while (_hpBarImage.fillAmount >= fillAmount)
         {
-            StartCoroutine(UpdateHPIllusionBar(value));
-            while (_hpIllusionBarImage.fillAmount <= value)
-            {
-                _hpIllusionBarImage.fillAmount += time;
+            _hpBarImage.fillAmount -= time;
 
-                yield return seconds;
-            }
-
-            _hpIllusionBarImage.fillAmount = value;
-
-            yield return null;
-        }
-        else
-        {
-            StartCoroutine(UpdateHPIllusionBar(value));
-            while (_hpBarImage.fillAmount >= value)
-            {
-                _hpBarImage.fillAmount -= time;
-
-                yield return seconds;
-            }
-
-            _hpBarImage.fillAmount = value;
-
-            yield return null;
+            yield return seconds;
         }
 
-        yield return null;
-    }
+        _hpBarImage.fillAmount = fillAmount;
 
-    private IEnumerator UpdateHPIllusionBar(float value)
-    {
-        float time = 0.01f;
-        WaitForSeconds seconds = new WaitForSeconds(time);
-
-        yield return new WaitForSeconds(0.05f);
-
-        if (value < 0)
+        while (_hpIllusionBarImage.fillAmount >= fillAmount)
         {
-            value = 0;
+            _hpIllusionBarImage.fillAmount -= time;
+
+            yield return seconds;
         }
 
-        if (value > _hpBarImage.fillAmount)
-        {
-            while (_hpBarImage.fillAmount <= value)
-            {
-                _hpBarImage.fillAmount += time;
-
-                yield return seconds;
-            }
-
-            _hpBarImage.fillAmount = value;
-
-            yield return null;
-        }
-        else
-        {
-            while (_hpIllusionBarImage.fillAmount >= value)
-            {
-                _hpIllusionBarImage.fillAmount -= time;
-
-                yield return time;
-            }
-
-            _hpIllusionBarImage.fillAmount = value;
-
-            yield return null;
-        }
+        _hpIllusionBarImage.fillAmount = fillAmount;
 
         yield return null;
     }
@@ -266,75 +179,29 @@ public class PlayerView : MonoBehaviour
     {
         float time = 0.01f;
         WaitForSeconds seconds = new WaitForSeconds(time);
-
-        if (value < 0)
+        float fillAmount = value + 0.05f;
+        if (fillAmount < 0)
         {
-            value = 0;
+            fillAmount = 0;
         }
 
-        if (value > _steminaBarImage.fillAmount)
+        while (_steminaBarImage.fillAmount >= fillAmount)
         {
-            StartCoroutine(UpdateSteIllusionBar(value));
+            _steminaBarImage.fillAmount -= time;
 
-            yield return null;
-        }
-        else
-        {
-            StartCoroutine(UpdateSteIllusionBar(value));
-            while (_steminaBarImage.fillAmount >= value)
-            {
-                _steminaBarImage.fillAmount -= time;
-
-                yield return seconds;
-            }
-
-            _steminaBarImage.fillAmount = value;
-
-            yield return null;
+            yield return seconds;
         }
 
-        yield return null;
-    }
+        _steminaBarImage.fillAmount = fillAmount;
 
-    private IEnumerator UpdateSteIllusionBar(float value)
-    {
-        float time = 0.01f;
-        WaitForSeconds seconds = new WaitForSeconds(time);
-
-        yield return new WaitForSeconds(0.05f);
-
-        if (value < 0)
+        while (_steminaIllusionBarImage.fillAmount >= fillAmount)
         {
-            value = 0;
+            _steminaIllusionBarImage.fillAmount -= time;
+
+            yield return seconds;
         }
 
-        if (value > _steminaBarImage.fillAmount)
-        {
-            while (_steminaBarImage.fillAmount <= value)
-            {
-                _steminaBarImage.fillAmount += time;
-
-                yield return seconds;
-            }
-
-            _steminaBarImage.fillAmount = value;
-            _steminaIllusionBarImage.fillAmount = time;
-
-            yield return null;
-        }
-        else
-        {
-            while (_steminaIllusionBarImage.fillAmount >= value)
-            {
-                _steminaIllusionBarImage.fillAmount -= time;
-
-                yield return time;
-            }
-
-            _steminaIllusionBarImage.fillAmount = value;
-
-            yield return null;
-        }
+        _steminaIllusionBarImage.fillAmount = fillAmount;
 
         yield return null;
     }

@@ -193,7 +193,7 @@ public class MiddleMonster : Monster
     {
         curScene.SetActive(true);
 
-        yield return new WaitForSeconds(8f);
+        yield return new WaitForSeconds(10f);
 
         curScene.SetActive(false);
 

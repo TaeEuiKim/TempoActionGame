@@ -18,7 +18,6 @@ public class Normal_Death : Normal_State
         base.Enter();
         _monster.GetComponent<BoxCollider>().enabled = false;
         _monster.Rb.useGravity = false;
-        _monster.Rb.velocity = Vector3.zero;
 
         if (!_monster.Ani.GetBool("Death"))
         {

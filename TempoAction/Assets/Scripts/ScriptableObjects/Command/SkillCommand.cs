@@ -1,23 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "SkillCommand", menuName = "ScriptableObjects/Skill/SkillCommand/SkillCommand", order = 1)]
 public class SkillCommand : ScriptableObject
 {
     [SerializeField] public CommandData[] commandDatas;
-
-    public float GetDamage(int skillCount)
-    {
-        return commandDatas.FirstOrDefault(data => data.SkillId == skillCount)?.damage ?? 0;
-    }
-
-    public float GetStemina(int skillCount)
-    {
-        return commandDatas.FirstOrDefault(data => data.SkillId == skillCount)?.useStemina ?? 0;
-    }
 }
 
 [Serializable]
@@ -35,8 +24,4 @@ public class CommandData
     public bool IsFront;
     [Header("스킬 커맨드")]
     public KeyCode[] KeyCodes;
-    [Header("데미지")]
-    public float damage;
-    [Header("스테미너 소모량")]
-    public float useStemina;
 }

@@ -26,13 +26,8 @@ public class BaseObject : MonoBehaviour
         _curHp = maxHp;
     }
 
-    public virtual void TakeDamage(float value)
+    public void TakeDamage(float value)
     {
-        if (!isDestory)
-        {
-            return;
-        }
-
         _curHp -= value;
     }
 }

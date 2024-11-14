@@ -14,7 +14,6 @@ public class Normal_NormalAttackState : Normal_AttackState
         {
             _monster.Ani.SetBool("Attack", true);
         }
-
         _monster.isAttack = false;
     }
 
