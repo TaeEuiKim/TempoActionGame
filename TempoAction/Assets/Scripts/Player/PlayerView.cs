@@ -284,7 +284,6 @@ public class PlayerView : MonoBehaviour
             while (_steminaBarImage.fillAmount >= value)
             {
                 _steminaBarImage.fillAmount -= time;
-
                 yield return seconds;
             }
 

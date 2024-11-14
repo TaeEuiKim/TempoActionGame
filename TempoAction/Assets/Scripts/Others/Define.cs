@@ -51,6 +51,16 @@ public class Define
         NONE,
     }
 
+    public enum FoodType
+    {
+        BANANA,
+        CAKE,
+        COKE,
+        DUMPLINGS,
+        HAMBURGER,
+        HOTDOG,
+    }
+
     #region 플레이어
     public enum TempoType
     {

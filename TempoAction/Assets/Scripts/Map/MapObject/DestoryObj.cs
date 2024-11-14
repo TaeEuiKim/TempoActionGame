@@ -8,6 +8,8 @@ public class DestoryObj : BaseObject
     [SerializeField] private float[] _hpCounts;
     [Header("오브젝트 타입")]
     [SerializeField] private Define.DestoryObjectType _type;
+    [Header("부쉈을 때 나오는 음식")]
+    [SerializeField] private Define.FoodType _foodType;
 
     private SkinnedMeshRenderer _skinnedMeshRenderer;
 
@@ -26,6 +28,31 @@ public class DestoryObj : BaseObject
     {
         base.TakeDamage(value);
         CheckRenderObject();
+
+        if (Hp <= 0 && _type == Define.DestoryObjectType.BOX)
+        {
+            switch (_foodType)
+            {
+                case Define.FoodType.BANANA:
+                    ObjectPool.Instance.Spawn("Banana").transform.position = transform.position;
+                    break;
+                case Define.FoodType.CAKE:
+                    ObjectPool.Instance.Spawn("Cake").transform.position = transform.position;
+                    break;
+                case Define.FoodType.COKE:
+                    ObjectPool.Instance.Spawn("Coke").transform.position = transform.position;
+                    break;
+                case Define.FoodType.DUMPLINGS:
+                    ObjectPool.Instance.Spawn("Dumplings").transform.position = transform.position;
+                    break;
+                case Define.FoodType.HAMBURGER:
+                    ObjectPool.Instance.Spawn("Hamburger").transform.position = transform.position;
+                    break;
+                case Define.FoodType.HOTDOG:
+                    ObjectPool.Instance.Spawn("Hotdog").transform.position = transform.position;
+                    break;
+            }
+        }
     }
 
     private void CheckRenderObject()
