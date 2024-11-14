@@ -8,7 +8,7 @@ public abstract class MonsterView : MonoBehaviour
     [SerializeField] protected Image _hpBarImage;
     [SerializeField] protected Image _hpIllusionBarImage;
 
-    private float time = 0.01f;
+    private float time = 0.02f;
     private WaitForSeconds seconds;
 
     private void Start()
@@ -36,7 +36,7 @@ public abstract class MonsterView : MonoBehaviour
         {
             _hpBarImage.fillAmount -= time;
 
-            yield return seconds;
+            yield return time;
         }
 
         _hpBarImage.fillAmount = fillAmount;
@@ -52,7 +52,7 @@ public abstract class MonsterView : MonoBehaviour
         {
             _hpIllusionBarImage.fillAmount -= time;
 
-            yield return seconds;
+            yield return time;
         }
 
         _hpIllusionBarImage.fillAmount = value;

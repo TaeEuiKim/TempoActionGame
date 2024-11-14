@@ -96,6 +96,10 @@ public class Player : CharacterBase
     [HideInInspector] public bool isTurn = false;
     [HideInInspector] public float stunTime = 0f;
 
+    private bool isUseStemina = false;
+    private Coroutine steminaCoroutine;
+    private Coroutine useSteminaCoroutine;
+
     protected override void Awake()
     {
         base.Awake();
@@ -134,6 +138,8 @@ public class Player : CharacterBase
 
         GetComponent<PlayerSkillManager>().AddSkill(skill);
         GetComponent<PlayerSkillManager>().AddSkill(skill2);
+
+        StartCoroutine(RegenStemina());
     }
 
     protected override void Update()
@@ -200,12 +206,53 @@ public class Player : CharacterBase
         UpdateHealth();
     }
 
-    public override void TakeDamage(float value, bool isHpDamage)
+    public bool UseStemina(float value)
     {
-        if (_playerStat.IsKnockedBack || !isHpDamage) return;
+        if (PlayerSt.Stamina - value <= 0)
+        {
+            return false;
+        }
 
-        _stat.Hp -= (_stat.MaxHp * (value / 100));
-        UpdateHealth();
+        isUseStemina = true;
+
+        if (useSteminaCoroutine != null)
+        {
+            StopCoroutine(useSteminaCoroutine);
+        }
+
+        useSteminaCoroutine = StartCoroutine(CheckSteminaRegen());
+
+        PlayerSt.Stamina -= value;
+        UpdateStemina();
+        return true;
+    }
+
+    private IEnumerator CheckSteminaRegen()
+    {
+        if (!isUseStemina)
+        {
+            yield break;
+        }
+
+        yield return new WaitForSeconds(1.5f);
+
+        isUseStemina = false;
+    }
+
+    private IEnumerator RegenStemina()
+    {
+        WaitForSeconds seconds = new WaitForSeconds(0.01f);
+
+        while (true)
+        {
+            if (PlayerSt.Stamina < PlayerSt.MaxStamina && !isUseStemina)
+            {
+                PlayerSt.Stamina += 0.5f;
+                View.AutoUpdateStemina(PlayerSt.Stamina / PlayerSt.MaxStamina);
+            }
+
+            yield return seconds;
+        }
     }
 
     //³Ë¹é ÇÔ¼ö
@@ -231,7 +278,7 @@ public class Player : CharacterBase
         GameObject effect = ObjectPool.Instance.Spawn("FX_Heal", 1f, transform);
         effect.transform.position = transform.position + new Vector3(0, 1f, -1f);
 
-        if (_stat.Hp + value > _stat.MaxHp)
+        if (_stat.Hp + value >= _stat.MaxHp)
         {
             _stat.Hp = _stat.MaxHp;
         }
@@ -256,6 +303,11 @@ public class Player : CharacterBase
     public void UpdateHealth()
     {
         _view.UpdateHpBar(_stat.Hp / _stat.MaxHp);
+    }
+
+    public void UpdateStemina()
+    {
+        _view.UpdateSteminaBar(PlayerSt.Stamina / PlayerSt.MaxStamina);
     }
 
     #endregion
