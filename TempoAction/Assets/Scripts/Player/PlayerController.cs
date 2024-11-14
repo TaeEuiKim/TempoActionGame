@@ -262,6 +262,7 @@ public class PlayerController
         PlayerInputManager.Instance.ResetCommandKey();
         _player.Ani.SetBool("IsCommand", false);
         isJump = false;
+        _player.IsInvincible = true;
 
         if (PlayerInputManager.Instance.move.x < 0)
         {
@@ -301,7 +302,7 @@ public class PlayerController
             dashPosition = _player.transform.position + (Vector3.right * _dashDirection * dir) * _player.PlayerSt.DashDistance;
         }
 
-        _player.Rb.DOMove(dashPosition, _player.PlayerSt.DashDuration).OnComplete(() => { isJump = true; isMove = true; });
+        _player.Rb.DOMove(dashPosition, _player.PlayerSt.DashDuration).OnComplete(() => { isJump = true; isMove = true; _player.IsInvincible = false; });
 
         _player.Ani.SetTrigger("Dash");
 
@@ -328,13 +329,14 @@ public class PlayerController
 
     private void InvokeUltimate()
     {
-        if (PlayerInputManager.Instance.ultimate && !isUltimate)
+        if (PlayerInputManager.Instance.ultimate && !isUltimate && _player.View.GetUltimateGauge() == 1)
         {
             PlayerInputManager.Instance.ultimate = false;
             isUltimate = true;
 
             _player.MoveEffect.SetActive(true);
             _player.CharacterModel.GetComponent<CharacterTrail>().StartTrail(10f);
+            _player.View.UseUltimate();
         }
         else if (PlayerInputManager.Instance.ultimate && isUltimate)
         {

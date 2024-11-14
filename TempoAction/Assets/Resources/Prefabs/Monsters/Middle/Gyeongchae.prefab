@@ -125,6 +125,7 @@ MonoBehaviour:
   _parringPoint: {fileID: 9163274235848463787}
   _parringColliderSize: {x: 1, y: 1, z: 0}
   _idleDuration: 0.2
+  curScene: {fileID: 0}
 --- !u!1 &1737843932827610875
 GameObject:
   m_ObjectHideFlags: 0
@@ -797,11 +798,11 @@ PrefabInstance:
     - target: {fileID: -1544898488166714390, guid: bc02a42c04bb373439e2b41d44373043, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: eaf9decec596e9849bb44ba13aff8a56, type: 2}
+      objectReference: {fileID: 2100000, guid: 5fbb702b0d5fd074f9043303d6b30abd, type: 2}
     - target: {fileID: -1544898488166714390, guid: bc02a42c04bb373439e2b41d44373043, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: b9ee0697b6c9c8c47932f795cd0ef3e8, type: 2}
+      objectReference: {fileID: 2100000, guid: 5fbb702b0d5fd074f9043303d6b30abd, type: 2}
     - target: {fileID: -1539795129591678653, guid: bc02a42c04bb373439e2b41d44373043, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -973,11 +974,11 @@ PrefabInstance:
     - target: {fileID: 1252548559859645832, guid: bc02a42c04bb373439e2b41d44373043, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: eaf9decec596e9849bb44ba13aff8a56, type: 2}
+      objectReference: {fileID: 2100000, guid: 5fbb702b0d5fd074f9043303d6b30abd, type: 2}
     - target: {fileID: 1252548559859645832, guid: bc02a42c04bb373439e2b41d44373043, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: b9ee0697b6c9c8c47932f795cd0ef3e8, type: 2}
+      objectReference: {fileID: 2100000, guid: 5fbb702b0d5fd074f9043303d6b30abd, type: 2}
     - target: {fileID: 1304520648710652751, guid: bc02a42c04bb373439e2b41d44373043, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 3.9494338
@@ -1045,11 +1046,11 @@ PrefabInstance:
     - target: {fileID: 2239585646629523165, guid: bc02a42c04bb373439e2b41d44373043, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 9edf3543c5573694e90e26d7dcc3517b, type: 2}
+      objectReference: {fileID: 2100000, guid: 012f8b5515ccc3b44987f400b924310c, type: 2}
     - target: {fileID: 2239585646629523165, guid: bc02a42c04bb373439e2b41d44373043, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: b9ee0697b6c9c8c47932f795cd0ef3e8, type: 2}
+      objectReference: {fileID: 2100000, guid: 012f8b5515ccc3b44987f400b924310c, type: 2}
     - target: {fileID: 2279909244144772367, guid: bc02a42c04bb373439e2b41d44373043, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -26.74089

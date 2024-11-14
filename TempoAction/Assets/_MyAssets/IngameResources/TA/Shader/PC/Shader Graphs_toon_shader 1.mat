@@ -8,18 +8,16 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Shader Graphs_toon_shader 1
-  m_Shader: {fileID: -6465566751694194690, guid: 07be4da99ccd9844da2edaaca992f9aa, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 09474df6bb9aa9a4693cde753f7c61c2, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - _SPECULAR_ON
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap:
-    RenderType: Opaque
+  stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
@@ -80,13 +78,13 @@ Material:
     - _DstBlend: 0
     - _Emission_Power: 0
     - _Fresnel_Power: 10
-    - _Lambert_Power: 0.625
+    - _Lambert_Power: 0
     - _Normal_Strength: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _SPECULAR: 1
     - _Saturation: 1
-    - _Smoothness: 0.218
+    - _Smoothness: 0
     - _SrcBlend: 1
     - _Surface: 0
     - _ZTest: 4
@@ -96,8 +94,8 @@ Material:
     - _Emission_Color: {r: 0, g: 0, b: 0, a: 0}
     - _HDR_Color: {r: 1, g: 1, b: 1, a: 0}
     - _Specluar_Color: {r: 1, g: 1, b: 1, a: 0}
-    - _Specular: {r: 0, g: 0, b: 0, a: 0}
-    - _Specular_Sub: {r: 0, g: 0, b: 0, a: 0}
+    - _Specular: {r: 1, g: 1, b: 1, a: 0}
+    - _Specular_Sub: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &4398087774294824535
 MonoBehaviour:
