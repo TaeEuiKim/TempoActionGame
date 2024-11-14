@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using UnityEngine.Video;
 
 public class MainButtonManager : MonoBehaviour
@@ -16,6 +16,7 @@ public class MainButtonManager : MonoBehaviour
     [SerializeField] private VideoPlayer ParitcleVideo2;
     [SerializeField] private GameObject[] idleImg;
     [SerializeField] private GameObject[] moveingImg;
+    [SerializeField] private Image fadePanel;
 
     private bool isNext;
 
@@ -31,16 +32,35 @@ public class MainButtonManager : MonoBehaviour
             if (LogoVideo.isPaused)
             {
                 LogoVideo.gameObject.SetActive(false);
-                ParitcleVideo1.Play();
-                isNext = true;
+                StartCoroutine(FadeOut());
             }
 
-            if (isNext && !LogoVideo.gameObject.activeSelf && ParitcleVideo1.isPaused)
+            if (isNext && ParitcleVideo1.isPaused)
             {
                 ParitcleVideo1.gameObject.SetActive(false);
+                ParitcleVideo2.gameObject.SetActive(true);
                 ParitcleVideo2.Play();
             }
         }
+    }
+
+    private IEnumerator FadeOut()
+    {
+        float a = 1;
+        while (fadePanel.color.a >= 0)
+        {
+            a -= Time.deltaTime;
+            fadePanel.color = new Color(0, 0, 0, a);
+
+            yield return null;
+        }
+
+        ParitcleVideo1.gameObject.SetActive(true);
+        ParitcleVideo1.Play();
+
+        yield return new WaitForSeconds(1f);
+
+        isNext = true;
     }
 
     public void RestartScene()

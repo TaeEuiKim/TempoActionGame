@@ -43,6 +43,14 @@ public class Define
         ALTERNATIVE
     }
 
+    public enum DestoryObjectType
+    {
+        FENCE,
+        BOX,
+        TRASH,
+        NONE,
+    }
+
     #region 플레이어
     public enum TempoType
     {
