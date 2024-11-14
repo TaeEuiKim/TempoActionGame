@@ -87,13 +87,13 @@ Material:
     - _Emission_Power: 0
     - _Emssion_Multiply: 0
     - _Fresnel_Power: 10
-    - _Lambert_Power: 1
+    - _Lambert_Power: 0
     - _Normal_Strength: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _SPECULAR: 1
     - _Saturation: 1
-    - _Smoothness: 0.238
+    - _Smoothness: 0
     - _SrcBlend: 1
     - _Surface: 0
     - _ZTest: 4
@@ -104,8 +104,8 @@ Material:
     - _Emssion_Color: {r: 0, g: 0, b: 0, a: 0}
     - _HDR_Color: {r: 1, g: 1, b: 1, a: 0}
     - _Specluar_Color: {r: 1, g: 1, b: 1, a: 0}
-    - _Specular: {r: 0, g: 0, b: 0, a: 0}
-    - _Specular_Sub: {r: 0, g: 0, b: 0, a: 0}
+    - _Specular: {r: 1, g: 1, b: 1, a: 0}
+    - _Specular_Sub: {r: 1, g: 1, b: 1, a: 0}
     - _emission_color: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &4398087774294824535

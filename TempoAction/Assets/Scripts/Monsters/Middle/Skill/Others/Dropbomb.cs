@@ -48,7 +48,7 @@ public class Dropbomb : MonoBehaviour
         if (!isGrounded && !isNonAuto)
         {
             timer += Time.deltaTime;
-            if (timer > 2.5f)
+            if (timer > 1.5f)
             {
                 isNonAuto = true;
             }
