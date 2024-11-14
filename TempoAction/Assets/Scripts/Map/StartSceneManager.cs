@@ -18,6 +18,11 @@ public class StartSceneManager : MonoBehaviour
     [Header("플레이어")]
     [SerializeField] private Player _player;
 
+    [Header("튜토리얼 용 UI")]
+    [SerializeField] private GameObject MovingUI;
+    [SerializeField] private GameObject AttackUI;
+    [SerializeField] private GameObject CommandUI;
+
     private bool isCutScene;
     private Coroutine cutSceneCoroutine;
 
@@ -35,6 +40,21 @@ public class StartSceneManager : MonoBehaviour
             PlayerInputManager.Instance.cancel = false;
             SkipCutScene();
         }
+    }
+
+    public void SetMovingUI(bool isTurn)
+    {
+        MovingUI.SetActive(isTurn);
+    }
+
+    public void SetAttackUI(bool isTurn)
+    {
+        MovingUI.SetActive(isTurn);
+    }
+
+    public void SetCommandUI(bool isTurn)
+    {
+        MovingUI.SetActive(isTurn);
     }
 
     private IEnumerator StartCutScene()
