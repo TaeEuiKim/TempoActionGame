@@ -275,13 +275,17 @@ public class NormalMonster : Monster
     public override void TakeDamage(float value)
     {
         base.TakeDamage(value);
-        hitShader.EnableKeyword("_ALPHATEST_ON");
-        hitShader.SetFloat("_AlphaClip", 1);
-        if (_hitCoroutine != null)
+
+        if (hitShader != null)
         {
-            StopCoroutine(_hitCoroutine);
+            hitShader.EnableKeyword("_ALPHATEST_ON");
+            hitShader.SetFloat("_AlphaClip", 1);
+            if (_hitCoroutine != null)
+            {
+                StopCoroutine(_hitCoroutine);
+            }
+            _hitCoroutine = StartCoroutine(TurnOffShader());
         }
-        _hitCoroutine = StartCoroutine(TurnOffShader());
 
         if (Stat.Hp <= 0)
         {
@@ -360,6 +364,12 @@ public class NormalMonster : Monster
         else if(GetNormalAttackUsable())
         {
             CurrentPerceptionState = Define.PerceptionType.NORMALATTACK;
+            if (monsterType == Define.NormalMonsterType.MON3)
+            {
+                int rand = Random.Range(0, 2);
+
+                Ani.SetInteger("AttackCount", rand == 0 ? 0 : 1);
+            }
             return true;
         }
 

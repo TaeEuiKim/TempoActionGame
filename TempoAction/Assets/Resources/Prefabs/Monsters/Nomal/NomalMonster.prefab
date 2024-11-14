@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3749335928735952618
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5720699200240386250}
+  m_Layer: 0
+  m_Name: GroundCheckPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5720699200240386250
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3749335928735952618}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: -0.59999996, y: 0.59999996, z: -0.59999996}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5365613518509020335}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6889173418024680073
 GameObject:
   m_ObjectHideFlags: 0
@@ -67,6 +98,7 @@ Transform:
   m_Children:
   - {fileID: 7221192804497416995}
   - {fileID: 3901097135923329235}
+  - {fileID: 5720699200240386250}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1681674904947597808
@@ -100,7 +132,7 @@ MonoBehaviour:
   _stat: {fileID: 11400000, guid: f19c15c9f692fce4c929887ca8f7b101, type: 2}
   _characterModel: {fileID: 7221192804497416995}
   _colliderManager:
-    mainCollider: {fileID: 0}
+    mainCollider: {fileID: 8898620878518490393}
     colliders:
     - <Key>k__BackingField: 0
       <Colliders>k__BackingField:
@@ -112,7 +144,7 @@ MonoBehaviour:
     m_Bits: 2048
   _groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   _wallLayer:
     serializedVersion: 2
     m_Bits: 8192
@@ -126,8 +158,8 @@ MonoBehaviour:
   hitShader: {fileID: 0}
   isHit: 0
   isHiting: 0
-  _groundCheckPoint: {fileID: 0}
-  _groundCheckRadius: 0.2
+  _groundCheckPoint: {fileID: 5720699200240386250}
+  _groundCheckRadius: 0.3
   stateConditions: {fileID: 11400000, guid: 430911e20125a044092ba1caa74bf47b, type: 2}
   monsterType: 0
   ultimateEffect: {fileID: 0}
@@ -203,8 +235,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.3, y: 1, z: 0.3}
-  m_Center: {x: 0, y: 0.5, z: 0}
+  m_Size: {x: 0.3, y: 1.2, z: 0.3}
+  m_Center: {x: 0, y: 0.6, z: 0}
 --- !u!1001 &6530248879704940087
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -279,11 +311,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7819201048525170404, guid: eb47bc7168240f8469eaed7eacc4083a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.14697266
+      value: 0.112
       objectReference: {fileID: 0}
     - target: {fileID: 7819201048525170404, guid: eb47bc7168240f8469eaed7eacc4083a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.7919922
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: 7819201048525170404, guid: eb47bc7168240f8469eaed7eacc4083a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
