@@ -98,10 +98,16 @@ public class Middle_Homerun : Middle_Skill
         {
             _monster.transform.DOMoveX(_monster.transform.position.x - dis, 0.6f);
         }
+
+        TestSound.Instance.PlaySound("Homerun_Dash");
+
     }
 
     private void Attack()
     {
+        TestSound.Instance.PlaySound("Homerun_Swing");
+        TestSound.Instance.PlaySound("Homerun_Voice");
+
         if (!isFront)
         {
             _monster.HitPoint.localPosition = new Vector3(_backHitPoint.x, _backHitPoint.y);
@@ -129,6 +135,8 @@ public class Middle_Homerun : Middle_Skill
 
                 Vector3 hitPos = player.ClosestPoint(_monster.HitPoint.position);
                 hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z - 0.1f);
+
+                TestSound.Instance.PlaySound("Homerun_Hit");
             }
 
             isFront = true;
@@ -161,6 +169,8 @@ public class Middle_Homerun : Middle_Skill
 
                 Vector3 hitPos = player.ClosestPoint(_monster.HitPoint.position);
                 hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z - 0.1f);
+
+                TestSound.Instance.PlaySound("Homerun_Hit");
             }
         }
     }

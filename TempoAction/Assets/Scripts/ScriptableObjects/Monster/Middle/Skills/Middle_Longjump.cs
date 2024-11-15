@@ -98,6 +98,9 @@ public class Middle_Longjump : Middle_Skill
     {
         if (!isFlying)
         {
+            TestSound.Instance.PlaySound("Longjump_Jump");
+            TestSound.Instance.PlaySound("Longjump_Voice");
+
             GameObject hitParticle = ObjectPool.Instance.Spawn("FX_ChungJump@P", 1);
 
             hitParticle.transform.position = new Vector3(_monster.transform.position.x, 1.4f, _monster.transform.position.z);
@@ -127,6 +130,8 @@ public class Middle_Longjump : Middle_Skill
 
     private void Finish()
     {
+        TestSound.Instance.PlaySound("Longjump_Fall");
+
         _monster.Rb.useGravity = true;
 
         Vector3 pos = _monster.transform.position;
@@ -153,6 +158,8 @@ public class Middle_Longjump : Middle_Skill
         isFlying = false;
 
         GameObject hitParticle = ObjectPool.Instance.Spawn("FX_ChungLanding@P", 1);
+        CameraController.Instance.SceneShaking();
+        TestSound.Instance.PlaySound("Longjump_Kang");
 
         hitParticle.transform.position = new Vector3(attackPos, 1.2f, _monster.transform.position.z);
 

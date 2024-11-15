@@ -306,6 +306,42 @@ public class NormalMonster : Monster
             }
 
             isHit = true;
+            if (monsterType == Define.NormalMonsterType.BALDO)
+            {
+                int num = Random.Range(0, 2);
+                if (num == 0)
+                {
+                    TestSound.Instance.PlaySound("NormalMonster1_Beat1");
+                }
+                else if (num == 1)
+                {
+                    TestSound.Instance.PlaySound("NormalMonster1_Beat2");
+                }
+            }
+            else if (monsterType == Define.NormalMonsterType.KUNG)
+            {
+                int num = Random.Range(0, 2);
+                if (num == 0)
+                {
+                    TestSound.Instance.PlaySound("NormalMonster2_Beat1");
+                }
+                else if (num == 1)
+                {
+                    TestSound.Instance.PlaySound("NormalMonster2_Beat2");
+                }
+            }
+            else if (monsterType == Define.NormalMonsterType.MON3)
+            {
+                int num = Random.Range(0, 2);
+                if (num == 0)
+                {
+                    TestSound.Instance.PlaySound("NormalMonster3_Beat1");
+                }
+                else if (num == 1)
+                {
+                    TestSound.Instance.PlaySound("NormalMonster3_Beat2");
+                }
+            }
             CurrentPerceptionState = Define.PerceptionType.HIT;
         }
         return;
@@ -371,8 +407,18 @@ public class NormalMonster : Monster
             if (monsterType == Define.NormalMonsterType.MON3)
             {
                 int rand = Random.Range(0, 2);
-
-                Ani.SetInteger("AttackCount", rand == 0 ? 0 : 1);
+                if (rand == 0)
+                {
+                    TestSound.Instance.PlaySound("NormalMonster3_HitVoice1");
+                    TestSound.Instance.PlaySound("NormalMonster3_Attack1");
+                    Ani.SetInteger("AttackCount", 0);
+                }
+                else
+                {
+                    TestSound.Instance.PlaySound("NormalMonster3_HitVoice2");
+                    TestSound.Instance.PlaySound("NormalMonster3_Attack2");
+                    Ani.SetInteger("AttackCount", 1);
+                }
             }
             return true;
         }

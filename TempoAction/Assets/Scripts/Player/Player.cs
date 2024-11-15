@@ -101,6 +101,8 @@ public class Player : CharacterBase
     private bool isUseStemina = false;
     private float steminaTimer = 0;
 
+    public static float saveHp = 0;
+
     protected override void Awake()
     {
         base.Awake();
@@ -119,6 +121,16 @@ public class Player : CharacterBase
     {
         _attack.Initialize();
         _controller.Initialize();
+
+        if (saveHp <= 0)
+        {
+            saveHp = PlayerSt.MaxHp;
+        }
+        else
+        {
+            PlayerSt.Hp = saveHp;
+            UpdateHealth();
+        }
 
         //플레이어 상태
         _stateStorage.Add(Define.PlayerState.DIE, new DieState(this));
@@ -206,6 +218,8 @@ public class Player : CharacterBase
         if (_playerStat.IsKnockedBack) return;
 
         _stat.Hp -= value * ((100 - _stat.Defense) / 100);
+        saveHp = _stat.Hp;
+
         UpdateHealth();
     }
 
@@ -279,14 +293,17 @@ public class Player : CharacterBase
     {
         GameObject effect = ObjectPool.Instance.Spawn("FX_Heal", 1f, transform);
         effect.transform.position = transform.position + new Vector3(0, 1f, -1f);
+        TestSound.Instance.PlaySound("Heal");
 
         if (_stat.Hp + value >= _stat.MaxHp)
         {
             _stat.Hp = _stat.MaxHp;
+            saveHp = _stat.MaxHp;
         }
         else
         {
             _stat.Hp += value;
+            saveHp += value;
         }
         UpdateHealth();
     }

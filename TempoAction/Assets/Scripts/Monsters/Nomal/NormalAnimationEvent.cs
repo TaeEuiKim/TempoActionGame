@@ -15,16 +15,23 @@ public class NormalAnimationEvent : MonoBehaviour
             var player = _monster.Player.GetComponent<Player>();
             player.TakeDamage(_monster.Stat.Damage);
 
+            if (_monster.monsterType == Define.NormalMonsterType.BALDO)
+            {
+                TestSound.Instance.PlaySound("NormalMonster1_Attack1_Hit");
+            }
+
             if (_monster.monsterType == Define.NormalMonsterType.MON3)
             {
                 GameObject effect;
                 if (_monster.Ani.GetInteger("AttackCount") == 0)
                 {
+                    TestSound.Instance.PlaySound("NormalMonster3_Hit");
                     effect = ObjectPool.Instance.Spawn("P_Monster3Hit1", 1f);
                     effect.transform.position = _monster.Player.position + new Vector3(0, 1.2f);
                 }
                 else
                 {
+                    TestSound.Instance.PlaySound("NormalMonster3_Hit");
                     effect = ObjectPool.Instance.Spawn("P_Monster3Hit2", 1f);
                     effect.transform.position = _monster.Player.position + new Vector3(0, 1.2f);
                 }
@@ -138,5 +145,10 @@ public class NormalAnimationEvent : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    private void PlaySound(string name)
+    {
+        TestSound.Instance.PlaySound(name);
     }
 }

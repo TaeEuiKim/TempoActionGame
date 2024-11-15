@@ -25,6 +25,19 @@ public class Normal_Death : Normal_State
             _monster.Ani.SetBool("Death", true);
         }
 
+        if (_monster.monsterType == Define.NormalMonsterType.MON3)
+        {
+            int num = Random.Range(0, 2);
+            if (num == 0)
+            {
+                TestSound.Instance.PlaySound("NormalMonster3_Dead1");
+            }
+            else
+            {
+                TestSound.Instance.PlaySound("NormalMonster3_Dead2");
+            }
+        }
+
         if (!isSpawn)
         {
             SpawnUltimateGauge();
@@ -51,5 +64,11 @@ public class Normal_Death : Normal_State
 
         GameObject ultimateEffect = ObjectPool.Instance.Spawn("energy_ui_ball");
         _monster.Player.GetComponent<Player>().View.MoveUltimateUI(ultimateEffect, _monster.ultimateValue / 100);
+
+        if (_monster.monsterType == Define.NormalMonsterType.MON3)
+        {
+            GameObject food = ObjectPool.Instance.Spawn("Dumplings");
+            food.transform.position = _monster.transform.position + new Vector3(0, 0.5f);
+        }
     }
 }

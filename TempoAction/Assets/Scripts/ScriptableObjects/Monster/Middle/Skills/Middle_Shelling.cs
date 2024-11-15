@@ -85,12 +85,16 @@ public class Middle_Shelling : Middle_Skill
 
     IEnumerator OnRocketCamera()
     {
+        TestSound.Instance.PlaySound("Shelling_Voice");
+
         yield return new WaitForSeconds(0.16f);
 
+        TestSound.Instance.PlaySound("Shelling_Firing");
 
         for (int i = 0; i < 5; ++i)
         {
             SpawnRocket();
+
             yield return new WaitForSeconds(0.7f);
         }
 

@@ -14,6 +14,7 @@ public class PlayerView : MonoBehaviour
 
     [SerializeField] private Image _ultimateBarImage;
     [SerializeField] private Image _ultimateIllusionBarImage;
+    [SerializeField] private Image _ultimateKeyImage;
 
     [SerializeField] private GameObject _gameoverUI;
     [SerializeField] private GameObject[] MainSkillSlots;
@@ -126,6 +127,11 @@ public class PlayerView : MonoBehaviour
         }
 
         _ultimateBarImage.fillAmount = fillAmount;
+
+        if (_ultimateBarImage.fillAmount >= 1)
+        {
+            SetVImage(true);
+        }
 
         yield return null;
     }
@@ -324,5 +330,10 @@ public class PlayerView : MonoBehaviour
     {
         _steminaBarImage.fillAmount = value;
         _steminaIllusionBarImage.fillAmount = value;
+    }
+
+    public void SetVImage(bool isTurn)
+    {
+        _ultimateKeyImage.gameObject.SetActive(isTurn);
     }
 }
