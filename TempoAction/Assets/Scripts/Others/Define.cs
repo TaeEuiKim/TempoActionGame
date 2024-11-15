@@ -48,6 +48,18 @@ public class Define
         FENCE,
         BOX,
         TRASH,
+        FLOOR,
+        NONE,
+    }
+
+    public enum FoodType
+    {
+        BANANA,
+        CAKE,
+        COKE,
+        DUMPLINGS,
+        HAMBURGER,
+        HOTDOG,
         NONE,
     }
 

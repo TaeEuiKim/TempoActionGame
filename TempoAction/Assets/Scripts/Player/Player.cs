@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Unity.VisualScripting;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Player : CharacterBase
 {
@@ -47,7 +48,8 @@ public class Player : CharacterBase
     public bool isRockFireObj = false;
 
     [Header("±Ã±Ø±â")]
-    [SerializeField] public GameObject MoveEffect;
+    [SerializeField] public GameObject[] MoveEffect;
+    [SerializeField] public Material RimShader;
 
     [Space]
 
@@ -97,8 +99,7 @@ public class Player : CharacterBase
     [HideInInspector] public float stunTime = 0f;
 
     private bool isUseStemina = false;
-    private Coroutine steminaCoroutine;
-    private Coroutine useSteminaCoroutine;
+    private float steminaTimer = 0;
 
     protected override void Awake()
     {
@@ -140,11 +141,13 @@ public class Player : CharacterBase
         GetComponent<PlayerSkillManager>().AddSkill(skill2);
 
         StartCoroutine(RegenStemina());
+        StartCoroutine(CheckSteminaRegen());
     }
 
     protected override void Update()
     {
         base.Update();
+
         if (_stat.Hp <= 0)
         {
             _currentState = Define.PlayerState.DIE;
@@ -214,13 +217,7 @@ public class Player : CharacterBase
         }
 
         isUseStemina = true;
-
-        if (useSteminaCoroutine != null)
-        {
-            StopCoroutine(useSteminaCoroutine);
-        }
-
-        useSteminaCoroutine = StartCoroutine(CheckSteminaRegen());
+        steminaTimer = 0f;
 
         PlayerSt.Stamina -= value;
         UpdateStemina();
@@ -229,14 +226,19 @@ public class Player : CharacterBase
 
     private IEnumerator CheckSteminaRegen()
     {
-        if (!isUseStemina)
+        WaitForSeconds seconds = new WaitForSeconds(0.01f);
+
+        while (true)
         {
-            yield break;
+            steminaTimer += 0.01f;
+
+            if (steminaTimer > 1f)
+            {
+                isUseStemina = false;
+            }
+
+            yield return seconds;
         }
-
-        yield return new WaitForSeconds(1.5f);
-
-        isUseStemina = false;
     }
 
     private IEnumerator RegenStemina()

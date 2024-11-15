@@ -499,11 +499,13 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         // 메인 템포일 때 데미지 처리
         PlayerSfx(Define.PlayerSfxType.MAIN);
+        _player.View.UpdateUltimateGauge(100f);
         monster.TakeDamage(_player.GetTotalDamage() + commandDamage);
     }
 
     private void HitObject(DestoryObj obj)
     {
+        _player.View.UpdateUltimateGauge(100f);
         obj.TakeDamage(_player.GetTotalDamage());
     }
 
@@ -585,8 +587,8 @@ public class PlayerAnimationEvent : MonoBehaviour
     // 공격 사거리 안에 적이 있으면 적 앞으로 이동하는 이벤트 함수
     private void MoveToClosestMonster(float duration)
     {
-        Vector3 rayOrigin = new Vector3(transform.parent.position.x, transform.parent.position.y, transform.parent.position.z);
-        Vector3 rayDirection = transform.localScale.x < 0 ? transform.right : transform.right * -1;
+        Vector3 rayOrigin = new Vector3(transform.parent.position.x, transform.parent.position.y + 0.5f, transform.parent.position.z);
+        Vector3 rayDirection = _player.IsLeftDirection() ? new Vector3(-1, 0, 0) : new Vector3(1, 0, 0);
 
         // 레이캐스트 실행
         if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, _player.Attack.CurrentTempoData.distance, _player.MonsterLayer))
@@ -601,7 +603,7 @@ public class PlayerAnimationEvent : MonoBehaviour
         _player.Ani.SetFloat("Speed", 0);
 
         Vector3 rayOrigin = new Vector3(transform.parent.position.x, transform.parent.position.y + 0.5f, transform.parent.position.z);
-        Vector3 rayDirection = transform.localScale.x < 0 ? transform.right : transform.right * -1;
+        Vector3 rayDirection = _player.IsLeftDirection() ? new Vector3(-1, 0, 0) : new Vector3(1, 0, 0);
 
         float dis = 2;
         if (_player.Attack.CurrentTempoData != null)
@@ -609,7 +611,7 @@ public class PlayerAnimationEvent : MonoBehaviour
             dis = _player.Attack.CurrentTempoData.distance;
         }
 
-        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitPos, dis, _player.BlockLayer))
+        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitPos, moveDistance, _player.BlockLayer))
         {
             float closestMonsterX = hitPos.point.x + (-rayDirection.x * 0.5f);
             transform.parent.DOMoveX(closestMonsterX, 0.3f);
@@ -637,8 +639,8 @@ public class PlayerAnimationEvent : MonoBehaviour
         _player.Ani.SetFloat("Speed", 0);
 
         Vector3 rayOrigin = new Vector3(transform.parent.position.x, transform.parent.position.y + 0.5f, transform.parent.position.z);
-        Vector3 rayDirection = _player.IsLeftDirection() ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
-        Debug.DrawRay(rayOrigin, rayDirection);
+        Vector3 rayDirection = _player.IsLeftDirection() ? new Vector3(-1, 0, 0) : new Vector3(1, 0, 0);
+
         float dis = 2f;
 
         if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitPos, dis, _player.BlockLayer))
@@ -672,10 +674,13 @@ public class PlayerAnimationEvent : MonoBehaviour
         float animationLength = stateInfo.length; // 애니메이션 전체 길이
         float currentPlayTime = stateInfo.normalizedTime * animationLength; // 현재 재생된 시간 (normalizedTime은 0에서 1 사이의 값)
 
-        float timeRemaining = animationLength - currentPlayTime - 0.2f; // 남은 시간 계산
-
+        float timeRemaining = animationLength - currentPlayTime; // 남은 시간 계산
+        
         _player.Ani.SetBool("IsCommand", true);
-        _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
+        if (_player.Ani.GetBool("isGrounded"))
+        {
+            _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
+        }
 
         _player.CommandController.StartCommandTime(timeRemaining, SkillId, false);
     }
@@ -780,6 +785,11 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     private void TurnFire(float appearTime)
     {
+        if (_player.Controller.isUltimate)
+        {
+            return;
+        }
+
         if (isTurn)
         {
             StopCoroutine(TurnOnFire(appearTime));

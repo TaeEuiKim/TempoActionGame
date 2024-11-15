@@ -46,10 +46,10 @@ public class VerticalFallRunner : SkillRunnerBase
         // 바닥 체크
         Vector3 rayOrigin = character.transform.position;
         Ray ray = new Ray(rayOrigin, Vector3.down);
-        Debug.DrawRay(rayOrigin, Vector3.down, Color.blue);
+
         Vector3 groundPos = Vector3.zero;
         float ySpeed = 0;
-        if (Physics.Raycast(ray, out RaycastHit groundHit, 1000, 1 << 12)) // Ground 레이어 12 검출
+        if (Physics.Raycast(ray, out RaycastHit groundHit, 1000, 1 << 12 | 1 << 8)) // Ground 레이어 12 검출
         {
             groundPos = groundHit.point;
 
@@ -112,7 +112,8 @@ public class VerticalFallRunner : SkillRunnerBase
         Vector3 originScale = player.HitPoint.localScale;
 
         player.HitPoint.localScale = new Vector3(3, 2, 1);
-        Collider[] hittedCharacter = Physics.OverlapBox(player.HitPoint.position + new Vector3(LeftDir * 0.7f, 0), player.HitPoint.localScale / 2, player.HitPoint.rotation, player.MonsterLayer);
+        Collider[] hittedCharacter = Physics.OverlapBox(player.HitPoint.position, player.HitPoint.localScale / 2, player.HitPoint.rotation, player.MonsterLayer);
+        Collider[] hittedObj = Physics.OverlapBox(player.HitPoint.position, player.HitPoint.localScale / 2, player.HitPoint.rotation, 1 << 8);
         player.HitPoint.localScale = originScale;
 
         if (hittedCharacter.Length > 0)
@@ -121,6 +122,15 @@ public class VerticalFallRunner : SkillRunnerBase
             foreach (var hitCharacter in hittedCharacter)
             {
                 hitCharacter.GetComponent<CharacterBase>().TakeDamage(skillData.SkillDamage);
+            }
+        }
+
+        if (hittedObj.Length > 0)
+        {
+            TestSound.Instance.PlaySound("Skill2_Hit");
+            foreach (var hitObj in hittedObj)
+            {
+                hitObj.GetComponent<DestoryObj>().TakeDamage(skillData.SkillDamage);
             }
         }
 

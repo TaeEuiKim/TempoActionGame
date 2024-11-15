@@ -6,6 +6,7 @@ using Cinemachine;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using FMOD;
+using DG.Tweening;
 
 public class CameraController : Singleton<CameraController>
 {
@@ -35,6 +36,11 @@ public class CameraController : Singleton<CameraController>
     private void Awake()
     {
         middlePhaseManager = FindObjectOfType<MiddlePhaseManager>();
+    }
+
+    private void Update()
+    {
+        
     }
 
     public void TurnOnFadeOut(bool islook, string SceneName)
@@ -210,5 +216,26 @@ public class CameraController : Singleton<CameraController>
         }
 
         _PlayerCamera[0].GetCinemachineComponent<CinemachineTransposer>().m_XDamping = amount;
+    }
+
+    public void MoveSceneCamera(int moveCount)
+    {
+        float pos = 0;
+        float time = 1f;
+        if (moveCount == 0)
+        {
+            pos = 194.84f;
+            _SceneCamera.transform.DOMoveX(pos, time);
+        }
+        else if (moveCount == 1)
+        {
+            pos = 193f;
+            _SceneCamera.transform.DOMoveX(pos, time);
+        }
+        else if (moveCount == 2)
+        {
+            pos = 196.77f;
+            _SceneCamera.transform.DOMoveX(pos, time);
+        }
     }
 }

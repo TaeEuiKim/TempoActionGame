@@ -166,11 +166,6 @@ public class PlayerController
     {
         Direction = 0f;
 
-        if (!isMove)
-        {
-            return;
-        }
-
         if (PlayerInputManager.Instance.move.x < 0)
         {
             Direction = -1f;
@@ -180,6 +175,11 @@ public class PlayerController
         {
             Direction = 1f;
             _dashDirection = 1f;
+        }
+
+        if (!isMove)
+        {
+            return;
         }
 
         if (!CheckMovePath())
@@ -220,6 +220,8 @@ public class PlayerController
             PlayerInputManager.Instance.jump = false;
             if (!_isGrounded && !_isDoubleJumping)
             {
+                _player.CommandController.CheckFallSkill();
+
                 _player.Ani.SetTrigger("isJumping");
                 _player.Rb.velocity = new Vector3(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
                 TestSound.Instance.PlaySound("DoubleJump");
@@ -227,6 +229,8 @@ public class PlayerController
             }
             if (_isGrounded)
             {
+                _player.CommandController.CheckFallSkill();
+
                 _player.Ani.SetTrigger("isJumping");
                 _player.Rb.velocity = new Vector3(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
                 TestSound.Instance.PlaySound("Jump");
@@ -334,7 +338,16 @@ public class PlayerController
             PlayerInputManager.Instance.ultimate = false;
             isUltimate = true;
 
-            _player.MoveEffect.SetActive(true);
+            GameObject disappearEffect = ObjectPool.Instance.Spawn("do_disappear", 1f);
+            disappearEffect.transform.position = _player.SkillObject.transform.position;
+            _player.SkillObject.SetActive(false);
+            TestSound.Instance.PlaySound("Skill1");
+
+            _player.RimShader.SetFloat("_Float", 1f);
+            for (int i = 0; i < _player.MoveEffect.Length; ++i)
+            {
+                _player.MoveEffect[i].SetActive(true);
+            }
             _player.CharacterModel.GetComponent<CharacterTrail>().StartTrail(10f);
             _player.View.UseUltimate();
         }

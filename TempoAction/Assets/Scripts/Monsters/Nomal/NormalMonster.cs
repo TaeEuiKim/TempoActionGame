@@ -71,6 +71,8 @@ public class NormalMonster : Monster
     [Header("궁극기 채워지는 양")]
     [SerializeField] public float ultimateValue;
 
+    private bool isTrace = false;
+
     #endregion
 
     #region 프로퍼티
@@ -82,6 +84,7 @@ public class NormalMonster : Monster
     public Vector3 ColliderSize { get => _colliderSize; set => _colliderSize = value; }
     public Transform GroundCheckPoint { get => _groundCheckPoint; }
     public float GroundCheckRadius { get => _groundCheckRadius; }
+    public bool IsTrace { set => isTrace = value; get => isTrace; }
 
 
 
@@ -146,6 +149,7 @@ public class NormalMonster : Monster
 
         _stat.Init();
     }
+
     private void Start()
     {
         //_perceptionStateStorage.Add(Define.PerceptionType.PATROL, new Nomal_Patrol(this));
@@ -401,6 +405,8 @@ public class NormalMonster : Monster
 
     private void OnEnable()
     {
+        MonsterSt.Hp = MonsterSt.MaxHp;
+        GetComponent<NomalMonsterView>().SetFullHp();
         Rb.useGravity = true;
         GetComponent<BoxCollider>().enabled = true;
     }

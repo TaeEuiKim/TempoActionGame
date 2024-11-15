@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class CharacterTrail : MonoBehaviour
 {
@@ -34,6 +35,8 @@ public class CharacterTrail : MonoBehaviour
 
     IEnumerator ActivateTrail(float timeActive)
     {
+        Player player = GetComponentInParent<Player>();
+
         while (timeActive > 0)
         {
             timeActive -= meshRefreshRate;
@@ -78,8 +81,18 @@ public class CharacterTrail : MonoBehaviour
             yield return new WaitForSeconds(meshRefreshRate);
         }
 
-        GetComponentInParent<Player>().Controller.isUltimate = false;
-        GetComponentInParent<Player>().MoveEffect.SetActive(false);
+        player.Controller.isUltimate = false;
+        for (int i = 0; i < player.MoveEffect.Length; ++i)
+        {
+            player.MoveEffect[i].SetActive(false);
+        }
+
+        GameObject effect = ObjectPool.Instance.Spawn("do_disappear", 1);
+        effect.transform.position = player.SkillObject.transform.position;
+
+        TestSound.Instance.PlaySound("Skill1");
+        player.RimShader.SetFloat("_Float", 0f);
+        player.SkillObject.SetActive(true);
         isTrailActive = false;
     }
 

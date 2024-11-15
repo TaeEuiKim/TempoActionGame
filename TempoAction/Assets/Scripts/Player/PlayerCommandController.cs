@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerCommandController
@@ -14,6 +15,29 @@ public class PlayerCommandController
     {
         _player = player;
         _skillCommand = command;
+    }
+
+    public void CheckFallSkill()
+    {
+        _player.Ani.SetBool("IsCommand", true);
+        CoroutineRunner.Instance.StartCoroutine(CheckFall());
+    }
+
+    private IEnumerator CheckFall()
+    {
+        while (!_player.Ani.GetBool("isGrounded"))
+        {
+            if (CheckFallCommand(PlayerInputManager.Instance.GetCommandKey(), 3))
+            {
+                yield break;
+            }
+
+            yield return null;
+        }
+
+        _player.Ani.SetBool("IsCommand", false);
+
+        yield return null;
     }
 
     public void StartCommandTime(float checkTime, int skillid, bool isBackDash)
@@ -44,6 +68,24 @@ public class PlayerCommandController
         _player.Controller.isJump = true;
 
         yield return null;
+    }
+
+    private bool CheckFallCommand(List<KeyCode> keyList, int skillid)
+    {
+        var matchingSkillId = _skillCommand.commandDatas
+            .Where(cd => cd.PossibleSkillId.Contains(skillid))
+            .Where(cd => ContainsSubsequence(keyList, cd.KeyCodes))
+            .Select(cd => cd.SkillId)
+            .FirstOrDefault(CheckUseSkill);
+
+        if (matchingSkillId != default)
+        {
+            _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
+            _player.Ani.SetInteger("CommandCount", matchingSkillId);
+            return true;
+        }
+
+        return false;
     }
 
     private bool CheckAttackCommand(List<KeyCode> keyList, int skillid, bool isBackDash)

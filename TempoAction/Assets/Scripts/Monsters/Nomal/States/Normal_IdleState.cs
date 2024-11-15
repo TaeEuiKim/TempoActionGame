@@ -24,16 +24,23 @@ public class Normal_IdleState : Normal_State
             _monster.Direction = _monster.Player.position.x - _monster.transform.position.x;
         }
 
-        float distance = Vector3.Distance(_monster.transform.position, _monster.Target.position);
-
-        // 공격 시도(스킬 or 일반)
-        if (!_monster.TryAttack())
+        if (!_monster.IsTrace)
         {
-            // 공격 범위 밖, 인지 범위 내(추격)
-            if (distance > _monster.MonsterSt.AttackRange && distance <= _monster.PerceptionDistance * SkillData.cm2m)
+            float distance = Vector3.Distance(_monster.transform.position, _monster.Target.position);
+
+            // 공격 시도(스킬 or 일반)
+            if (!_monster.TryAttack())
             {
-                _monster.CurrentPerceptionState = Define.PerceptionType.TRACE;
+                // 공격 범위 밖, 인지 범위 내(추격)
+                if (distance > _monster.MonsterSt.AttackRange && distance <= _monster.PerceptionDistance * SkillData.cm2m)
+                {
+                    _monster.CurrentPerceptionState = Define.PerceptionType.TRACE;
+                }
             }
+        }
+        else
+        {
+            _monster.CurrentPerceptionState = Define.PerceptionType.TRACE;
         }
     }
 

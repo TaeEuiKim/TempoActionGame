@@ -103,7 +103,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         List<CharacterBase> hittedCharacters = new List<CharacterBase>();
 
         // 도착 지점 갱신 with Wall
-        targetPos = GetTargetPosByCoillision(initialPos, direction * movingDistance, targetPos, 1 << 13);
+        targetPos = GetTargetPosByCoillision(initialPos, direction * movingDistance, targetPos, 1 << 8 | 1 << 12 | 1 << 13 | 1 << 14 | 1 << 16);
 
         // 돌진 이펙트 시작
         ActiveEffectToCharacter(character, dash);
@@ -147,6 +147,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         {
             Player player = character.gameObject.GetComponent<Player>();
             Collider[] hitMonsters = Physics.OverlapBox(player.HitPoint.position, player.ColliderSize / 2, player.HitPoint.rotation, player.MonsterLayer);
+            Collider[] hitObj = Physics.OverlapBox(player.HitPoint.position, player.ColliderSize / 2, player.HitPoint.rotation, 1 << 8);
 
             foreach (Collider collider in hitMonsters)
             {
@@ -162,6 +163,22 @@ public class SwordQuickDrawRunner : SkillRunnerBase
                 }
 
                 collider.transform.GetComponent<CharacterBase>().TakeDamage(skillData.SkillDamage * 1.3f);
+            }
+
+            foreach (Collider obj in hitObj)
+            {
+                GameObject finishHitEffect = ObjectPool.Instance.Spawn("P_MainChar_BaldoSkillAttack", 1);
+                finishHitEffect.transform.position = character.transform.position + new Vector3(0.3f * -character.CharacterModel.localScale.x, 1.2f);
+                if (character.CharacterModel.localScale.x < 0)
+                {
+                    finishHitEffect.GetComponent<FlipSlash>().OnFlip(new Vector3(-1, -1, 1));
+                }
+                else
+                {
+                    finishHitEffect.GetComponent<FlipSlash>().OnFlip(new Vector3(1, 1, 1));
+                }
+
+                obj.transform.GetComponent<DestoryObj>().TakeDamage(skillData.SkillDamage * 1.3f);
             }
         }
 

@@ -31,7 +31,7 @@ public class Normal_HitState : Normal_State
     {
         if (_monster.isHiting)
         {
-            if (!(_isGrounded = Physics.CheckSphere(_monster.GroundCheckPoint.position, _monster.GroundCheckRadius, _monster.GroundLayer | _monster.WallLayer))
+            if (!(_isGrounded = Physics.CheckSphere(_monster.GroundCheckPoint.position, _monster.GroundCheckRadius, _monster.GroundLayer | _monster.WallLayer | 1 << 8))
                 && timer < 1f)
             {
                 timer = 0;

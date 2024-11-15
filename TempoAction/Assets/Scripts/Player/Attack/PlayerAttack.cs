@@ -24,6 +24,7 @@ public class PlayerAttack
     // 이벤트
     public bool IsHit { get; set; }
     public float CheckDelay { get; set; } // 체크 상태 유지 시간
+    public bool isAttack {  get; set; }
     #endregion
 
     #region 프로퍼티
@@ -50,6 +51,7 @@ public class PlayerAttack
         //PointTempoCircle = null;
 
         IsHit = false;
+        isAttack = true;
 
         CheckDelay = 0;
 
@@ -77,7 +79,7 @@ public class PlayerAttack
         //    }
         //}
 
-        if (!PlayerInputManager.Instance.isKeyZ)
+        if (!PlayerInputManager.Instance.isKeyZ && isAttack)
         {
             if (_currentAttackState != Define.AttackState.ATTACK)
             { 

@@ -109,6 +109,10 @@ PrefabInstance:
       value: 1.2201469
       objectReference: {fileID: 0}
     - target: {fileID: -3887185075125053422, guid: 9246c6f1b63141c49988b32390b661bf, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d474a49f31080d6479f266f86c887a21, type: 2}
+    - target: {fileID: -3887185075125053422, guid: 9246c6f1b63141c49988b32390b661bf, type: 3}
       propertyPath: m_BlendShapeWeights.Array.data[0]
       value: 0
       objectReference: {fileID: 0}
@@ -206,6 +210,7 @@ MonoBehaviour:
   _hpCounts:
   - 20
   _type: 2
+  _foodType: 0
 --- !u!4 &6608187015154854542 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9246c6f1b63141c49988b32390b661bf, type: 3}

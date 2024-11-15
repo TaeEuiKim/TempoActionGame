@@ -68,7 +68,7 @@ Material:
     - _QueueOffset: 0
     - _SPECULAR: 1
     - _Saturation: 1
-    - _Smoothness: 0.4
+    - _Smoothness: 0.207
     - _SrcBlend: 1
     - _Surface: 0
     - _ZTest: 4
@@ -77,7 +77,7 @@ Material:
     m_Colors:
     - _Emission_Color: {r: 0, g: 0, b: 0, a: 0}
     - _HDR_Color: {r: 1, g: 1, b: 1, a: 0}
-    - _Specluar_Color: {r: 1, g: 1, b: 1, a: 0}
+    - _Specluar_Color: {r: 1, g: 0.6628522, b: 0.23113209, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &7694434996331111476
 MonoBehaviour:
