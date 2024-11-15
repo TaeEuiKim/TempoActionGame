@@ -23,4 +23,10 @@ public class NomalMonsterView : MonsterView, INomalMonsterView
     {
         _perceptionGauge.fillAmount = value;
     }
+
+    public void SetFullHp()
+    {
+        _hpBarImage.fillAmount = 1;
+        _hpIllusionBarImage.fillAmount = 1;
+    }
 }

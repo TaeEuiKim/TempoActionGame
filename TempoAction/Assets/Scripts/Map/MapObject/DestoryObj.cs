@@ -29,27 +29,29 @@ public class DestoryObj : BaseObject
         base.TakeDamage(value);
         CheckRenderObject();
 
-        if (Hp <= 0 && _type == Define.DestoryObjectType.BOX)
+        if (Hp <= 0)
         {
             switch (_foodType)
             {
                 case Define.FoodType.BANANA:
-                    ObjectPool.Instance.Spawn("Banana").transform.position = transform.position;
+                    ObjectPool.Instance.Spawn("Banana").transform.position = transform.position + new Vector3(0, 0.5f);
                     break;
                 case Define.FoodType.CAKE:
-                    ObjectPool.Instance.Spawn("Cake").transform.position = transform.position;
+                    ObjectPool.Instance.Spawn("Cake").transform.position = transform.position + new Vector3(0, 0.5f);
                     break;
                 case Define.FoodType.COKE:
-                    ObjectPool.Instance.Spawn("Coke").transform.position = transform.position;
+                    ObjectPool.Instance.Spawn("Coke").transform.position = transform.position + new Vector3(0, 0.5f);
                     break;
                 case Define.FoodType.DUMPLINGS:
-                    ObjectPool.Instance.Spawn("Dumplings").transform.position = transform.position;
+                    ObjectPool.Instance.Spawn("Dumplings").transform.position = transform.position + new Vector3(0, 0.5f);
                     break;
                 case Define.FoodType.HAMBURGER:
-                    ObjectPool.Instance.Spawn("Hamburger").transform.position = transform.position;
+                    ObjectPool.Instance.Spawn("Hamburger").transform.position = transform.position + new Vector3(0, 0.5f);
                     break;
                 case Define.FoodType.HOTDOG:
-                    ObjectPool.Instance.Spawn("Hotdog").transform.position = transform.position;
+                    ObjectPool.Instance.Spawn("Hotdog").transform.position = transform.position + new Vector3(0, 0.5f);
+                    break;
+                case Define.FoodType.NONE:
                     break;
             }
         }
@@ -65,6 +67,7 @@ public class DestoryObj : BaseObject
                     _skinnedMeshRenderer.SetBlendShapeWeight(0, 100);
                     _skinnedMeshRenderer.SetBlendShapeWeight(1, 100);
                     Ani.SetBool("Destory", true);
+                    GetComponent<BoxCollider>().enabled = false;
                 }
                 else if (Hp <= _hpCounts[1])
                 {
@@ -81,11 +84,30 @@ public class DestoryObj : BaseObject
                 {
                     _skinnedMeshRenderer.SetBlendShapeWeight(Random.Range(0, 2), 100);
                     Ani.SetBool("Destory", true);
+                    GetComponent<SphereCollider>().enabled = false;
                 }
                 else if (Hp <= _hpCounts[0])
                 {
                     _skinnedMeshRenderer.SetBlendShapeWeight(Random.Range(0, 2), 100);
                 }
+                break;
+            case Define.DestoryObjectType.BOX:
+                if (Hp <= 0)
+                {
+                    Ani.SetBool("Destory", true);
+                    GetComponent<BoxCollider>().enabled = false;
+                }
+                break;
+            case Define.DestoryObjectType.FLOOR:
+                Animator[] anis = GetComponentsInChildren<Animator>();
+                if (anis.Length > 0)
+                {
+                    for (int i = 0; i < anis.Length; ++i)
+                    {
+                        anis[i].SetBool("Destory", true);
+                    }
+                }
+                GetComponent<BoxCollider>().enabled = false;
                 break;
             default:
                 break;

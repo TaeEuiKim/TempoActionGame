@@ -25,6 +25,8 @@ public class StartSceneManager : MonoBehaviour
 
     private bool isCutScene;
     private Coroutine cutSceneCoroutine;
+    private bool isKey = false;
+    private float timer = 0f;
 
     private void Start()
     {
@@ -40,6 +42,24 @@ public class StartSceneManager : MonoBehaviour
             PlayerInputManager.Instance.cancel = false;
             SkipCutScene();
         }
+
+        if (isKey)
+        {
+            if (timer < 5f)
+            {
+                timer += Time.deltaTime;
+                return;
+            }
+
+            if (Input.anyKeyDown || PlayerInputManager.Instance.commandValue.Count > 0)
+            {
+                PlayerInputManager.Instance.ResetCommandKey();
+                _player.PlayerSt.IsKnockedBack = false;
+                _player.Attack.isAttack = true;
+                isKey = false;
+                SetCommandUI(false);
+            }
+        }
     }
 
     public void SetMovingUI(bool isTurn)
@@ -49,12 +69,12 @@ public class StartSceneManager : MonoBehaviour
 
     public void SetAttackUI(bool isTurn)
     {
-        MovingUI.SetActive(isTurn);
+        AttackUI.SetActive(isTurn);
     }
 
     public void SetCommandUI(bool isTurn)
     {
-        MovingUI.SetActive(isTurn);
+        CommandUI.SetActive(isTurn);
     }
 
     private IEnumerator StartCutScene()
@@ -117,8 +137,16 @@ public class StartSceneManager : MonoBehaviour
         StartCoroutine(FadeOut());
     }
 
-    private void SetPlayerControll(bool isKnockBack)
+    public void SetPlayerControll(bool isKnockBack)
     {
         _player.PlayerSt.IsKnockedBack = isKnockBack;
+    }
+
+    public void SetPlayerControll(bool isKnockBack, bool isKey)
+    {
+        _player.PlayerSt.IsKnockedBack = isKnockBack;
+        _player.Attack.isAttack = false;
+        _player.Rb.velocity = Vector3.zero;
+        this.isKey = isKey;
     }
 }

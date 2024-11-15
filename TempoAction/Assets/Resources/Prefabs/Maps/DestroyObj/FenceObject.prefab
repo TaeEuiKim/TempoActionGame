@@ -120,6 +120,10 @@ PrefabInstance:
       propertyPath: m_AABB.m_Extent.z
       value: 0.5486617
       objectReference: {fileID: 0}
+    - target: {fileID: -3887185075125053422, guid: 2b74c7808e6149947b13cf838318acc5, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 767a7835ce52da14497c282dcaf356b1, type: 2}
     - target: {fileID: 919132149155446097, guid: 2b74c7808e6149947b13cf838318acc5, type: 3}
       propertyPath: m_Name
       value: Fence
@@ -211,3 +215,5 @@ MonoBehaviour:
   _hpCounts:
   - 250
   - 100
+  _type: 0
+  _foodType: 0

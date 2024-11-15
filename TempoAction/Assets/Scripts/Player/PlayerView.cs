@@ -184,14 +184,6 @@ public class PlayerView : MonoBehaviour
         if (value > _hpBarImage.fillAmount)
         {
             StartCoroutine(UpdateHPIllusionBar(value));
-            while (_hpIllusionBarImage.fillAmount <= value)
-            {
-                _hpIllusionBarImage.fillAmount += time;
-
-                yield return seconds;
-            }
-
-            _hpIllusionBarImage.fillAmount = value;
 
             yield return null;
         }
@@ -235,6 +227,7 @@ public class PlayerView : MonoBehaviour
             }
 
             _hpBarImage.fillAmount = value;
+            _hpIllusionBarImage.fillAmount = value;
 
             yield return null;
         }
@@ -309,17 +302,6 @@ public class PlayerView : MonoBehaviour
 
         if (value > _steminaBarImage.fillAmount)
         {
-            while (_steminaBarImage.fillAmount <= value)
-            {
-                _steminaBarImage.fillAmount += time;
-
-                yield return seconds;
-            }
-
-            _steminaBarImage.fillAmount = value;
-            _steminaIllusionBarImage.fillAmount = time;
-
-            yield return null;
         }
         else
         {

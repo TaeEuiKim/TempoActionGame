@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3315296375906145021}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: -0.86875516, y: -0.007100338, z: 0.13572457, w: 0.47622776}
   m_LocalPosition: {x: -251.616, y: 1.032, z: -1.51}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
@@ -34,7 +34,7 @@ Transform:
   - {fileID: 2453736699764710424}
   - {fileID: 951669787097814286}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -124.358, y: 25.457, z: -14.531982}
 --- !u!135 &1649966092071416368
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -193,6 +193,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: M_Dumplings
       objectReference: {fileID: 0}
+    - target: {fileID: 8319540612554166756, guid: 2943ba549f7a718478ce8589a5c4d2ae, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8319540612554166756, guid: 2943ba549f7a718478ce8589a5c4d2ae, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: eb723b66c1843db4b8b7b9b2c09d38b9, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

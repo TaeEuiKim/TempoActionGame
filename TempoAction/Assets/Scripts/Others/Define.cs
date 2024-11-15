@@ -48,6 +48,7 @@ public class Define
         FENCE,
         BOX,
         TRASH,
+        FLOOR,
         NONE,
     }
 
@@ -59,6 +60,7 @@ public class Define
         DUMPLINGS,
         HAMBURGER,
         HOTDOG,
+        NONE,
     }
 
     #region 플레이어
