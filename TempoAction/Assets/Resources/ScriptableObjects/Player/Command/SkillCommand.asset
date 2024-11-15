@@ -19,8 +19,8 @@ MonoBehaviour:
     IsBack: 0
     IsFront: 0
     KeyCodes: 78000000
-    damage: 10
-    useStemina: 5
+    damage: 12.5
+    useStemina: 2.5
   - name: "\uC2B9\uB8E1\uAD8C"
     SkillId: 2
     PossibleSkillId: 01000000
@@ -28,7 +28,7 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 78000000
     damage: 15
-    useStemina: 10
+    useStemina: 5
   - name: "\uD3F4\uB9C1"
     SkillId: 3
     PossibleSkillId: 02000000
@@ -36,7 +36,7 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 78000000
     damage: 0
-    useStemina: 25
+    useStemina: 12.5
   - name: "\uB354\uBE14 \uC2A4\uD2B8\uB77C\uC774\uD06C 2\uD0C0"
     SkillId: 11
     PossibleSkillId: 0a000000
@@ -44,7 +44,7 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 78000000
     damage: 20
-    useStemina: 10
+    useStemina: 5
   - name: "\uBC84\uB2DD \uB7EC\uC26C"
     SkillId: 12
     PossibleSkillId: 0b000000
@@ -52,7 +52,7 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 78000000
     damage: 0
-    useStemina: 20
+    useStemina: 15
   - name: "\uAC8C\uD2C0\uB9C1"
     SkillId: 21
     PossibleSkillId: 14000000
@@ -116,7 +116,7 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 78000000
     damage: 20
-    useStemina: 10
+    useStemina: 5
   - name: "\uC2A4\uC6E8\uC774 \uD30C\uC0DD 1\uD0C0"
     SkillId: 101
     PossibleSkillId: 64000000
