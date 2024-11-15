@@ -134,7 +134,6 @@ public class PlayerController
         {
             if (!_isLanded)
             {
-                SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_JumpLanding", _player.transform);
                 _isDoubleJumping = false;
                 _isLanded = true;
             }

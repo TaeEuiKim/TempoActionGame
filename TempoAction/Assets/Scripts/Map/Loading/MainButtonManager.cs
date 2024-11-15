@@ -66,7 +66,6 @@ public class MainButtonManager : MonoBehaviour
     public void RestartScene()
     {
         Time.timeScale = 1.0f;
-        copy.SetSkillSlots();
         LoadManager.LoadScene("StartScene");
     }
 

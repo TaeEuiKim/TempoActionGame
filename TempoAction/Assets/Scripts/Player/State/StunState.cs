@@ -49,6 +49,8 @@ public class StunState : PlayerState
     public override void Exit()
     {
         _player.Ani.SetBool("IsStunned", false);
+        _player.Controller.isMove = true;
+        _player.Controller.isJump = true;
     }
 
   

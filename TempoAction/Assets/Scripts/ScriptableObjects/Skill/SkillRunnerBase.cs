@@ -230,7 +230,7 @@ public abstract class SkillRunnerBase : ScriptableObject
                 mask = 1 << 11;
                 break;
             case Define.SkillTarget.MON:
-                mask = 1 << 10;
+                mask = 1 << 10 | 1 << 9;
                 break;
             case Define.SkillTarget.GROUND:
                 mask = 1 << 12;
