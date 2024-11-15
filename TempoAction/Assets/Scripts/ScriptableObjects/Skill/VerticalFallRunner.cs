@@ -112,7 +112,7 @@ public class VerticalFallRunner : SkillRunnerBase
         Vector3 originScale = player.HitPoint.localScale;
 
         player.HitPoint.localScale = new Vector3(3, 2, 1);
-        Collider[] hittedCharacter = Physics.OverlapBox(player.HitPoint.position, player.HitPoint.localScale / 2, player.HitPoint.rotation, player.MonsterLayer);
+        Collider[] hittedCharacter = Physics.OverlapBox(player.HitPoint.position, player.HitPoint.localScale / 2, player.HitPoint.rotation, player.MonsterLayer | player.BossLayer);
         Collider[] hittedObj = Physics.OverlapBox(player.HitPoint.position, player.HitPoint.localScale / 2, player.HitPoint.rotation, 1 << 8);
         player.HitPoint.localScale = originScale;
 

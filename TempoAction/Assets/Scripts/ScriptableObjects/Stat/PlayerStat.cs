@@ -28,7 +28,7 @@ public class PlayerStat : Stat
     private float _stamina;
 
     public bool IsKnockedBack { get; set; } = false;
-        
+
     public float Hp
     {
         get

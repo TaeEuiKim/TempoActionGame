@@ -55,6 +55,8 @@ public class StompRunner : SkillRunnerBase
             character.CharacterModel.localScale = new Vector3(1, 1, 1);
         }
 
+        TestSound.Instance.PlaySound("NormalMonster2_Skill");
+
         // 포물선 운동 시작
         while (curTime <= regenTime)
         {
@@ -104,8 +106,9 @@ public class StompRunner : SkillRunnerBase
         //}
 
         var targetsInRanged = Physics.SphereCastAll(character.transform.position, 5, Vector3.up, 0, SkillTargetToLayerMask(skillData.SkillCastingTarget));
+        TestSound.Instance.PlaySound("NormalMonster2_AttackHit");
 
-        foreach(var targetInReanged in targetsInRanged)
+        foreach (var targetInReanged in targetsInRanged)
         {
             var targetCharacter = targetInReanged.transform.GetComponent<CharacterBase>();
             if (targetCharacter != null)

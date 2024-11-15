@@ -89,7 +89,7 @@ public class PlayerAttack
                     PlayerInputManager.Instance.attack = false;
                     if (_player.Ani.GetBool("isGrounded"))
                     {
-                        if (!_player.UseStemina(5))
+                        if (!_player.UseStemina(2.5f))
                         {
                             return;
                         }

@@ -49,7 +49,10 @@ public class Middle_AimAttack : Middle_Skill
 
         _monster.OnAttackAction += Attack;
         _monster.OnFinishSkill += Finish;
-}
+
+        TestSound.Instance.PlaySound("AimAttack_Ready");
+        TestSound.Instance.PlaySound("AimAttack_Voice");
+    }
     public override void Stay()
     {
         if (!_monster.Ani.GetBool("AimAttack"))
@@ -70,6 +73,9 @@ public class Middle_AimAttack : Middle_Skill
 
     private void Attack()
     {
+        TestSound.Instance.PlaySound("AimAttack_Firing");
+        TestSound.Instance.PlaySound("AimAttack_Guid");
+
         GameObject mark = ObjectPool.Instance.Spawn("TraceMark", 0, _monster.Player);
         mark.transform.position = _monster.Player.transform.position + new Vector3(0, 1f, -1);
 

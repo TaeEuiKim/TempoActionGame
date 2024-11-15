@@ -112,6 +112,10 @@ public class SwordQuickDrawRunner : SkillRunnerBase
             TestSound.Instance.PlaySound("Skill1_Voice");
             TestSound.Instance.PlaySound("Skill1_Effect");
         }
+        else if (skillData.SkillCastingTarget == Define.SkillTarget.PC)
+        {
+            TestSound.Instance.PlaySound("NormalMonster1_Skill");
+        }
 
         // 돌진 시작
         while ((character.transform.position - targetPos).magnitude > 0.1f && curTime <= regenTime)
@@ -137,6 +141,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
                 {
                     GameObject hitEffect = ObjectPool.Instance.Spawn("P_MonsterSmashHit", 1);
                     hitEffect.transform.position = characterHit.transform.position + new Vector3(0, 1f);
+                    TestSound.Instance.PlaySound("NormalMonster1_SkillHit");
                 }
             }
 
@@ -153,6 +158,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
             {
                 GameObject finishHitEffect = ObjectPool.Instance.Spawn("P_MainChar_BaldoSkillAttack", 1);
                 finishHitEffect.transform.position = character.transform.position + new Vector3(0.3f * -character.CharacterModel.localScale.x, 1.2f);
+
                 if (character.CharacterModel.localScale.x < 0)
                 {
                     finishHitEffect.GetComponent<FlipSlash>().OnFlip(new Vector3(-1, -1, 1));

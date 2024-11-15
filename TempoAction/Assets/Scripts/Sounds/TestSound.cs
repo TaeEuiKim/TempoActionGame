@@ -117,6 +117,206 @@ public class TestSound : Singleton<TestSound>
                 sources[24].clip = soundSources[1].audioClips[3];
                 sources[24].Play();
                 break;
+            case "NormalMonster1_Attack1":
+                sources[25].clip = soundSources[6].audioClips[0];
+                sources[25].Play();
+                break;
+            case "NormalMonster1_Attack2":
+                sources[26].clip = soundSources[6].audioClips[2];
+                sources[26].Play();
+                break;
+            case "NormalMonster1_Attack1_Hit":
+                sources[27].clip = soundSources[6].audioClips[1];
+                sources[27].Play();
+                break;
+            case "NormalMonster1_Attack2_Hit":
+                sources[28].clip = soundSources[6].audioClips[3];
+                sources[28].Play();
+                break;
+            case "NormalMonster1_Beat1":
+                sources[29].clip = soundSources[6].audioClips[4];
+                sources[29].Play();
+                break;
+            case "NormalMonster1_Beat2":
+                sources[30].clip = soundSources[6].audioClips[5];
+                sources[30].Play();
+                break;
+            case "NormalMonster1_Skill":
+                sources[31].clip = soundSources[6].audioClips[6];
+                sources[31].Play();
+                break;
+            case "NormalMonster1_SkillHit":
+                sources[32].clip = soundSources[6].audioClips[7];
+                sources[32].Play();
+                break;
+            case "NormalMonster2_AttackHit":
+                sources[33].clip = soundSources[7].audioClips[0];
+                sources[33].Play();
+                break;
+            case "NormalMonster2_Beat1":
+                sources[34].clip = soundSources[7].audioClips[1];
+                sources[34].Play();
+                break;
+            case "NormalMonster2_Beat2":
+                sources[35].clip = soundSources[7].audioClips[2];
+                sources[35].Play();
+                break;
+            case "NormalMonster2_Skill":
+                sources[36].clip = soundSources[7].audioClips[3];
+                sources[36].Play();
+                break;
+            case "NormalMonster3_Beat1":
+                sources[37].clip = soundSources[8].audioClips[0];
+                sources[37].Play();
+                break;
+            case "NormalMonster3_Beat2":
+                sources[38].clip = soundSources[8].audioClips[1];
+                sources[38].Play();
+                break;
+            case "NormalMonster3_Dead1":
+                sources[39].clip = soundSources[8].audioClips[2];
+                sources[39].Play();
+                break;
+            case "NormalMonster3_Dead2":
+                sources[40].clip = soundSources[8].audioClips[3];
+                sources[40].Play();
+                break;
+            case "NormalMonster3_Hit":
+                sources[41].clip = soundSources[8].audioClips[4];
+                sources[41].Play();
+                break;
+            case "NormalMonster3_HitVoice1":
+                sources[42].clip = soundSources[8].audioClips[5];
+                sources[42].Play();
+                break;
+            case "NormalMonster3_HitVoice2":
+                sources[43].clip = soundSources[8].audioClips[6];
+                sources[43].Play();
+                break;
+            case "NormalMonster3_Attack1":
+                sources[44].clip = soundSources[8].audioClips[7];
+                sources[44].Play();
+                break;
+            case "NormalMonster3_Attack2":
+                sources[45].clip = soundSources[8].audioClips[8];
+                sources[45].Play();
+                break;
+            case "Heal":
+                sources[46].clip = soundSources[9].audioClips[0];
+                sources[46].Play();
+                break;
+            case "Homerun_Dash":
+                sources[47].clip = soundSources[10].audioClips[0];
+                sources[47].Play();
+                break;
+            case "Homerun_Hit":
+                sources[48].clip = soundSources[10].audioClips[1];
+                sources[48].Play();
+                break;
+            case "Homerun_Swing":
+                sources[49].clip = soundSources[10].audioClips[2];
+                sources[49].Play();
+                break;
+            case "Homerun_Voice":
+                sources[50].clip = soundSources[10].audioClips[3];
+                sources[50].Play();
+                break;
+            case "Longjump_Fall":
+                sources[51].clip = soundSources[10].audioClips[4];
+                sources[51].Play();
+                break;
+            case "Longjump_Jump":
+                sources[52].clip = soundSources[10].audioClips[5];
+                sources[52].Play();
+                break;
+            case "Longjump_Kang":
+                sources[53].clip = soundSources[10].audioClips[6];
+                sources[53].Play();
+                break;
+            case "Longjump_Voice":
+                sources[54].clip = soundSources[10].audioClips[7];
+                sources[54].Play();
+                break;
+            case "ChungMove1":
+                sources[55].clip = soundSources[10].audioClips[8];
+                sources[55].Play();
+                break;
+            case "ChungMove2":
+                sources[56].clip = soundSources[10].audioClips[9];
+                sources[56].Play();
+                break;
+            case "Takedown_1":
+                sources[57].clip = soundSources[10].audioClips[10];
+                sources[57].Play();
+                break;
+            case "Takedown_1Voice":
+                sources[58].clip = soundSources[10].audioClips[11];
+                sources[58].Play();
+                break;
+            case "Takedown_2":
+                sources[59].clip = soundSources[10].audioClips[12];
+                sources[59].Play();
+                break;
+            case "Takedown_2Voice":
+                sources[60].clip = soundSources[10].audioClips[13];
+                sources[60].Play();
+                break;
+            case "Takedown_sign":
+                sources[61].clip = soundSources[10].audioClips[14];
+                sources[61].Play();
+                break;
+            case "Takedown_signVoice":
+                sources[62].clip = soundSources[10].audioClips[15];
+                sources[62].Play();
+                break;
+            case "Takedown_3":
+                sources[63].clip = soundSources[10].audioClips[16];
+                sources[63].Play();
+                break;
+            case "Takedown_3Voice":
+                sources[64].clip = soundSources[10].audioClips[17];
+                sources[64].Play();
+                break;
+            case "AimAttack_Guid":
+                sources[65].clip = soundSources[11].audioClips[0];
+                sources[65].Play();
+                break;
+            case "AimAttack_Voice":
+                sources[66].clip = soundSources[11].audioClips[1];
+                sources[66].Play();
+                break;
+            case "AimAttack_Boom":
+                sources[67].clip = soundSources[11].audioClips[2];
+                sources[67].Play();
+                break;
+            case "AimAttack_Firing":
+                sources[68].clip = soundSources[11].audioClips[3];
+                sources[68].Play();
+                break;
+            case "AimAttack_Flying":
+                sources[69].clip = soundSources[11].audioClips[4];
+                sources[69].Play();
+                break;
+            case "AimAttack_Ready":
+                sources[70].clip = soundSources[11].audioClips[5];
+                sources[70].Play();
+                break;
+            case "Shelling_Boom":
+                sources[71].clip = soundSources[11].audioClips[6];
+                sources[71].Play();
+                break;
+            case "Shelling_Droping":
+                sources[72].clip = soundSources[11].audioClips[7];
+                sources[72].Play();
+                break;
+            case "Shelling_Firing":
+                sources[73].clip = soundSources[11].audioClips[8];
+                sources[73].Play();
+                break;
+            case "Shelling_Voice":
+                sources[74].clip = soundSources[11].audioClips[9];
+                sources[74].Play();
+                break;
             default:
                 break;
         }

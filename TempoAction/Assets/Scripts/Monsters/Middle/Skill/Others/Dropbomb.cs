@@ -48,7 +48,7 @@ public class Dropbomb : MonoBehaviour
         if (!isGrounded && !isNonAuto)
         {
             timer += Time.deltaTime;
-            if (timer > 1.5f)
+            if (timer > 1.8f)
             {
                 isNonAuto = true;
             }
@@ -79,6 +79,7 @@ public class Dropbomb : MonoBehaviour
         DestoryMark();
 
         GameObject effect = ObjectPool.Instance.Spawn("TraceEffect", 1);
+        TestSound.Instance.PlaySound("AimAttack_Boom");
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Boss"))
         {
@@ -142,6 +143,7 @@ public class Dropbomb : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         isGrounded = false;
+        TestSound.Instance.PlaySound("AimAttack_Flying");
     }
 
     public void DestoryMark()

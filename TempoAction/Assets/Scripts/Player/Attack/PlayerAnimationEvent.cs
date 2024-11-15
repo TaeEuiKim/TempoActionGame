@@ -65,6 +65,8 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         if (hitMonsters.Length <= 0 && hitObjects.Length <= 0) return;
 
+        Vector3 zPos = new Vector3(0, 0, -0.3f);
+
         foreach (Collider monsterCollider in hitMonsters)
         {
             Monster monster = monsterCollider.GetComponent<Monster>();
@@ -93,18 +95,18 @@ public class PlayerAnimationEvent : MonoBehaviour
                 case 0:
                     if (!_player.Controller.isUltimate)
                     {
-                        hitParticle.transform.position = rightHandTrans.position;
+                        hitParticle.transform.position = rightHandTrans.position + zPos;
                         hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                        hitParticle2.transform.position = rightHandTrans.position;
+                        hitParticle2.transform.position = rightHandTrans.position + zPos;
                         hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
                         hitParticle.transform.rotation = rightHandTrans.rotation;
                         hitParticle2.transform.rotation = rightHandTrans.rotation;
                     }
                     else
                     {
-                        hitParticle.transform.position = rightHandTrans.position;
+                        hitParticle.transform.position = rightHandTrans.position + zPos;
                         hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                        hitParticle3.transform.position = _player.transform.position;
+                        hitParticle3.transform.position = _player.transform.position + zPos;
                         hitParticle3.transform.localScale = new Vector3(_player.CharacterModel.localScale.x, 1, 1);
 
                         hitParticle.transform.rotation = rightHandTrans.rotation;
@@ -115,18 +117,18 @@ public class PlayerAnimationEvent : MonoBehaviour
                 case 1:
                     if (!_player.Controller.isUltimate)
                     {
-                        hitParticle.transform.position = leftHandTrans.position;
+                        hitParticle.transform.position = leftHandTrans.position + zPos;
                         hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                        hitParticle2.transform.position = leftHandTrans.position;
+                        hitParticle2.transform.position = leftHandTrans.position + zPos;
                         hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
                         hitParticle.transform.rotation = leftHandTrans.rotation;
                         hitParticle2.transform.rotation = leftHandTrans.rotation;
                     }
                     else
                     {
-                        hitParticle.transform.position = leftHandTrans.position;
+                        hitParticle.transform.position = leftHandTrans.position + zPos;
                         hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                        hitParticle3.transform.position = _player.transform.position;
+                        hitParticle3.transform.position = _player.transform.position + zPos;
                         hitParticle3.transform.localScale = new Vector3(_player.CharacterModel.localScale.x, 1, 1);
 
                         hitParticle.transform.rotation = leftHandTrans.rotation;
@@ -137,7 +139,7 @@ public class PlayerAnimationEvent : MonoBehaviour
                 case 2:
                     hitParticle = !_player.Controller.isUltimate ? ObjectPool.Instance.Spawn("FX_PunchAttackSphere", 1) : ObjectPool.Instance.Spawn("FX_FeverTimePunchSphere", 1);
 
-                    hitParticle.transform.position = monsterCollider.ClosestPoint(_player.HitPoint.position);
+                    hitParticle.transform.position = monsterCollider.ClosestPoint(_player.HitPoint.position) + zPos;
 
                     if (_player.Controller.isUltimate)
                     {
@@ -330,6 +332,7 @@ public class PlayerAnimationEvent : MonoBehaviour
                 case 26:
                 case 27:
                     hitParticle = ObjectPool.Instance.Spawn("FX_PC_OraoraPunch", 0.5f);
+                    CameraShaking(0.12f);
 
                     if (_player.IsLeftDirection())
                     {
@@ -499,13 +502,12 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         // 메인 템포일 때 데미지 처리
         PlayerSfx(Define.PlayerSfxType.MAIN);
-        _player.View.UpdateUltimateGauge(100f);
         monster.TakeDamage(_player.GetTotalDamage() + commandDamage);
     }
 
     private void HitObject(DestoryObj obj)
     {
-        _player.View.UpdateUltimateGauge(100f);
+        _player.View.UpdateUltimateGauge(0.05f);
         obj.TakeDamage(_player.GetTotalDamage());
     }
 
@@ -986,10 +988,10 @@ public class PlayerAnimationEvent : MonoBehaviour
         switch (type)
         {
             case Define.PlayerSfxType.MAIN:
-                SoundManager.Instance.PlayOneShot("event:/Hit", transform);
+                SoundManager.Instance.PlayOneShot("event:/Atk_Hit", transform);
                 break;
             case Define.PlayerSfxType.POINT:
-                SoundManager.Instance.PlayOneShot("event:/inGAME/SFX_PointTempo_Hit", transform);
+                SoundManager.Instance.PlayOneShot("event:/Atk_Hit", transform);
                 break;
             case Define.PlayerSfxType.DASH:
                 break;

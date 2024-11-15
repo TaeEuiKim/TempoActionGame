@@ -130,6 +130,8 @@ public class Middle_Takedown : Middle_Skill
             thirdDis = 5f;
         }
 
+        TestSound.Instance.PlaySound("Takedown_sign");
+        TestSound.Instance.PlaySound("Takedown_signVoice");
         if (_monster.CharacterModel.transform.localScale.x < 0)
         {
             _monster.transform.DOMoveX(_monster.transform.position.x + thirdDis, 1f);
@@ -146,13 +148,19 @@ public class Middle_Takedown : Middle_Skill
 
         if (count < _attackCount)
         {
-            GameObject hitParticle = ObjectPool.Instance.Spawn("P_Slash", 1); ;
+            GameObject hitParticle = ObjectPool.Instance.Spawn("P_Slash", 1);
+            TestSound.Instance.PlaySound("Takedown_1");
+            TestSound.Instance.PlaySound("Takedown_1Voice");
+            CameraController.Instance.SceneShaking();
 
             OnFlipEffect(hitParticle);
         }
         else
         {
-            GameObject hitParticle = ObjectPool.Instance.Spawn("P_SlashCharge", 1); ;
+            GameObject hitParticle = ObjectPool.Instance.Spawn("P_SlashCharge", 1);
+            TestSound.Instance.PlaySound("Takedown_3");
+            TestSound.Instance.PlaySound("Takedown_3Voice");
+            CameraController.Instance.SceneShaking();
 
             OnFlipEffect(hitParticle);
         }

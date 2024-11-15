@@ -181,7 +181,7 @@ public class CameraController : Singleton<CameraController>
     {
         CinemachineBasicMultiChannelPerlin ch = _CurCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 
-        Player _player = player.GetComponent<Player>(); ;
+        Player _player = player.GetComponent<Player>();
 
         if (_player.Ani.GetInteger("CommandCount") == 3 || _player.Ani.GetInteger("CommandCount") == 5)
         {
@@ -205,6 +205,35 @@ public class CameraController : Singleton<CameraController>
         ch.m_FrequencyGain = 0;
         ch.m_AmplitudeGain = 0;
         //_CurCamera.m_LookAt = player.transform;
+        yield return null;
+    }
+
+    public void SceneShaking()
+    {
+        _CurCamera = _SceneCamera;
+
+        CinemachineBasicMultiChannelPerlin ch = _CurCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        ch.m_NoiseProfile = noiseSettings[1];
+
+        StartCoroutine(SceneShakingTimer(ch));
+    }
+
+    private IEnumerator SceneShakingTimer(CinemachineBasicMultiChannelPerlin ch)
+    {
+        float time = 0.2f;
+
+        while (time > 0)
+        {
+            ch.m_FrequencyGain = Frequency;
+            ch.m_AmplitudeGain = Impulse;
+            time -= Time.deltaTime;
+
+            yield return null;
+        }
+
+        ch.m_FrequencyGain = 0;
+        ch.m_AmplitudeGain = 0;
+
         yield return null;
     }
 

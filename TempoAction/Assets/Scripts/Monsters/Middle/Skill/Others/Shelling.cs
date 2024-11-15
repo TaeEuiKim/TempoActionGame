@@ -23,6 +23,7 @@ public class Shelling : MonoBehaviour
     {
         timer = 0f;
         rb.velocity = Vector3.zero;
+        TestSound.Instance.PlaySound("Shelling_Droping");
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -30,6 +31,7 @@ public class Shelling : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
             BombTimer();
+            TestSound.Instance.PlaySound("Shelling_Boom");
         }
     }
 
@@ -50,6 +52,7 @@ public class Shelling : MonoBehaviour
 
         GameObject effect = ObjectPool.Instance.Spawn("BombEffect", 1);
         effect.transform.position = transform.position + new Vector3(0, -0.5f);
+        CameraController.Instance.SceneShaking();
         ObjectPool.Instance.Remove(this.gameObject);
     }
 
