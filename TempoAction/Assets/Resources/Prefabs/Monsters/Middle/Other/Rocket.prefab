@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5970112590727506917}
   - component: {fileID: -57522687402346781}
   - component: {fileID: -5071255636871369620}
-  m_Layer: 0
+  m_Layer: 18
   m_Name: Rocket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -163,6 +163,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: misail_fire_trail
       objectReference: {fileID: 0}
+    - target: {fileID: 2077343140729177540, guid: 760f6435d4b822241934c847dde32d96, type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 4059451667251500217, guid: 760f6435d4b822241934c847dde32d96, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.031999968
@@ -300,6 +304,10 @@ PrefabInstance:
     - target: {fileID: 7843861139943926271, guid: 99f8c211b81549f438dc1df30340f9cc, type: 3}
       propertyPath: m_Name
       value: misail_wind
+      objectReference: {fileID: 0}
+    - target: {fileID: 7843861139943926271, guid: 99f8c211b81549f438dc1df30340f9cc, type: 3}
+      propertyPath: m_Layer
+      value: 18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
