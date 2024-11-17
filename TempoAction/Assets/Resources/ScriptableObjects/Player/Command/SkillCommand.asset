@@ -26,7 +26,7 @@ MonoBehaviour:
     PossibleSkillId: 01000000
     IsBack: 0
     IsFront: 0
-    KeyCodes: 78000000
+    KeyCodes: 1101000078000000
     damage: 15
     useStemina: 5
   - name: "\uD3F4\uB9C1"
@@ -139,5 +139,13 @@ MonoBehaviour:
     IsBack: 0
     IsFront: 1
     KeyCodes: 7a000000
+    damage: 10
+    useStemina: 2.5
+  - name: "\uC810\uD504\uD3F4\uB9C1"
+    SkillId: 3
+    PossibleSkillId: c8000000
+    IsBack: 0
+    IsFront: 1
+    KeyCodes: 1201000078000000
     damage: 10
     useStemina: 2.5
