@@ -90,11 +90,19 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     public void OnLeftArrow(InputValue value)
     {
         LeftArrowInput(value.isPressed);
+        if (isCommand)
+        {
+            commandValue.Add(KeyCode.LeftArrow);
+        }
     }
 
     public void OnRightArrow(InputValue value)
     {
         RightArrowInput(value.isPressed);
+        if (isCommand)
+        {
+            commandValue.Add(KeyCode.RightArrow);
+        }
     }
 
     public void OnUpArrow(InputValue value)

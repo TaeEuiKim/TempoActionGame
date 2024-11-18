@@ -83,17 +83,6 @@ public class PlayerController
 
         if (_dashTimer >= _player.PlayerSt.DashDelay)
         {
-            if (PlayerInputManager.Instance.leftArrow)
-            {
-                PlayerInputManager.Instance.leftArrow = false;
-                RecordInput(KeyCode.LeftArrow);
-            }
-            else if (PlayerInputManager.Instance.rightArrow)
-            {
-                PlayerInputManager.Instance.rightArrow = false;
-                RecordInput(KeyCode.RightArrow);
-            }
-
             if ((PlayerInputManager.Instance.dash || CheckDash()))
             {
                 Dash();

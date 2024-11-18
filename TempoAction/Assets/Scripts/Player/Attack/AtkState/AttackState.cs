@@ -22,7 +22,6 @@ public class AttackState : PlayerAttackState
         {
             _player.Ani.SetInteger("AtkCount", _player.Attack.CurrentTempoData.attackNumber);
         }
-    
     }
     public override void Stay()
     {

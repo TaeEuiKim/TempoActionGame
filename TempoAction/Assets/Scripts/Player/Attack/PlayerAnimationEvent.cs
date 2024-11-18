@@ -36,6 +36,9 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     private Coroutine tempCoroutine;
 
+    [Header("커맨드 용 카운트")]
+    private int commandAttackCount = 0;
+
     private void Start()
     {
         _cameraController = FindObjectOfType<CameraController>();
@@ -65,7 +68,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         if (hitMonsters.Length <= 0 && hitObjects.Length <= 0) return;
 
-        Vector3 zPos = new Vector3(0, 0, -0.3f);
+        Vector3 zPos = new Vector3(0, 0, 0);
 
         foreach (Collider monsterCollider in hitMonsters)
         {
@@ -75,7 +78,7 @@ public class PlayerAnimationEvent : MonoBehaviour
             GameObject hitParticle2 = null;
             GameObject hitParticle3 = null;
 
-            if (!_player.Controller.isUltimate && _player.Ani.GetInteger("AtkCount") != 2)
+            if (!_player.Controller.isUltimate && _player.Ani.GetInteger("AtkCount") != 4)
             {
                 // 히트 파티클 생성
                 hitParticle = ObjectPool.Instance.Spawn("P_Punch", 1);
@@ -83,7 +86,7 @@ public class PlayerAnimationEvent : MonoBehaviour
             }
             else if (_player.Controller.isUltimate)
             {
-                if (_player.Ani.GetInteger("AtkCount") != 2)
+                if (_player.Ani.GetInteger("AtkCount") != 4)
                 {
                     hitParticle = ObjectPool.Instance.Spawn("FX_FeverTimePunch", 1);
                 }
@@ -92,7 +95,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
             switch (_player.Ani.GetInteger("AtkCount"))
             {
-                case 0:
+                case 1:
                     if (!_player.Controller.isUltimate)
                     {
                         hitParticle.transform.position = rightHandTrans.position + zPos;
@@ -114,7 +117,9 @@ public class PlayerAnimationEvent : MonoBehaviour
 
                     CameraShaking(0.12f);
                     break;
-                case 1:
+                case 0:
+                case 2:
+                case 3:
                     if (!_player.Controller.isUltimate)
                     {
                         hitParticle.transform.position = leftHandTrans.position + zPos;
@@ -136,7 +141,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
                     CameraShaking(0.12f);
                     break;
-                case 2:
+                case 4:
                     hitParticle = !_player.Controller.isUltimate ? ObjectPool.Instance.Spawn("FX_PunchAttackSphere", 1) : ObjectPool.Instance.Spawn("FX_FeverTimePunchSphere", 1);
 
                     hitParticle.transform.position = monsterCollider.ClosestPoint(_player.HitPoint.position) + zPos;
@@ -166,7 +171,7 @@ public class PlayerAnimationEvent : MonoBehaviour
             GameObject hitParticle2 = null;
             GameObject hitParticle3 = null;
 
-            if (!_player.Controller.isUltimate && _player.Ani.GetInteger("AtkCount") != 2)
+            if (!_player.Controller.isUltimate && _player.Ani.GetInteger("AtkCount") != 4)
             {
                 // 히트 파티클 생성
                 hitParticle = ObjectPool.Instance.Spawn("P_Punch", 1);
@@ -174,7 +179,7 @@ public class PlayerAnimationEvent : MonoBehaviour
             }
             else if (_player.Controller.isUltimate)
             {
-                if (_player.Ani.GetInteger("AtkCount") != 2)
+                if (_player.Ani.GetInteger("AtkCount") != 4)
                 {
                     hitParticle = ObjectPool.Instance.Spawn("FX_FeverTimePunch", 1);
                 }
@@ -183,21 +188,21 @@ public class PlayerAnimationEvent : MonoBehaviour
 
             switch (_player.Ani.GetInteger("AtkCount"))
             {
-                case 0:
+                case 1:
                     if (!_player.Controller.isUltimate)
                     {
-                        hitParticle.transform.position = rightHandTrans.position;
+                        hitParticle.transform.position = rightHandTrans.position + zPos;
                         hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                        hitParticle2.transform.position = rightHandTrans.position;
+                        hitParticle2.transform.position = rightHandTrans.position + zPos;
                         hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
                         hitParticle.transform.rotation = rightHandTrans.rotation;
                         hitParticle2.transform.rotation = rightHandTrans.rotation;
                     }
                     else
                     {
-                        hitParticle.transform.position = rightHandTrans.position;
+                        hitParticle.transform.position = rightHandTrans.position + zPos;
                         hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                        hitParticle3.transform.position = _player.transform.position;
+                        hitParticle3.transform.position = _player.transform.position + zPos;
                         hitParticle3.transform.localScale = new Vector3(_player.CharacterModel.localScale.x, 1, 1);
 
                         hitParticle.transform.rotation = rightHandTrans.rotation;
@@ -205,21 +210,23 @@ public class PlayerAnimationEvent : MonoBehaviour
 
                     CameraShaking(0.12f);
                     break;
-                case 1:
+                case 0:
+                case 2:
+                case 3:
                     if (!_player.Controller.isUltimate)
                     {
-                        hitParticle.transform.position = leftHandTrans.position;
+                        hitParticle.transform.position = leftHandTrans.position + zPos;
                         hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                        hitParticle2.transform.position = leftHandTrans.position;
+                        hitParticle2.transform.position = leftHandTrans.position + zPos;
                         hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
                         hitParticle.transform.rotation = leftHandTrans.rotation;
                         hitParticle2.transform.rotation = leftHandTrans.rotation;
                     }
                     else
                     {
-                        hitParticle.transform.position = leftHandTrans.position;
+                        hitParticle.transform.position = leftHandTrans.position + zPos;
                         hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                        hitParticle3.transform.position = _player.transform.position;
+                        hitParticle3.transform.position = _player.transform.position + zPos;
                         hitParticle3.transform.localScale = new Vector3(_player.CharacterModel.localScale.x, 1, 1);
 
                         hitParticle.transform.rotation = leftHandTrans.rotation;
@@ -227,10 +234,10 @@ public class PlayerAnimationEvent : MonoBehaviour
 
                     CameraShaking(0.12f);
                     break;
-                case 2:
+                case 4:
                     hitParticle = !_player.Controller.isUltimate ? ObjectPool.Instance.Spawn("FX_PunchAttackSphere", 1) : ObjectPool.Instance.Spawn("FX_FeverTimePunchSphere", 1);
 
-                    hitParticle.transform.position = mapObject.ClosestPoint(_player.HitPoint.position);
+                    hitParticle.transform.position = mapObject.ClosestPoint(_player.HitPoint.position) + zPos;
 
                     if (_player.Controller.isUltimate)
                     {
@@ -298,6 +305,9 @@ public class PlayerAnimationEvent : MonoBehaviour
                     {
                         hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(-1, -1, 1));
                     }
+                    break;
+                case 3:
+                    
                     break;
                 case 11:
                     TestSound.Instance.PlaySound("Smash1_2_Hit");
@@ -623,8 +633,8 @@ public class PlayerAnimationEvent : MonoBehaviour
             switch (_player.Ani.GetInteger("CommandCount"))
             {
                 case 1:
+                case 2:
                 case 11:
-                case 101:
                     transform.parent.DOMoveX(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x), 0.3f);
                     break;
                 case 4:
@@ -689,6 +699,8 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     private void StepCheckCommand(int SkillId)
     {
+        commandAttackCount = 0;
+
         if (dempEffect != null && dempEffect.gameObject.activeSelf)
         {
             GameObject effect = ObjectPool.Instance.Spawn("do_disappear", 1);

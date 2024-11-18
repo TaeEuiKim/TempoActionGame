@@ -15,129 +15,89 @@ MonoBehaviour:
   commandDatas:
   - name: "\uB354\uBE14 \uC2A4\uD2B8\uB77C\uC774\uD06C 1\uD0C0"
     SkillId: 1
-    PossibleSkillId: 00000000c9000000
+    PossibleSkillId: 00000000
     IsBack: 0
     IsFront: 0
-    KeyCodes: 78000000
+    KeyCodes: 1301000078000000
     damage: 12.5
-    useStemina: 2.5
-  - name: "\uC2B9\uB8E1\uAD8C"
+    useStemina: 0
+  - name: "\uB354\uBE14 \uC2A4\uD2B8\uB77C\uC774\uD06C 2\uD0C0"
     SkillId: 2
     PossibleSkillId: 01000000
     IsBack: 0
     IsFront: 0
     KeyCodes: 78000000
     damage: 15
-    useStemina: 5
-  - name: "\uD3F4\uB9C1"
+    useStemina: 0
+  - name: "\uACE0\uC800\uC2A4 \uCF64\uBE44\uB124\uC774\uC158"
     SkillId: 3
-    PossibleSkillId: 02000000
+    PossibleSkillId: 020000000c00000015000000
     IsBack: 0
     IsFront: 0
-    KeyCodes: 78000000
+    KeyCodes: 130100001301000078000000
     damage: 0
-    useStemina: 12.5
-  - name: "\uB354\uBE14 \uC2A4\uD2B8\uB77C\uC774\uD06C 2\uD0C0"
-    SkillId: 11
-    PossibleSkillId: 0a000000
+    useStemina: 0
+  - name: "\uBC84\uB2DD \uB7EC\uC26C"
+    SkillId: 4
+    PossibleSkillId: 030000000d00000016000000
     IsBack: 0
     IsFront: 0
-    KeyCodes: 78000000
+    KeyCodes: 14010000120100001301000078000000
     damage: 20
     useStemina: 5
-  - name: "\uBC84\uB2DD \uB7EC\uC26C"
+  - name: "\uD558\uB2E8 \uACF5\uACA9"
+    SkillId: 11
+    PossibleSkillId: 00000000
+    IsBack: 0
+    IsFront: 0
+    KeyCodes: 1101000078000000
+    damage: 0
+    useStemina: 0
+  - name: "\uC5B4\uD37C\uCEF7"
     SkillId: 12
     PossibleSkillId: 0b000000
     IsBack: 0
     IsFront: 0
     KeyCodes: 78000000
     damage: 0
-    useStemina: 15
-  - name: "\uAC8C\uD2C0\uB9C1"
-    SkillId: 21
-    PossibleSkillId: 14000000
+    useStemina: 0
+  - name: "\uC544\uD1A0\uBBF9 \uCD78\uD37C"
+    SkillId: 13
+    PossibleSkillId: 020000000c00000016000000
     IsBack: 0
     IsFront: 0
-    KeyCodes: 78000000
+    KeyCodes: 110100001101000078000000
     damage: 5
-    useStemina: 2.5
-  - name: "\uB380\uD504\uC2DC\uB864 1\uD0C0"
-    SkillId: 21
-    PossibleSkillId: 140000001b000000
+    useStemina: 0
+  - name: "\uD3F4\uB9C1\uC2A4\uD0C0"
+    SkillId: 14
+    PossibleSkillId: 0d0000000300000016000000
     IsBack: 0
     IsFront: 0
-    KeyCodes: 78000000
-    damage: 5
-    useStemina: 2.5
-  - name: "\uB380\uD504\uC2DC\uB864 2\uD0C0"
+    KeyCodes: 11010000130100001201000078000000
+    damage: 10
+    useStemina: 0
+  - name: "\uCE74\uC6B4\uD130"
+    SkillId: 21
+    PossibleSkillId: 00000000
+    IsBack: 0
+    IsFront: 0
+    KeyCodes: 1201000078000000
+    damage: 10
+    useStemina: 0
+  - name: "\uC2A4\uC6E8\uC774 \uD380\uCE58"
     SkillId: 22
-    PossibleSkillId: 15000000
+    PossibleSkillId: 15000000020000000c000000
     IsBack: 0
     IsFront: 0
-    KeyCodes: 78000000
+    KeyCodes: 120100001201000078000000
     damage: 10
-    useStemina: 5
-  - name: "\uB380\uD504\uC2DC\uB864 3\uD0C0"
+    useStemina: 0
+  - name: "\uD45C\uD604 \uBABB\uD558\uB294 \uACF5\uACA9"
     SkillId: 23
-    PossibleSkillId: 16000000
+    PossibleSkillId: 160000000d00000003000000
     IsBack: 0
     IsFront: 0
-    KeyCodes: 78000000
+    KeyCodes: 13010000120100001401000078000000
     damage: 10
-    useStemina: 5
-  - name: "\uB380\uD504\uC2DC\uB864 4\uD0C0"
-    SkillId: 24
-    PossibleSkillId: 17000000
-    IsBack: 0
-    IsFront: 0
-    KeyCodes: 78000000
-    damage: 15
-    useStemina: 7.5
-  - name: "\uB380\uD504\uC2DC\uB864 5\uD0C0"
-    SkillId: 25
-    PossibleSkillId: 18000000
-    IsBack: 0
-    IsFront: 0
-    KeyCodes: 78000000
-    damage: 15
-    useStemina: 7.5
-  - name: "\uB380\uD504\uC2DC\uB864 6\uD0C0"
-    SkillId: 26
-    PossibleSkillId: 19000000
-    IsBack: 0
-    IsFront: 0
-    KeyCodes: 78000000
-    damage: 20
-    useStemina: 10
-  - name: "\uB380\uD504\uC2DC\uB864 7\uD0C0"
-    SkillId: 27
-    PossibleSkillId: 1a000000
-    IsBack: 0
-    IsFront: 0
-    KeyCodes: 78000000
-    damage: 20
-    useStemina: 5
-  - name: "\uC2A4\uC6E8\uC774 \uD30C\uC0DD 1\uD0C0"
-    SkillId: 101
-    PossibleSkillId: 64000000
-    IsBack: 1
-    IsFront: 0
-    KeyCodes: 78000000
-    damage: 20
-    useStemina: 5
-  - name: "\uD558\uB2E8 \uACF5\uACA9"
-    SkillId: 201
-    PossibleSkillId: c8000000
-    IsBack: 0
-    IsFront: 1
-    KeyCodes: 78000000
-    damage: 20
-    useStemina: 5
-  - name: "\uB300\uC26C \uC5B4\uD0DD"
-    SkillId: 202
-    PossibleSkillId: c8000000
-    IsBack: 0
-    IsFront: 1
-    KeyCodes: 7a000000
-    damage: 10
-    useStemina: 2.5
+    useStemina: 0

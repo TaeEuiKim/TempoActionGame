@@ -48,7 +48,6 @@ public class PlayerAttack
         _currentTempoData = null;
 
         _upgradeCount = 0;
-        //PointTempoCircle = null;
 
         IsHit = false;
         isAttack = true;
@@ -89,11 +88,6 @@ public class PlayerAttack
                     PlayerInputManager.Instance.attack = false;
                     if (_player.Ani.GetBool("isGrounded"))
                     {
-                        if (!_player.UseStemina(2.5f))
-                        {
-                            return;
-                        }
-
                         AttackMainTempo();
                     }
                 }

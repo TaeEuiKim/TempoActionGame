@@ -10,7 +10,6 @@ public class Normal_IdleState : Normal_State
     public override void Enter()
     {
         base.Enter();
-        _monster.Ani.SetBool("RunStop", false);
     }
 
     public override void Stay()

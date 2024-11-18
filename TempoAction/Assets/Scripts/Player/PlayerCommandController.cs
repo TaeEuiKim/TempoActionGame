@@ -140,20 +140,10 @@ public class PlayerCommandController
         PlayerInputManager.Instance.ResetCommandKey();
         int count = _player.Ani.GetInteger("CommandCount");
 
-        bool e = _player.UseStemina(_player._skillCommand.GetStemina(skillid));
-
-        if (!e)
-        {
-            return false;
-        }
-
         switch (count)
         {
-            // 기본 공격 && 대쉬 연계
+            // 기본 공격
             case 0:
-            case 10:
-            case 20:
-            case 201:
                 if (skillid == 1)
                 {
                     TestSound.Instance.PlaySound("Smash1");
@@ -170,10 +160,6 @@ public class PlayerCommandController
                 {
                     return true;
                 }
-                if (skillid == 101 || skillid == 201 || skillid == 202)
-                {
-                    return true;
-                }
                 break;
             // 1단 연계
             case 1:
@@ -182,6 +168,13 @@ public class PlayerCommandController
                     TestSound.Instance.PlaySound("Smash2");
                     TestSound.Instance.PlaySound("Smash2_Voice");
 
+                    return true;
+                }
+                break;
+            // 2단 연계
+            case 2:
+                if (skillid == 3)
+                {
                     return true;
                 }
                 break;
@@ -199,9 +192,8 @@ public class PlayerCommandController
                 }
                 break;
             // 스킬 발동
-            case 2: 
             case 11:
-                if (skillid == 12 || skillid == 3)
+                if (skillid == 12)
                 {
                     UseSkill(skillid);
                     return true;
@@ -226,19 +218,19 @@ public class PlayerCommandController
     {
         switch (skillid)
         {
-            case 3:
-                if (_player.SkillManager.SkillSlots[1].Skill != null)
-                {
-                    _player.Ani.SetBool("IsCommandSkill", true);
-                    _player.SkillManager.SkillSlots[1].UseSkillInstant(_player);
-                    _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
-                }
-                break;
-            case 12:
+            case 4:
                 if (_player.SkillManager.SkillSlots[0].Skill != null)
                 {
                     _player.Ani.SetBool("IsCommandSkill", true);
                     _player.SkillManager.SkillSlots[0].UseSkillInstant(_player);
+                    _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
+                }
+                break;
+            case 12:
+                if (_player.SkillManager.SkillSlots[1].Skill != null)
+                {
+                    _player.Ani.SetBool("IsCommandSkill", true);
+                    _player.SkillManager.SkillSlots[1].UseSkillInstant(_player);
                     _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
                 }
                 break;
