@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.UI;
-using static UnityEditor.Experimental.GraphView.GraphView;
 using DG.Tweening;
 
 public class MiddlePhaseManager : MonoBehaviour
