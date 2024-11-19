@@ -10,10 +10,8 @@ public class Normal_SkillAttackState : Normal_AttackState
     {
         base.Enter();
 
-        if (_monster.Ani.GetBool("Attack"))
-        {
-            _monster.Ani.SetBool("Attack", false);
-        }
+        _monster.Ani.SetBool("Attack", false);
+        _monster.Ani.SetBool("Run", false);
 
         _monster.Rb.velocity = new Vector3(0, 0, 0);
 

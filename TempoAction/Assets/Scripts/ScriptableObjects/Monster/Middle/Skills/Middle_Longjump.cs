@@ -146,7 +146,7 @@ public class Middle_Longjump : Middle_Skill
         _monster.transform.position = pos;
 
         _monster.transform.DOKill();
-        _monster.transform.DOMoveY(1, 0.3f).OnComplete(() =>
+        _monster.transform.DOMoveY(1, 0.1f).OnComplete(() =>
         {
             _monster.Rb.velocity = Vector3.zero;
         });

@@ -30,6 +30,8 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     public bool isCommand;
     public bool isDashCommand;
     public bool isKeyZ;
+    public int isLeftRockKey = 0;
+    public int isRightRockKey = 0;
 
     private void Awake()
     {
@@ -45,6 +47,8 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     {
         isCommand = false;
         isDashCommand = false;
+        isLeftRockKey = 0;
+        isRightRockKey = 0;
 
         commandValue.Clear();
     }
@@ -85,16 +89,28 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     public void OnDownArrow(InputValue value)
     {
         DownArrowInput(value.isPressed);
+        if (isCommand && value.isPressed)
+        {
+            commandValue.Add(KeyCode.DownArrow);
+        }
     }
 
     public void OnLeftArrow(InputValue value)
     {
         LeftArrowInput(value.isPressed);
+        if (isCommand && value.isPressed)
+        {
+            commandValue.Add(KeyCode.LeftArrow);
+        }
     }
 
     public void OnRightArrow(InputValue value)
     {
         RightArrowInput(value.isPressed);
+        if (isCommand && value.isPressed)
+        {
+            commandValue.Add(KeyCode.RightArrow);
+        }
     }
 
     public void OnUpArrow(InputValue value)

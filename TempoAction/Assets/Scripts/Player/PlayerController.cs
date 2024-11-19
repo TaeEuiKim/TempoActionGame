@@ -83,15 +83,10 @@ public class PlayerController
 
         if (_dashTimer >= _player.PlayerSt.DashDelay)
         {
-            if (PlayerInputManager.Instance.leftArrow)
+            if (PlayerInputManager.Instance.leftArrow || PlayerInputManager.Instance.rightArrow)
             {
                 PlayerInputManager.Instance.leftArrow = false;
-                RecordInput(KeyCode.LeftArrow);
-            }
-            else if (PlayerInputManager.Instance.rightArrow)
-            {
                 PlayerInputManager.Instance.rightArrow = false;
-                RecordInput(KeyCode.RightArrow);
             }
 
             if ((PlayerInputManager.Instance.dash || CheckDash()))
@@ -209,8 +204,9 @@ public class PlayerController
 
     public void Jump(bool useKeyDown = true)
     {
-        if (!isJump)
+        if (!isJump || _player.Ani.GetBool("IsCommand"))
         {
+            PlayerInputManager.Instance.jump = false;
             return;
         }    
 

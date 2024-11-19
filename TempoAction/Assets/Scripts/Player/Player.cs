@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Unity.VisualScripting;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Player : CharacterBase
 {
@@ -49,6 +50,8 @@ public class Player : CharacterBase
     [Header("±Ã±Ø±â")]
     [SerializeField] public GameObject[] MoveEffect;
     [SerializeField] public Material RimShader;
+
+    [HideInInspector] public bool isCounter = false;
 
     [Space]
 
@@ -214,6 +217,22 @@ public class Player : CharacterBase
 
     public override void TakeDamage(float value)
     {
+        if (isCounter)
+        {
+            Ani.SetBool("IsCounter", true);
+            Ani.SetInteger("CommandCount", 22);
+            Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
+
+            GameObject effect = ObjectPool.Instance.Spawn("energy_hit_Parrying", 1f, transform);
+            GameObject effect2 = ObjectPool.Instance.Spawn("glow_view_Parrying", 1f, transform);
+
+            effect.transform.position = transform.position + new Vector3(0, 0.7f);
+            effect2.transform.position = effect.transform.position;
+
+            isCounter = false;
+            return;
+        }
+
         if (_playerStat.IsKnockedBack) return;
 
         _stat.Hp -= value * ((100 - _stat.Defense) / 100);

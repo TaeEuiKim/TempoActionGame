@@ -51,6 +51,8 @@ public class NormalAnimationEvent : MonoBehaviour
 
     private void HitFinish()
     {
+        _monster.isHit = false;
+        _monster.isHiting = false;
         _monster.Ani.SetBool("Hit", false);
         _monster.CurrentPerceptionState = Define.PerceptionType.IDLE;
     }
@@ -119,10 +121,6 @@ public class NormalAnimationEvent : MonoBehaviour
                     effect.transform.localScale = new Vector3(1, 1, 1);
                 }
                 effect.transform.position = _monster.transform.position + new Vector3(0.8f * dir, 1f);
-                break;
-            case "P_BalkoongMonsterSkill":
-                effect = ObjectPool.Instance.Spawn(name, 1f);
-                effect.transform.position = _monster.transform.position + new Vector3(0, 0.3f);
                 break;
             case "P_Monster3Attack1":
                 dir = _monster.IsLeftDirection() ? -1 : 1;

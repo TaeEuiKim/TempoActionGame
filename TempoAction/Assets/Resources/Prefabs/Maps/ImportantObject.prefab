@@ -148,6 +148,8 @@ MonoBehaviour:
   isCommand: 0
   isDashCommand: 0
   isKeyZ: 0
+  isLeftRockKey: 0
+  isRightRockKey: 0
 --- !u!1 &2328356441629596681
 GameObject:
   m_ObjectHideFlags: 0
@@ -269,6 +271,51 @@ MonoBehaviour:
     - {fileID: 7973465471391147791, guid: 08604df8eed349548b36cc897aacef45, type: 3}
     - {fileID: 561740801196353772, guid: c161e1e64031b0f428b299dada2dd33a, type: 3}
     - {fileID: 5545494725711942548, guid: 4bfa3eede376bd54c8dd596515a58476, type: 3}
+    - {fileID: 6295904559490591805, guid: 8df8fc2193194ae49bbcf297d9024d66, type: 3}
+    - {fileID: 1627697654757341352, guid: 1bc288ad07e21d24fae8f78ccf76983e, type: 3}
+    - {fileID: 7119955843920359390, guid: 3ba81aa37a151d34a91cac3024e51c64, type: 3}
+    - {fileID: 267839718540208711, guid: 651db2ac451f4504daa7f6d01ffb987f, type: 3}
+    - {fileID: 4271389441748807591, guid: 5d93c3b7ad2225d42a407550b602e1de, type: 3}
+    - {fileID: 4732638271568581779, guid: c2ad13fd5da17f04f90426b9a650197f, type: 3}
+    - {fileID: 2384849371133573617, guid: d0873e9ae4e4d5d4caa62fa8e3982a2e, type: 3}
+    - {fileID: 5280265422680259808, guid: 3c354f00ec5f1234f8a30ad9eaadfd3f, type: 3}
+    - {fileID: 9091170806654134524, guid: 8213a08cc31d6a9429448de7153b3ddd, type: 3}
+    - {fileID: 9091170806654134524, guid: d07377cfa7fb8a54fb9167a74fe9221f, type: 3}
+  - name: Smash1-2
+    objects:
+    - {fileID: 7661413554226973434, guid: 85a42b4ba38ff2d4295f8e4388fe2f49, type: 3}
+    - {fileID: 454647634705854821, guid: 44f11a88c2db5064aabe4c5a93ee90f3, type: 3}
+    - {fileID: 2404047218938140319, guid: 41bb82b2f2c7daf4ebd2fc7599f93d4d, type: 3}
+    - {fileID: 2404047218938140319, guid: 3a468809b2d1b7040b9ad67f19a22900, type: 3}
+    - {fileID: 720913593531339837, guid: 133c964fdb7edc949818d387a675a5ee, type: 3}
+    - {fileID: 5412606243726761270, guid: 391b85a4db6936349a86c1a715028a63, type: 3}
+    - {fileID: 8764308206295007329, guid: 36411ccd927cf124797299b78fdc874f, type: 3}
+    - {fileID: 388134663921341644, guid: c4eb3867c46c7b64b9965f30073f6eb6, type: 3}
+  - name: Smash1-3
+    objects:
+    - {fileID: 5391063042041580871, guid: daca100a26c0a0449ad999c96862c66f, type: 3}
+    - {fileID: 1144542240467963462, guid: f428c7b3cd6432e4690c29d59d95bf98, type: 3}
+    - {fileID: 8368517542570189701, guid: 3af5d09044deb184282ad5c9aceff96e, type: 3}
+    - {fileID: 8368517542570189701, guid: 34a73618538633f41a47cab563e7a386, type: 3}
+    - {fileID: 4002464452943562144, guid: c013b203032adb940967abaac2d40103, type: 3}
+    - {fileID: 6310549062603712452, guid: 277ec2c6de7b55641a66df095928a75d, type: 3}
+    - {fileID: 6802194540761480689, guid: de8d565ba14f5ea4899087794e5a91e9, type: 3}
+  - name: Smash2-2
+    objects:
+    - {fileID: 90810406464087599, guid: 9a2273b44c461ce4e93882747b9f3a28, type: 3}
+    - {fileID: 9102462514135077492, guid: 94016a4f407ecaa4fbf331dca97193d8, type: 3}
+    - {fileID: 90810406464087599, guid: 2e7c3779299815d43a6f2100b4fbc792, type: 3}
+    - {fileID: 5126160541659703928, guid: 52c811d898575fe47af10ce1d4fe7625, type: 3}
+    - {fileID: 90810406464087599, guid: a8733c0e4b6dd9441beda0da4305925b, type: 3}
+    - {fileID: 9102462514135077492, guid: 6547a4b7c5d8a694385229edc583e5af, type: 3}
+    - {fileID: 90810406464087599, guid: 2be46393928821c47b958ffc9c3040d5, type: 3}
+    - {fileID: 5126160541659703928, guid: a97ebbf4c76f27b4b92301538a593b8e, type: 3}
+  - name: Smash2-3
+    objects:
+    - {fileID: 4834904519188797079, guid: 23e5fa08f49307e438ad6c77e2615d76, type: 3}
+    - {fileID: 2497023289962401923, guid: 49bea8fb753c4b545ad67f8abbb458f7, type: 3}
+    - {fileID: 7593819256909950060, guid: c91810d60ea447f41bfdac6e72e65d8b, type: 3}
+    - {fileID: 6082290259294432121, guid: 6822f97746c9b8f4abd72a669cc0c03d, type: 3}
   - name: MiddleBoss
     objects:
     - {fileID: 4622881555719169984, guid: f32d23f9834b7ca49a173f98b2723686, type: 3}
@@ -302,6 +349,7 @@ MonoBehaviour:
     - {fileID: 8032286209787381317, guid: f3ff59e875c062449b319225561b7dd8, type: 3}
     - {fileID: 8032286209787381317, guid: 3f058adc66f503949aea1a2c027d4029, type: 3}
     - {fileID: 8032286209787381317, guid: 9cab62503485dc249b65dbe49031b845, type: 3}
+    - {fileID: 6844621924118604163, guid: 0ef4a0e459344db48b9e4c402afb2414, type: 3}
   - name: Map
     objects:
     - {fileID: 3315296375906145021, guid: 30219a87ed7c63946a897bebcd97dc24, type: 3}

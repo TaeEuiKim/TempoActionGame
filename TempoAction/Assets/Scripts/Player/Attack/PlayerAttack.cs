@@ -17,8 +17,6 @@ public class PlayerAttack
     private Queue<TempoAttackData> _mainTempoQueue;
     private TempoAttackData _currentTempoData;
 
-    private int _upgradeCount;
-
     //public TempoCircle PointTempoCircle { get; set; }
 
     // ¿Ã∫•∆Æ
@@ -46,9 +44,6 @@ public class PlayerAttack
 
         _mainTempoQueue = new Queue<TempoAttackData>();
         _currentTempoData = null;
-
-        _upgradeCount = 0;
-        //PointTempoCircle = null;
 
         IsHit = false;
         isAttack = true;
@@ -89,11 +84,6 @@ public class PlayerAttack
                     PlayerInputManager.Instance.attack = false;
                     if (_player.Ani.GetBool("isGrounded"))
                     {
-                        if (!_player.UseStemina(2.5f))
-                        {
-                            return;
-                        }
-
                         AttackMainTempo();
                     }
                 }

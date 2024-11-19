@@ -10,7 +10,6 @@ public class Normal_IdleState : Normal_State
     public override void Enter()
     {
         base.Enter();
-        _monster.Ani.SetBool("RunStop", false);
     }
 
     public override void Stay()
@@ -24,7 +23,7 @@ public class Normal_IdleState : Normal_State
             _monster.Direction = _monster.Player.position.x - _monster.transform.position.x;
         }
 
-        if (!_monster.IsTrace)
+        if (!_monster.IsTrace && !_monster.isHit)
         {
             float distance = Vector3.Distance(_monster.transform.position, _monster.Target.position);
 

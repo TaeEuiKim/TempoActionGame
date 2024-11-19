@@ -51,6 +51,7 @@ public class NormalMonster : Monster
     private Coroutine _hitCoroutine;
     public bool isHit = false;
     public bool isHiting = false;
+    public bool hitRock = false;
 
     [Space]
     [Header("¿òÁ÷ÀÓ")]
@@ -297,7 +298,14 @@ public class NormalMonster : Monster
         }
         else
         {
-            if (isHit && Ani.GetCurrentAnimatorStateInfo(0).IsTag("Hit"))
+            if (hitRock)
+            {
+                return;
+            }
+
+            bool isAnim = Ani.GetCurrentAnimatorStateInfo(0).IsTag("Hit");
+
+            if (isHit && isAnim)
             {
                 Rb.velocity = Vector3.zero;
                 Rb.AddForce(new Vector3(0, 3f), ForceMode.VelocityChange);
@@ -305,7 +313,6 @@ public class NormalMonster : Monster
                 return;
             }
 
-            isHit = true;
             if (monsterType == Define.NormalMonsterType.BALDO)
             {
                 int num = Random.Range(0, 2);
@@ -342,7 +349,12 @@ public class NormalMonster : Monster
                     TestSound.Instance.PlaySound("NormalMonster3_Beat2");
                 }
             }
-            CurrentPerceptionState = Define.PerceptionType.HIT;
+
+            if (CurrentPerceptionState != Define.PerceptionType.HIT)
+            {
+                isHit = true;
+                CurrentPerceptionState = Define.PerceptionType.HIT;
+            }
         }
         return;
     }

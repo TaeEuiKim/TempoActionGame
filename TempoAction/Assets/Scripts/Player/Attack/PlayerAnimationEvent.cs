@@ -22,6 +22,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     [SerializeField] private Material rimShader;
     [SerializeField] private AnimationCurveScriptable animCurve;
+    [SerializeField] private GameObject fireObj;
 
     private CameraController _cameraController;
 
@@ -35,6 +36,9 @@ public class PlayerAnimationEvent : MonoBehaviour
     private bool isOnDemp;
 
     private Coroutine tempCoroutine;
+
+    [Header("커맨드 용 카운트")]
+    private int commandAttackCount = 0;
 
     private void Start()
     {
@@ -65,7 +69,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         if (hitMonsters.Length <= 0 && hitObjects.Length <= 0) return;
 
-        Vector3 zPos = new Vector3(0, 0, -0.3f);
+        Vector3 zPos = new Vector3(0, 0, 0);
 
         foreach (Collider monsterCollider in hitMonsters)
         {
@@ -75,7 +79,7 @@ public class PlayerAnimationEvent : MonoBehaviour
             GameObject hitParticle2 = null;
             GameObject hitParticle3 = null;
 
-            if (!_player.Controller.isUltimate && _player.Ani.GetInteger("AtkCount") != 2)
+            if (!_player.Controller.isUltimate && _player.Ani.GetInteger("AtkCount") != 4)
             {
                 // 히트 파티클 생성
                 hitParticle = ObjectPool.Instance.Spawn("P_Punch", 1);
@@ -83,7 +87,7 @@ public class PlayerAnimationEvent : MonoBehaviour
             }
             else if (_player.Controller.isUltimate)
             {
-                if (_player.Ani.GetInteger("AtkCount") != 2)
+                if (_player.Ani.GetInteger("AtkCount") != 4)
                 {
                     hitParticle = ObjectPool.Instance.Spawn("FX_FeverTimePunch", 1);
                 }
@@ -92,7 +96,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
             switch (_player.Ani.GetInteger("AtkCount"))
             {
-                case 0:
+                case 1:
                     if (!_player.Controller.isUltimate)
                     {
                         hitParticle.transform.position = rightHandTrans.position + zPos;
@@ -114,7 +118,9 @@ public class PlayerAnimationEvent : MonoBehaviour
 
                     CameraShaking(0.12f);
                     break;
-                case 1:
+                case 0:
+                case 2:
+                case 3:
                     if (!_player.Controller.isUltimate)
                     {
                         hitParticle.transform.position = leftHandTrans.position + zPos;
@@ -136,7 +142,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
                     CameraShaking(0.12f);
                     break;
-                case 2:
+                case 4:
                     hitParticle = !_player.Controller.isUltimate ? ObjectPool.Instance.Spawn("FX_PunchAttackSphere", 1) : ObjectPool.Instance.Spawn("FX_FeverTimePunchSphere", 1);
 
                     hitParticle.transform.position = monsterCollider.ClosestPoint(_player.HitPoint.position) + zPos;
@@ -166,7 +172,7 @@ public class PlayerAnimationEvent : MonoBehaviour
             GameObject hitParticle2 = null;
             GameObject hitParticle3 = null;
 
-            if (!_player.Controller.isUltimate && _player.Ani.GetInteger("AtkCount") != 2)
+            if (!_player.Controller.isUltimate && _player.Ani.GetInteger("AtkCount") != 4)
             {
                 // 히트 파티클 생성
                 hitParticle = ObjectPool.Instance.Spawn("P_Punch", 1);
@@ -174,7 +180,7 @@ public class PlayerAnimationEvent : MonoBehaviour
             }
             else if (_player.Controller.isUltimate)
             {
-                if (_player.Ani.GetInteger("AtkCount") != 2)
+                if (_player.Ani.GetInteger("AtkCount") != 4)
                 {
                     hitParticle = ObjectPool.Instance.Spawn("FX_FeverTimePunch", 1);
                 }
@@ -183,21 +189,21 @@ public class PlayerAnimationEvent : MonoBehaviour
 
             switch (_player.Ani.GetInteger("AtkCount"))
             {
-                case 0:
+                case 1:
                     if (!_player.Controller.isUltimate)
                     {
-                        hitParticle.transform.position = rightHandTrans.position;
+                        hitParticle.transform.position = rightHandTrans.position + zPos;
                         hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                        hitParticle2.transform.position = rightHandTrans.position;
+                        hitParticle2.transform.position = rightHandTrans.position + zPos;
                         hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
                         hitParticle.transform.rotation = rightHandTrans.rotation;
                         hitParticle2.transform.rotation = rightHandTrans.rotation;
                     }
                     else
                     {
-                        hitParticle.transform.position = rightHandTrans.position;
+                        hitParticle.transform.position = rightHandTrans.position + zPos;
                         hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                        hitParticle3.transform.position = _player.transform.position;
+                        hitParticle3.transform.position = _player.transform.position + zPos;
                         hitParticle3.transform.localScale = new Vector3(_player.CharacterModel.localScale.x, 1, 1);
 
                         hitParticle.transform.rotation = rightHandTrans.rotation;
@@ -205,21 +211,23 @@ public class PlayerAnimationEvent : MonoBehaviour
 
                     CameraShaking(0.12f);
                     break;
-                case 1:
+                case 0:
+                case 2:
+                case 3:
                     if (!_player.Controller.isUltimate)
                     {
-                        hitParticle.transform.position = leftHandTrans.position;
+                        hitParticle.transform.position = leftHandTrans.position + zPos;
                         hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                        hitParticle2.transform.position = leftHandTrans.position;
+                        hitParticle2.transform.position = leftHandTrans.position + zPos;
                         hitParticle2.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
                         hitParticle.transform.rotation = leftHandTrans.rotation;
                         hitParticle2.transform.rotation = leftHandTrans.rotation;
                     }
                     else
                     {
-                        hitParticle.transform.position = leftHandTrans.position;
+                        hitParticle.transform.position = leftHandTrans.position + zPos;
                         hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-                        hitParticle3.transform.position = _player.transform.position;
+                        hitParticle3.transform.position = _player.transform.position + zPos;
                         hitParticle3.transform.localScale = new Vector3(_player.CharacterModel.localScale.x, 1, 1);
 
                         hitParticle.transform.rotation = leftHandTrans.rotation;
@@ -227,10 +235,10 @@ public class PlayerAnimationEvent : MonoBehaviour
 
                     CameraShaking(0.12f);
                     break;
-                case 2:
+                case 4:
                     hitParticle = !_player.Controller.isUltimate ? ObjectPool.Instance.Spawn("FX_PunchAttackSphere", 1) : ObjectPool.Instance.Spawn("FX_FeverTimePunchSphere", 1);
 
-                    hitParticle.transform.position = mapObject.ClosestPoint(_player.HitPoint.position);
+                    hitParticle.transform.position = mapObject.ClosestPoint(_player.HitPoint.position) + zPos;
 
                     if (_player.Controller.isUltimate)
                     {
@@ -299,34 +307,100 @@ public class PlayerAnimationEvent : MonoBehaviour
                         hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(-1, -1, 1));
                     }
                     break;
+                case 3:
+                    bool leftDir = _player.IsLeftDirection();
+                    if (commandAttackCount == 0)
+                    {
+                        hitParticle = ObjectPool.Instance.Spawn("P_PunchAttack2-1", 1);
+
+                        if (leftDir)
+                        {
+                            hitParticle.transform.position = _player.transform.position + new Vector3(-0.7f, 1.1f, -1);
+                        }
+                        else
+                        {
+                            hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(-1, 1, 1));
+                            hitParticle.transform.position = _player.transform.position + new Vector3(0.7f, 1f, -1);
+                        }
+
+                        commandAttackCount++;
+                    }
+                    else if (commandAttackCount == 1)
+                    {
+                        hitParticle2 = ObjectPool.Instance.Spawn("P_PunchAttack2-1(2)", 1);
+
+                        if (leftDir)
+                        {
+                            hitParticle2.transform.position = _player.transform.position + new Vector3(-0.7f, 1.1f, -1);
+                        }
+                        else
+                        {
+                            hitParticle2.transform.position = _player.transform.position + new Vector3(0.7f, 1f, -1);
+                        }
+
+                        commandAttackCount++;
+                    }
+                    else if (commandAttackCount == 2)
+                    {
+                        hitParticle3 = ObjectPool.Instance.Spawn("P_SmashHit2-1", 1);
+
+                        hitParticle3.transform.position = monsterCollider.ClosestPoint(monsterCollider.transform.position) + new Vector3(0, 1f, -1);
+
+                        commandAttackCount = 0;
+                    }
+                    break;
                 case 11:
                     TestSound.Instance.PlaySound("Smash1_2_Hit");
 
-                    rightHandTrail.gameObject.SetActive(true);
-                    hitParticle = ObjectPool.Instance.Spawn("P_SmashAttack2", 1);
-                    hitParticle2 = ObjectPool.Instance.Spawn("P_SmashHit", 1);
-                    hitParticle3 = ObjectPool.Instance.Spawn("P_dust", 1);
-
-                    hitParticle.transform.position = rightHandTrans.position + new Vector3(0f * _player.CharacterModel.localScale.x, 0);
-                    hitParticle2.transform.position = rightHandTrans.position + new Vector3(0f * _player.CharacterModel.localScale.x, 0);
-                    hitParticle3.transform.position = leftFootTrans.position + new Vector3(-0.4f * _player.CharacterModel.localScale.x, -0.2f);
-
-                    if (_player.CharacterModel.localScale.x < 0)
+                    if (_player.IsLeftDirection())
                     {
-                        hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(-1, -1, 1));
+                        hitParticle = ObjectPool.Instance.Spawn("P_PunchAttack1-2", 1);
+
+                        hitParticle.transform.position = _player.transform.position + new Vector3(-0.9f, 0.5f, -1.2f);
                     }
                     else
                     {
-                        hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(1, 1, 1));
+                        hitParticle2 = ObjectPool.Instance.Spawn("P_PunchAttack1-2_mirror", 1);
+
+                        hitParticle2.transform.position = _player.transform.position + new Vector3(0.9f, 0.5f, -1.2f);
                     }
 
-                    hitParticle3.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-
-                    //hitParticle.transform.rotation = rightHandTrans.rotation;
                     break;
-                case 21:
+                case 12:
+                    if (_player.IsLeftDirection())
+                    {
+                        hitParticle = ObjectPool.Instance.Spawn("P_MainChar_SmashShoryukenAttack1-2", 1);
+
+                        hitParticle.transform.position = _player.transform.position + new Vector3(-0.7f, 1.5f, -1);
+                    }
+                    else
+                    {
+                        hitParticle2 = ObjectPool.Instance.Spawn("P_MainChar_Smash1-2 mirror", 1);
+
+                        hitParticle2.transform.position = _player.transform.position + new Vector3(0.7f, 1.5f, -1);
+                    }
+                    break;
+                case 13:
+                    break;
                 case 22:
+                    if (_player.IsLeftDirection())
+                    {
+                        hitParticle = ObjectPool.Instance.Spawn("P_MainChar_ParryingSkillAttack", 1);
+
+                        hitParticle.transform.position = _player.transform.position + new Vector3(-0.3f, 0.7f);
+                    }
+                    else
+                    {
+                        hitParticle2 = ObjectPool.Instance.Spawn("P_MainChar_ParryingSkillAttackMirror", 1);
+
+                        hitParticle2.transform.position = _player.transform.position + new Vector3(0.3f, 0.7f);
+                    }
+                    break;
                 case 23:
+                    hitParticle = ObjectPool.Instance.Spawn("FX_Smash2-3", 1);
+
+                    hitParticle.transform.position = monsterCollider.ClosestPoint(_player.transform.position);
+                    break;
                 case 24:
                 case 25:
                 case 26:
@@ -403,34 +477,100 @@ public class PlayerAnimationEvent : MonoBehaviour
                         hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(-1, -1, 1));
                     }
                     break;
+                case 3:
+                    bool leftDir = _player.IsLeftDirection();
+                    if (commandAttackCount == 0)
+                    {
+                        hitParticle = ObjectPool.Instance.Spawn("P_PunchAttack2-1", 1);
+
+                        if (leftDir)
+                        {
+                            hitParticle.transform.position = _player.transform.position + new Vector3(-0.5f, 1f, -1);
+                        }
+                        else
+                        {
+                            hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(-1, 1, 1));
+                            hitParticle.transform.position = _player.transform.position + new Vector3(0.7f, 1f, -1);
+                        }
+
+                        commandAttackCount++;
+                    }
+                    else if (commandAttackCount == 1)
+                    {
+                        hitParticle2 = ObjectPool.Instance.Spawn("P_PunchAttack2-1(2)", 1);
+
+                        if (leftDir)
+                        {
+                            hitParticle2.transform.position = _player.transform.position + new Vector3(-0.5f, 1f, -1);
+                        }
+                        else
+                        {
+                            hitParticle2.transform.position = _player.transform.position + new Vector3(0.7f, 1f, -1);
+                        }
+
+                        commandAttackCount++;
+                    }
+                    else if (commandAttackCount == 2)
+                    {
+                        hitParticle3 = ObjectPool.Instance.Spawn("P_SmashHit2-1", 1);
+
+                        hitParticle3.transform.position = mapObject.ClosestPoint(mapObject.transform.position) + new Vector3(0, 1f, -1);
+
+                        commandAttackCount = 0;
+                    }
+                    break;
                 case 11:
                     TestSound.Instance.PlaySound("Smash1_2_Hit");
 
-                    rightHandTrail.gameObject.SetActive(true);
-                    hitParticle = ObjectPool.Instance.Spawn("P_SmashAttack2", 1);
-                    hitParticle2 = ObjectPool.Instance.Spawn("P_SmashHit", 1);
-                    hitParticle3 = ObjectPool.Instance.Spawn("P_dust", 1);
-
-                    hitParticle.transform.position = rightHandTrans.position + new Vector3(0f * _player.CharacterModel.localScale.x, 0);
-                    hitParticle2.transform.position = rightHandTrans.position + new Vector3(0f * _player.CharacterModel.localScale.x, 0);
-                    hitParticle3.transform.position = leftFootTrans.position + new Vector3(-0.4f * _player.CharacterModel.localScale.x, -0.2f);
-
-                    if (_player.CharacterModel.localScale.x < 0)
+                    if (_player.IsLeftDirection())
                     {
-                        hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(-1, -1, 1));
+                        hitParticle = ObjectPool.Instance.Spawn("P_PunchAttack1-2", 1);
+
+                        hitParticle.transform.position = _player.transform.position + new Vector3(-0.9f, 0.5f, -1.2f);
                     }
                     else
                     {
-                        hitParticle.GetComponent<FlipSlash>().OnFlip(new Vector3(1, 1, 1));
+                        hitParticle2 = ObjectPool.Instance.Spawn("P_PunchAttack1-2_mirror", 1);
+
+                        hitParticle2.transform.position = _player.transform.position + new Vector3(0.9f, 0.5f, -1.2f);
                     }
 
-                    hitParticle3.GetComponent<FlipSlash>().OnFlip(new Vector3(_player.CharacterModel.localScale.x, 1, 1));
-
-                    //hitParticle.transform.rotation = rightHandTrans.rotation;
                     break;
-                case 21:
+                case 12:
+                    if (_player.IsLeftDirection())
+                    {
+                        hitParticle = ObjectPool.Instance.Spawn("P_MainChar_SmashShoryukenAttack1-2", 1);
+                        
+                        hitParticle.transform.position = _player.transform.position + new Vector3(-0.7f, 1.5f, -1);
+                    }
+                    else
+                    {
+                        hitParticle2 = ObjectPool.Instance.Spawn("P_MainChar_Smash1-2 mirror", 1);
+
+                        hitParticle2.transform.position = _player.transform.position + new Vector3(0.7f, 1.5f, -1);
+                    }
+                    break;
+                case 13:
+                    break;
                 case 22:
+                    if (_player.IsLeftDirection())
+                    {
+                        hitParticle = ObjectPool.Instance.Spawn("P_MainChar_ParryingSkillAttack", 1);
+
+                        hitParticle.transform.position = _player.transform.position + new Vector3(-0.3f, 0.7f);
+                    }
+                    else
+                    {
+                        hitParticle2 = ObjectPool.Instance.Spawn("P_MainChar_ParryingSkillAttackMirror", 1);
+
+                        hitParticle2.transform.position = _player.transform.position + new Vector3(0.3f, 0.7f);
+                    }
+                    break;
                 case 23:
+                    hitParticle = ObjectPool.Instance.Spawn("FX_Smash2-3", 1);
+
+                    hitParticle.transform.position = mapObject.ClosestPoint(_player.transform.position);
+                    break;
                 case 24:
                 case 25:
                 case 26:
@@ -543,6 +683,12 @@ public class PlayerAnimationEvent : MonoBehaviour
 
             isOnDemp = false;
         }
+
+        if (fireObj.activeSelf)
+        {
+            fireObj.SetActive(false);
+        }
+
         //_player.Ani.SetBool("IsCommand", false);
         //_player.Ani.SetInteger("CommandCount", 0);
         //PlayerInputManager.Instance.ResetCommandKey();
@@ -623,14 +769,21 @@ public class PlayerAnimationEvent : MonoBehaviour
             switch (_player.Ani.GetInteger("CommandCount"))
             {
                 case 1:
+                case 2:
                 case 11:
-                case 101:
+                case 12:
+                case 13:
+                case 22:
                     transform.parent.DOMoveX(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x), 0.3f);
                     break;
                 case 4:
                     Vector3 targetPos = new Vector3(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x)
                                                    , transform.parent.position.y + 4f, 0);
                     transform.parent.DOMove(targetPos, 0.7f);
+                    break;
+                case 23:
+                    transform.parent.DOKill();
+                    transform.parent.DOMoveX(transform.parent.position.x - (moveDistance * _player.CharacterModel.localScale.x), 0.1f);
                     break;
             }
         }
@@ -684,11 +837,21 @@ public class PlayerAnimationEvent : MonoBehaviour
             _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
         }
 
-        _player.CommandController.StartCommandTime(timeRemaining, SkillId, false);
+        if (_player.Ani.GetInteger("CommandCount") == 0)
+        {
+            _player.CommandController.StartCommandTime(timeRemaining - 0.2f, SkillId, false);
+        }
+        else
+        {
+            _player.CommandController.StartCommandTime(timeRemaining, SkillId, false);
+        }
     }
 
     private void StepCheckCommand(int SkillId)
     {
+        commandAttackCount = 0;
+        fireObj.SetActive(false);
+
         if (dempEffect != null && dempEffect.gameObject.activeSelf)
         {
             GameObject effect = ObjectPool.Instance.Spawn("do_disappear", 1);
@@ -850,12 +1013,25 @@ public class PlayerAnimationEvent : MonoBehaviour
                 effect = ObjectPool.Instance.Spawn(effectName, 1.5f);
                 if (_player.IsLeftDirection())
                 {
-                    effect.transform.position = _player.transform.position + new Vector3(7, 1.2f);
+                    effect.transform.localScale = new Vector3(1, 1, 1);
+                    effect.transform.position = _player.transform.position + new Vector3(7, 1f);
                 }
                 else
                 {
-                    effect.transform.localScale = new Vector3(-1, 0, 0);
-                    effect.transform.position = _player.transform.position + new Vector3(-7, 0.1f);
+                    effect.transform.localScale = new Vector3(-1, 1, 1);
+                    effect.transform.position = _player.transform.position + new Vector3(-7, 1f);
+                }
+                break;
+            case "PRush":
+                if (_player.IsLeftDirection())
+                {
+                    effect = ObjectPool.Instance.Spawn("FX_SwordRushLeft@Player", 1);
+                    effect.transform.position = _player.transform.position + new Vector3(0, 0.5f);
+                }
+                else
+                {
+                    effect = ObjectPool.Instance.Spawn("FX_SwordRushRight@Player", 1);
+                    effect.transform.position = _player.transform.position + new Vector3(0, 0.5f);
                 }
                 break;
             case "in_chen":
@@ -908,6 +1084,128 @@ public class PlayerAnimationEvent : MonoBehaviour
                     dempEffect = ObjectPool.Instance.Spawn("chen_burn_flame_orora (1)");
 
                     dempEffect.transform.position = _player.transform.position + new Vector3(0.2f * -_player.transform.localScale.x, 0);
+                }
+                break;
+            case "P_Punch2-1":
+                effect = ObjectPool.Instance.Spawn(effectName, 1f);
+                if (_player.IsLeftDirection())
+                {
+                    effect.transform.position = _player.transform.position + new Vector3(-1.2f, 1f);
+                }
+                else
+                {
+                    effect.GetComponent<FlipSlash>().OnFlip(new Vector3(-1, 1, 1));
+                    effect.transform.position = _player.transform.position + new Vector3(-1f, 1f);
+                }
+                break;
+            case "P_Punch2-1(2)":
+                if (_player.IsLeftDirection())
+                {
+                    effect = ObjectPool.Instance.Spawn(effectName, 1f);
+                    effect.transform.position = _player.transform.position + new Vector3(-1.2f, 1f);
+                }
+                else
+                {
+                    effect = ObjectPool.Instance.Spawn("P_Punch_left2-1(2)");
+                    effect.transform.position = _player.transform.position + new Vector3(0, 0.8f);
+                }
+                break;
+            case "P_Punch 1-2_low":
+                if (_player.IsLeftDirection())
+                {
+                    effect = ObjectPool.Instance.Spawn(effectName, 1f);
+                    effect.transform.position = _player.transform.position + new Vector3(-1.7f, 0.9f, -1);
+                }
+                else
+                {
+                    effect = ObjectPool.Instance.Spawn("P_Punch 1-2_low_mirror", 1);
+                    effect.transform.position = _player.transform.position + new Vector3(-0.7f, 0.9f, -1);
+                }
+                break;
+            case "P_Punch 1-2_high":
+                if (_player.IsLeftDirection())
+                {
+                    effect = ObjectPool.Instance.Spawn(effectName, 1f);
+                    effect.transform.position = _player.transform.position + new Vector3(-1.8f, 1f, -1);
+                }
+                else
+                {
+                    effect = ObjectPool.Instance.Spawn("P_Punch 1-2_high_mirror", 1f);
+                    effect.transform.position = _player.transform.position + new Vector3(-0.4f, 1f, -1);
+                }
+                break;
+            case "P_Smash22_Punch1":
+                if (_player.IsLeftDirection())
+                {
+                    effect = ObjectPool.Instance.Spawn(effectName, 1f);
+                    //effect2 = ObjectPool.Instance.Spawn("P_Smash22_Attack1", 1);
+
+                    effect.transform.position = _player.transform.position + new Vector3(-0.3f, 1.4f, -1);
+                    //effect2.transform.position = _player.transform.position + new Vector3(-0.6f, 1.4f, -1);
+                }
+                else
+                {
+                    effect = ObjectPool.Instance.Spawn("P_Smash22_Punch1_Right", 1f);
+                    //effect2 = ObjectPool.Instance.Spawn("P_Smash22_Attack1_Right", 1);
+
+                    effect.transform.position = _player.transform.position + new Vector3(0.3f, 1.4f, -1);
+                    //effect2.transform.position = _player.transform.position + new Vector3(1f, 1.5f, -1);
+                }
+                break;
+            case "P_Smash22_Punch2":
+                if (_player.IsLeftDirection())
+                {
+                    effect = ObjectPool.Instance.Spawn(effectName, 1f);
+                    effect2 = ObjectPool.Instance.Spawn("P_Smash22_Attack2", 1f);
+
+                    effect.transform.position = _player.transform.position + new Vector3(-0.3f, 1.4f, -1);
+                    effect2.transform.position = _player.transform.position + new Vector3(-0.8f, 0f, -1);
+                }
+                else
+                {
+                    effect = ObjectPool.Instance.Spawn("P_Smash22_Punch2_Right", 1f);
+                    effect2 = ObjectPool.Instance.Spawn("P_Smash22_Attack2_Right", 1f);
+
+                    effect.transform.position = _player.transform.position + new Vector3(0.3f, 1.4f, -1);
+                    effect2.transform.position = _player.transform.position + new Vector3(0.8f, 0f, -1);
+                }
+                break;
+            case "P_Punch _smash2-3":
+                if (_player.IsLeftDirection())
+                {
+                    effect = ObjectPool.Instance.Spawn(effectName, 1f);
+                    effect2 = ObjectPool.Instance.Spawn("pc_dust2-3", 1f);
+
+                    effect.transform.position = _player.transform.position + new Vector3(-0.7f, 0.9f, -1);
+                    effect2.transform.position = _player.transform.position;
+                }
+                else
+                {
+                    effect = ObjectPool.Instance.Spawn("P_Punch _smash2-3 (mirror", 1f);
+                    effect2 = ObjectPool.Instance.Spawn("pc_dust2-3", 1f);
+
+                    effect.transform.position = _player.transform.position + new Vector3(0.7f, 0.9f, -1);
+                    effect2.transform.position = _player.transform.position;
+                }
+                break;
+            case "FireObj":
+                fireObj.SetActive(true);
+                break;
+            case "FireObjOff":
+                fireObj.SetActive(false);
+                break;
+            case "P_Punch _Parrying":
+                if (_player.IsLeftDirection())
+                {
+                    effect = ObjectPool.Instance.Spawn(effectName, 1);
+
+                    effect.transform.position = _player.transform.position + new Vector3(0, 0.7f);
+                }
+                else
+                {
+                    effect = ObjectPool.Instance.Spawn("P_Punch _Parrying_mirror", 1);
+
+                    effect.transform.position = _player.transform.position + new Vector3(0, 0.7f);
                 }
                 break;
         }
@@ -981,6 +1279,12 @@ public class PlayerAnimationEvent : MonoBehaviour
     {
         bool _lock = isLock == 0 ? false : true;
         _player.PlayerSt.IsKnockedBack = _lock;
+    }
+
+    private void TurnOnCounter()
+    {
+        _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
+        _player.isCounter = true;
     }
 
     private void PlayerSfx(Define.PlayerSfxType type)
