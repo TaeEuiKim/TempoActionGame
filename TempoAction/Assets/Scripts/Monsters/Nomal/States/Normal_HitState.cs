@@ -49,16 +49,24 @@ public class Normal_HitState : Normal_State
                 }
             }
         }
+        else
+        {
+            timer += Time.deltaTime;
 
+            if (timer >= 0.5f)
+            {
+                _monster.ForceChangeState(Define.PerceptionType.IDLE);
+                _monster.isHit = false;
+                _monster.isHiting = false;
+                _monster.Ani.SetBool("Hit", false);
+            }
+        }
     }
 
     public override void Exit()
     {
         base.Exit();
 
-        _monster.Ani.SetBool("Hit", false);
-        _monster.isHit = false;
-        _monster.isHiting = false;
         timer = 0;
     }
 }

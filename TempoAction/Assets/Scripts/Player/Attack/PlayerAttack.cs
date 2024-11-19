@@ -17,8 +17,6 @@ public class PlayerAttack
     private Queue<TempoAttackData> _mainTempoQueue;
     private TempoAttackData _currentTempoData;
 
-    private int _upgradeCount;
-
     //public TempoCircle PointTempoCircle { get; set; }
 
     // ¿Ã∫•∆Æ
@@ -46,8 +44,6 @@ public class PlayerAttack
 
         _mainTempoQueue = new Queue<TempoAttackData>();
         _currentTempoData = null;
-
-        _upgradeCount = 0;
 
         IsHit = false;
         isAttack = true;

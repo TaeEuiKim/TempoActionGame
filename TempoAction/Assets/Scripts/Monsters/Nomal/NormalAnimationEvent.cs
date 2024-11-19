@@ -51,6 +51,8 @@ public class NormalAnimationEvent : MonoBehaviour
 
     private void HitFinish()
     {
+        _monster.isHit = false;
+        _monster.isHiting = false;
         _monster.Ani.SetBool("Hit", false);
         _monster.CurrentPerceptionState = Define.PerceptionType.IDLE;
     }

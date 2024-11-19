@@ -106,7 +106,6 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         targetPos = GetTargetPosByCoillision(initialPos, direction * movingDistance, targetPos, 1 << 8 | 1 << 12 | 1 << 13 | 1 << 14 | 1 << 16);
 
         // 돌진 이펙트 시작
-        ActiveEffectToCharacter(character, dash);
         if (skillData.SkillCastingTarget == Define.SkillTarget.MON)
         {
             TestSound.Instance.PlaySound("Skill1_Voice");
@@ -114,6 +113,7 @@ public class SwordQuickDrawRunner : SkillRunnerBase
         }
         else if (skillData.SkillCastingTarget == Define.SkillTarget.PC)
         {
+            ActiveEffectToCharacter(character, dash);
             TestSound.Instance.PlaySound("NormalMonster1_Skill");
         }
 
@@ -194,8 +194,12 @@ public class SwordQuickDrawRunner : SkillRunnerBase
             float damageAmount = skillData.SkillDamage;
 
             hittedCharacter.TakeDamage(damageAmount);
-            GameObject ef = ObjectPool.Instance.Spawn("FX_BaldoHit", 1);
-            ef.transform.position = hittedCharacter.transform.position + new Vector3(-1.1f, 0f);
+
+            if (skillData.SkillCastingTarget == Define.SkillTarget.PC)
+            {
+                GameObject ef = ObjectPool.Instance.Spawn("FX_BaldoHit", 1);
+                ef.transform.position = hittedCharacter.transform.position + new Vector3(-1.1f, 0f);
+            }
 
             TestSound.Instance.PlaySound("Skill1_Hit");
         }

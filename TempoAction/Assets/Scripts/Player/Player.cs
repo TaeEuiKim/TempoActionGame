@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Unity.VisualScripting;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Player : CharacterBase
 {
@@ -221,6 +222,12 @@ public class Player : CharacterBase
             Ani.SetBool("IsCounter", true);
             Ani.SetInteger("CommandCount", 22);
             Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
+
+            GameObject effect = ObjectPool.Instance.Spawn("energy_hit_Parrying", 1f, transform);
+            GameObject effect2 = ObjectPool.Instance.Spawn("glow_view_Parrying", 1f, transform);
+
+            effect.transform.position = transform.position + new Vector3(0, 0.7f);
+            effect2.transform.position = effect.transform.position;
 
             isCounter = false;
             return;

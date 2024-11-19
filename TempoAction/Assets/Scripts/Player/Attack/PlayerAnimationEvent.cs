@@ -22,6 +22,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     [SerializeField] private Material rimShader;
     [SerializeField] private AnimationCurveScriptable animCurve;
+    [SerializeField] private GameObject fireObj;
 
     private CameraController _cameraController;
 
@@ -380,39 +381,19 @@ public class PlayerAnimationEvent : MonoBehaviour
                     }
                     break;
                 case 13:
+                    break;
+                case 22:
                     if (_player.IsLeftDirection())
                     {
-                        if (commandAttackCount == 0)
-                        {
-                            hitParticle = ObjectPool.Instance.Spawn("P_Smash22_Attack1", 1);
+                        hitParticle = ObjectPool.Instance.Spawn("P_MainChar_ParryingSkillAttack", 1);
 
-                            hitParticle.transform.position = _player.transform.position + new Vector3(-0.6f, 1.4f, -1);
-                            commandAttackCount++;
-                        }
-                        else if (commandAttackCount == 1)
-                        {
-                            hitParticle2 = ObjectPool.Instance.Spawn("P_Smash22_Attack2", 1f);
-
-                            hitParticle2.transform.position = _player.transform.position + new Vector3(-0.6f, -0.3f, -1);
-                            commandAttackCount = 0;
-                        }
+                        hitParticle.transform.position = _player.transform.position + new Vector3(-0.3f, 0.7f);
                     }
                     else
                     {
-                        if (commandAttackCount == 0)
-                        {
-                            hitParticle = ObjectPool.Instance.Spawn("P_Smash22_Attack1_Right", 1);
+                        hitParticle2 = ObjectPool.Instance.Spawn("P_MainChar_ParryingSkillAttackMirror", 1);
 
-                            hitParticle.transform.position = _player.transform.position + new Vector3(0.6f, 1.4f, -1);
-                            commandAttackCount++;
-                        }
-                        else if (commandAttackCount == 1)
-                        {
-                            hitParticle2 = ObjectPool.Instance.Spawn("P_Smash22_Attack2_Right", 1f);
-
-                            hitParticle2.transform.position = _player.transform.position + new Vector3(0.6f, -0.3f, -1);
-                            commandAttackCount = 0;
-                        }
+                        hitParticle2.transform.position = _player.transform.position + new Vector3(0.3f, 0.7f);
                     }
                     break;
                 case 23:
@@ -570,39 +551,19 @@ public class PlayerAnimationEvent : MonoBehaviour
                     }
                     break;
                 case 13:
+                    break;
+                case 22:
                     if (_player.IsLeftDirection())
                     {
-                        if (commandAttackCount == 0)
-                        {
-                            hitParticle = ObjectPool.Instance.Spawn("P_Smash22_Attack1", 1);
+                        hitParticle = ObjectPool.Instance.Spawn("P_MainChar_ParryingSkillAttack", 1);
 
-                            hitParticle.transform.position = _player.transform.position + new Vector3(-0.6f, 1.4f, -1);
-                            commandAttackCount++;
-                        }
-                        else if (commandAttackCount == 1)
-                        {
-                            hitParticle2 = ObjectPool.Instance.Spawn("P_Smash22_Attack2", 1f);
-                            
-                            hitParticle2.transform.position = _player.transform.position + new Vector3(-0.6f, -0.3f, -1);
-                            commandAttackCount = 0;
-                        }
+                        hitParticle.transform.position = _player.transform.position + new Vector3(-0.3f, 0.7f);
                     }
                     else
                     {
-                        if (commandAttackCount == 0)
-                        {
-                            hitParticle = ObjectPool.Instance.Spawn("P_Smash22_Attack1_Right", 1);
+                        hitParticle2 = ObjectPool.Instance.Spawn("P_MainChar_ParryingSkillAttackMirror", 1);
 
-                            hitParticle.transform.position = _player.transform.position + new Vector3(0.6f, 1.4f, -1);
-                            commandAttackCount++;
-                        }
-                        else if (commandAttackCount == 1)
-                        {
-                            hitParticle2 = ObjectPool.Instance.Spawn("P_Smash22_Attack2_Right", 1f);
-
-                            hitParticle2.transform.position = _player.transform.position + new Vector3(0.6f, -0.3f, -1);
-                            commandAttackCount = 0;
-                        }
+                        hitParticle2.transform.position = _player.transform.position + new Vector3(0.3f, 0.7f);
                     }
                     break;
                 case 23:
@@ -721,6 +682,11 @@ public class PlayerAnimationEvent : MonoBehaviour
             _player.SkillObject.SetActive(true);
 
             isOnDemp = false;
+        }
+
+        if (fireObj.activeSelf)
+        {
+            fireObj.SetActive(false);
         }
 
         //_player.Ani.SetBool("IsCommand", false);
@@ -884,6 +850,7 @@ public class PlayerAnimationEvent : MonoBehaviour
     private void StepCheckCommand(int SkillId)
     {
         commandAttackCount = 0;
+        fireObj.SetActive(false);
 
         if (dempEffect != null && dempEffect.gameObject.activeSelf)
         {
@@ -1046,12 +1013,25 @@ public class PlayerAnimationEvent : MonoBehaviour
                 effect = ObjectPool.Instance.Spawn(effectName, 1.5f);
                 if (_player.IsLeftDirection())
                 {
-                    effect.transform.position = _player.transform.position + new Vector3(7, 1.2f);
+                    effect.transform.localScale = new Vector3(1, 1, 1);
+                    effect.transform.position = _player.transform.position + new Vector3(7, 1f);
                 }
                 else
                 {
-                    effect.transform.localScale = new Vector3(-1, 0, 0);
-                    effect.transform.position = _player.transform.position + new Vector3(-7, 0.1f);
+                    effect.transform.localScale = new Vector3(-1, 1, 1);
+                    effect.transform.position = _player.transform.position + new Vector3(-7, 1f);
+                }
+                break;
+            case "PRush":
+                if (_player.IsLeftDirection())
+                {
+                    effect = ObjectPool.Instance.Spawn("FX_SwordRushLeft@Player", 1);
+                    effect.transform.position = _player.transform.position + new Vector3(0, 0.5f);
+                }
+                else
+                {
+                    effect = ObjectPool.Instance.Spawn("FX_SwordRushRight@Player", 1);
+                    effect.transform.position = _player.transform.position + new Vector3(0, 0.5f);
                 }
                 break;
             case "in_chen":
@@ -1158,28 +1138,36 @@ public class PlayerAnimationEvent : MonoBehaviour
                 if (_player.IsLeftDirection())
                 {
                     effect = ObjectPool.Instance.Spawn(effectName, 1f);
+                    //effect2 = ObjectPool.Instance.Spawn("P_Smash22_Attack1", 1);
 
-                    effect.transform.position = _player.transform.position + new Vector3(0, 1f, -1);
+                    effect.transform.position = _player.transform.position + new Vector3(-0.3f, 1.4f, -1);
+                    //effect2.transform.position = _player.transform.position + new Vector3(-0.6f, 1.4f, -1);
                 }
                 else
                 {
                     effect = ObjectPool.Instance.Spawn("P_Smash22_Punch1_Right", 1f);
+                    //effect2 = ObjectPool.Instance.Spawn("P_Smash22_Attack1_Right", 1);
 
-                    effect.transform.position = _player.transform.position + new Vector3(0, 1f, -1);
+                    effect.transform.position = _player.transform.position + new Vector3(0.3f, 1.4f, -1);
+                    //effect2.transform.position = _player.transform.position + new Vector3(1f, 1.5f, -1);
                 }
                 break;
             case "P_Smash22_Punch2":
                 if (_player.IsLeftDirection())
                 {
                     effect = ObjectPool.Instance.Spawn(effectName, 1f);
+                    effect2 = ObjectPool.Instance.Spawn("P_Smash22_Attack2", 1f);
 
-                    effect.transform.position = _player.transform.position + new Vector3(0, 1f, -1);
+                    effect.transform.position = _player.transform.position + new Vector3(-0.3f, 1.4f, -1);
+                    effect2.transform.position = _player.transform.position + new Vector3(-0.8f, 0f, -1);
                 }
                 else
                 {
                     effect = ObjectPool.Instance.Spawn("P_Smash22_Punch2_Right", 1f);
+                    effect2 = ObjectPool.Instance.Spawn("P_Smash22_Attack2_Right", 1f);
 
-                    effect.transform.position = _player.transform.position + new Vector3(0, 1f, -1);
+                    effect.transform.position = _player.transform.position + new Vector3(0.3f, 1.4f, -1);
+                    effect2.transform.position = _player.transform.position + new Vector3(0.8f, 0f, -1);
                 }
                 break;
             case "P_Punch _smash2-3":
@@ -1198,6 +1186,26 @@ public class PlayerAnimationEvent : MonoBehaviour
 
                     effect.transform.position = _player.transform.position + new Vector3(0.7f, 0.9f, -1);
                     effect2.transform.position = _player.transform.position;
+                }
+                break;
+            case "FireObj":
+                fireObj.SetActive(true);
+                break;
+            case "FireObjOff":
+                fireObj.SetActive(false);
+                break;
+            case "P_Punch _Parrying":
+                if (_player.IsLeftDirection())
+                {
+                    effect = ObjectPool.Instance.Spawn(effectName, 1);
+
+                    effect.transform.position = _player.transform.position + new Vector3(0, 0.7f);
+                }
+                else
+                {
+                    effect = ObjectPool.Instance.Spawn("P_Punch _Parrying_mirror", 1);
+
+                    effect.transform.position = _player.transform.position + new Vector3(0, 0.7f);
                 }
                 break;
         }
