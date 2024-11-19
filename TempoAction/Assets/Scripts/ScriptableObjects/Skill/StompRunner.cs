@@ -108,6 +108,9 @@ public class StompRunner : SkillRunnerBase
         var targetsInRanged = Physics.SphereCastAll(character.transform.position, 5, Vector3.up, 0, SkillTargetToLayerMask(skillData.SkillCastingTarget));
         TestSound.Instance.PlaySound("NormalMonster2_AttackHit");
 
+        GameObject effect = ObjectPool.Instance.Spawn("P_BalkoongMonsterSkill", 1f);
+        effect.transform.position = character.transform.position + new Vector3(0, 0.3f);
+
         foreach (var targetInReanged in targetsInRanged)
         {
             var targetCharacter = targetInReanged.transform.GetComponent<CharacterBase>();

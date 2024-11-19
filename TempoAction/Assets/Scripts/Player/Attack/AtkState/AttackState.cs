@@ -25,7 +25,6 @@ public class AttackState : PlayerAttackState
     }
     public override void Stay()
     {
-
     }
     public override void Exit()
     {

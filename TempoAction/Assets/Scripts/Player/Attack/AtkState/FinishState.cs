@@ -20,6 +20,9 @@ public class FinishState : PlayerAttackState
         _player.Ani.SetBool("IsAttack", false);
         _player.Ani.SetBool("IsCommand", false);
 
+        _player.Ani.SetBool("IsCounter", false);
+        _player.isCounter = false;
+
         _player.Ani.SetInteger("CommandCount", 0);
         _player.Ani.SetInteger("AtkCount", 0);
 

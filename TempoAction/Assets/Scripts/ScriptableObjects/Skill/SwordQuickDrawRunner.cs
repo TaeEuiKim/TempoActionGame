@@ -194,6 +194,9 @@ public class SwordQuickDrawRunner : SkillRunnerBase
             float damageAmount = skillData.SkillDamage;
 
             hittedCharacter.TakeDamage(damageAmount);
+            GameObject ef = ObjectPool.Instance.Spawn("FX_BaldoHit", 1);
+            ef.transform.position = hittedCharacter.transform.position + new Vector3(-1.1f, 0f);
+
             TestSound.Instance.PlaySound("Skill1_Hit");
         }
 

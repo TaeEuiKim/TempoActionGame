@@ -45,6 +45,7 @@ public class PlayerCommandController
         _player.Controller.isMove = false;
         _player.Controller.isJump = false;
 
+        PlayerInputManager.Instance.ResetCommandKey();
         PlayerInputManager.Instance.isCommand = true;
 
         CoroutineRunner.Instance.StartCoroutine(CheckCommandTime(checkTime, skillid, isBackDash));
@@ -53,6 +54,7 @@ public class PlayerCommandController
     private IEnumerator CheckCommandTime(float checkTime, int skillid, bool isBackDash)
     {
         float checkTimer = 0f;
+
         while (checkTimer < checkTime)
         {
             if (CheckAttackCommand(PlayerInputManager.Instance.GetCommandKey(), skillid, isBackDash))
@@ -105,7 +107,7 @@ public class PlayerCommandController
         //                 }).All(isEqual => isEqual))
         //    .Select(cd => cd.SkillId)
         //    .FirstOrDefault(CheckUseSkill);
- 
+
         var matchingSkillId = _skillCommand.commandDatas
             .Where(cd => (isBackDash && cd.IsBack) || !cd.IsBack)
             .Where(cd => cd.PossibleSkillId.Contains(skillid))
@@ -128,7 +130,8 @@ public class PlayerCommandController
             return false;
 
         bool isLeftDir = _player.IsLeftDirection();
-        List<KeyCode> adjustedTarget = target.Select(key => (isLeftDir && key == KeyCode.RightArrow) ? KeyCode.LeftArrow : key).ToList();
+        List<KeyCode> adjustedTarget = target.Select(key => isLeftDir ? 
+                                       (key == KeyCode.RightArrow ? KeyCode.LeftArrow : key == KeyCode.LeftArrow ? KeyCode.RightArrow : key) : key).ToList();
 
         return Enumerable.Range(0, source.Count - adjustedTarget.Count + 1)
             .Any(i => source.Skip(i).Take(adjustedTarget.Count + 1)
@@ -163,6 +166,7 @@ public class PlayerCommandController
                 break;
             // 1단 연계
             case 1:
+            case 11:
                 if (skillid == 2)
                 {
                     TestSound.Instance.PlaySound("Smash2");
@@ -170,10 +174,23 @@ public class PlayerCommandController
 
                     return true;
                 }
+                if (skillid == 12)
+                {
+                    return true;
+                }
                 break;
             // 2단 연계
             case 2:
+            case 12:
                 if (skillid == 3)
+                {
+                    return true;
+                }
+                if (skillid == 13)
+                {
+                    return true;
+                }
+                if (skillid == 23)
                 {
                     return true;
                 }
@@ -192,8 +209,9 @@ public class PlayerCommandController
                 }
                 break;
             // 스킬 발동
-            case 11:
-                if (skillid == 12)
+            case 3:
+            case 13:
+                if (skillid == 14 || skillid == 4)
                 {
                     UseSkill(skillid);
                     return true;
@@ -221,7 +239,6 @@ public class PlayerCommandController
             case 4:
                 if (_player.SkillManager.SkillSlots[0].Skill != null)
                 {
-                    _player.Ani.SetBool("IsCommandSkill", true);
                     _player.SkillManager.SkillSlots[0].UseSkillInstant(_player);
                     _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
                 }
@@ -229,7 +246,6 @@ public class PlayerCommandController
             case 12:
                 if (_player.SkillManager.SkillSlots[1].Skill != null)
                 {
-                    _player.Ani.SetBool("IsCommandSkill", true);
                     _player.SkillManager.SkillSlots[1].UseSkillInstant(_player);
                     _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
                 }

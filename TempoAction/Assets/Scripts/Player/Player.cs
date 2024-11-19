@@ -50,6 +50,8 @@ public class Player : CharacterBase
     [SerializeField] public GameObject[] MoveEffect;
     [SerializeField] public Material RimShader;
 
+    [HideInInspector] public bool isCounter = false;
+
     [Space]
 
     [SerializeField] public SkillRunnerBase skillData;
@@ -214,6 +216,16 @@ public class Player : CharacterBase
 
     public override void TakeDamage(float value)
     {
+        if (isCounter)
+        {
+            Ani.SetBool("IsCounter", true);
+            Ani.SetInteger("CommandCount", 22);
+            Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
+
+            isCounter = false;
+            return;
+        }
+
         if (_playerStat.IsKnockedBack) return;
 
         _stat.Hp -= value * ((100 - _stat.Defense) / 100);
