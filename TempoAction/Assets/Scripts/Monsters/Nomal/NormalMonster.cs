@@ -410,7 +410,7 @@ public class NormalMonster : Monster
     {
         if(GetSkillAttackUsable())
         {
-            CurrentPerceptionState = Define.PerceptionType.SKILLATTACK;
+            ForceChangeState(Define.PerceptionType.SKILLATTACK);
             return true;
         }
         else if(GetNormalAttackUsable())
