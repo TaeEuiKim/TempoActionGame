@@ -843,7 +843,7 @@ public class PlayerAnimationEvent : MonoBehaviour
         }
         else
         {
-            _player.CommandController.StartCommandTime(timeRemaining, SkillId, false);
+            _player.CommandController.StartCommandTime(timeRemaining + 0.2f, SkillId, false);
         }
     }
 
@@ -1046,27 +1046,11 @@ public class PlayerAnimationEvent : MonoBehaviour
                 break;
             case "chen_burn_flame-round1":
                 effect2 = ObjectPool.Instance.Spawn(effectName, 1f);
-                if (_player.IsLeftDirection())
-                {
-                    dis = 0f;
-                }
-                else
-                {
-                    dis = 1f;
-                }
-                effect2.transform.position = _player.transform.position + new Vector3(-2f + dis, 0);
+                effect2.transform.position = _player.transform.position + new Vector3(-2f, 0);
                 break;
             case "chen_burn_flame-round2":
                 effect = ObjectPool.Instance.Spawn(effectName, 1f);
-                if (_player.IsLeftDirection())
-                {
-                    dis = -0.5f;
-                }
-                else
-                {
-                    dis = 0.5f;
-                }
-                effect.transform.position = _player.transform.position + new Vector3(2f + dis, 0);
+                effect.transform.position = _player.transform.position + new Vector3(2f, 0);
                 break;
             case "chen_fall":
                 effect = ObjectPool.Instance.Spawn(effectName, 1f);
