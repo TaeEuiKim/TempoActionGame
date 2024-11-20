@@ -51,10 +51,6 @@ public class Player : CharacterBase
     [SerializeField] public GameObject[] MoveEffect;
     [SerializeField] public Material RimShader;
 
-    [Space]
-    [Header("피격시간")]
-    [SerializeField] public float hitTime = 1;
-
     [HideInInspector] public bool isCounter = false;
 
     [Space]

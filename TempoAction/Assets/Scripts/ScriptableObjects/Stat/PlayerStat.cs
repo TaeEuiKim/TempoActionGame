@@ -26,6 +26,14 @@ public class PlayerStat : Stat
     [SerializeField] private float _maxStamina;
     private float _stamina;
 
+    [Header("피격시간")]
+    [SerializeField] public float hitTime = 1;
+
+    [Space]
+
+    [Header("커맨드 관련")]
+    [SerializeField] private float keyInputTime = 0.2f;
+
     public bool IsKnockedBack { get; set; } = false;
 
     public float Hp
@@ -77,6 +85,7 @@ public class PlayerStat : Stat
     public float StunDelay { get => _stunDelay; }// 스턴 상태 시간
     public float StunTime { get => _stunTime; }// 스턴 상태 시간
     public float CurUltimateGauge { get => _curUltimateGauge; set => _curUltimateGauge = value; }
+    public float KeyInputTime { get => keyInputTime; set => keyInputTime = value; }
 
     public override void Init()
     {

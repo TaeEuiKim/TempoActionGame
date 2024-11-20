@@ -843,7 +843,7 @@ public class PlayerAnimationEvent : MonoBehaviour
         }
         else
         {
-            _player.CommandController.StartCommandTime(timeRemaining + 0.2f, SkillId, false);
+            _player.CommandController.StartCommandTime(_player.PlayerSt.KeyInputTime, SkillId, false);
         }
     }
 
