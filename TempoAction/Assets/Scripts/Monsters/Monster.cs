@@ -15,6 +15,8 @@ public abstract class Monster : CharacterBase
     protected Transform _player;
     private MonsterView _view;
 
+    private List<float> hpList;
+
     protected float _direction = 1; // 몬스터가 바라보는 방향
 
     public Action OnKnockback;

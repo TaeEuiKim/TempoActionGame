@@ -51,8 +51,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ce9eeceb35c8a845b9c41f185240d61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hpBarImage: {fileID: 6275094174460758223}
-  _hpIllusionBarImage: {fileID: 7436936837190132876}
+  _hpBarImage:
+  - {fileID: 6275094174460758223}
+  _hpIllusionBarImage:
+  - {fileID: 7436936837190132876}
   _nomalMonsterCanvas: {fileID: 8734495692423532731}
   _perceptionGauge: {fileID: 7394328813833040687}
 --- !u!114 &7807729576138826469
@@ -96,6 +98,7 @@ MonoBehaviour:
   hitShader: {fileID: 0}
   isHit: 0
   isHiting: 0
+  hitRock: 0
   _groundCheckPoint: {fileID: 8905516641492255918}
   _groundCheckRadius: 0.3
   stateConditions: {fileID: 11400000, guid: 430911e20125a044092ba1caa74bf47b, type: 2}

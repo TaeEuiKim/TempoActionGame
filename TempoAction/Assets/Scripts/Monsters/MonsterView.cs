@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public abstract class MonsterView : MonoBehaviour
 {
-    [SerializeField] protected Image _hpBarImage;
-    [SerializeField] protected Image _hpIllusionBarImage;
+    [SerializeField] protected List<Image> _hpBarImage;
+    [SerializeField] protected List<Image> _hpIllusionBarImage;
 
     private float time = 0.02f;
     private WaitForSeconds seconds;
+
+    private int count = 1;
 
     private void Start()
     {
@@ -21,9 +25,14 @@ public abstract class MonsterView : MonoBehaviour
         StartCoroutine(UpdateHealthBar(value));
     }
 
+    public int GetDevideHp()
+    {
+        return _hpBarImage.Count;
+    }
+
     private IEnumerator UpdateHealthBar(float value)
     {
-        float fillAmount = value + 0.05f;
+        float fillAmount = value;
 
         if (fillAmount < 0 || value == 0)
         {
@@ -32,14 +41,14 @@ public abstract class MonsterView : MonoBehaviour
 
         StartCoroutine(UpdateIllusionBar(fillAmount));
 
-        while (_hpBarImage.fillAmount >= fillAmount)
+        while (_hpBarImage[_hpBarImage.Count - count].fillAmount >= fillAmount)
         {
-            _hpBarImage.fillAmount -= time;
+            _hpBarImage[_hpBarImage.Count - count].fillAmount -= time;
 
             yield return time;
         }
 
-        _hpBarImage.fillAmount = fillAmount;
+        _hpBarImage[_hpBarImage.Count - count].fillAmount = fillAmount;
 
         yield return null;
     }
@@ -48,14 +57,14 @@ public abstract class MonsterView : MonoBehaviour
     {
         yield return new WaitForSeconds(0.05f);
 
-        while (_hpIllusionBarImage.fillAmount >= value)
+        while (_hpIllusionBarImage[_hpIllusionBarImage.Count - count].fillAmount >= value)
         {
-            _hpIllusionBarImage.fillAmount -= time;
+            _hpIllusionBarImage[_hpIllusionBarImage.Count - count].fillAmount -= time;
 
             yield return time;
         }
 
-        _hpIllusionBarImage.fillAmount = value;
+        _hpIllusionBarImage[_hpIllusionBarImage.Count - count].fillAmount = value;
 
         yield return null;
     }

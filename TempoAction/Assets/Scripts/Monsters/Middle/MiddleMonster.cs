@@ -43,16 +43,13 @@ public class MiddleMonster : Monster
     public Vector3 ColliderSize { get => _colliderSize; set => _colliderSize = value; }
     public float IdleDuration { get => _idleDuration; }
 
-
-
-
     public Action OnAttackAction;
     public Action OnFinishSkill;
 
     protected override void Init()
     {
         _player = FindObjectOfType<Player>().transform;
-
+        
         if (_monsterName == Define.MiddleMonsterName.CHEONG)
         {
             _stateStroage.Add(Define.MiddleMonsterState.IDLE, new Cheong_Idle(this));

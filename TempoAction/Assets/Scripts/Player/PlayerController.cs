@@ -213,19 +213,9 @@ public class PlayerController
         if(!useKeyDown || PlayerInputManager.Instance.jump)
         {
             PlayerInputManager.Instance.jump = false;
-            if (!_isGrounded && !_isDoubleJumping)
-            {
-                _player.CommandController.CheckFallSkill();
 
-                _player.Ani.SetTrigger("isJumping");
-                _player.Rb.velocity = new Vector3(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
-                TestSound.Instance.PlaySound("DoubleJump");
-                _isDoubleJumping = true;
-            }
             if (_isGrounded)
             {
-                _player.CommandController.CheckFallSkill();
-
                 _player.Ani.SetTrigger("isJumping");
                 _player.Rb.velocity = new Vector3(_player.Rb.velocity.x, _player.PlayerSt.JumpForce);
                 TestSound.Instance.PlaySound("Jump");

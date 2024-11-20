@@ -66,13 +66,11 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
 
     public void OnAttack(InputValue value)
     {
-        if (!isDashCommand)
+        AttackInput(value.isPressed);
+
+        if (isCommand && value.isPressed)
         {
-            AttackInput(value.isPressed);
-        }
-        else
-        {
-            commandValue.Add(KeyCode.Z);
+            commandValue.Add(KeyCode.X);
         }
     }
 
@@ -123,14 +121,14 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
 
     public void OnKeyX(InputValue value)
     {
-        if (!isCommand)
-        {
-            KeyXInput(value.isPressed);
-        }
-        else if ((value.isPressed && isCommand) || isDashCommand)
-        {
-            commandValue.Add(KeyCode.X);
-        }
+        //if (!isCommand)
+        //{
+        //    KeyXInput(value.isPressed);
+        //}
+        //else if ((value.isPressed && isCommand) || isDashCommand)
+        //{
+        //    commandValue.Add(KeyCode.X);
+        //}
     }
 
     public void OnCancel(InputValue value)

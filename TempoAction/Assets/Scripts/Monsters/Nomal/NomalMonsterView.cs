@@ -26,7 +26,7 @@ public class NomalMonsterView : MonsterView, INomalMonsterView
 
     public void SetFullHp()
     {
-        _hpBarImage.fillAmount = 1;
-        _hpIllusionBarImage.fillAmount = 1;
+        _hpBarImage[_hpBarImage.Count - 1].fillAmount = 1;
+        _hpIllusionBarImage[_hpIllusionBarImage.Count - 1].fillAmount = 1;
     }
 }

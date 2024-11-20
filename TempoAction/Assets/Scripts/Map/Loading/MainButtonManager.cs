@@ -17,6 +17,7 @@ public class MainButtonManager : MonoBehaviour
     [SerializeField] private GameObject[] idleImg;
     [SerializeField] private GameObject[] moveingImg;
     [SerializeField] private Image fadePanel;
+    [SerializeField] private VideoPlayer CreditVideo;
 
     private bool isNext;
 
@@ -40,6 +41,11 @@ public class MainButtonManager : MonoBehaviour
                 ParitcleVideo1.gameObject.SetActive(false);
                 ParitcleVideo2.gameObject.SetActive(true);
                 ParitcleVideo2.Play();
+            }
+
+            if (CreditVideo.gameObject.activeSelf && CreditVideo.isPaused)
+            {
+                CreditVideo.gameObject.SetActive(false);
             }
         }
     }
@@ -87,6 +93,11 @@ public class MainButtonManager : MonoBehaviour
     public void OnExitGame()
     {
         Application.Quit();
+    }
+
+    public void OnCreditVideo(bool isTurn)
+    {
+        CreditVideo.gameObject.SetActive(isTurn);
     }
 
     public void SetIdleImg(int arrayNum)

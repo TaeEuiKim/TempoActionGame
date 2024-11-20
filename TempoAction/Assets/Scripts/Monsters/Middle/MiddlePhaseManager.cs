@@ -35,6 +35,9 @@ public class MiddlePhaseManager : MonoBehaviour
     [Space]
     [Header("중간 보스 시작 UI")]
     [SerializeField] public GameObject smashImg;
+    [Header("중간 보스 체력 UI")]
+    [SerializeField] private GameObject[] hpNumUI;
+    [SerializeField] private UnityEngine.UI.Image[] hpBarUI;
 
     private List<float> _targetHealthList = new List<float>();
     private int _targetHealthIndex = 0;
