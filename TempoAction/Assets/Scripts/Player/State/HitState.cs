@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,13 +16,15 @@ public class HitState : PlayerState
     {
         timer = 0;
 
+        _player.Rb.velocity = Vector3.zero;
+        _player.transform.DOKill();
         _player.Controller.isMove = false;
         _player.Controller.isJump = false;
     }
 
     public override void Stay()
     {
-        if (timer <= _player.hitTime)
+        if (timer <= _player.PlayerSt.hitTime)
         {
             timer += Time.deltaTime;
         }
