@@ -7,16 +7,13 @@ public class BaseShelling : MonoBehaviour
     public Transform target;        // 목표 지점
     public float launchAngle = 45f; // 발사 각도
     public Rigidbody rb;            // Rigidbody 컴포넌트
-    public float gravity = 9.8f;    // 중력 가속도 (Unity 기본값 사용 가능)
+    public float gravity = 9.8f;    // 중력 가속도
 
     private void Start()
     {
         // Rigidbody에 중력 설정
         if (rb == null) rb = GetComponent<Rigidbody>();
         rb.useGravity = true;
-
-        // 목표 지점으로 투사체 발사
-        LaunchProjectile();
     }
 
     private void LaunchProjectile()
@@ -48,5 +45,7 @@ public class BaseShelling : MonoBehaviour
         this.target = target;
         this.launchAngle = angle;
         this.gravity = gravitySpeed;
+
+        LaunchProjectile();
     }
 }

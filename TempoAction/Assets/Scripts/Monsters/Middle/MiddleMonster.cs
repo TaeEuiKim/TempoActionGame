@@ -14,7 +14,7 @@ public class MiddleMonster : Monster
 
     [Header("스킬")]
     [SerializeField] private List<Middle_Skill> _skillStorage = new List<Middle_Skill>();  // 스킬 저장소
-    [SerializeField] private Middle_Skill _currentSkill = null;                           // 현재 스킬
+    [SerializeField] private Middle_Skill _currentSkill = null;                            // 현재 스킬
     [SerializeField] private List<Middle_Skill> _readySkills = new List<Middle_Skill>();   // 준비된 스킬
 
     [Header("공격")]

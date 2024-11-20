@@ -18,4 +18,7 @@ public class Middle_SkillInfo
 
     [Header("스킬 우선순위")]
     public int priority;
+
+    [Header("페이즈 구분")]
+    public int level;
 }

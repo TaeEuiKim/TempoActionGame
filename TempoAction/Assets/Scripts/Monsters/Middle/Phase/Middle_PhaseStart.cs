@@ -19,6 +19,13 @@ public class Middle_PhaseStart : Middle_PhaseState
         _manager.Monster2.Enter();
 
         _manager.Monster2.Ani.SetBool("Walk", true);
+
+        _manager.Monster.transform.DOMoveY(30, 1f).OnComplete(() =>
+        {
+            _manager.Monster.transform.position = new Vector3(_manager._middlePoint[Define.MiddleMonsterPoint.CSPAWNPOINT].position.x + 1.5f, 
+                                                              _manager.Monster.transform.position.y, _manager._middlePoint[Define.MiddleMonsterPoint.CSPAWNPOINT].position.z);
+            _manager.Monster.transform.DOMoveY(1, 1f);
+        });
         _manager.Monster2.transform.DOMoveX(_manager._middlePoint[Define.MiddleMonsterPoint.CSPAWNPOINT].position.x, 3f);
 
         TestSound.Instance.PlaySound("MiddleBGM");
