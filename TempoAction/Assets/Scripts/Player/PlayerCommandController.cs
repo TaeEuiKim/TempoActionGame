@@ -243,7 +243,7 @@ public class PlayerCommandController
                     _player.Attack.ChangeCurrentAttackState(Define.AttackState.ATTACK);
                 }
                 break;
-            case 12:
+            case 14:
                 if (_player.SkillManager.SkillSlots[1].Skill != null)
                 {
                     _player.SkillManager.SkillSlots[1].UseSkillInstant(_player);

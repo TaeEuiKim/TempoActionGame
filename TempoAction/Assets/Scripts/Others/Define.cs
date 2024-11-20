@@ -76,7 +76,7 @@ public class Define
 
     public enum PlayerState
     {
-        STUN, DIE, NONE
+        STUN, DIE, HIT, NONE
     }
 
     public enum PlayerSfxType

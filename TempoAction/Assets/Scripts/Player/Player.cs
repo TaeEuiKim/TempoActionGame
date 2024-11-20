@@ -51,6 +51,10 @@ public class Player : CharacterBase
     [SerializeField] public GameObject[] MoveEffect;
     [SerializeField] public Material RimShader;
 
+    [Space]
+    [Header("피격시간")]
+    [SerializeField] public float hitTime = 1;
+
     [HideInInspector] public bool isCounter = false;
 
     [Space]
@@ -138,6 +142,7 @@ public class Player : CharacterBase
         _stateStorage.Add(Define.PlayerState.DIE, new DieState(this));
         _stateStorage.Add(Define.PlayerState.STUN, new StunState(this));
         _stateStorage.Add(Define.PlayerState.NONE, new NoneState(this));
+        _stateStorage.Add(Define.PlayerState.HIT, new HitState(this));
 
         //if (copySkill != null && copySkill.LoadSkillSlots() != null)
         //{
@@ -181,6 +186,9 @@ public class Player : CharacterBase
                 _view.OnGameoverUI();
                 Ani.SetBool("IsDie", true);
                 _cameraController.SetCameraSetting(Define.CameraType.DEAD);
+                break;
+            case Define.PlayerState.HIT:
+                Ani.SetBool("Hit", true);
                 break;
             case Define.PlayerState.NONE:
                 _attack.Update();
@@ -237,6 +245,10 @@ public class Player : CharacterBase
 
         _stat.Hp -= value * ((100 - _stat.Defense) / 100);
         saveHp = _stat.Hp;
+        if (CurrentState != Define.PlayerState.HIT)
+        {
+            CurrentState = Define.PlayerState.HIT;
+        }
 
         UpdateHealth();
     }
