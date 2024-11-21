@@ -22,9 +22,9 @@ public class Middle_Phase1 : Middle_PhaseState
         _manager.Monster.Stay();
         _manager.Monster2.Stay();
 
-        if (_manager.Monster2.MonsterSt.Hp <= 0)
+        if (_manager.GetHp() <= _manager.TargetHealthList[1] && _manager.Monster.CurrentState == Define.MiddleMonsterState.IDLE)
         {
-            _manager.ChangeStageState(Define.MiddlePhaseState.FINISH);
+            _manager.ChangeStageState(Define.MiddlePhaseState.PHASE2);
         }
     }
 
@@ -32,4 +32,6 @@ public class Middle_Phase1 : Middle_PhaseState
     {
 
     }
+
+
 }

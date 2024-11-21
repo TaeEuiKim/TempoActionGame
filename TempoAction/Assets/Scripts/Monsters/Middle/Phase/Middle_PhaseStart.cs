@@ -20,13 +20,10 @@ public class Middle_PhaseStart : Middle_PhaseState
 
         _manager.Monster2.Ani.SetBool("Walk", true);
 
-        _manager.Monster.transform.DOMoveY(30, 1f).OnComplete(() =>
-        {
-            _manager.Monster.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-            _manager.Monster.transform.position = new Vector3(_manager._middlePoint[Define.MiddleMonsterPoint.CSPAWNPOINT].position.x + 1.5f, 
-                                                              _manager.Monster.transform.position.y, _manager._middlePoint[Define.MiddleMonsterPoint.CSPAWNPOINT].position.z);
-            _manager.Monster.transform.DOMoveY(1, 1f);
-        });
+        _manager.Monster.Ani.SetInteger("PhaseStartCount", 1);
+        _manager.Monster.Ani.SetInteger("Phase", 1);
+
+        CoroutineRunner.Instance.StartCoroutine(StartGCMove());
         _manager.Monster2.transform.DOMoveX(_manager._middlePoint[Define.MiddleMonsterPoint.CSPAWNPOINT].position.x, 3f);
 
         TestSound.Instance.PlaySound("MiddleBGM");
@@ -46,5 +43,22 @@ public class Middle_PhaseStart : Middle_PhaseState
     public override void Exit()
     {
 
+    }
+
+    private IEnumerator StartGCMove()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        _manager.Monster.transform.DOMoveY(30, 2.3f).OnComplete(() =>
+        {
+            _manager.Monster.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            _manager.Monster.transform.position = new Vector3(_manager._middlePoint[Define.MiddleMonsterPoint.CSPAWNPOINT].position.x + 1.5f,
+                                                              _manager.Monster.transform.position.y, _manager._middlePoint[Define.MiddleMonsterPoint.RIGHTSIDE].position.z);
+            _manager.Monster.transform.DOMoveY(0.8f, 0.7f);
+        });
+
+        yield return new WaitForSeconds(2f);
+
+        _manager.Monster.Ani.SetInteger("PhaseStartCount", 2);
     }
 }

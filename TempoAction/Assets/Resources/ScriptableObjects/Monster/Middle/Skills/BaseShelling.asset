@@ -14,13 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _info:
     skill: 6
-    coolTime: 1
+    coolTime: 3
     range: 0
-    damage: 20
+    damage: 15
     priority: 0
     level: 1
-  _hitPoint: {x: 1, y: 1, z: 1}
-  _hitScale: {x: 2, y: 2, z: 1}
-  _finishDamage: 20
+  _finishDamage: 100
   launchAngle: 60
   gravityForce: 9.8
+  launchPower: 6.4

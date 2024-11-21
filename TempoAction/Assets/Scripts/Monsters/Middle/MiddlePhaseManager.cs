@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.UI;
 using DG.Tweening;
+using System.Threading;
 
 public class MiddlePhaseManager : MonoBehaviour
 {
@@ -38,6 +39,7 @@ public class MiddlePhaseManager : MonoBehaviour
     [Header("중간 보스 체력 UI")]
     [SerializeField] private GameObject[] hpNumUI;
     [SerializeField] private UnityEngine.UI.Image[] hpBarUI;
+    [SerializeField] private UnityEngine.UI.Image[] hpIllusionBarUI;
 
     private List<float> _targetHealthList = new List<float>();
     private int _targetHealthIndex = 0;
@@ -49,6 +51,9 @@ public class MiddlePhaseManager : MonoBehaviour
     public MiddleMonster Monster2 { get => _monster2; }
     public List<float> TargetHealthList { get => _targetHealthList; }
     public int TargetHealthIndex { get => _targetHealthIndex; set => _targetHealthIndex = value; }
+    private float curHealth = 0;
+    private int _count = 1;
+
     public int phase = 1;
 
     private void Awake()
@@ -56,6 +61,7 @@ public class MiddlePhaseManager : MonoBehaviour
         _cameraController = FindObjectOfType<CameraController>();
         _phaseStateStorage.Add(Define.MiddlePhaseState.START, new Middle_PhaseStart(this));
         _phaseStateStorage.Add(Define.MiddlePhaseState.PHASE1, new Middle_Phase1(this));
+        _phaseStateStorage.Add(Define.MiddlePhaseState.PHASE2, new Middle_Phase2(this));
         _phaseStateStorage.Add(Define.MiddlePhaseState.FINISH, new Middle_PhaseEnd(this));
 
         for (int i = 0; i < _monsterPointName.Length; ++i)
@@ -66,13 +72,15 @@ public class MiddlePhaseManager : MonoBehaviour
 
     private void Start()
     {
-        _targetHealthList.Add(Monster2.Stat.MaxHp * 0.5f);
+        curHealth = Monster2.Stat.MaxHp;
+        _targetHealthList.Add(Monster2.Stat.MaxHp * 0.8f);
+        _targetHealthList.Add(Monster2.Stat.MaxHp * 0.6f);
+        _targetHealthList.Add(Monster2.Stat.MaxHp * 0.4f);
+        _targetHealthList.Add(Monster2.Stat.MaxHp * 0.2f);
         _targetHealthList.Add(0);
 
         _monster.middlePoint = _middlePoint;
         _monster2.middlePoint = _middlePoint;
-
-        //ChangeStageState(Define.MiddlePhaseState.START);
 
         cutSceneCoroutine = StartCoroutine(CutSceneStart());
     }
@@ -101,6 +109,76 @@ public class MiddlePhaseManager : MonoBehaviour
         _phaseStateStorage[_currentPhaseState]?.Enter();
     }
 
+    public float GetHp()
+    {
+        return curHealth;
+    }
+
+    public void SetHp(float value)
+    {
+        curHealth -= value;
+        if (curHealth <= 0)
+        {
+            Monster2.ChangeCurrentState(Define.MiddleMonsterState.DIE);
+            return;
+        }
+
+        float n = 1 - ((-(300 * (_count - 1)) + (Monster2.Stat.MaxHp - curHealth)) / 300);
+
+        if (n < 0)
+        {
+            StartCoroutine(UpdateHealthBar(0, _count));
+            _count++;
+
+            StartCoroutine(UpdateHealthBar(1 + n, _count));
+            return;
+        }
+
+        StartCoroutine(UpdateHealthBar(n, _count));
+    }
+
+    private IEnumerator UpdateHealthBar(float value, int count)
+    {
+        float time = 0.02f;
+        float fillAmount = value;
+
+        if (fillAmount < 0 || value == 0)
+        {
+            fillAmount = 0;
+        }
+
+        StartCoroutine(UpdateIllusionBar(fillAmount, count));
+
+        while (hpBarUI[hpBarUI.Length - count].fillAmount >= fillAmount)
+        {
+            hpBarUI[hpBarUI.Length - count].fillAmount -= time;
+
+            yield return time;
+        }
+
+        hpBarUI[hpBarUI.Length - count].fillAmount = fillAmount;
+
+        yield return null;
+    }
+
+    private IEnumerator UpdateIllusionBar(float value, int count)
+    {
+        float time = 0.02f;
+
+        yield return new WaitForSeconds(0.05f);
+
+        while (hpIllusionBarUI[hpIllusionBarUI.Length - count].fillAmount >= value)
+        {
+            hpIllusionBarUI[hpIllusionBarUI.Length - count].fillAmount -= time;
+
+            yield return time;
+        }
+
+        hpIllusionBarUI[hpIllusionBarUI.Length - count].fillAmount = value;
+
+        yield return null;
+    }
+
     private IEnumerator CutSceneStart()
     {
         float alpha = 0;
@@ -124,7 +202,7 @@ public class MiddlePhaseManager : MonoBehaviour
             yield return waitOneForSeconds;
         }
 
-        yield return waitOneForSeconds;
+        startSceneUI.SetActive(false);
 
         StartCoroutine(FadeOut());
     }

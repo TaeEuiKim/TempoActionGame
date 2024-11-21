@@ -5,22 +5,17 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "BaseShelling", menuName = "ScriptableObjects/MiddleMonster/Skill/BaseShelling", order = 1)]
 public class Middle_BaseShelling : Middle_Skill
 {
-    [Header("Hit 포지션")]
-    [SerializeField] private Vector3 _hitPoint;
-    [Header("Hit 스케일")]
-    [SerializeField] private Vector3 _hitScale;
-    [Header("데미지")]
+    [Header("몬스터에게 들어가는 데미지")]
     [SerializeField] private float _finishDamage;
 
     [Header("발사 각도")]
-    [SerializeField] private float launchAngle = 45;
+    [SerializeField] private float launchAngle;
     [Header("중력 가속도")]
     [SerializeField] private float gravityForce = 9.8f;
+    [Header("발사하는 힘의 배율")]
+    [SerializeField] private float launchPower;
 
     private float _coolTime;
-
-    private Vector3 originSize;
-    private Vector3 originPoint;
 
     public override void Init(MiddleMonster monster)
     {
@@ -47,10 +42,6 @@ public class Middle_BaseShelling : Middle_Skill
     {
         Debug.Log("곡사포");
 
-        originSize = _monster.ColliderSize;
-        originPoint = _monster.HitPoint.localPosition;
-        _monster.CharacterModel.localScale = new Vector3(-_monster.Direction, 1, 1);
-
         _monster.OnAttackAction += Attack;
         _monster.OnFinishSkill += Finish;
     }
@@ -66,16 +57,14 @@ public class Middle_BaseShelling : Middle_Skill
     public override void Exit()
     {
         _monster.Ani.SetBool("BaseShelling", false);
-        _monster.ColliderSize = originSize;
-        _monster.HitPoint.localPosition = originPoint;
     }
 
     private void Attack()
     {
         GameObject rocket = ObjectPool.Instance.Spawn("LandTraceRocket");
 
-        rocket.transform.position = _monster.transform.position + new Vector3(0, 0.8f);
-        rocket.GetComponent<BaseShelling>().SetSetting(_monster.Player, launchAngle, gravityForce);
+        rocket.transform.position = _monster.transform.position + new Vector3(0.8f * -_monster.Direction, 1.2f);
+        rocket.GetComponent<BaseShelling>().SetSetting(_monster.Player, launchPower, launchAngle, gravityForce, Info.damage, _finishDamage);
     }
 
     private void Finish()
