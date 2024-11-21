@@ -310,6 +310,11 @@ public class Player : CharacterBase
 
     public void TakeStun(float t, int dir)
     {
+        if (isCounter)
+        {
+            return;
+        }
+
         Controller.Direction = -dir;
         CurrentState = Define.PlayerState.STUN;
         stunTime = t;

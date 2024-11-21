@@ -79,7 +79,7 @@ public class Middle_AimAttack : Middle_Skill
         GameObject mark = ObjectPool.Instance.Spawn("TraceMark", 0, _monster.Player);
         mark.transform.position = _monster.Player.transform.position + new Vector3(0, 1f, -1);
 
-        GameObject bomb = ObjectPool.Instance.Spawn("TraceRocket").GetComponent<Dropbomb>().SettingValue(_monster.Player, Info.damage, monsterDamage, mark, initSpeed, strength, missleSpeed);
+        GameObject bomb = ObjectPool.Instance.Spawn("TraceRocket").GetComponent<AimRocket>().SettingValue(_monster.Player, Info.damage, monsterDamage, mark, initSpeed, strength, missleSpeed);
         bomb.transform.position = _monster.HitPoint.position + new Vector3(0, 0, -1f);
     }
 

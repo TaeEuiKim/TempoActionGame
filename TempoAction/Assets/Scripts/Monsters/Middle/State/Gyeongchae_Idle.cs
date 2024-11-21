@@ -35,11 +35,14 @@ public class Gyeongchae_Idle : Middle_State
         {
             foreach (Middle_Skill s in _monster.SkillStorage)
             {
-                s.Check();
-
-                if (s.IsCompleted) // 조건이 성립되었는지 확인
+                if (s.Info.level == _monster.phase)
                 {
-                    _monster.ReadySkills.Add(s);
+                    s.Check();
+
+                    if (s.IsCompleted) // 조건이 성립되었는지 확인
+                    {
+                        _monster.ReadySkills.Add(s);
+                    }
                 }
             }
 

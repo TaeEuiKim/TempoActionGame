@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 public class MiddleMonster : Monster
@@ -14,7 +15,7 @@ public class MiddleMonster : Monster
 
     [Header("스킬")]
     [SerializeField] private List<Middle_Skill> _skillStorage = new List<Middle_Skill>();  // 스킬 저장소
-    [SerializeField] private Middle_Skill _currentSkill = null;                           // 현재 스킬
+    [SerializeField] private Middle_Skill _currentSkill = null;                            // 현재 스킬
     [SerializeField] private List<Middle_Skill> _readySkills = new List<Middle_Skill>();   // 준비된 스킬
 
     [Header("공격")]
@@ -34,6 +35,11 @@ public class MiddleMonster : Monster
     [Header("중간 컷씬")]
     [SerializeField] public GameObject curScene;
 
+    [Header("피격")]
+    private bool isHit;
+
+    private MiddlePhaseManager manager;
+
     public Define.MiddleMonsterState CurrentState { get => _currentState; }
     public Define.MiddleMonsterName monsterName { get => _monsterName; }
     public Middle_Skill CurrentSkill { get => _currentSkill; }
@@ -42,12 +48,15 @@ public class MiddleMonster : Monster
     public List<Middle_Skill> SkillStorage { get => _skillStorage; }
     public Vector3 ColliderSize { get => _colliderSize; set => _colliderSize = value; }
     public float IdleDuration { get => _idleDuration; }
+    public bool IsHit { get => isHit; set => isHit = value; }
+    public int phase = 1;
 
     public Action OnAttackAction;
     public Action OnFinishSkill;
 
     protected override void Init()
     {
+        manager = FindObjectOfType<MiddlePhaseManager>();
         _player = FindObjectOfType<Player>().transform;
         
         if (_monsterName == Define.MiddleMonsterName.CHEONG)
@@ -199,10 +208,13 @@ public class MiddleMonster : Monster
 
     public override void TakeDamage(float value)
     {
-        base.TakeDamage(value);
-        if (MonsterSt.Hp <= 0)
+        manager.SetHp(value);
+        if (monsterName == Define.MiddleMonsterName.GYEONGCHAE)
         {
-            ChangeCurrentState(Define.MiddleMonsterState.DIE);
+            if (!isHit)
+            {
+                isHit = true;
+            }
         }
     }
     private void OnDrawGizmos()
