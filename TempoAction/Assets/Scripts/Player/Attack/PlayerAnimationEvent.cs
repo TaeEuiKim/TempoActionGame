@@ -405,6 +405,9 @@ public class PlayerAnimationEvent : MonoBehaviour
                 case 25:
                 case 26:
                 case 27:
+                case 28:
+                case 29:
+                case 30:
                     hitParticle = ObjectPool.Instance.Spawn("FX_PC_OraoraPunch", 0.5f);
                     CameraShaking(0.12f);
 
@@ -575,6 +578,9 @@ public class PlayerAnimationEvent : MonoBehaviour
                 case 25:
                 case 26:
                 case 27:
+                case 28:
+                case 29:
+                case 30:
                     hitParticle = ObjectPool.Instance.Spawn("FX_PC_OraoraPunch", 0.5f);
 
                     if (_player.IsLeftDirection())
@@ -667,6 +673,10 @@ public class PlayerAnimationEvent : MonoBehaviour
     private void Finish(float delay)
     {
         _player.Attack.CheckDelay = delay;
+        if (_player.Ani.GetInteger("CommandCount") != 0)
+        {
+            _player.Ani.SetBool("IsAttack", false);
+        }
 
         _player.Attack.ChangeCurrentAttackState(Define.AttackState.CHECK);
         if (dempEffect != null && dempEffect.gameObject.activeSelf)
