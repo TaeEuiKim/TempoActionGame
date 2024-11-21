@@ -13,6 +13,8 @@ public class Middle_Phase1 : Middle_PhaseState
 
     public override void Enter()
     {
+        _manager.Monster.phase = 1;
+        _manager.Monster2.phase = 1;
     }
 
     public override void Stay()

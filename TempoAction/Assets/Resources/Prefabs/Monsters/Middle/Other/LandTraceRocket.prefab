@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4907301561492232521}
   - component: {fileID: 5970112590727506917}
   - component: {fileID: -57522687402346781}
-  - component: {fileID: -4666183584765591135}
+  - component: {fileID: 4152917268116599169}
   m_Layer: 18
   m_Name: LandTraceRocket
   m_TagString: Untagged
@@ -139,7 +139,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &-4666183584765591135
+--- !u!114 &4152917268116599169
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -148,12 +148,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4622881555719169984}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ec4e4c3227dd2a44aad18e76505d958, type: 3}
+  m_Script: {fileID: 11500000, guid: 5bf5446e85d389045a6461a4bdb3247d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ro: {x: 0, y: 0, z: 180}
-  cutScene: {fileID: 0}
-  TotalDamage: 0
+  target: {fileID: 0}
+  launchAngle: 45
+  rb: {fileID: -57522687402346781}
+  gravity: 9.8
 --- !u!1001 &1499603050940377386
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -4,47 +4,49 @@ using UnityEngine;
 
 public class BaseShelling : MonoBehaviour
 {
-    public Transform target;        // 목표 지점
-    public float launchAngle = 45f; // 발사 각도
-    public Rigidbody rb;            // Rigidbody 컴포넌트
-    public float gravity = 9.8f;    // 중력 가속도
+    private Transform target;               // 목표 지점
+    private float launchAngle = 45f;        // 발사 각도
+    private Rigidbody rb;                   // Rigidbody 컴포넌트
+    private float gravity = 9.8f;           // 중력 가속도
+    private float launchForce = 1.5f;       // 발사 힘 배율
 
-    private void Start()
+    private void Awake()
     {
-        // Rigidbody에 중력 설정
-        if (rb == null) rb = GetComponent<Rigidbody>();
-        rb.useGravity = true;
+        rb = GetComponent<Rigidbody>();
     }
 
     private void LaunchProjectile()
     {
-        // 목표 지점까지의 방향 벡터 계산
-        Vector3 startPos = transform.position;
-        Vector3 targetPos = target.position;
-        Vector3 displacement = targetPos - startPos;
+        Vector3 startPosition = transform.position;
+        Vector3 targetPosition = target.position;
 
-        // 수평 거리와 높이 계산
+        Vector3 displacement = targetPosition - startPosition;
         float horizontalDistance = new Vector2(displacement.x, displacement.z).magnitude;
         float verticalDistance = displacement.y;
 
-        // 초기 속도 계산
+        float gravity = Physics.gravity.y * -1;
         float angleInRadians = launchAngle * Mathf.Deg2Rad;
-        float initialSpeed = Mathf.Sqrt((gravity * horizontalDistance * horizontalDistance) /
-            (2 * (horizontalDistance * Mathf.Tan(angleInRadians) - verticalDistance)));
+
+        // 초기 속도 계산
+        float initialSpeedSquared = (gravity * horizontalDistance * horizontalDistance) /
+                                     (2 * (horizontalDistance * Mathf.Tan(angleInRadians) - verticalDistance));
+
+        float initialSpeed = Mathf.Sqrt(initialSpeedSquared) * launchForce; // 배율 적용
 
         // 초기 속도 벡터 계산
-        Vector3 velocity = new Vector3(displacement.x, 0, displacement.z).normalized * initialSpeed;
+        Vector3 horizontalDirection = new Vector3(displacement.x, 0, displacement.z).normalized;
+        Vector3 velocity = horizontalDirection * initialSpeed * Mathf.Cos(angleInRadians);
         velocity.y = initialSpeed * Mathf.Sin(angleInRadians);
 
-        // Rigidbody에 초기 속도 적용
-        rb.velocity = velocity;
+        rb.AddForce(velocity, ForceMode.VelocityChange);
     }
 
-    public void SetSetting(Transform target, float angle = 45f, float gravitySpeed = 9.8f)
+    public void SetSetting(Transform target, float launchForce = 1.5f, float angle = 45f, float gravitySpeed = 9.8f)
     {
         this.target = target;
         this.launchAngle = angle;
         this.gravity = gravitySpeed;
+        this.launchForce = launchForce;
 
         LaunchProjectile();
     }

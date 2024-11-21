@@ -22,6 +22,7 @@ public class Middle_PhaseStart : Middle_PhaseState
 
         _manager.Monster.transform.DOMoveY(30, 1f).OnComplete(() =>
         {
+            _manager.Monster.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
             _manager.Monster.transform.position = new Vector3(_manager._middlePoint[Define.MiddleMonsterPoint.CSPAWNPOINT].position.x + 1.5f, 
                                                               _manager.Monster.transform.position.y, _manager._middlePoint[Define.MiddleMonsterPoint.CSPAWNPOINT].position.z);
             _manager.Monster.transform.DOMoveY(1, 1f);

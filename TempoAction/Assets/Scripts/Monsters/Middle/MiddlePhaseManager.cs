@@ -49,6 +49,7 @@ public class MiddlePhaseManager : MonoBehaviour
     public MiddleMonster Monster2 { get => _monster2; }
     public List<float> TargetHealthList { get => _targetHealthList; }
     public int TargetHealthIndex { get => _targetHealthIndex; set => _targetHealthIndex = value; }
+    public int phase = 1;
 
     private void Awake()
     {

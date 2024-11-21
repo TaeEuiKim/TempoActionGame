@@ -42,6 +42,7 @@ public class MiddleMonster : Monster
     public List<Middle_Skill> SkillStorage { get => _skillStorage; }
     public Vector3 ColliderSize { get => _colliderSize; set => _colliderSize = value; }
     public float IdleDuration { get => _idleDuration; }
+    public int phase = 1;
 
     public Action OnAttackAction;
     public Action OnFinishSkill;

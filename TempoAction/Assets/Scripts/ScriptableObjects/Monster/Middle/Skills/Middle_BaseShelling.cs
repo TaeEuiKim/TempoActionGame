@@ -74,8 +74,8 @@ public class Middle_BaseShelling : Middle_Skill
     {
         GameObject rocket = ObjectPool.Instance.Spawn("LandTraceRocket");
 
-        rocket.GetComponent<BaseShelling>().SetSetting(_monster.Player, launchAngle, gravityForce);
         rocket.transform.position = _monster.transform.position + new Vector3(0, 0.8f);
+        rocket.GetComponent<BaseShelling>().SetSetting(_monster.Player, launchAngle, gravityForce);
     }
 
     private void Finish()
