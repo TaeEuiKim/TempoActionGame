@@ -72,16 +72,6 @@ public class PlayerView : MonoBehaviour
         //}
     }
 
-    public Image[] GetMainIcon()
-    {
-        return _mainSkillIcons;
-    }
-
-    public Image[] GetSubIcon()
-    {
-        return _subSkillIcons;
-    }
-
     public void OnGameoverUI()
     {
         _gameoverUI?.SetActive(true);
