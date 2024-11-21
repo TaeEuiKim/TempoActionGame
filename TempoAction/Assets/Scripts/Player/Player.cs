@@ -104,6 +104,7 @@ public class Player : CharacterBase
     private float steminaTimer = 0;
 
     public static float saveHp = 0;
+    public static float saveSte = 0;
 
     protected override void Awake()
     {
@@ -134,6 +135,8 @@ public class Player : CharacterBase
             UpdateHealth();
         }
 
+        PlayerSt.Stamina = 0;
+
         //플레이어 상태
         _stateStorage.Add(Define.PlayerState.DIE, new DieState(this));
         _stateStorage.Add(Define.PlayerState.STUN, new StunState(this));
@@ -154,9 +157,6 @@ public class Player : CharacterBase
 
         GetComponent<PlayerSkillManager>().AddSkill(skill);
         GetComponent<PlayerSkillManager>().AddSkill(skill2);
-
-        StartCoroutine(RegenStemina());
-        StartCoroutine(CheckSteminaRegen());
     }
 
     protected override void Update()
@@ -249,11 +249,11 @@ public class Player : CharacterBase
         UpdateHealth();
     }
 
-    public bool UseStemina(float value)
+    public void UseStemina(float value)
     {
-        if (PlayerSt.Stamina - value <= 0)
+        if (PlayerSt.Stamina + value > PlayerSt.MaxStamina)
         {
-            return false;
+            return;
         }
 
         isUseStemina = true;
@@ -261,40 +261,6 @@ public class Player : CharacterBase
 
         PlayerSt.Stamina -= value;
         UpdateStemina();
-        return true;
-    }
-
-    private IEnumerator CheckSteminaRegen()
-    {
-        WaitForSeconds seconds = new WaitForSeconds(0.01f);
-
-        while (true)
-        {
-            steminaTimer += 0.01f;
-
-            if (steminaTimer > 1f)
-            {
-                isUseStemina = false;
-            }
-
-            yield return seconds;
-        }
-    }
-
-    private IEnumerator RegenStemina()
-    {
-        WaitForSeconds seconds = new WaitForSeconds(0.01f);
-
-        while (true)
-        {
-            if (PlayerSt.Stamina < PlayerSt.MaxStamina && !isUseStemina)
-            {
-                PlayerSt.Stamina += 0.5f;
-                View.AutoUpdateStemina(PlayerSt.Stamina / PlayerSt.MaxStamina);
-            }
-
-            yield return seconds;
-        }
     }
 
     //넉백 함수

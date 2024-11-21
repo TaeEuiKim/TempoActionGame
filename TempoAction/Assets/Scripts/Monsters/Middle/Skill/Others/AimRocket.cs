@@ -78,7 +78,7 @@ public class AimRocket : MonoBehaviour
         isGrounded = true;
         DestoryMark();
 
-        GameObject effect = ObjectPool.Instance.Spawn("TraceEffect", 1);
+        GameObject effect;
         TestSound.Instance.PlaySound("AimAttack_Boom");
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Boss"))
@@ -87,6 +87,8 @@ public class AimRocket : MonoBehaviour
             {
                 return;
             }
+            
+            effect = ObjectPool.Instance.Spawn("TraceEffect", 1);
 
             effect.transform.position = collision.transform.position - new Vector3(0, 2.5f);
             collision.transform.GetComponent<MiddleMonster>().StartMiddleCut();
@@ -95,6 +97,8 @@ public class AimRocket : MonoBehaviour
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
+            effect = ObjectPool.Instance.Spawn("TraceEffect", 1);
+
             effect.transform.position = collision.transform.position - new Vector3(0, 2.5f);
             if (collision.gameObject.GetComponent<Player>().IsInvincible) return;
 
@@ -103,6 +107,8 @@ public class AimRocket : MonoBehaviour
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
+            effect = ObjectPool.Instance.Spawn("TraceEffect", 1);
+
             Collider[] hitPlayer = Physics.OverlapBox(transform.position, new Vector3(3, 3, 1) / 2, transform.rotation, 1 >> 11 | 1 >> 10);
             foreach (Collider collider in hitPlayer)
             {

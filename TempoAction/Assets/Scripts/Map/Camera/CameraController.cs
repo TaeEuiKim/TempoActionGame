@@ -182,8 +182,8 @@ public class CameraController : Singleton<CameraController>
         CinemachineBasicMultiChannelPerlin ch = _CurCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 
         Player _player = player.GetComponent<Player>();
-
-        if (_player.Ani.GetInteger("CommandCount") == 3 || _player.Ani.GetInteger("CommandCount") == 5)
+        int count = _player.Ani.GetInteger("CommandCount");
+        if (count == 4 || count == 14 || count == 30)
         {
             ch.m_NoiseProfile = noiseSettings[0];
             _player.Ani.SetInteger("CommandCount", 0);

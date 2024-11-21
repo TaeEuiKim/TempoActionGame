@@ -278,6 +278,8 @@ public class PlayerAnimationEvent : MonoBehaviour
             switch (_player.Ani.GetInteger("CommandCount"))
             {
                 case 1:
+                    CameraShaking(0.12f);
+
                     TestSound.Instance.PlaySound("Smash1_Hit");
 
                     hitParticle = ObjectPool.Instance.Spawn("P_SmashAttack_01", 1);
@@ -296,6 +298,8 @@ public class PlayerAnimationEvent : MonoBehaviour
                     }
                     break;
                 case 2:
+                    CameraShaking(0.12f);
+
                     TestSound.Instance.PlaySound("Smash2_Hit");
 
                     hitParticle = ObjectPool.Instance.Spawn("P_MainChar_SmashShoryukenAttack", 1);
@@ -308,6 +312,8 @@ public class PlayerAnimationEvent : MonoBehaviour
                     }
                     break;
                 case 3:
+                    CameraShaking(0.12f);
+
                     bool leftDir = _player.IsLeftDirection();
                     if (commandAttackCount == 0)
                     {
@@ -351,6 +357,7 @@ public class PlayerAnimationEvent : MonoBehaviour
                     break;
                 case 11:
                     TestSound.Instance.PlaySound("Smash1_2_Hit");
+                    CameraShaking(0.12f);
 
                     if (_player.IsLeftDirection())
                     {
@@ -367,6 +374,8 @@ public class PlayerAnimationEvent : MonoBehaviour
 
                     break;
                 case 12:
+                    CameraShaking(0.12f);
+
                     if (_player.IsLeftDirection())
                     {
                         hitParticle = ObjectPool.Instance.Spawn("P_MainChar_SmashShoryukenAttack1-2", 1);
@@ -398,6 +407,7 @@ public class PlayerAnimationEvent : MonoBehaviour
                     break;
                 case 23:
                     hitParticle = ObjectPool.Instance.Spawn("FX_Smash2-3", 1);
+                    CameraShaking(0.12f);
 
                     hitParticle.transform.position = monsterCollider.ClosestPoint(_player.transform.position);
                     break;
@@ -407,7 +417,6 @@ public class PlayerAnimationEvent : MonoBehaviour
                 case 27:
                 case 28:
                 case 29:
-                case 30:
                     hitParticle = ObjectPool.Instance.Spawn("FX_PC_OraoraPunch", 0.5f);
                     CameraShaking(0.12f);
 
@@ -415,15 +424,33 @@ public class PlayerAnimationEvent : MonoBehaviour
                     {
                         hitParticle.transform.position = _player.transform.position + new Vector3(1f, 0.7f, 4f);
                         hitParticle.transform.localScale = new Vector3(1, 1, 1);
-                        hitParticle2 = ObjectPool.Instance.Spawn("orora_dust3", 1);
-                        hitParticle2.transform.position = _player.transform.position + new Vector3(-0.5f, 0.2f);
                     }
                     else
                     {
                         hitParticle.transform.position = _player.transform.position + new Vector3(-0.3f, 0.7f, 4f);
                         hitParticle.transform.localScale = new Vector3(-1, 1, 1);
-                        hitParticle2 = ObjectPool.Instance.Spawn("orora_dust3_2", 1);
-                        hitParticle2.transform.position = _player.transform.position + new Vector3(0.5f, 0.2f);
+                    }
+                    break;
+                case 30:
+                    hitParticle = ObjectPool.Instance.Spawn("energy_hit_oraora", 1);
+                    hitParticle.transform.position = monsterCollider.transform.position + new Vector3(0, 0.5f);
+                    CameraShaking(0.12f);
+
+                    if (_player.IsLeftDirection())
+                    {
+                        hitParticle2 = ObjectPool.Instance.Spawn("P_MainChar_oraora_attack", 1);
+                        hitParticle3 = ObjectPool.Instance.Spawn("chen_burn_flame(ora)", 1);
+
+                        hitParticle2.transform.position = monsterCollider.transform.position + new Vector3(-0.3f, 0.7f, -1);
+                        hitParticle3.transform.position = monsterCollider.transform.position;
+                    }
+                    else
+                    {
+                        hitParticle2 = ObjectPool.Instance.Spawn("P_MainChar_oraora_attack_mirror", 1);
+                        hitParticle3 = ObjectPool.Instance.Spawn("chen_burn_flame(ora)_mirror", 1);
+
+                        hitParticle2.transform.position = monsterCollider.transform.position + new Vector3(0.3f, 0.7f, -1);
+                        hitParticle3.transform.position = monsterCollider.transform.position;
                     }
                     break;
                 case 101:
@@ -580,7 +607,6 @@ public class PlayerAnimationEvent : MonoBehaviour
                 case 27:
                 case 28:
                 case 29:
-                case 30:
                     hitParticle = ObjectPool.Instance.Spawn("FX_PC_OraoraPunch", 0.5f);
 
                     if (_player.IsLeftDirection())
@@ -596,6 +622,27 @@ public class PlayerAnimationEvent : MonoBehaviour
                         hitParticle.transform.localScale = new Vector3(-1, 1, 1);
                         hitParticle2 = ObjectPool.Instance.Spawn("orora_dust3_2", 1);
                         hitParticle2.transform.position = _player.transform.position + new Vector3(0.5f, 0.2f);
+                    }
+                    break;
+                case 30:
+                    hitParticle = ObjectPool.Instance.Spawn("energy_hit_oraora", 1);
+                    hitParticle.transform.position = mapObject.transform.position + new Vector3(0, 0.5f, -1);
+
+                    if (_player.IsLeftDirection())
+                    {
+                        hitParticle2 = ObjectPool.Instance.Spawn("P_MainChar_oraora_attack", 1);
+                        hitParticle3 = ObjectPool.Instance.Spawn("chen_burn_flame(ora)", 1);
+
+                        hitParticle2.transform.position = mapObject.transform.position + new Vector3(-0.3f, 0.7f, -1);
+                        hitParticle3.transform.position = mapObject.transform.position;
+                    }
+                    else
+                    {
+                        hitParticle2 = ObjectPool.Instance.Spawn("P_MainChar_oraora_attack_mirror", 1);
+                        hitParticle3 = ObjectPool.Instance.Spawn("chen_burn_flame(ora)_mirror", 1);
+
+                        hitParticle2.transform.position = mapObject.transform.position + new Vector3(0.3f, 0.7f, -1);
+                        hitParticle3.transform.position = mapObject.transform.position;
                     }
                     break;
                 case 101:
@@ -1200,6 +1247,47 @@ public class PlayerAnimationEvent : MonoBehaviour
                     effect = ObjectPool.Instance.Spawn("P_Punch _Parrying_mirror", 1);
 
                     effect.transform.position = _player.transform.position + new Vector3(0, 0.7f);
+                }
+                break;
+            case "P_Punch_smash_oraora":
+                if (_player.IsLeftDirection())
+                {
+                    effect = ObjectPool.Instance.Spawn(effectName, 1);
+
+                    effect.GetComponent<FlipSlash>().OnFlip(new Vector3(1, 1, 1));
+
+                    effect.transform.position = _player.transform.position + new Vector3(0, 1f);
+                }
+                else
+                {
+                    effect = ObjectPool.Instance.Spawn(effectName, 1);
+                    effect.GetComponent<FlipSlash>().OnFlip(new Vector3(-1, 1, 1));
+
+                    effect.transform.position = _player.transform.position + new Vector3(0, 1f);
+                }
+                break;
+            case "orora_dust3_33":
+                effect = ObjectPool.Instance.Spawn(effectName, 1);
+
+                if (_player.IsLeftDirection())
+                {
+                    effect.transform.position = _player.transform.position;
+                }
+                else
+                {
+                    effect.transform.rotation = new Quaternion(effect.transform.rotation.x, -71.597f, effect.transform.rotation.z, effect.transform.rotation.w);
+                }
+                break;
+            case "oraora_dust (3)_33":
+                effect = ObjectPool.Instance.Spawn(effectName, 1);
+
+                if (_player.IsLeftDirection())
+                {
+                    effect.transform.position = _player.transform.position;
+                }
+                else
+                {
+                    effect.transform.rotation = new Quaternion(effect.transform.rotation.x, -71.597f, effect.transform.rotation.z, effect.transform.rotation.w);
                 }
                 break;
         }
