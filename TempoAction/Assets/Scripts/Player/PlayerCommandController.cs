@@ -167,6 +167,7 @@ public class PlayerCommandController
             // 1단 연계
             case 1:
             case 11:
+            case 21:
                 if (skillid == 2)
                 {
                     TestSound.Instance.PlaySound("Smash2");
@@ -178,10 +179,15 @@ public class PlayerCommandController
                 {
                     return true;
                 }
+                if (skillid == 22)
+                {
+                    return true;
+                }
                 break;
             // 2단 연계
             case 2:
             case 12:
+            case 22:
                 if (skillid == 3)
                 {
                     return true;
@@ -196,14 +202,14 @@ public class PlayerCommandController
                 }
                 break;
             // 뎀프시롤 연계
-            case 21:
-            case 22:
             case 23:
             case 24:
             case 25:
             case 26:
             case 27:
-                if (skillid == 21 || skillid == 22 || skillid == 23 || skillid == 24 || skillid == 25 || skillid == 26 || skillid == 27)
+            case 28:
+            case 29:
+                if (skillid == 24 || skillid == 25 || skillid == 26 || skillid == 27 || skillid == 28 || skillid == 29 || skillid == 30)
                 {
                     return true;
                 }
@@ -214,6 +220,10 @@ public class PlayerCommandController
                 if (skillid == 14 || skillid == 4)
                 {
                     UseSkill(skillid);
+                    return true;
+                }
+                if (skillid == 24)
+                {
                     return true;
                 }
                 break;
