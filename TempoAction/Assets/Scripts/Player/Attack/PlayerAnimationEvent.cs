@@ -314,6 +314,8 @@ public class PlayerAnimationEvent : MonoBehaviour
                 case 3:
                     CameraShaking(0.12f);
 
+                    TestSound.Instance.PlaySound("SmashHit1");
+
                     bool leftDir = _player.IsLeftDirection();
                     if (commandAttackCount == 0)
                     {
@@ -356,7 +358,8 @@ public class PlayerAnimationEvent : MonoBehaviour
                     }
                     break;
                 case 11:
-                    TestSound.Instance.PlaySound("Smash1_2_Hit");
+                    TestSound.Instance.PlaySound("SmashHit1");
+
                     CameraShaking(0.12f);
 
                     if (_player.IsLeftDirection())
@@ -376,6 +379,8 @@ public class PlayerAnimationEvent : MonoBehaviour
                 case 12:
                     CameraShaking(0.12f);
 
+                    TestSound.Instance.PlaySound("SmashHit2");
+
                     if (_player.IsLeftDirection())
                     {
                         hitParticle = ObjectPool.Instance.Spawn("P_MainChar_SmashShoryukenAttack1-2", 1);
@@ -390,8 +395,14 @@ public class PlayerAnimationEvent : MonoBehaviour
                     }
                     break;
                 case 13:
+                    CameraShaking(0.12f);
+
+                    TestSound.Instance.PlaySound("SmashHit1");
                     break;
                 case 22:
+                    CameraShaking(0.12f);
+
+                    TestSound.Instance.PlaySound("SmashHit2");
                     if (_player.IsLeftDirection())
                     {
                         hitParticle = ObjectPool.Instance.Spawn("P_MainChar_ParryingSkillAttack", 1);
@@ -406,6 +417,8 @@ public class PlayerAnimationEvent : MonoBehaviour
                     }
                     break;
                 case 23:
+                    TestSound.Instance.PlaySound("SmashHit2");
+
                     hitParticle = ObjectPool.Instance.Spawn("FX_Smash2-3", 1);
                     CameraShaking(0.12f);
 
@@ -417,6 +430,7 @@ public class PlayerAnimationEvent : MonoBehaviour
                 case 27:
                 case 28:
                 case 29:
+                    TestSound.Instance.PlaySound("SmashHit1");
                     hitParticle = ObjectPool.Instance.Spawn("FX_PC_OraoraPunch", 0.5f);
                     CameraShaking(0.12f);
 
@@ -432,6 +446,8 @@ public class PlayerAnimationEvent : MonoBehaviour
                     }
                     break;
                 case 30:
+                    CameraShaking(0.12f);
+                    TestSound.Instance.PlaySound("Skill3_Final");
                     hitParticle = ObjectPool.Instance.Spawn("energy_hit_oraora", 1);
 
                     if (_player.IsLeftDirection())
@@ -478,6 +494,8 @@ public class PlayerAnimationEvent : MonoBehaviour
             switch (_player.Ani.GetInteger("CommandCount"))
             {
                 case 1:
+                    CameraShaking(0.12f);
+
                     TestSound.Instance.PlaySound("Smash1_Hit");
 
                     hitParticle = ObjectPool.Instance.Spawn("P_SmashAttack_01", 1);
@@ -496,7 +514,9 @@ public class PlayerAnimationEvent : MonoBehaviour
                     }
                     break;
                 case 2:
-                    TestSound.Instance.PlaySound("Smash2_Hit");
+                    CameraShaking(0.12f);
+
+                    TestSound.Instance.PlaySound("SmashHit2");
 
                     hitParticle = ObjectPool.Instance.Spawn("P_MainChar_SmashShoryukenAttack", 1);
 
@@ -508,7 +528,11 @@ public class PlayerAnimationEvent : MonoBehaviour
                     }
                     break;
                 case 3:
+                    CameraShaking(0.12f);
+
                     bool leftDir = _player.IsLeftDirection();
+                    TestSound.Instance.PlaySound("SmashHit1");
+
                     if (commandAttackCount == 0)
                     {
                         hitParticle = ObjectPool.Instance.Spawn("P_PunchAttack2-1", 1);
@@ -550,7 +574,9 @@ public class PlayerAnimationEvent : MonoBehaviour
                     }
                     break;
                 case 11:
-                    TestSound.Instance.PlaySound("Smash1_2_Hit");
+                    CameraShaking(0.12f);
+
+                    TestSound.Instance.PlaySound("SmashHit1");
 
                     if (_player.IsLeftDirection())
                     {
@@ -567,6 +593,10 @@ public class PlayerAnimationEvent : MonoBehaviour
 
                     break;
                 case 12:
+                    CameraShaking(0.12f);
+
+                    TestSound.Instance.PlaySound("SmashHit2");
+
                     if (_player.IsLeftDirection())
                     {
                         hitParticle = ObjectPool.Instance.Spawn("P_MainChar_SmashShoryukenAttack1-2", 1);
@@ -581,8 +611,15 @@ public class PlayerAnimationEvent : MonoBehaviour
                     }
                     break;
                 case 13:
+                    CameraShaking(0.12f);
+
+                    TestSound.Instance.PlaySound("SmashHit1");
                     break;
                 case 22:
+                    CameraShaking(0.12f);
+
+                    TestSound.Instance.PlaySound("SmashHit2");
+
                     if (_player.IsLeftDirection())
                     {
                         hitParticle = ObjectPool.Instance.Spawn("P_MainChar_ParryingSkillAttack", 1);
@@ -597,6 +634,10 @@ public class PlayerAnimationEvent : MonoBehaviour
                     }
                     break;
                 case 23:
+                    CameraShaking(0.12f);
+
+                    TestSound.Instance.PlaySound("SmashHit2");
+
                     hitParticle = ObjectPool.Instance.Spawn("FX_Smash2-3", 1);
 
                     hitParticle.transform.position = mapObject.ClosestPoint(_player.transform.position);
@@ -607,6 +648,8 @@ public class PlayerAnimationEvent : MonoBehaviour
                 case 27:
                 case 28:
                 case 29:
+                    CameraShaking(0.12f);
+                    TestSound.Instance.PlaySound("SmashHit1");
                     hitParticle = ObjectPool.Instance.Spawn("FX_PC_OraoraPunch", 0.5f);
 
                     if (_player.IsLeftDirection())
@@ -625,7 +668,9 @@ public class PlayerAnimationEvent : MonoBehaviour
                     }
                     break;
                 case 30:
+                    CameraShaking(0.12f);
                     hitParticle = ObjectPool.Instance.Spawn("energy_hit_oraora", 1);
+                    TestSound.Instance.PlaySound("SmashHit2");
 
                     if (_player.IsLeftDirection())
                     {
@@ -691,17 +736,33 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         if (count != 0)
         {
+            _player.View.UpdateUltimateGauge(_player._skillCommand.GetUltimateGauge(count) / _player.PlayerSt._maxUltimateGauge);
             commandDamage = _player._skillCommand.GetDamage(count);
+        }
+        else
+        {
+            _player.View.UpdateUltimateGauge(_player.fillAttackUltimateGauge / _player.PlayerSt._maxUltimateGauge);
         }
 
         // 메인 템포일 때 데미지 처리
         PlayerSfx(Define.PlayerSfxType.MAIN);
+
         monster.TakeDamage(_player.GetTotalDamage() + commandDamage);
     }
 
     private void HitObject(DestoryObj obj)
     {
-        _player.View.UpdateUltimateGauge(0.05f);
+        int count = _player.Ani.GetInteger("CommandCount");
+
+        if (count != 0)
+        {
+            _player.View.UpdateUltimateGauge(_player._skillCommand.GetUltimateGauge(count) / _player.PlayerSt._maxUltimateGauge);
+        }
+        else
+        {
+            _player.View.UpdateUltimateGauge(_player.fillAttackUltimateGauge / _player.PlayerSt._maxUltimateGauge);
+        }
+
         obj.TakeDamage(_player.GetTotalDamage());
     }
 

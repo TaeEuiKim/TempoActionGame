@@ -50,6 +50,9 @@ public class Player : CharacterBase
     [SerializeField] public GameObject[] MoveEffect;
     [SerializeField] public Material RimShader;
 
+    [Header("공격으로 채우는 궁극기 게이지 량")]
+    [SerializeField] public float fillAttackUltimateGauge = 0.02f;
+
     [HideInInspector] public bool isCounter = false;
 
     [Space]
@@ -133,8 +136,6 @@ public class Player : CharacterBase
             PlayerSt.Hp = saveHp;
             UpdateHealth();
         }
-
-        PlayerSt.Stamina = 0;
 
         //플레이어 상태
         _stateStorage.Add(Define.PlayerState.DIE, new DieState(this));
@@ -248,20 +249,6 @@ public class Player : CharacterBase
         UpdateHealth();
     }
 
-    public void UseStemina(float value)
-    {
-        if (PlayerSt.Stamina + value > PlayerSt.MaxStamina)
-        {
-            return;
-        }
-
-        isUseStemina = true;
-        steminaTimer = 0f;
-
-        PlayerSt.Stamina -= value;
-        UpdateStemina();
-    }
-
     //넉백 함수
     public void Knockback(Vector3 point, float t = 0)
     {
@@ -318,11 +305,6 @@ public class Player : CharacterBase
     public void UpdateHealth()
     {
         _view.UpdateHpBar(_stat.Hp / _stat.MaxHp);
-    }
-
-    public void UpdateStemina()
-    {
-        _view.UpdateSteminaBar(PlayerSt.Stamina / PlayerSt.MaxStamina);
     }
 
     #endregion

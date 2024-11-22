@@ -20,7 +20,7 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 1301000078000000
     damage: 12.5
-    useStemina: 0
+    fillUltimateGauge: 1
   - name: "\uB354\uBE14 \uC2A4\uD2B8\uB77C\uC774\uD06C 2\uD0C0"
     SkillId: 2
     PossibleSkillId: 01000000
@@ -28,7 +28,7 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 78000000
     damage: 15
-    useStemina: 0
+    fillUltimateGauge: 1
   - name: "\uACE0\uC800\uC2A4 \uCF64\uBE44\uB124\uC774\uC158"
     SkillId: 3
     PossibleSkillId: 020000000c00000016000000
@@ -36,7 +36,7 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 1301000078000000
     damage: 0
-    useStemina: 0
+    fillUltimateGauge: 1
   - name: "\uBC84\uB2DD \uB7EC\uC26C"
     SkillId: 4
     PossibleSkillId: 030000000d00000016000000
@@ -44,7 +44,7 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 1301000012010000140100001301000078000000
     damage: 20
-    useStemina: 5
+    fillUltimateGauge: 1
   - name: "\uD558\uB2E8 \uACF5\uACA9"
     SkillId: 11
     PossibleSkillId: 00000000
@@ -52,7 +52,7 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 1101000078000000
     damage: 0
-    useStemina: 0
+    fillUltimateGauge: 1
   - name: "\uC5B4\uD37C\uCEF7"
     SkillId: 12
     PossibleSkillId: 0b000000
@@ -60,7 +60,7 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 78000000
     damage: 0
-    useStemina: 0
+    fillUltimateGauge: 1
   - name: "\uC544\uD1A0\uBBF9 \uCD78\uD37C"
     SkillId: 13
     PossibleSkillId: 020000000c00000016000000
@@ -68,7 +68,7 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 1101000078000000
     damage: 5
-    useStemina: 0
+    fillUltimateGauge: 1
   - name: "\uBC84\uB2DD\uD018\uC774\uD06C"
     SkillId: 14
     PossibleSkillId: 0d0000000300000017000000
@@ -76,7 +76,7 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 130100001201000014010000110100001301000078000000
     damage: 10
-    useStemina: 0
+    fillUltimateGauge: 1
   - name: "\uCE74\uC6B4\uD130[\uAC00\uB4DC]"
     SkillId: 21
     PossibleSkillId: 00000000
@@ -84,7 +84,7 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 1201000078000000
     damage: 0
-    useStemina: 0
+    fillUltimateGauge: 0
   - name: "\uCE74\uC6B4\uD130[\uACF5\uACA9]"
     SkillId: 22
     PossibleSkillId: 15000000
@@ -92,7 +92,7 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 13010000120100001401000078000000
     damage: 10
-    useStemina: 0
+    fillUltimateGauge: 0
   - name: "\uC2A4\uC6E8\uC774 \uD380\uCE58"
     SkillId: 23
     PossibleSkillId: 16000000020000000c000000
@@ -100,7 +100,7 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 1201000078000000
     damage: 10
-    useStemina: 0
+    fillUltimateGauge: 0
   - name: "\uC624\uB77C\uC624\uB77C"
     SkillId: 24
     PossibleSkillId: 170000000d00000003000000
@@ -108,7 +108,7 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 13010000140100001301000078000000
     damage: 10
-    useStemina: 0
+    fillUltimateGauge: 1
   - name: "\uC624\uB77C\uC624\uB77C2\uD0C0"
     SkillId: 25
     PossibleSkillId: 18000000
@@ -116,7 +116,7 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 78000000
     damage: 10
-    useStemina: 0
+    fillUltimateGauge: 0
   - name: "\uC624\uB77C\uC624\uB77C3\uD0C0"
     SkillId: 26
     PossibleSkillId: 19000000
@@ -124,7 +124,7 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 78000000
     damage: 10
-    useStemina: 0
+    fillUltimateGauge: 0
   - name: "\uC624\uB77C\uC624\uB77C4\uD0C0"
     SkillId: 27
     PossibleSkillId: 1a000000
@@ -132,7 +132,7 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 78000000
     damage: 10
-    useStemina: 0
+    fillUltimateGauge: 0
   - name: "\uC624\uB77C\uC624\uB77C5\uD0C0"
     SkillId: 28
     PossibleSkillId: 1b000000
@@ -140,7 +140,7 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 78000000
     damage: 10
-    useStemina: 0
+    fillUltimateGauge: 0
   - name: "\uC624\uB77C\uC624\uB77C6\uD0C0"
     SkillId: 29
     PossibleSkillId: 1c000000
@@ -148,7 +148,7 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 78000000
     damage: 10
-    useStemina: 0
+    fillUltimateGauge: 0
   - name: "\uC624\uB77C\uC624\uB77C\uB9C9\uD0C0"
     SkillId: 30
     PossibleSkillId: 1d000000
@@ -156,4 +156,4 @@ MonoBehaviour:
     IsFront: 0
     KeyCodes: 78000000
     damage: 10
-    useStemina: 0
+    fillUltimateGauge: 0

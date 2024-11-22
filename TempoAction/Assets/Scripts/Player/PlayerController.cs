@@ -274,6 +274,12 @@ public class PlayerController
         if (_isBackDash)
         {
             dir = -1;
+            TestSound.Instance.PlaySound("Backdash");
+        }
+        else
+        {
+            dir = 1;
+            TestSound.Instance.PlaySound("Frontdash");
         }
         _player.Ani.SetBool("IsBackDash", _isBackDash);
 
@@ -326,6 +332,8 @@ public class PlayerController
             GameObject disappearEffect = ObjectPool.Instance.Spawn("do_disappear", 1f);
             disappearEffect.transform.position = _player.SkillObject.transform.position;
             _player.SkillObject.SetActive(false);
+
+            TestSound.Instance.PlaySound("UltimateOn");
             TestSound.Instance.PlaySound("Skill1");
 
             _player.RimShader.SetFloat("_Float", 1f);
@@ -333,7 +341,9 @@ public class PlayerController
             {
                 _player.MoveEffect[i].SetActive(true);
             }
+
             _player.CharacterModel.GetComponent<CharacterTrail>().StartTrail(10f);
+            _player.View.UiEffect.SetActive(false);
             _player.View.UseUltimate();
         }
         else if (PlayerInputManager.Instance.ultimate && isUltimate)

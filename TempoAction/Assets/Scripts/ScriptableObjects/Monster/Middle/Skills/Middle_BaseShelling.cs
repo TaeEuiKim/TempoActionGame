@@ -69,6 +69,9 @@ public class Middle_BaseShelling : Middle_Skill
 
     private void Finish()
     {
+        IsCompleted = false;
+        _coolTime = 0;
+
         _monster.FinishSkill();
     }
 }
