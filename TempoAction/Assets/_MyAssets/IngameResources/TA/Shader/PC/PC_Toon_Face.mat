@@ -40,7 +40,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 242b28586c623a54dbe4c0cebf682cc9, type: 3}
+        m_Texture: {fileID: 2800000, guid: b797813ca7015d648930907aae76c538, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Emission_Map:
@@ -80,6 +80,7 @@ Material:
     - _DYNAMICLIGHTMAP: 0
     - _DstBlend: 0
     - _Emission_Power: 1
+    - _Hue: 0
     - _LIGHTMAP: 0
     - _LIGHTMAP_SHADOW_MIXING: 0
     - _Point_Bands: 3

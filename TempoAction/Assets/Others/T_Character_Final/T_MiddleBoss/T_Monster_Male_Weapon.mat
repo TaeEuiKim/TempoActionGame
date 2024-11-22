@@ -26,7 +26,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 8c283efaee9858a41a4a0eadde386c0d, type: 3}
+        m_Texture: {fileID: 2800000, guid: ca84b78402c8e1d4a98076a30d77cd1b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -87,8 +87,9 @@ Material:
     - _CastShadows: 1
     - _Cull: 2
     - _DstBlend: 0
-    - _Emission_Power: 0
+    - _Emission_Power: 0.4
     - _Fresnel_Power: 10
+    - _Hue: 23
     - _Lambert_Power: 0.42
     - _Normal_Strength: 1
     - _Point_Bands: 1
@@ -107,7 +108,7 @@ Material:
     - _ZWriteControl: 0
     m_Colors:
     - _DiffuseColor: {r: 1, g: 1, b: 1, a: 0}
-    - _Emission_Color: {r: 2, g: 1.1905105, b: 0, a: 0}
+    - _Emission_Color: {r: 0, g: 0.27002323, b: 1.4980392, a: 0}
     - _HDR_Color: {r: 1, g: 1, b: 1, a: 0}
     - _Specluar_Color: {r: 1, g: 1, b: 1, a: 0}
     - _Specular: {r: 0, g: 0, b: 0, a: 0}

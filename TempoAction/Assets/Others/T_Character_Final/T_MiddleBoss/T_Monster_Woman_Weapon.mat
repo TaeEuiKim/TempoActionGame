@@ -34,7 +34,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Emission_Map:
-        m_Texture: {fileID: 2800000, guid: 562cacea718c912479b04e71dde6f395, type: 3}
+        m_Texture: {fileID: 2800000, guid: c3fdd1a71ceb42647afc0c7e5f9de570, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
@@ -89,6 +89,7 @@ Material:
     - _DstBlend: 0
     - _Emission_Power: 2
     - _Fresnel_Power: 10
+    - _Hue: 324
     - _Lambert_Power: 0.42
     - _Normal_Strength: 1
     - _Point_Bands: 3
