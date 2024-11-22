@@ -47,17 +47,21 @@ public class Middle_PhaseStart : Middle_PhaseState
 
     private IEnumerator StartGCMove()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.8f);
+        _manager.Monster.Rb.useGravity = false;
+        TestSound.Instance.PlaySound("JumpBoss");
 
-        _manager.Monster.transform.DOMoveY(30, 2.3f).OnComplete(() =>
+        _manager.Monster.transform.DOMoveY(30, 0.8f).OnComplete(() =>
         {
             _manager.Monster.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
             _manager.Monster.transform.position = new Vector3(_manager._middlePoint[Define.MiddleMonsterPoint.CSPAWNPOINT].position.x + 1.5f,
                                                               _manager.Monster.transform.position.y, _manager._middlePoint[Define.MiddleMonsterPoint.RIGHTSIDE].position.z);
-            _manager.Monster.transform.DOMoveY(0.8f, 0.7f);
         });
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.4f);
+
+        _manager.Monster.Rb.useGravity = true;
+        _manager.Monster.transform.DOMoveY(0.8f, 0.7f);
 
         _manager.Monster.Ani.SetInteger("PhaseStartCount", 2);
     }

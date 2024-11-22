@@ -114,7 +114,7 @@ public class Middle_Longjump : Middle_Skill
 
             GameObject hitParticle2 = ObjectPool.Instance.Spawn("FX_ChungLandingPoint", 1);
 
-            hitParticle2.transform.position = new Vector3(attackPos, 1.3f, _monster.transform.position.z);
+            hitParticle2.transform.position = new Vector3(attackPos + 1.4f * -_monster.Direction, 1.3f, _monster.transform.position.z);
         }
     }
 
@@ -155,10 +155,11 @@ public class Middle_Longjump : Middle_Skill
         isFlying = false;
 
         GameObject hitParticle = ObjectPool.Instance.Spawn("FX_ChungLanding@P", 1);
+
         CameraController.Instance.SceneShaking();
         TestSound.Instance.PlaySound("Longjump_Kang");
 
-        hitParticle.transform.position = new Vector3(attackPos, 1.2f, _monster.transform.position.z);
+        hitParticle.transform.position = new Vector3(attackPos + 1.4f * -_monster.Direction, 1.2f, _monster.transform.position.z);
 
         Collider[] hitPlayer = Physics.OverlapBox(hitPos, _hitScale / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 

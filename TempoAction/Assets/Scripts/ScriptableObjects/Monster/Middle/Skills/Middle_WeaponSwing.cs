@@ -74,6 +74,8 @@ public class Middle_WeaponSwing : Middle_Skill
 
     private void Attack()
     {
+        TestSound.Instance.PlaySound("Swing");
+
         GameObject effect = ObjectPool.Instance.Spawn("P_GCHomerunSlash", 1);
 
         effect.transform.position = _monster.transform.position + new Vector3(0, 0.5f);
@@ -85,6 +87,7 @@ public class Middle_WeaponSwing : Middle_Skill
             var _player = player.GetComponent<Player>();
             if (_player.IsInvincible) return;
 
+            TestSound.Instance.PlaySound("SwingHit");
             _player.TakeDamage(Info.damage);
         }
     }

@@ -88,6 +88,8 @@ public class Middle_SideStep : Middle_Skill
     {
         _monster.transform.DOKill();
 
+        TestSound.Instance.PlaySound("Step");
+
         if (_monster.IsLeftDirection())
         {
             _monster.Direction = -_monster.Direction;
