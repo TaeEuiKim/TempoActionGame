@@ -7,7 +7,6 @@ using UnityEngine;
 public class Middle_Longjump : Middle_Skill
 {
     private float _coolTime = 0f;
-    private bool isHit = false;
     private bool isFlying = false;
     private float attackPos;
 
@@ -28,7 +27,6 @@ public class Middle_Longjump : Middle_Skill
         base.Init(monster);
 
         _coolTime = 0f;
-        isHit = false;
         isFlying = false;
     }
 
@@ -90,7 +88,6 @@ public class Middle_Longjump : Middle_Skill
         _monster.HitPoint.localPosition = originPoint;
         _coolTime = 0;
 
-        isHit = false;
         IsCompleted = false;
     }
 
@@ -113,7 +110,7 @@ public class Middle_Longjump : Middle_Skill
         else
         {
             attackPos = _monster.Player.transform.position.x;
-            _monster.CharacterModel.localScale = new Vector3(_monster.transform.position.x - _monster.Player.transform.position.x > 0 ? 1 : -1, 1, 1);
+            _monster.CharacterModel.localScale = new Vector3(_monster.transform.position.x - _monster.Player.transform.position.x > 0 ? 0.7f : -0.7f, 1, 1);
 
             GameObject hitParticle2 = ObjectPool.Instance.Spawn("FX_ChungLandingPoint", 1);
 

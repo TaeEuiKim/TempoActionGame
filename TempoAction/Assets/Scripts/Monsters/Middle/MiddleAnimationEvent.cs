@@ -1,4 +1,5 @@
 using DG.Tweening;
+using FMOD;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,8 @@ public class MiddleAnimationEvent : MonoBehaviour
 
     [Header("∞Ê√§ √—±∏")]
     [SerializeField] private Transform gun;
+    [Header("∞Ê√§ ø¿∏•∆»")]
+    [SerializeField] private Transform rightHand;
 
     private void Attack()
     {
@@ -49,17 +52,46 @@ public class MiddleAnimationEvent : MonoBehaviour
 
     private void SetGyeongChaeEffect(int count)
     {
-        if (count == 0)
+        switch (count)
         {
-            GameObject explosion = ObjectPool.Instance.Spawn("fung_gyung", 1);
+            case 1:
+                GameObject explosion = ObjectPool.Instance.Spawn("fung_gyung", 1);
 
-            explosion.transform.position = gun.transform.position;
-        }
-        else if (count == 1)
-        {
-            GameObject smoke = ObjectPool.Instance.Spawn("gyung_smoke", 1);
+                explosion.transform.position = gun.transform.position;
+                break;
 
-            smoke.transform.position = gun.transform.position;
+            case 2:
+                GameObject smoke = ObjectPool.Instance.Spawn("gyung_smoke", 1);
+
+                smoke.transform.position = gun.transform.position;
+                break;
+            case 3:
+                GameObject trail = ObjectPool.Instance.Spawn("P_GC_InTrail", 1.2f, rightHand);
+                break;
+            case 4:
+                GameObject heart = ObjectPool.Instance.Spawn("P_GC_InHeart", 1f);
+
+                heart.transform.position = transform.position;
+                break;
+            case 5:
+                GameObject outParticle = ObjectPool.Instance.Spawn("P_GC_OutParticle", 1f);
+                GameObject outLine = ObjectPool.Instance.Spawn("P_GC_OutLine", 1f);
+
+                if (_monster.IsLeftDirection())
+                {
+                    outParticle.transform.position = _monster.transform.position + new Vector3(-1.3f, 0.5f);
+                    outLine.GetComponent<FlipSlash>().OnFlip(new Vector3(1, 1, 1));
+                    outLine.transform.position = _monster.transform.position + new Vector3(-1.1f, 0.5f);
+                }
+                else
+                {
+                    outParticle.transform.position = _monster.transform.position + new Vector3(1.3f, 0.5f);
+                    outLine.GetComponent<FlipSlash>().OnFlip(new Vector3(-1, 1, 1));
+                    outLine.transform.position = _monster.transform.position + new Vector3(1.1f, 0.5f);
+                }
+                break;
+            default:
+                break;
         }
     }
 

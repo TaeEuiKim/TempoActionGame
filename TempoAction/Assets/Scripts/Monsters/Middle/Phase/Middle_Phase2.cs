@@ -29,7 +29,7 @@ public class Middle_Phase2 : Middle_PhaseState
         _manager.Monster.Stay();
         _manager.Monster2.Stay();
 
-        if (_manager.Monster2.MonsterSt.Hp <= 0)
+        if (_manager.GetHp() <= 0)
         {
             _manager.ChangeStageState(Define.MiddlePhaseState.FINISH);
         }

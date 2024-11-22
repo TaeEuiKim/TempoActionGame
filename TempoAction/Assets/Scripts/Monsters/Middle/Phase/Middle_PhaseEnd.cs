@@ -11,6 +11,7 @@ public class Middle_PhaseEnd : Middle_PhaseState
 
     public override void Enter()
     {
+        _manager.Monster.Ani.SetBool("Die", true);
         _manager.Monster2.Ani.SetBool("Death", true);
 
         TestSound.Instance.StopBGMSound("MiddleBGM");
@@ -63,5 +64,15 @@ public class Middle_PhaseEnd : Middle_PhaseState
 
             yield return new WaitForSeconds(1f);
         }
+
+        yield return new WaitForSeconds(2f);
+
+        _manager.endSceneUI.SetActive(false);
+
+        _manager.credit.SetActive(true);
+
+        yield return new WaitForSeconds(30f);
+
+        LoadManager.LoadScene("MainScene");
     }
 }

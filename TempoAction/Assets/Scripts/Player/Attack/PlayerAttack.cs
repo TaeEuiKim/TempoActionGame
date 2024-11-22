@@ -74,7 +74,7 @@ public class PlayerAttack
         //    }
         //}
 
-        if (_currentAttackState != Define.AttackState.ATTACK)
+        if (_currentAttackState != Define.AttackState.ATTACK && _player.Ani.GetInteger("CommandCount") == 0)
         { 
             // 공격 키 입력
             if (PlayerInputManager.Instance.attack)
