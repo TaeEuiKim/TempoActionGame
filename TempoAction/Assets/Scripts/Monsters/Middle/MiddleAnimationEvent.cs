@@ -90,6 +90,11 @@ public class MiddleAnimationEvent : MonoBehaviour
                     outLine.transform.position = _monster.transform.position + new Vector3(1.1f, 0.5f);
                 }
                 break;
+            case 6:
+                GameObject particle = ObjectPool.Instance.Spawn("FX_ChungLandingSlash", 1);
+
+                particle.transform.position = _monster.transform.position;
+                break;
             default:
                 break;
         }

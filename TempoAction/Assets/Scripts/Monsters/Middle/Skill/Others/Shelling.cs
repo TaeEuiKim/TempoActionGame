@@ -22,7 +22,6 @@ public class Shelling : MonoBehaviour
     {
         timer = 0f;
         rb.velocity = Vector3.zero;
-        TestSound.Instance.PlaySound("Shelling_Droping");
     }
 
     private void OnCollisionEnter(Collision collision)

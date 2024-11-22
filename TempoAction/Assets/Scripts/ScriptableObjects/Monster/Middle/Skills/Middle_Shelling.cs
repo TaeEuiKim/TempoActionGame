@@ -65,6 +65,8 @@ public class Middle_Shelling : Middle_Skill
     // 로켓 스폰 위치 Y : 15
     private void SpawnRocket()
     {
+        TestSound.Instance.PlaySound("Shelling_Droping");
+
         float _y = 23;
         Shelling rocket = ObjectPool.Instance.Spawn("Rocket").GetComponent<Shelling>();
         rocket.transform.position = new Vector3(_monster.Player.position.x, _y, _monster.Player.position.z);

@@ -317,6 +317,26 @@ public class TestSound : Singleton<TestSound>
                 sources[74].clip = soundSources[11].audioClips[9];
                 sources[74].Play();
                 break;
+            case "Swing":
+                sources[75].clip = soundSources[11].audioClips[10];
+                sources[75].Play();
+                break;
+            case "Step":
+                sources[76].clip = soundSources[11].audioClips[11];
+                sources[76].Play();
+                break;
+            case "SwingHit":
+                sources[77].clip = soundSources[11].audioClips[12];
+                sources[77].Play();
+                break;
+            case "JumpBoss":
+                sources[78].clip = soundSources[11].audioClips[13];
+                sources[78].Play();
+                break;
+            case "Launch":
+                sources[79].clip = soundSources[11].audioClips[14];
+                sources[79].Play();
+                break;
             default:
                 break;
         }

@@ -19,6 +19,8 @@ public class BaseShelling : MonoBehaviour
 
     private void LaunchProjectile()
     {
+        TestSound.Instance.PlaySound("launch");
+
         Vector3 startPosition = transform.position;
         Vector3 targetPosition = target.position;
 
