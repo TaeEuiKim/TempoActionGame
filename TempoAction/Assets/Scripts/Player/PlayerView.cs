@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class PlayerView : MonoBehaviour
 {
+    [Header("UI ÀÌÆåÆ®")]
+    [SerializeField] public GameObject UiEffect;
+
     [SerializeField] private Image _hpBarImage;
     [SerializeField] private Image _hpIllusionBarImage;
 
@@ -77,7 +80,7 @@ public class PlayerView : MonoBehaviour
         _gameoverUI?.SetActive(true);
     }
 
-    public void MoveUltimateUI(GameObject obj, float value)
+    public void MoveUltimateUI(float value)
     {
         //obj.transform.DOMove(_ultimateBarImage.transform.position, 1f);
         UpdateUltimateGauge(value);
@@ -94,33 +97,26 @@ public class PlayerView : MonoBehaviour
     {
         float time = 0.1f;
         WaitForSeconds seconds = new WaitForSeconds(time);
-        float fillAmount = _ultimateIllusionBarImage.fillAmount + value;
+        float fillAmount = _steminaIllusionBarImage.fillAmount + value;
         if (fillAmount > 1)
         {
             fillAmount = 1;
         }
 
-        while (_ultimateIllusionBarImage.fillAmount < fillAmount)
+        while (_steminaBarImage.fillAmount < fillAmount)
         {
-            _ultimateIllusionBarImage.fillAmount += time;
+            _steminaBarImage.fillAmount += time;
 
             yield return time;
         }
 
-        _ultimateIllusionBarImage.fillAmount = fillAmount;
+        _steminaBarImage.fillAmount = fillAmount;
+        _steminaIllusionBarImage.fillAmount = fillAmount;
 
-        while (_ultimateBarImage.fillAmount < fillAmount)
-        {
-            _ultimateBarImage.fillAmount += time;
-
-            yield return time;
-        }
-
-        _ultimateBarImage.fillAmount = fillAmount;
-
-        if (_ultimateBarImage.fillAmount >= 1)
+        if (_steminaBarImage.fillAmount >= 1)
         {
             SetVImage(true);
+            UiEffect.SetActive(true);
         }
 
         yield return null;
@@ -136,28 +132,28 @@ public class PlayerView : MonoBehaviour
         float time = 0.1f;
         WaitForSeconds seconds = new WaitForSeconds(time);
 
-        while (_ultimateBarImage.fillAmount > 0)
+        while (_steminaBarImage.fillAmount > 0)
         {
-            _ultimateBarImage.fillAmount -= time;
+            _steminaBarImage.fillAmount -= time;
 
             yield return time;
         }
 
-        _ultimateBarImage.fillAmount = 0;
+        _steminaBarImage.fillAmount = 0;
 
-        while (_ultimateIllusionBarImage.fillAmount > 0)
+        while (_steminaIllusionBarImage.fillAmount > 0)
         {
-            _ultimateIllusionBarImage.fillAmount -= time;
+            _steminaIllusionBarImage.fillAmount -= time;
 
             yield return time;
         }
 
-        _ultimateIllusionBarImage.fillAmount = 0;
+        _steminaIllusionBarImage.fillAmount = 0;
     }
 
     public float GetUltimateGauge()
     {
-        return _ultimateBarImage.fillAmount;
+        return _steminaBarImage.fillAmount;
     }
 
     public void UpdateHpBar(float value)

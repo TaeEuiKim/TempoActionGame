@@ -41,7 +41,7 @@ public class AttackState : PlayerAttackState
         else
         {
             commandTimer += Time.deltaTime;
-            if (commandTimer > 2f)
+            if (commandTimer > 1.7f)
             {
                 if (_player.Ani.GetBool("IsAttack"))
                 {

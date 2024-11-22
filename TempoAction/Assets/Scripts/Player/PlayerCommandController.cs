@@ -77,6 +77,7 @@ public class PlayerCommandController
         {
             if (isCommand = CheckAttackCommand(PlayerInputManager.Instance.GetCommandKey(), skillid, isBackDash))
             {
+                TestSound.Instance.PlaySound("SmashSwing");
                 break;
             }
 
@@ -161,6 +162,7 @@ public class PlayerCommandController
                 }
                 if (skillid == 21)
                 {
+                    TestSound.Instance.PlaySound("ParryingReady");
                     return true;
                 }
                 break;

@@ -62,8 +62,7 @@ public class Normal_Death : Normal_State
     {
         isSpawn = true;
 
-        GameObject ultimateEffect = ObjectPool.Instance.Spawn("energy_ui_ball");
-        _monster.Player.GetComponent<Player>().View.MoveUltimateUI(ultimateEffect, _monster.ultimateValue / 100);
+        _monster.Player.GetComponent<Player>().View.MoveUltimateUI(_monster.ultimateValue / _monster.Player.GetComponent<Player>().PlayerSt._maxUltimateGauge);
 
         if (_monster.monsterType == Define.NormalMonsterType.MON3)
         {

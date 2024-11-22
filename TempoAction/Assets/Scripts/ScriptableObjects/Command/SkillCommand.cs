@@ -14,9 +14,9 @@ public class SkillCommand : ScriptableObject
         return commandDatas.FirstOrDefault(data => data.SkillId == skillCount)?.damage ?? 0;
     }
 
-    public float GetStemina(int skillCount)
+    public float GetUltimateGauge(int skillCount)
     {
-        return commandDatas.FirstOrDefault(data => data.SkillId == skillCount)?.useStemina ?? 0;
+        return commandDatas.FirstOrDefault(data => data.SkillId == skillCount)?.fillUltimateGauge ?? 0;
     }
 }
 
@@ -37,6 +37,6 @@ public class CommandData
     public KeyCode[] KeyCodes;
     [Header("데미지")]
     public float damage;
-    [Header("스테미너 소모량")]
-    public float useStemina;
+    [Header("궁극기 게이지 채우는 량")]
+    public float fillUltimateGauge;
 }

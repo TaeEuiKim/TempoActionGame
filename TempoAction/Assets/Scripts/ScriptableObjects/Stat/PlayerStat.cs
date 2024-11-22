@@ -19,12 +19,8 @@ public class PlayerStat : Stat
     [SerializeField] private float _stunTime; // 스턴 상태 시간
 
     [Header("궁극기 관련")]
-    [SerializeField] private float _maxUltimateGauge;
+    [SerializeField] public float _maxUltimateGauge;
     private float _curUltimateGauge;
-
-    [Header("스테미너")]
-    [SerializeField] private float _maxStamina;
-    private float _stamina;
 
     [Header("피격시간")]
     [SerializeField] public float hitTime = 1;
@@ -61,27 +57,6 @@ public class PlayerStat : Stat
     public float DashDelay { get => _dashDelay; }
     public float DashDistance { get => _dashDistance; }
     public float DashDuration { get => _dashDuration; }
-    public float MaxStamina { get => _maxStamina; }
-    public float Stamina
-    {
-        get
-        {
-            return _stamina;
-        }
-        set
-        {
-            _stamina = value;
-
-            if (_stamina >= _maxStamina)
-            {
-                _stamina = _maxStamina;
-            }
-            else if (_stamina < 0)
-            {
-                _stamina = 0;
-            }
-        }
-    }
     public float StunDelay { get => _stunDelay; }// 스턴 상태 시간
     public float StunTime { get => _stunTime; }// 스턴 상태 시간
     public float CurUltimateGauge { get => _curUltimateGauge; set => _curUltimateGauge = value; }

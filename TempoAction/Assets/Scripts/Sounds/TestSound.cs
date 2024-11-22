@@ -337,6 +337,54 @@ public class TestSound : Singleton<TestSound>
                 sources[79].clip = soundSources[11].audioClips[14];
                 sources[79].Play();
                 break;
+            case "OniFire":
+                sources[80].clip = soundSources[12].audioClips[0];
+                sources[80].Play();
+                break;
+            case "SmashHit1":
+                sources[81].clip = soundSources[12].audioClips[1];
+                sources[81].Play();
+                break;
+            case "SmashHit2":
+                sources[82].clip = soundSources[12].audioClips[2];
+                sources[82].Play();
+                break;
+            case "SmashSwing":
+                sources[83].clip = soundSources[12].audioClips[3];
+                sources[83].Play();
+                break;
+            case "Backdash":
+                sources[84].clip = soundSources[12].audioClips[4];
+                sources[84].Play();
+                break;
+            case "Frontdash":
+                sources[85].clip = soundSources[12].audioClips[5];
+                sources[85].Play();
+                break;
+            case "RushHit":
+                sources[86].clip = soundSources[12].audioClips[6];
+                sources[86].Play();
+                break;
+            case "RushHit2":
+                sources[87].clip = soundSources[12].audioClips[7];
+                sources[87].Play();
+                break;
+            case "Posing":
+                sources[88].clip = soundSources[12].audioClips[8];
+                sources[88].Play();
+                break;
+            case "Skill3_Final":
+                sources[89].clip = soundSources[13].audioClips[0];
+                sources[89].Play();
+                break;
+            case "ParryingReady":
+                sources[90].clip = soundSources[13].audioClips[1];
+                sources[90].Play();
+                break;
+            case "UltimateOn":
+                sources[91].clip = soundSources[13].audioClips[2];
+                sources[91].Play();
+                break;
             default:
                 break;
         }
