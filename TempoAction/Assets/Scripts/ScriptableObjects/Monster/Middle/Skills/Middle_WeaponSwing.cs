@@ -74,6 +74,10 @@ public class Middle_WeaponSwing : Middle_Skill
 
     private void Attack()
     {
+        GameObject effect = ObjectPool.Instance.Spawn("P_GCHomerunSlash", 1);
+
+        effect.transform.position = _monster.transform.position + new Vector3(0, 0.5f);
+
         Collider[] hitPlayer = Physics.OverlapBox(_monster.HitPoint.position, _monster.ColliderSize / 2, _monster.HitPoint.rotation, _monster.PlayerLayer);
 
         foreach (Collider player in hitPlayer)

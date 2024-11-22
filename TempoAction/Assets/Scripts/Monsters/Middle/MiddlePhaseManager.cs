@@ -40,6 +40,8 @@ public class MiddlePhaseManager : MonoBehaviour
     [SerializeField] private GameObject[] hpNumUI;
     [SerializeField] private UnityEngine.UI.Image[] hpBarUI;
     [SerializeField] private UnityEngine.UI.Image[] hpIllusionBarUI;
+    [Header("Å©·¹µ÷")]
+    [SerializeField] public GameObject credit;
 
     private List<float> _targetHealthList = new List<float>();
     private int _targetHealthIndex = 0;

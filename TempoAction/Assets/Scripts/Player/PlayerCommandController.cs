@@ -50,28 +50,6 @@ public class PlayerCommandController
 
         CoroutineRunner.Instance.StartCoroutine(CheckCommandTime(checkTime, skillid, isBackDash));
     }
-
-    private IEnumerator CheckCommandTime(float checkTime, int skillid, bool isBackDash)
-    {
-        float checkTimer = 0f;
-
-        while (checkTimer < checkTime)
-        {
-            if (CheckAttackCommand(PlayerInputManager.Instance.GetCommandKey(), skillid, isBackDash))
-            {
-                break;
-            }
-
-            checkTimer += Time.deltaTime;
-            yield return null;
-        }
-
-        _player.Controller.isMove = true;
-        _player.Controller.isJump = true;
-
-        yield return null;
-    }
-
     private bool CheckFallCommand(List<KeyCode> keyList, int skillid)
     {
         var matchingSkillId = _skillCommand.commandDatas
@@ -88,6 +66,28 @@ public class PlayerCommandController
         }
 
         return false;
+    }
+
+    private IEnumerator CheckCommandTime(float checkTime, int skillid, bool isBackDash)
+    {
+        float checkTimer = 0f;
+        bool isCommand = false;
+
+        while (checkTimer < checkTime)
+        {
+            if (isCommand = CheckAttackCommand(PlayerInputManager.Instance.GetCommandKey(), skillid, isBackDash))
+            {
+                break;
+            }
+
+            checkTimer += Time.deltaTime;
+            yield return null;
+        }
+
+        _player.Controller.isMove = true;
+        _player.Controller.isJump = true;
+
+        yield return null;
     }
 
     private bool CheckAttackCommand(List<KeyCode> keyList, int skillid, bool isBackDash)

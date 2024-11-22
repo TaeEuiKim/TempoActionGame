@@ -433,15 +433,14 @@ public class PlayerAnimationEvent : MonoBehaviour
                     break;
                 case 30:
                     hitParticle = ObjectPool.Instance.Spawn("energy_hit_oraora", 1);
-                    hitParticle.transform.position = monsterCollider.transform.position + new Vector3(0, 0.5f);
-                    CameraShaking(0.12f);
 
                     if (_player.IsLeftDirection())
                     {
                         hitParticle2 = ObjectPool.Instance.Spawn("P_MainChar_oraora_attack", 1);
                         hitParticle3 = ObjectPool.Instance.Spawn("chen_burn_flame(ora)", 1);
 
-                        hitParticle2.transform.position = monsterCollider.transform.position + new Vector3(-0.3f, 0.7f, -1);
+                        hitParticle.transform.position = leftHandTrans.position + new Vector3(-1.6f, -0.7f, -1);
+                        hitParticle2.transform.position = leftHandTrans.position + new Vector3(-1.6f, -0.7f, -1);
                         hitParticle3.transform.position = monsterCollider.transform.position;
                     }
                     else
@@ -449,7 +448,8 @@ public class PlayerAnimationEvent : MonoBehaviour
                         hitParticle2 = ObjectPool.Instance.Spawn("P_MainChar_oraora_attack_mirror", 1);
                         hitParticle3 = ObjectPool.Instance.Spawn("chen_burn_flame(ora)_mirror", 1);
 
-                        hitParticle2.transform.position = monsterCollider.transform.position + new Vector3(0.3f, 0.7f, -1);
+                        hitParticle.transform.position = leftHandTrans.position + new Vector3(1.6f, -0.7f, -1);
+                        hitParticle2.transform.position = leftHandTrans.position + new Vector3(1.6f, -0.7f, -1);
                         hitParticle3.transform.position = monsterCollider.transform.position;
                     }
                     break;
@@ -626,14 +626,14 @@ public class PlayerAnimationEvent : MonoBehaviour
                     break;
                 case 30:
                     hitParticle = ObjectPool.Instance.Spawn("energy_hit_oraora", 1);
-                    hitParticle.transform.position = mapObject.transform.position + new Vector3(0, 0.5f, -1);
 
                     if (_player.IsLeftDirection())
                     {
                         hitParticle2 = ObjectPool.Instance.Spawn("P_MainChar_oraora_attack", 1);
                         hitParticle3 = ObjectPool.Instance.Spawn("chen_burn_flame(ora)", 1);
 
-                        hitParticle2.transform.position = mapObject.transform.position + new Vector3(-0.3f, 0.7f, -1);
+                        hitParticle.transform.position = leftHandTrans.position + new Vector3(-1.6f, -0.7f, -1);
+                        hitParticle2.transform.position = leftHandTrans.position + new Vector3(-1.6f, -0.7f, -1);
                         hitParticle3.transform.position = mapObject.transform.position;
                     }
                     else
@@ -641,7 +641,8 @@ public class PlayerAnimationEvent : MonoBehaviour
                         hitParticle2 = ObjectPool.Instance.Spawn("P_MainChar_oraora_attack_mirror", 1);
                         hitParticle3 = ObjectPool.Instance.Spawn("chen_burn_flame(ora)_mirror", 1);
 
-                        hitParticle2.transform.position = mapObject.transform.position + new Vector3(0.3f, 0.7f, -1);
+                        hitParticle.transform.position = leftHandTrans.position + new Vector3(1.6f, -0.7f, -1);
+                        hitParticle2.transform.position = leftHandTrans.position + new Vector3(1.6f, -0.7f, -1);
                         hitParticle3.transform.position = mapObject.transform.position;
                     }
                     break;
@@ -720,10 +721,6 @@ public class PlayerAnimationEvent : MonoBehaviour
     private void Finish(float delay)
     {
         _player.Attack.CheckDelay = delay;
-        if (_player.Ani.GetInteger("CommandCount") != 0)
-        {
-            _player.Ani.SetBool("IsAttack", false);
-        }
 
         _player.Attack.ChangeCurrentAttackState(Define.AttackState.CHECK);
         if (dempEffect != null && dempEffect.gameObject.activeSelf)

@@ -18,7 +18,6 @@ public class PlayerController
     private bool _isLanded;
     private bool _isGrounded;
     private bool _isOnMonster;
-    private bool _isDoubleJumping;
     private bool _isBackDash;
 
     public bool isUltimate;
@@ -129,7 +128,6 @@ public class PlayerController
         {
             if (!_isLanded)
             {
-                _isDoubleJumping = false;
                 _isLanded = true;
             }
         }
