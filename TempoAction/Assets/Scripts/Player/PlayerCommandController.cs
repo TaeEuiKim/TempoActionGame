@@ -9,8 +9,6 @@ public class PlayerCommandController
     private Player _player;
     private SkillCommand _skillCommand;
 
-    private bool isStemina = true;
-
     public PlayerCommandController(Player player, SkillCommand command)
     {
         _player = player;

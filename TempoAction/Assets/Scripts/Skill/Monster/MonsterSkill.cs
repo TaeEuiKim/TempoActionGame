@@ -43,7 +43,6 @@ public class MonsterSkill : SkillBase, ICooldownSkill
 {
     public MonsterNormalSkillData skillData { get; private set; }
 
-    private static float cooldownMultiplier = 0.01f;
     private float curTime; // seconds
 
     public MonsterSkill(SkillRunnerBase skillRunner) : base(skillRunner)

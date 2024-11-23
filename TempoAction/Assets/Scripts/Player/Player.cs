@@ -53,6 +53,10 @@ public class Player : CharacterBase
     [Header("공격으로 채우는 궁극기 게이지 량")]
     [SerializeField] public float fillAttackUltimateGauge = 0.02f;
 
+    [Space]
+    [Header("킬 카운트")]
+    [SerializeField] public int killCount = 0;
+
     [HideInInspector] public bool isCounter = false;
 
     [Space]
@@ -103,7 +107,6 @@ public class Player : CharacterBase
     [HideInInspector] public float stunTime = 0f;
 
     private bool isUseStemina = false;
-    private float steminaTimer = 0;
 
     public static float saveHp = 0;
     public static float saveSte = 0;
@@ -148,6 +151,8 @@ public class Player : CharacterBase
         //    GetComponent<PlayerSkillManager>().LoadSkill(copySkill.LoadSkillSlots(), copySkill.LoadReserveSlots());
         //    _view.SetSkillIcon(copySkill.LoadMainIcon(), copySkill.LoadSubIcon());
         //}
+
+        killCount = 0;
 
         NormalSkill sw = new NormalSkill(skillData);
         NormalSkill se = new NormalSkill(skillData2);
@@ -294,6 +299,21 @@ public class Player : CharacterBase
     public void PowerUp(float value)
     {
         _stat.Damage += value;
+    }
+
+    public int SetKillCount(bool isReset = false)
+    {
+        if (isReset)
+        {
+            int temp = 0;
+            temp = killCount;
+            killCount = 0;
+            return temp;
+        }
+        else
+        {
+            return ++killCount;
+        }
     }
 
     public override bool IsLeftDirection()
