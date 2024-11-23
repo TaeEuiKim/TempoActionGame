@@ -271,6 +271,17 @@
                 },
                 {
                     "name": "",
+                    "id": "3c710816-4871-4386-95d8-7f3301a760b1",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad;Joystick",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "19d5d921-df29-42d7-9ed6-06b0fd25eed8",
                     "path": "<Keyboard>/leftCtrl",
                     "interactions": "",
@@ -305,7 +316,7 @@
                 {
                     "name": "",
                     "id": "ba42ba81-02d4-403e-8197-14886a53b606",
-                    "path": "<Gamepad>/buttonWest",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick;Gamepad",
@@ -437,7 +448,7 @@
                 {
                     "name": "",
                     "id": "78bebc9a-ba6e-4758-a498-4f59640f909a",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick;Gamepad",
@@ -524,11 +535,33 @@
                 },
                 {
                     "name": "",
+                    "id": "a4ed7a3e-91a0-46d1-a474-02afdb66640c",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad;Joystick",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "5abd48ad-f8d9-4d89-8a33-668d922d6e42",
                     "path": "<Keyboard>/v",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
+                    "action": "Ultimate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b19e3ecc-f4e9-4ef2-9cdb-8e242f24ff97",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad;Joystick",
                     "action": "Ultimate",
                     "isComposite": false,
                     "isPartOfComposite": false
