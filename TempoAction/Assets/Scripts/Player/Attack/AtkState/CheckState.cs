@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class CheckState : PlayerAttackState
 {
-    private bool isChange = false;
-
     public CheckState(Player player) : base(player)
     {
 
@@ -18,7 +16,6 @@ public class CheckState : PlayerAttackState
 
     public override void Enter()
     {
-        isChange = false;
         if (!_player.Ani.GetBool("CheckState"))
         {
             _player.Ani.SetBool("CheckState", true);
@@ -29,7 +26,6 @@ public class CheckState : PlayerAttackState
     {
         if (_player.Attack.CheckDelay <= 0)
         {
-            isChange = true;
             _player.Attack.ChangeCurrentAttackState(Define.AttackState.FINISH);
         }
         else

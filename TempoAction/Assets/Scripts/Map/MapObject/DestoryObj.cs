@@ -11,12 +11,38 @@ public class DestoryObj : BaseObject
     [Header("부쉈을 때 나오는 음식")]
     [SerializeField] private Define.FoodType _foodType;
 
+    [Space]
+    [Header("플레이어 킬 카운트 조건 여부")]
+    [SerializeField] private bool isKill = false;
+    [Header("플레이어가 몇 킬을 해야 무적이 풀릴건지")]
+    [SerializeField] private int killCount = 0;
+
+    private Player _player;
     private SkinnedMeshRenderer _skinnedMeshRenderer;
 
     protected override void Awake()
     {
         base.Awake();
         _skinnedMeshRenderer = GetComponent<SkinnedMeshRenderer>();
+        if (isKill)
+        {
+            _player = FindObjectOfType<Player>();
+            if (isDestory)
+            {
+                isDestory = false;
+            }
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (isKill)
+        {
+            if (killCount <= _player.killCount)
+            {
+                isDestory = true;
+            }
+        }
     }
 
     private void DestroyObject()

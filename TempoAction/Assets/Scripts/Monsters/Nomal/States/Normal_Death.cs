@@ -16,8 +16,7 @@ public class Normal_Death : Normal_State
     public override void Enter()
     {
         base.Enter();
-        _monster.GetComponent<BoxCollider>().enabled = false;
-        _monster.Rb.useGravity = false;
+
         _monster.Rb.velocity = Vector3.zero;
 
         if (!_monster.Ani.GetBool("Death"))
@@ -62,7 +61,10 @@ public class Normal_Death : Normal_State
     {
         isSpawn = true;
 
-        _monster.Player.GetComponent<Player>().View.MoveUltimateUI(_monster.ultimateValue / _monster.Player.GetComponent<Player>().PlayerSt._maxUltimateGauge);
+        var player = _monster.Player.GetComponent<Player>();
+
+        player.View.MoveUltimateUI(_monster.ultimateValue / _monster.Player.GetComponent<Player>().PlayerSt._maxUltimateGauge);
+        player.SetKillCount();
 
         if (_monster.monsterType == Define.NormalMonsterType.MON3)
         {
