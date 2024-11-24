@@ -378,9 +378,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.07479918
+  m_TransitionDuration: 0.07602799
   m_TransitionOffset: 0
-  m_ExitTime: 0.91188544
+  m_ExitTime: 0.37982935
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -438,7 +438,7 @@ AnimatorStateMachine:
     m_Position: {x: 1480, y: -120, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -774228956880270255}
-    m_Position: {x: 980, y: 710, z: 0}
+    m_Position: {x: 980, y: 720, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3332537390219427322}
     m_Position: {x: 680, y: 440, z: 0}
@@ -899,7 +899,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AC_PC_OraOra001
-  m_Speed: 1
+  m_Speed: 0.8
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -7461705688231248609}
@@ -1722,7 +1722,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AC_PC_OraOra006
-  m_Speed: 1
+  m_Speed: 0.8
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 2550988090145248868}
@@ -2517,9 +2517,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.031292558
+  m_TransitionDuration: 0.0480361
   m_TransitionOffset: 0
-  m_ExitTime: 0.95052004
+  m_ExitTime: 0.42937994
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -3251,7 +3251,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: CommandSkill_Smash1-3
-  m_Speed: 1.1
+  m_Speed: 0.7
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 87002725297328450}
@@ -3394,7 +3394,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: CommadSkill_Smash2-3
-  m_Speed: 1.6
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 2881996201938121104}
@@ -3572,7 +3572,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AC_PC_OraOra004
-  m_Speed: 1
+  m_Speed: 0.8
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -9027096848233537776}
@@ -4506,9 +4506,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.02
+  m_TransitionDuration: 0.05092585
   m_TransitionOffset: 0
-  m_ExitTime: 0.20466512
+  m_ExitTime: 0.20466514
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -5114,9 +5114,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.053143084
+  m_TransitionDuration: 0.06351167
   m_TransitionOffset: 0
-  m_ExitTime: 0.6501603
+  m_ExitTime: 0.3546536
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -5142,9 +5142,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.1
-  m_TransitionOffset: 0
-  m_ExitTime: 1
+  m_TransitionDuration: 0.2426266
+  m_TransitionOffset: 0.004224273
+  m_ExitTime: 0.30380243
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -5615,9 +5615,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0
+  m_TransitionDuration: 0.18940067
   m_TransitionOffset: 0
-  m_ExitTime: 0.75
+  m_ExitTime: 0.30216038
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -5659,7 +5659,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AC_PC_OraOra003
-  m_Speed: 1
+  m_Speed: 0.8
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -741518800242110542}
@@ -5976,7 +5976,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AC_PC_OraOra005
-  m_Speed: 1
+  m_Speed: 0.8
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -8613962406890133733}
@@ -6015,9 +6015,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.052150607
   m_TransitionOffset: 0
-  m_ExitTime: 0.8235294
+  m_ExitTime: 0.4067095
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -6997,7 +6997,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AC_PC_OraOra002
-  m_Speed: 1
+  m_Speed: 0.8
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -1975672230449930726}
