@@ -385,6 +385,14 @@ public class TestSound : Singleton<TestSound>
                 sources[91].clip = soundSources[13].audioClips[2];
                 sources[91].Play();
                 break;
+            case "RushFinishVoice":
+                sources[92].clip = soundSources[12].audioClips[9];
+                sources[92].Play();
+                break;
+            case "RushFinishHit":
+                sources[93].clip = soundSources[12].audioClips[10];
+                sources[93].Play();
+                break;
             default:
                 break;
         }

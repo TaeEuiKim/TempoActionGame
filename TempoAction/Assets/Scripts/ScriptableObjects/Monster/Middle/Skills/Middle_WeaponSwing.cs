@@ -89,6 +89,11 @@ public class Middle_WeaponSwing : Middle_Skill
 
             TestSound.Instance.PlaySound("SwingHit");
             _player.TakeDamage(Info.damage);
+
+            GameObject hitParticle = ObjectPool.Instance.Spawn("FX_HomerunAttack@P", 1);
+
+            Vector3 hitPos = player.ClosestPoint(_monster.HitPoint.position);
+            hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z - 0.1f);
         }
     }
 

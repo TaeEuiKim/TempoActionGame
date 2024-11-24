@@ -67,36 +67,44 @@ public class MainButtonManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         isNext = true;
+
+        SoundManager.Instance.PlayOneShot("event:/SFX_BG_Start");
     }
 
     public void RestartScene()
     {
         Time.timeScale = 1.0f;
+        SoundManager.Instance.PlayOneShot("event:/SFX_UI_Click");
         LoadManager.LoadScene("StartScene");
     }
 
     public void OnLoadScene(string sceneName)
     {
+        SoundManager.Instance.PlayOneShot("event:/SFX_UI_Click");
         LoadManager.LoadScene(sceneName);
     }
 
     public void OnExitUI()
     {
+        SoundManager.Instance.PlayOneShot("event:/SFX_UI_Click");
         ExitUI.SetActive(true);
     }
 
     public void OffExitUI()
     {
+        SoundManager.Instance.PlayOneShot("event:/SFX_UI_Click");
         ExitUI.SetActive(false);
     }
 
     public void OnExitGame()
     {
+        SoundManager.Instance.PlayOneShot("event:/SFX_UI_Click");
         Application.Quit();
     }
 
     public void OnCreditVideo(bool isTurn)
     {
+        SoundManager.Instance.PlayOneShot("event:/SFX_UI_Click");
         CreditVideo.gameObject.SetActive(isTurn);
     }
 
