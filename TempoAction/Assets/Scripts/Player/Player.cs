@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
 public class Player : CharacterBase
 {
@@ -110,6 +111,7 @@ public class Player : CharacterBase
 
     public static float saveHp = 0;
     public static float saveSte = 0;
+    public static string curScene;
 
     protected override void Awake()
     {
@@ -139,6 +141,14 @@ public class Player : CharacterBase
             PlayerSt.Hp = saveHp;
             UpdateHealth();
         }
+
+        curScene = SceneManager.GetActiveScene().name;
+
+        if (saveSte > 0)
+        {
+            View.UpdateUltimateGauge(saveSte);
+        }
+
 
         //플레이어 상태
         _stateStorage.Add(Define.PlayerState.DIE, new DieState(this));

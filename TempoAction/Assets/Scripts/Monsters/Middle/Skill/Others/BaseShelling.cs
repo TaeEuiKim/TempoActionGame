@@ -66,7 +66,7 @@ public class BaseShelling : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        GameObject effect = ObjectPool.Instance.Spawn("TraceEffect", 1);
+        GameObject effect = ObjectPool.Instance.Spawn("BombEffect", 1);
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Boss"))
         {
@@ -75,14 +75,14 @@ public class BaseShelling : MonoBehaviour
                 return;
             }
 
-            effect.transform.position = collision.transform.position - new Vector3(0, 2.5f);
+            effect.transform.position = collision.transform.position + new Vector3(0, -0.5f);
             collision.transform.GetComponent<MiddleMonster>().StartMiddleCut();
             collision.transform.GetComponent<Monster>().TakeDamage(monsterDamage);
         }
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            effect.transform.position = collision.transform.position - new Vector3(0, 2.5f);
+            effect.transform.position = collision.transform.position + new Vector3(0, -0.5f);
             if (collision.gameObject.GetComponent<Player>().IsInvincible) return;
 
             collision.transform.GetComponent<Player>().TakeDamage(TotalDamage);
@@ -103,7 +103,7 @@ public class BaseShelling : MonoBehaviour
                 }
             }
 
-            effect.transform.position = transform.position - new Vector3(0, 3.5f);
+            effect.transform.position = transform.position + new Vector3(0, -0.5f);
         }
 
         ObjectPool.Instance.Remove(this.gameObject);

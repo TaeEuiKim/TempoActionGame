@@ -40,6 +40,9 @@ public class PlayerAnimationEvent : MonoBehaviour
     [Header("커맨드 용 카운트")]
     private int commandAttackCount = 0;
 
+    private Vector3 originPos;
+    private Vector3 originScale;
+
     private void Start()
     {
         _cameraController = FindObjectOfType<CameraController>();
@@ -260,8 +263,20 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     private void CommandHit()
     {
+        if (_player.Ani.GetInteger("CommandCount") == 30)
+        {
+            originPos = _player.HitPoint.position;
+            originScale = _player.HitPoint.position;
+
+            _player.HitPoint.localPosition = _player.HitPoint.localPosition - new Vector3(2f, 0, 0);
+            _player.HitPoint.localScale = new Vector3(6, 1, 1);
+        }
+
         Collider[] hitMonsters = Physics.OverlapBox(_player.HitPoint.position, _player.HitPoint.localScale / 2, _player.HitPoint.rotation, _player.MonsterLayer | _player.BossLayer);
         Collider[] hitObjects = Physics.OverlapBox(_player.HitPoint.position, _player.HitPoint.localScale / 2, _player.HitPoint.rotation, 1 << 8);
+
+        _player.HitPoint.position = originPos;
+        _player.HitPoint.localScale = originScale;
 
         if (hitMonsters.Length <= 0 && hitObjects.Length <= 0) return;
 
@@ -448,6 +463,7 @@ public class PlayerAnimationEvent : MonoBehaviour
                 case 30:
                     CameraShaking(0.12f);
                     TestSound.Instance.PlaySound("Skill3_Final");
+                    TestSound.Instance.PlaySound("RushFinishHit");
                     hitParticle = ObjectPool.Instance.Spawn("energy_hit_oraora", 1);
 
                     if (_player.IsLeftDirection())
@@ -670,6 +686,7 @@ public class PlayerAnimationEvent : MonoBehaviour
                 case 30:
                     CameraShaking(0.12f);
                     hitParticle = ObjectPool.Instance.Spawn("energy_hit_oraora", 1);
+                    TestSound.Instance.PlaySound("RushFinishHit");
                     TestSound.Instance.PlaySound("SmashHit2");
 
                     if (_player.IsLeftDirection())
@@ -1052,6 +1069,26 @@ public class PlayerAnimationEvent : MonoBehaviour
         if(effect == null) { return; }
 
         effect.transform.position = leftFootTrans.position + new Vector3(0, -0.2f);
+
+        if (_player.Controller._isGrounded)
+        {
+            switch (Player.curScene)
+            {
+                case "StartScene":
+                    if (_player.transform.position.x < -131)
+                    {
+                        SoundManager.Instance.PlayOneShot("event:/SFX_BG_PF_Concrete", _player.transform);
+                    }
+                    else if (_player.transform.position.x > -131)
+                    {
+                        SoundManager.Instance.PlayOneShot("event:/SFX_BG_PF_Steel", _player.transform);
+                    }
+                    break;
+                case "MiddleBossStage":
+                    SoundManager.Instance.PlayOneShot("event:/SFX_BG_PF_Grating", _player.transform);
+                    break;
+            }
+        }
     }
 
     private void RightFootEffect()
@@ -1061,6 +1098,26 @@ public class PlayerAnimationEvent : MonoBehaviour
         if (effect == null) { return; }
 
         effect.transform.position = rightFootTrans.position + new Vector3(0, -0.2f);
+
+        if (_player.Controller._isGrounded)
+        {
+            switch (Player.curScene)
+            {
+                case "StartScene":
+                    if (_player.transform.position.x < -131)
+                    {
+                        SoundManager.Instance.PlayOneShot("event:/SFX_BG_PF_Concrete", _player.transform);
+                    }
+                    else if (_player.transform.position.x > -131)
+                    {
+                        SoundManager.Instance.PlayOneShot("event:/SFX_BG_PF_Steel", _player.transform);
+                    }
+                    break;
+                case "MiddleBossStage":
+                    SoundManager.Instance.PlayOneShot("event:/SFX_BG_PF_Grating", _player.transform);
+                    break;
+            }
+        }
     }
 
     private void TurnFire(float appearTime)

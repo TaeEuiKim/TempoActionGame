@@ -88,6 +88,8 @@ public class DestoryObj : BaseObject
         switch (_type)
         {
             case Define.DestoryObjectType.FENCE:
+                SoundManager.Instance.PlayOneShot("event:/SFX_BG_OBJ_BarbedWire", transform);
+
                 if (Hp <= 0)
                 {
                     _skinnedMeshRenderer.SetBlendShapeWeight(0, 100);
@@ -106,6 +108,8 @@ public class DestoryObj : BaseObject
                 }
                 break;
             case Define.DestoryObjectType.TRASH:
+                SoundManager.Instance.PlayOneShot("event:/SFX_BG_OBJ_Garbage_1", transform);
+
                 if (Hp <= 0)
                 {
                     _skinnedMeshRenderer.SetBlendShapeWeight(Random.Range(0, 2), 100);
@@ -126,6 +130,10 @@ public class DestoryObj : BaseObject
                 break;
             case Define.DestoryObjectType.FLOOR:
                 Animator[] anis = GetComponentsInChildren<Animator>();
+
+                SoundManager.Instance.PlayOneShot("event:/SFX_BG_OBJ_WoodBreak", transform);
+                SoundManager.Instance.PlayOneShot("event:/SFX_BG_OBJ_WoodWreck", transform);
+
                 if (anis.Length > 0)
                 {
                     for (int i = 0; i < anis.Length; ++i)

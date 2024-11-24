@@ -111,6 +111,7 @@ public class PlayerAttack
     {
         if (_player.Ani.GetBool("isGrounded") && _mainTempoQueue.Count > 0)
         {
+            TestSound.Instance.PlaySound("SmashSwing");
             _currentTempoData = _mainTempoQueue.Dequeue();
 
             ChangeCurrentAttackState(Define.AttackState.ATTACK);

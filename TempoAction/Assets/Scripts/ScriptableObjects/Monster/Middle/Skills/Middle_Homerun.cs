@@ -131,7 +131,7 @@ public class Middle_Homerun : Middle_Skill
                 player.GetComponent<Player>().TakeStun(1f, dir);
 
                 // 히트 파티클 생성
-                GameObject hitParticle = ObjectPool.Instance.Spawn("FX_HomerunAttack@P", 1); ;
+                GameObject hitParticle = ObjectPool.Instance.Spawn("FX_HomerunAttack@P", 1);
 
                 Vector3 hitPos = player.ClosestPoint(_monster.HitPoint.position);
                 hitParticle.transform.position = new Vector3(hitPos.x, hitPos.y, hitPos.z - 0.1f);
