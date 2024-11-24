@@ -24,7 +24,8 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: 2753d56cee62e1e4c815b7d92a3a0328, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _SPECULAR_ON
   m_InvalidKeywords:
   - ADDITIONAL_LIGHTS_ON
   m_LightmapFlags: 4
@@ -85,7 +86,7 @@ Material:
     - _Point_Bands: 3
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _SPECULAR: 0
+    - _SPECULAR: 1
     - _Smoothness: 0.03
     - _Spot_Bands: 2
     - _SrcBlend: 1
