@@ -18,15 +18,17 @@ public class WarpPlayer : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
+            Player player = other.GetComponent<Player>();
+
             if (warpType == Define.WarpType.UNDERGROUND)
             {
-                Player player = other.GetComponent<Player>();
+                Player.saveSte = player.View.GetUltimateGauge();
                 cameraController.ChangeCamera(Define.CameraType.UNDERGROUND);
             }
 
             if (warpType == Define.WarpType.MIDDLEBOSS)
             {
-                Player player = other.GetComponent<Player>();
+                Player.saveSte = player.View.GetUltimateGauge();
                 cameraController.ChangeCamera(Define.CameraType.MIDDLEBOSS);
             }
         }

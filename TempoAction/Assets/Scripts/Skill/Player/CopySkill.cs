@@ -10,7 +10,6 @@ public class CopySkill : MonoBehaviour
 
     private void Start()
     {
-        DontDestroyOnLoad(this.gameObject);
     }
 
     public void SaveSkillSlots(SkillSlot[] skillSlots, Queue<ISkillRoot> reserveSlots)

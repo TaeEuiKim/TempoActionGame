@@ -46,6 +46,14 @@ public class Middle_PhaseEnd : Middle_PhaseState
 
         yield return new WaitForSeconds(2f);
 
+        _manager.KOPanel.SetActive(true);
+
+        yield return new WaitForSeconds(2f);
+
+        _manager.KOPanel.SetActive(false);
+
+        yield return new WaitForSeconds(1f);
+
         _manager.endSceneUI.SetActive(true);
 
         yield return new WaitForSeconds(2f);

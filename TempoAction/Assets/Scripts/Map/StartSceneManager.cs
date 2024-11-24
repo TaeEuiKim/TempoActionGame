@@ -1,6 +1,7 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +23,9 @@ public class StartSceneManager : MonoBehaviour
     [SerializeField] private GameObject MovingUI;
     [SerializeField] private GameObject AttackUI;
     [SerializeField] private GameObject CommandUI;
+
+    [Header("Hit it")]
+    [SerializeField] private GameObject Hitit;
 
     private bool isCutScene;
     private Coroutine cutSceneCoroutine;
@@ -120,6 +124,12 @@ public class StartSceneManager : MonoBehaviour
 
             yield return null;
         }
+
+        Hitit.SetActive(true);
+
+        yield return new WaitForSeconds(2f);
+
+        Hitit.SetActive(false);
 
         TestSound.Instance.PlaySound("Start");
 

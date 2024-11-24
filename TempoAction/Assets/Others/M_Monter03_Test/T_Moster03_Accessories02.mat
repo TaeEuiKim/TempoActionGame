@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: T_Moster03_Accessories02
-  m_Shader: {fileID: -6465566751694194690, guid: e5e22c6a3123cbb4a8d0bd31d7e8ebe2, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 2753d56cee62e1e4c815b7d92a3a0328, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
@@ -33,8 +33,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Emission_Map:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _NormalMap:
         m_Texture: {fileID: 2800000, guid: 5703d3d2f5ca2624db122a63d819c1c6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RampTexture:
+        m_Texture: {fileID: 2800000, guid: a1a4108227a8a8b4f9067f80f37c33ec, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Ramp_Texture:
@@ -72,6 +80,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0
+    - _AlphaClipThreshold: 0.5
     - _AlphaToMask: 0
     - _Alpha_Cliping: 0.5
     - _Blend: 0
@@ -80,23 +89,30 @@ Material:
     - _DstBlend: 0
     - _Emission_Power: 0
     - _Fresnel_Power: 10
+    - _Hue: 0
     - _Lambert_Power: 0.42
     - _Normal_Strength: 4.09
+    - _Point_Bands: 3
     - _QueueControl: 0
     - _QueueOffset: 0
     - _SPECULAR: 1
     - _Saturation: 1
     - _Smoothness: 0.231
+    - _Spot_Bands: 2
     - _SrcBlend: 1
+    - _SubLight_Power: 0.4
+    - _SubLight_ReversePower: 1
     - _Surface: 0
     - _ZTest: 4
     - _ZWrite: 1
     - _ZWriteControl: 0
     m_Colors:
+    - _DiffuseColor: {r: 1, g: 1, b: 1, a: 0}
     - _Emission_Color: {r: 0, g: 0, b: 0, a: 0}
     - _HDR_Color: {r: 1, g: 1, b: 1, a: 0}
     - _Specluar_Color: {r: 1, g: 1, b: 1, a: 0}
     - _Specular: {r: 0, g: 0, b: 0, a: 0}
+    - _SpecularColour: {r: 1, g: 1, b: 1, a: 0}
     - _Specular_Sub: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &4398087774294824535

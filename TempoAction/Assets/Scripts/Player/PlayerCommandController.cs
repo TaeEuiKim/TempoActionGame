@@ -161,6 +161,7 @@ public class PlayerCommandController
                 if (skillid == 21)
                 {
                     TestSound.Instance.PlaySound("ParryingReady");
+                    TestSound.Instance.PlaySound("Posing");
                     return true;
                 }
                 break;
@@ -209,9 +210,13 @@ public class PlayerCommandController
             case 27:
             case 28:
             case 29:
-                if (skillid == 24 || skillid == 25 || skillid == 26 || skillid == 27 || skillid == 28 || skillid == 29 || skillid == 30)
+                if (skillid == 24 || skillid == 25 || skillid == 26 || skillid == 27 || skillid == 28 || skillid == 29)
                 {
                     return true;
+                }
+                if (skillid == 30)
+                {
+                    TestSound.Instance.PlaySound("RushFinishVoice");
                 }
                 break;
             // 스킬 발동

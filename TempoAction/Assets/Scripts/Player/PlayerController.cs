@@ -16,10 +16,10 @@ public class PlayerController
     private float lastInputTime;
 
     private bool _isLanded;
-    private bool _isGrounded;
     private bool _isOnMonster;
     private bool _isBackDash;
 
+    public bool _isGrounded;
     public bool isUltimate;
     public bool isDashing;
     public bool isMove;
