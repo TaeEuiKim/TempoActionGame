@@ -115,7 +115,6 @@ public class PlayerView : MonoBehaviour
 
         if (_steminaBarImage.fillAmount >= 1)
         {
-            SetVImage(true);
             UiEffect.SetActive(true);
         }
 
@@ -320,10 +319,5 @@ public class PlayerView : MonoBehaviour
     {
         _steminaBarImage.fillAmount = value;
         _steminaIllusionBarImage.fillAmount = value;
-    }
-
-    public void SetVImage(bool isTurn)
-    {
-        _ultimateKeyImage.gameObject.SetActive(isTurn);
     }
 }

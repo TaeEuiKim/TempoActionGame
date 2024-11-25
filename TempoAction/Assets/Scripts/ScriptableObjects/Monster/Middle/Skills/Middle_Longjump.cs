@@ -110,7 +110,7 @@ public class Middle_Longjump : Middle_Skill
         else
         {
             attackPos = _monster.Player.transform.position.x;
-            _monster.CharacterModel.localScale = new Vector3(_monster.transform.position.x - _monster.Player.transform.position.x > 0 ? 0.7f : -0.7f, 1, 1);
+            _monster.CharacterModel.localScale = new Vector3(_monster.transform.position.x - _monster.Player.transform.position.x > 0 ? 1f : -1f, 1, 1);
 
             GameObject hitParticle2 = ObjectPool.Instance.Spawn("FX_ChungLandingPoint", 1);
 
@@ -134,11 +134,11 @@ public class Middle_Longjump : Middle_Skill
         Vector3 pos = _monster.transform.position;
         if (_monster.CharacterModel.localScale.x > 0)
         {
-            pos.x = attackPos + 2.5f;
+            pos.x = attackPos + 2.4f;
         }
         else
         {
-            pos.x = attackPos - 2.5f;
+            pos.x = attackPos - 2.4f;
         }
         _monster.transform.position = pos;
 
