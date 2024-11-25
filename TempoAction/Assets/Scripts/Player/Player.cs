@@ -308,9 +308,9 @@ public class Player : CharacterBase
 
     public void PowerUp(float value)
     {
-        _stat.Damage += value;
+        _stat.Damage = _stat.Damage + value;
     }
-
+    
     public int SetKillCount(bool isReset = false)
     {
         if (isReset)
