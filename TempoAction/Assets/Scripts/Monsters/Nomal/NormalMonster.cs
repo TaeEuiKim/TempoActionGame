@@ -326,7 +326,7 @@ public class NormalMonster : Monster
             if (isHit && isAnim)
             {
                 Rb.velocity = Vector3.zero;
-                Rb.AddForce(new Vector3(0, 3f), ForceMode.VelocityChange);
+                Rb.AddForce(new Vector3(0, 2.5f), ForceMode.VelocityChange);
                 isHiting = true;
                 return;
             }
