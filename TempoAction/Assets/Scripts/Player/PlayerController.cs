@@ -335,8 +335,6 @@ public class PlayerController
             PlayerInputManager.Instance.ultimate = false;
             isUltimate = true;
 
-            _player.View.SetVImage(false);
-
             GameObject disappearEffect = ObjectPool.Instance.Spawn("do_disappear", 1f);
             disappearEffect.transform.position = _player.SkillObject.transform.position;
             _player.SkillObject.SetActive(false);
