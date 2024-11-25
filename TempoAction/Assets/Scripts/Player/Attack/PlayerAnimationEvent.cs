@@ -479,7 +479,7 @@ public class PlayerAnimationEvent : MonoBehaviour
                     if (_player.IsLeftDirection())
                     {
                         hitParticle2 = ObjectPool.Instance.Spawn("P_MainChar_oraora_attack", 1);
-                        hitParticle3 = ObjectPool.Instance.Spawn("chen_burn_flame(ora)", 1);
+                        hitParticle3 = ObjectPool.Instance.Spawn("chen_burn_flame(ora)", 1.5f);
 
                         hitParticle.transform.position = leftHandTrans.position + new Vector3(-1.6f, -0.7f, -1);
                         hitParticle2.transform.position = leftHandTrans.position + new Vector3(-1.6f, -0.7f, -1);
@@ -488,7 +488,7 @@ public class PlayerAnimationEvent : MonoBehaviour
                     else
                     {
                         hitParticle2 = ObjectPool.Instance.Spawn("P_MainChar_oraora_attack_mirror", 1);
-                        hitParticle3 = ObjectPool.Instance.Spawn("chen_burn_flame(ora)_mirror", 1);
+                        hitParticle3 = ObjectPool.Instance.Spawn("chen_burn_flame(ora)_mirror", 1.5f);
 
                         hitParticle.transform.position = leftHandTrans.position + new Vector3(1.6f, -0.7f, -1);
                         hitParticle2.transform.position = leftHandTrans.position + new Vector3(1.6f, -0.7f, -1);
@@ -702,7 +702,7 @@ public class PlayerAnimationEvent : MonoBehaviour
                     if (_player.IsLeftDirection())
                     {
                         hitParticle2 = ObjectPool.Instance.Spawn("P_MainChar_oraora_attack", 1);
-                        hitParticle3 = ObjectPool.Instance.Spawn("chen_burn_flame(ora)", 1);
+                        hitParticle3 = ObjectPool.Instance.Spawn("chen_burn_flame(ora)", 1.5f);
 
                         hitParticle.transform.position = leftHandTrans.position + new Vector3(-1.6f, -0.7f, -1);
                         hitParticle2.transform.position = leftHandTrans.position + new Vector3(-1.6f, -0.7f, -1);
@@ -711,7 +711,7 @@ public class PlayerAnimationEvent : MonoBehaviour
                     else
                     {
                         hitParticle2 = ObjectPool.Instance.Spawn("P_MainChar_oraora_attack_mirror", 1);
-                        hitParticle3 = ObjectPool.Instance.Spawn("chen_burn_flame(ora)_mirror", 1);
+                        hitParticle3 = ObjectPool.Instance.Spawn("chen_burn_flame(ora)_mirror", 1.5f);
 
                         hitParticle.transform.position = leftHandTrans.position + new Vector3(1.6f, -0.7f, -1);
                         hitParticle2.transform.position = leftHandTrans.position + new Vector3(1.6f, -0.7f, -1);

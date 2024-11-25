@@ -27,6 +27,9 @@ public class StartSceneManager : MonoBehaviour
     [Header("Hit it")]
     [SerializeField] private GameObject Hitit;
 
+    [Header("타임 라인")]
+    [SerializeField] private GameObject timeLine;
+
     private bool isCutScene;
     private Coroutine cutSceneCoroutine;
     private bool isKey = false;
@@ -35,18 +38,11 @@ public class StartSceneManager : MonoBehaviour
     private void Start()
     {
         SetPlayerControll(true);
-
-        cutSceneCoroutine = StartCoroutine(StartCutScene());
+        StartCoroutine(FadeOut());
     }
 
     private void LateUpdate()
     {
-        if (PlayerInputManager.Instance.cancel && isCutScene)
-        {
-            PlayerInputManager.Instance.cancel = false;
-            SkipCutScene();
-        }
-
         if (isKey)
         {
             if (timer < 5f)
@@ -81,52 +77,24 @@ public class StartSceneManager : MonoBehaviour
         CommandUI.SetActive(isTurn);
     }
 
-    private IEnumerator StartCutScene()
-    {
-        float alpha = 0;
-        isCutScene = true;
-
-        yield return new WaitForSeconds(2f);
-
-        for (int i = 0; i < sprites.Length; i++)
-        {
-            while (sprites[i].color.a < 1)
-            {
-                alpha += Time.fixedDeltaTime;
-                sprites[i].color = new Color(1, 1, 1, alpha);
-
-                yield return null;
-            }
-
-            yield return new WaitForSeconds(1f);
-
-            alpha = 0;
-        }
-
-        sceneUI.SetActive(false);
-
-        yield return new WaitForSeconds(1f);
-
-        StartCoroutine(FadeOut());
-    }
-
     private IEnumerator FadeOut()
     {
         float alpha = 1;
         isCutScene = false;
 
-        SetPlayerControll(false);
+        //while (FadePanel.color.a > 0)
+        //{
+        //    alpha -= Time.fixedDeltaTime;
+        //    FadePanel.color = new Color(0, 0, 0, alpha);
 
-        while (FadePanel.color.a > 0)
-        {
-            alpha -= Time.fixedDeltaTime;
-            FadePanel.color = new Color(0, 0, 0, alpha);
+        //    yield return null;
+        //}
 
-            yield return null;
-        }
+        timeLine.SetActive(true);
+
+        yield return new WaitForSeconds(3.5f);
 
         Hitit.SetActive(true);
-        SetPlayerControll(true);
 
         yield return new WaitForSeconds(2f);
 
@@ -152,6 +120,19 @@ public class StartSceneManager : MonoBehaviour
     public void SetPlayerControll(bool isKnockBack)
     {
         _player.PlayerSt.IsKnockedBack = isKnockBack;
+
+        //if (isKnockBack)
+        //{
+        //    _player.Controller.isMove = false;
+        //    _player.Controller.isJump = false;
+        //    _player.Attack.isAttack = false;
+        //}
+        //else
+        //{
+        //    _player.Controller.isMove = true;
+        //    _player.Controller.isJump = true;
+        //    _player.Attack.isAttack = true;
+        //}
     }
 
     public void SetPlayerControll(bool isKnockBack, bool isKey)

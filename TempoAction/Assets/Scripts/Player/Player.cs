@@ -318,6 +318,10 @@ public class Player : CharacterBase
 
     public void PowerUp(float value)
     {
+        if (_stat.Damage + value < 2.5f)
+        {
+            return;
+        }
         _stat.Damage = _stat.Damage + value;
     }
     
