@@ -126,10 +126,12 @@ public class StartSceneManager : MonoBehaviour
         }
 
         Hitit.SetActive(true);
+        SetPlayerControll(true);
 
         yield return new WaitForSeconds(2f);
 
         Hitit.SetActive(false);
+        SetPlayerControll(false);
 
         TestSound.Instance.PlaySound("Start");
 
