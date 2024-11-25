@@ -89,6 +89,7 @@ Material:
     - _DstBlend: 0
     - _Emission_Power: 0
     - _Fresnel_Power: 10
+    - _Hue: 0
     - _Lambert_Power: 0.42
     - _Normal_Strength: 1
     - _Point_Bands: 3
@@ -100,7 +101,7 @@ Material:
     - _Spot_Bands: 2
     - _SrcBlend: 1
     - _SubLight_Power: 0.4
-    - _SubLight_ReversePower: 90
+    - _SubLight_ReversePower: 300
     - _Surface: 0
     - _ZTest: 4
     - _ZWrite: 1
