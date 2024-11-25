@@ -88,7 +88,7 @@ public class PlayerView : MonoBehaviour
 
     public void UpdateUltimateGauge(float value)
     {
-        if (!_ultimateBarImage) { return; }
+        if (!_ultimateBarImage || isUltimate) { return; }
 
         StartCoroutine(ChangeUltimateGauge(value));
     }
@@ -124,6 +124,8 @@ public class PlayerView : MonoBehaviour
 
     public void UseUltimate()
     {
+        isUltimate = true;
+
         StartCoroutine(ReduceUltimate());
     }
 
@@ -149,6 +151,8 @@ public class PlayerView : MonoBehaviour
         }
 
         _steminaIllusionBarImage.fillAmount = 0;
+
+        isUltimate = false;
     }
 
     public float GetUltimateGauge()
