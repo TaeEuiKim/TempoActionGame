@@ -88,7 +88,7 @@ public class PlayerController
                 PlayerInputManager.Instance.rightArrow = false;
             }
 
-            if ((PlayerInputManager.Instance.dash || CheckDash()))
+            if ((PlayerInputManager.Instance.sway || PlayerInputManager.Instance.dash || CheckDash()))
             {
                 Dash();
             }
@@ -271,9 +271,16 @@ public class PlayerController
         RaycastHit hit;
 
         float dir = 1;
-        if (_isBackDash || PlayerInputManager.Instance.sway)
+
+        if (PlayerInputManager.Instance.sway)
         {
             PlayerInputManager.Instance.sway = false;
+            dir = -1;
+            _isBackDash = true;
+        }
+
+        if (_isBackDash)
+        {
             dir = -1;
             TestSound.Instance.PlaySound("Backdash");
         }
@@ -345,7 +352,7 @@ public class PlayerController
 
             _player.CharacterModel.GetComponent<CharacterTrail>().StartTrail(10f);
 
-            _player.PowerUp(2.5f);
+            _player.PowerUp(1.25f);
             _player.View.UiEffect.SetActive(false);
             _player.View.UseUltimate();
         }

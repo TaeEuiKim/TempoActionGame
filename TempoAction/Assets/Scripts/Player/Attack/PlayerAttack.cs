@@ -74,24 +74,27 @@ public class PlayerAttack
         //    }
         //}
 
-        if (_currentAttackState != Define.AttackState.ATTACK && _player.Ani.GetInteger("CommandCount") == 0)
-        { 
-            // 공격 키 입력
-            if (PlayerInputManager.Instance.attack)
-            {
-                PlayerInputManager.Instance.attack = false;
-                if (_player.Ani.GetBool("isGrounded"))
+        if (isAttack)
+        {
+            if (_currentAttackState != Define.AttackState.ATTACK && _player.Ani.GetInteger("CommandCount") == 0)
+            { 
+                // 공격 키 입력
+                if (PlayerInputManager.Instance.attack)
                 {
-                    AttackMainTempo();
+                    PlayerInputManager.Instance.attack = false;
+                    if (_player.Ani.GetBool("isGrounded"))
+                    {
+                        AttackMainTempo();
+                    }
                 }
             }
-        }
-        else
-        {
-            if (PlayerInputManager.Instance.attack || PlayerInputManager.Instance.keyX)
+            else
             {
-                PlayerInputManager.Instance.attack = false;
-                PlayerInputManager.Instance.keyX = false;
+                if (PlayerInputManager.Instance.attack || PlayerInputManager.Instance.keyX)
+                {
+                    PlayerInputManager.Instance.attack = false;
+                    PlayerInputManager.Instance.keyX = false;
+                }
             }
         }
 

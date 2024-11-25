@@ -578,7 +578,18 @@
                 {
                     "name": "",
                     "id": "281c0379-9269-4864-99fa-1d26a60dc894",
-                    "path": "<HID>/{Submit}",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "DashSway",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5b1799b5-408b-49e0-a1b6-2e5b66370841",
+                    "path": "<HID::Nintendo Co., Ltd. E1 Light>/button4",
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick;Gamepad",
