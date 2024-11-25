@@ -59,6 +59,7 @@ public class MiddlePhaseManager : MonoBehaviour
     private int _count = 1;
 
     public int phase = 1;
+    private bool isEffect;
 
     private void Awake()
     {
@@ -186,6 +187,13 @@ public class MiddlePhaseManager : MonoBehaviour
     private IEnumerator CutSceneStart()
     {
         float alpha = 0;
+
+        if (Monster.Player.GetComponent<Player>().View.UiEffect.activeSelf)
+        {
+            Monster.Player.GetComponent<Player>().View.UiEffect.SetActive(false);
+            isEffect = true;
+        }
+
         isCutScene = true;
         SetPlayerControll(true);
 
@@ -237,6 +245,10 @@ public class MiddlePhaseManager : MonoBehaviour
         yield return waitOneForSeconds;
 
         ChangeStageState(Define.MiddlePhaseState.START);
+        if (isEffect)
+        {
+            Monster.Player.GetComponent<Player>().View.UiEffect.SetActive(true);
+        }
 
         yield return null;
     }

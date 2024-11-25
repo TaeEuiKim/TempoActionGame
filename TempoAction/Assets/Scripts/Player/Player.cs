@@ -131,7 +131,7 @@ public class Player : CharacterBase
     {
         _attack.Initialize();
         _controller.Initialize();
-
+        
         if (saveHp <= 0)
         {
             saveHp = PlayerSt.MaxHp;
@@ -172,11 +172,20 @@ public class Player : CharacterBase
 
         GetComponent<PlayerSkillManager>().AddSkill(skill);
         GetComponent<PlayerSkillManager>().AddSkill(skill2);
+
+        RimShader.SetFloat("_Float", 0f);
     }
 
     protected override void Update()
     {
         base.Update();
+
+        //Object[] os;
+        //os = FindObjectsByType<AudioListener>(FindObjectsSortMode.None);
+        //for (int i = 0; i < os.Length; i++)
+        //{
+        //    Debug.LogError(os[i].name);
+        //}
 
         if (_stat.Hp <= 0)
         {
@@ -196,6 +205,7 @@ public class Player : CharacterBase
 
                 _view.OnGameoverUI();
                 Ani.SetBool("IsDie", true);
+                _view.UiEffect.SetActive(false);
                 _cameraController.SetCameraSetting(Define.CameraType.DEAD);
                 break;
             case Define.PlayerState.HIT:

@@ -9,7 +9,7 @@ public class CharacterManager : Singleton<CharacterManager>
 
     public void AddCharacter(GameObject character)
     {
-        if (characters.Contains(character)) { Debug.LogWarning("You are tried to already Existing Character"); return; }
+        if (characters.Contains(character)) { Debug.LogWarning("You are tried to already Existing Character"); }
 
         characters.Add(character);
     }

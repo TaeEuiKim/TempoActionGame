@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Middle_PhaseEnd : Middle_PhaseState
@@ -13,7 +14,6 @@ public class Middle_PhaseEnd : Middle_PhaseState
     {
         _manager.Monster.Ani.SetBool("Die", true);
         _manager.Monster2.Ani.SetBool("Death", true);
-        _manager.Monster.Player.GetComponent<Player>().View.UiEffect.SetActive(false);
 
         TestSound.Instance.StopBGMSound("MiddleBGM");
         CoroutineRunner.Instance.StartCoroutine(StartCutScene());
@@ -32,6 +32,8 @@ public class Middle_PhaseEnd : Middle_PhaseState
     private IEnumerator StartCutScene()
     {
         float alpha = 0;
+        _manager.Monster.Player.GetComponent<Player>().View.UiEffect.SetActive(false);
+        _manager.Monster.Player.GetComponent<Player>().View.isUltimate = true;
 
         yield return new WaitForSeconds(2f);
 

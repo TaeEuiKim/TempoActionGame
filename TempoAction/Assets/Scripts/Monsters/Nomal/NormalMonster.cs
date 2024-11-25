@@ -47,6 +47,9 @@ public class NormalMonster : Monster
     [SerializeField] private float hittingTime = 0.3f;
     [Header("ÇÇ°Ý ½¦ÀÌ´õ")]
     [SerializeField] private Material hitShader;
+    [SerializeField] private Material[] originShader;
+    [SerializeField] private SkinnedMeshRenderer[] skinnedMesh;
+
     private float _hitTimer = 0f;
     private Coroutine _hitCoroutine;
     public bool isHit = false;
@@ -281,14 +284,29 @@ public class NormalMonster : Monster
     {
         base.TakeDamage(value);
 
-        if (hitShader != null)
+        if (skinnedMesh.Length > 0)
         {
-            hitShader.EnableKeyword("_ALPHATEST_ON");
-            hitShader.SetFloat("_AlphaClip", 1);
             if (_hitCoroutine != null)
             {
                 StopCoroutine(_hitCoroutine);
             }
+
+            if (monsterType == Define.NormalMonsterType.MON3)
+            {
+                for (int i = 0; i < skinnedMesh.Length; ++i)
+                {
+                    originShader[i] = skinnedMesh[i].material;
+                    skinnedMesh[i].material = hitShader;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < skinnedMesh.Length; ++i)
+                {
+                    skinnedMesh[i].material = hitShader;
+                }
+            }
+
             _hitCoroutine = StartCoroutine(TurnOffShader());
         }
 
@@ -361,9 +379,22 @@ public class NormalMonster : Monster
 
     private IEnumerator TurnOffShader()
     {
-        yield return new WaitForSeconds(0.5f);
-        hitShader.SetFloat("_AlphaClip", 0);
-        hitShader.DisableKeyword("_ALPHATEST_ON");
+        yield return new WaitForSeconds(0.02f);
+
+        if (monsterType == Define.NormalMonsterType.MON3)
+        {
+            for (int i = 0; i < skinnedMesh.Length; ++i)
+            {
+                skinnedMesh[i].material = originShader[i];
+            }
+        }
+        else
+        {
+            foreach (var skin in skinnedMesh)
+            {
+                skin.material = originShader[0];
+            }
+        }
 
         yield return null;
     }
