@@ -217,6 +217,7 @@ public class PlayerCommandController
                 if (skillid == 30)
                 {
                     TestSound.Instance.PlaySound("RushFinishVoice");
+                    return true;
                 }
                 break;
             // 스킬 발동

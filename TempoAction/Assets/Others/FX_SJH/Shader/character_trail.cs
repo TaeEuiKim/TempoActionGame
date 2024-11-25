@@ -91,6 +91,7 @@ public class CharacterTrail : MonoBehaviour
 
         TestSound.Instance.PlaySound("Skill1");
         player.RimShader.SetFloat("_Float", 0f);
+        player.PowerUp(-2.5f);
         player.SkillObject.SetActive(true);
         isTrailActive = false;
     }

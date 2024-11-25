@@ -343,6 +343,8 @@ public class PlayerController
             }
 
             _player.CharacterModel.GetComponent<CharacterTrail>().StartTrail(10f);
+
+            _player.PowerUp(2.5f);
             _player.View.UiEffect.SetActive(false);
             _player.View.UseUltimate();
         }
