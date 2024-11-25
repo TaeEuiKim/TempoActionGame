@@ -28,7 +28,7 @@ public class PlayerView : MonoBehaviour
     private Image[] _mainSkillIcons;
     private Image[] _subSkillIcons;
 
-    private bool isUltimate = false;
+    public bool isUltimate = false;
 
     public void ChangeMainSkillIcon(int value, bool isRemove)
     {

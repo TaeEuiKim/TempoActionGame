@@ -78,6 +78,11 @@ public class PlayerAnimationEvent : MonoBehaviour
         {
             Monster monster = monsterCollider.GetComponent<Monster>();
 
+            if (monster.Stat.Hp <= 0)
+            {
+                continue;
+            }
+
             GameObject hitParticle = null;
             GameObject hitParticle2 = null;
             GameObject hitParticle3 = null;
@@ -283,6 +288,11 @@ public class PlayerAnimationEvent : MonoBehaviour
         foreach (Collider monsterCollider in hitMonsters)
         {
             Monster monster = monsterCollider.GetComponent<Monster>();
+
+            if (monster.Stat.Hp <= 0)
+            {
+                continue;
+            }
 
             GameObject hitParticle;
             GameObject hitParticle2;

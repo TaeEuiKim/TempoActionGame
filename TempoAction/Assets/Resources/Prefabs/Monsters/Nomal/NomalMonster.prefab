@@ -157,7 +157,12 @@ MonoBehaviour:
   _hitPoint: {fileID: 382572079243178425}
   _colliderSize: {x: 1, y: 1, z: 1}
   hittingTime: 1
-  hitShader: {fileID: 0}
+  hitShader: {fileID: 2100000, guid: 7b37e7d434e098b4687bc175ef66c161, type: 2}
+  originShader:
+  - {fileID: 2100000, guid: d8b9f7bf557839943ae40584bcf1d9e8, type: 2}
+  skinnedMesh:
+  - {fileID: 6266369256711290597}
+  - {fileID: 613885878723157023}
   isHit: 0
   isHiting: 0
   hitRock: 0
@@ -550,6 +555,16 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 8027841719081225262}
   m_SourcePrefab: {fileID: 100100000, guid: 5d15ccdf682600e41a0093f74a8849e2, type: 3}
+--- !u!137 &613885878723157023 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -2015437837283458808, guid: 5d15ccdf682600e41a0093f74a8849e2, type: 3}
+  m_PrefabInstance: {fileID: 7819176955361271063}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &6266369256711290597 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -5010868524356279310, guid: 5d15ccdf682600e41a0093f74a8849e2, type: 3}
+  m_PrefabInstance: {fileID: 7819176955361271063}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6936147963067998278 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5d15ccdf682600e41a0093f74a8849e2, type: 3}

@@ -4,6 +4,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerInputManager : Singleton<PlayerInputManager>
 {
@@ -13,6 +14,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     public bool attack;
     public bool dash;
     public bool jump;
+    public bool sway;
 
     [Header("Player Command Values")]
     public bool upArrow;
@@ -119,6 +121,11 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
         }
     }
 
+    public void OnDashSway(InputValue value)
+    {
+        DashSwayInput(value.isPressed);
+    }
+
     public void OnKeyX(InputValue value)
     {
         //if (!isCommand)
@@ -223,5 +230,12 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     {
         keyX = input;
         KeyXEvent.TriggerEvent(true);
+    }
+
+    public readonly GenericEventSystem<bool> DashSwayEvent = new();
+    public void DashSwayInput(bool input)
+    {
+        sway = input;
+        DashSwayEvent.TriggerEvent(input);
     }
 }

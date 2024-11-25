@@ -271,8 +271,9 @@ public class PlayerController
         RaycastHit hit;
 
         float dir = 1;
-        if (_isBackDash)
+        if (_isBackDash || PlayerInputManager.Instance.sway)
         {
+            PlayerInputManager.Instance.sway = false;
             dir = -1;
             TestSound.Instance.PlaySound("Backdash");
         }

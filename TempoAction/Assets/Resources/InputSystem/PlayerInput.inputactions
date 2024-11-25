@@ -51,6 +51,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "DashSway",
+                    "type": "Value",
+                    "id": "df09bc0e-c147-4a68-b239-2974b844e47e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "DownArrow",
                     "type": "Value",
                     "id": "504f97cb-0ac6-4471-92a3-ae05d75a66d9",
@@ -563,6 +572,17 @@
                     "processors": "",
                     "groups": "Gamepad;Joystick",
                     "action": "Ultimate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "281c0379-9269-4864-99fa-1d26a60dc894",
+                    "path": "<HID>/{Submit}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Joystick;Gamepad",
+                    "action": "DashSway",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
