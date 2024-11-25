@@ -82,6 +82,7 @@ public class BaseShelling : MonoBehaviour
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
+
             effect.transform.position = collision.transform.position + new Vector3(0, -0.5f);
             if (collision.gameObject.GetComponent<Player>().IsInvincible) return;
 
@@ -90,6 +91,9 @@ public class BaseShelling : MonoBehaviour
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
+
+
+            Debug.Log("  미사링ㄹ 출ㅇ도라ㅕㄷ");
             Collider[] hitPlayer = Physics.OverlapBox(transform.position, new Vector3(3, 3, 1) / 2, transform.rotation, 1 >> 11 | 1 >> 10);
             foreach (Collider collider in hitPlayer)
             {

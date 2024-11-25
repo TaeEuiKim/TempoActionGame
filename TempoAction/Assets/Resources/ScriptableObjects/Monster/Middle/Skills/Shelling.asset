@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _info:
     skill: 3
-    coolTime: 12
-    range: 50
-    damage: 10
+    coolTime: 8
+    range: 10
+    damage: 25
     priority: 1
     level: 2
-  monsterDamage: 50
+  monsterDamage: 25
   bombSize: {x: 3, y: 3, z: 1}
   bombType:
     serializedVersion: 2
