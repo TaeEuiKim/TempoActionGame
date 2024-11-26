@@ -151,6 +151,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bf5446e85d389045a6461a4bdb3247d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bombSize: {x: 3, y: 3, z: 1}
+  bombType:
+    serializedVersion: 2
+    m_Bits: 2560
 --- !u!1001 &1499603050940377386
 PrefabInstance:
   m_ObjectHideFlags: 0

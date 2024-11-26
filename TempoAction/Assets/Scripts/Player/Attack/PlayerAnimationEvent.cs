@@ -849,6 +849,7 @@ public class PlayerAnimationEvent : MonoBehaviour
         if (_player.Ani.GetFloat("VerticalSpeed") <= -15)
         {
             _player.Rb.isKinematic = true;
+            _player.Ani.SetBool("IsRock", true);
         }
     }
 
@@ -856,8 +857,9 @@ public class PlayerAnimationEvent : MonoBehaviour
     {
         if (_player.Rb.isKinematic)
         {
-            _player.Rb.isKinematic = false;
             _player.Ani.SetFloat("VerticalSpeed", 0);
+            _player.Rb.isKinematic = false;
+            _player.Ani.SetBool("IsRock", false);
         }
 
         _player.Attack.ChangeCurrentAttackState(Define.AttackState.FINISH);

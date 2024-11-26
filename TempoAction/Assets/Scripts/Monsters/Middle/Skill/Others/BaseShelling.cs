@@ -12,6 +12,9 @@ public class BaseShelling : MonoBehaviour
     private float monsterDamage;
     private float TotalDamage;
 
+    [SerializeField] Vector3 bombSize;
+    [SerializeField] LayerMask bombType;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -68,49 +71,25 @@ public class BaseShelling : MonoBehaviour
     {
         GameObject effect = ObjectPool.Instance.Spawn("BombEffect", 1);
 
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Boss"))
-        {
-            if (collision.gameObject.GetComponent<MiddleMonster>().monsterName == Define.MiddleMonsterName.GYEONGCHAE)
-            {
-                return;
-            }
-
-            effect.transform.position = collision.transform.position + new Vector3(0, -0.5f);
-            collision.transform.GetComponent<MiddleMonster>().StartMiddleCut();
-            collision.transform.GetComponent<Monster>().TakeDamage(monsterDamage);
-        }
-
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
-        {
-
-            effect.transform.position = collision.transform.position + new Vector3(0, -0.5f);
-            if (collision.gameObject.GetComponent<Player>().IsInvincible) return;
-
-            collision.transform.GetComponent<Player>().TakeDamage(TotalDamage);
-        }
-
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
-
-
-            Debug.Log("  미사링ㄹ 출ㅇ도라ㅕㄷ");
-            Collider[] hitPlayer = Physics.OverlapBox(transform.position, new Vector3(3, 3, 1) / 2, transform.rotation, 1 >> 11 | 1 >> 10);
+            Collider[] hitPlayer = Physics.OverlapBox(transform.position, bombSize / 2, transform.rotation, bombType);
+            Debug.LogError(1);
             foreach (Collider collider in hitPlayer)
             {
                 if (collider.gameObject.layer == LayerMask.NameToLayer("Player"))
                 {
                     collider.GetComponent<Player>().TakeDamage(TotalDamage);
                 }
-                if (collider.gameObject.layer == LayerMask.NameToLayer("Monster"))
+                if (collider.gameObject.layer == LayerMask.NameToLayer("Boss"))
                 {
                     collider.GetComponent<Monster>().TakeDamage(monsterDamage);
                 }
             }
 
             effect.transform.position = transform.position + new Vector3(0, -0.5f);
+            ObjectPool.Instance.Remove(this.gameObject);
         }
-
-        ObjectPool.Instance.Remove(this.gameObject);
     }
 
     public void SetSetting(Transform target, float launchForce, float angle, float gravitySpeed, float damage, float monDamage)
@@ -122,5 +101,11 @@ public class BaseShelling : MonoBehaviour
         this.monsterDamage = monDamage;
 
         LaunchProjectile();
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(transform.position, bombSize);
     }
 }

@@ -281,7 +281,7 @@
                 {
                     "name": "",
                     "id": "3c710816-4871-4386-95d8-7f3301a760b1",
-                    "path": "<Gamepad>/buttonWest",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad;Joystick",
@@ -325,7 +325,7 @@
                 {
                     "name": "",
                     "id": "ba42ba81-02d4-403e-8197-14886a53b606",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick;Gamepad",
@@ -457,7 +457,7 @@
                 {
                     "name": "",
                     "id": "78bebc9a-ba6e-4758-a498-4f59640f909a",
-                    "path": "<Gamepad>/buttonEast",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick;Gamepad",
@@ -490,7 +490,7 @@
                 {
                     "name": "",
                     "id": "07e25e6a-938e-4091-87e9-1adba0615d0d",
-                    "path": "<Gamepad>/buttonEast",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick;Gamepad",
@@ -593,6 +593,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick;Gamepad",
+                    "action": "DashSway",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "151a740c-40aa-4010-a2bc-5a0b90c6798e",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad;Joystick",
                     "action": "DashSway",
                     "isComposite": false,
                     "isPartOfComposite": false
