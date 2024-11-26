@@ -74,7 +74,7 @@ public class PlayerAttack
         //    }
         //}
 
-        if (isAttack)
+        if (isAttack || _player.Controller.isJump)
         {
             if (_currentAttackState != Define.AttackState.ATTACK && _player.Ani.GetInteger("CommandCount") == 0)
             { 
