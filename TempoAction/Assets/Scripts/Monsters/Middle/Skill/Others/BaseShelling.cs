@@ -74,7 +74,6 @@ public class BaseShelling : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
             Collider[] hitPlayer = Physics.OverlapBox(transform.position, bombSize / 2, transform.rotation, bombType);
-            Debug.LogError(1);
             foreach (Collider collider in hitPlayer)
             {
                 if (collider.gameObject.layer == LayerMask.NameToLayer("Player"))

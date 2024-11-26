@@ -320,7 +320,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6458507691040368920
 RectTransform:
   m_ObjectHideFlags: 0
@@ -360,8 +360,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   copy: {fileID: 0}
   ExitUI: {fileID: 0}
+  isMain: 0
+  LogoVideo: {fileID: 0}
+  ParitcleVideo1: {fileID: 0}
+  ParitcleVideo2: {fileID: 0}
   idleImg: []
   moveingImg: []
+  fadePanel: {fileID: 0}
+  CreditVideo: {fileID: 0}
 --- !u!1 &4368035798380283677
 GameObject:
   m_ObjectHideFlags: 0
