@@ -71,5 +71,7 @@ public class Normal_Death : Normal_State
             GameObject food = ObjectPool.Instance.Spawn("Dumplings");
             food.transform.position = _monster.transform.position + new Vector3(0, 0.5f);
         }
+
+        player.View.SetScore(1);
     }
 }

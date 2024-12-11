@@ -24,9 +24,10 @@ public class DestoryObj : BaseObject
     {
         base.Awake();
         _skinnedMeshRenderer = GetComponent<SkinnedMeshRenderer>();
+        _player = FindObjectOfType<Player>();
+
         if (isKill)
         {
-            _player = FindObjectOfType<Player>();
             if (isDestory)
             {
                 isDestory = false;
@@ -96,6 +97,7 @@ public class DestoryObj : BaseObject
                     _skinnedMeshRenderer.SetBlendShapeWeight(1, 100);
                     Ani.SetBool("Destory", true);
                     GetComponent<BoxCollider>().enabled = false;
+                    _player.View.SetScore(1);
                 }
                 else if (Hp <= _hpCounts[1])
                 {
@@ -115,6 +117,7 @@ public class DestoryObj : BaseObject
                     _skinnedMeshRenderer.SetBlendShapeWeight(Random.Range(0, 2), 100);
                     Ani.SetBool("Destory", true);
                     GetComponent<SphereCollider>().enabled = false;
+                    _player.View.SetScore(1);
                 }
                 else if (Hp <= _hpCounts[0])
                 {
@@ -126,6 +129,7 @@ public class DestoryObj : BaseObject
                 {
                     Ani.SetBool("Destory", true);
                     GetComponent<BoxCollider>().enabled = false;
+                    _player.View.SetScore(1);
                 }
                 break;
             case Define.DestoryObjectType.FLOOR:
@@ -142,6 +146,7 @@ public class DestoryObj : BaseObject
                     }
                 }
                 GetComponent<BoxCollider>().enabled = false;
+                _player.View.SetScore(1);
                 break;
             default:
                 break;

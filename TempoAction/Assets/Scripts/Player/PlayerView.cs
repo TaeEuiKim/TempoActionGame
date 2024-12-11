@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,6 +25,10 @@ public class PlayerView : MonoBehaviour
     [SerializeField] private GameObject[] SubSkillSlots;
     [SerializeField] private Sprite[] _skillSprite;
     [SerializeField] private Sprite _skillBackIcon;
+
+    [SerializeField] private TextMeshProUGUI score;
+    [SerializeField] private TextMeshProUGUI overScore;
+    private static int _curScore = 0;
 
     private Image[] _mainSkillIcons;
     private Image[] _subSkillIcons;
@@ -77,7 +82,16 @@ public class PlayerView : MonoBehaviour
 
     public void OnGameoverUI()
     {
+        StartCoroutine(GetScoreAsync());
+    }
+
+    private IEnumerator GetScoreAsync()
+    {
+        yield return new WaitForSeconds(2f);
+
         _gameoverUI?.SetActive(true);
+        overScore.text = $"Score : {_curScore}\n" +
+            $"Max Score : {StartDB.GetScore()}";
     }
 
     public void MoveUltimateUI(float value)
@@ -315,9 +329,14 @@ public class PlayerView : MonoBehaviour
         yield return null;
     }
 
-    public void AutoUpdateStemina(float value)
+    public void SetScore(int value)
     {
-        _steminaBarImage.fillAmount = value;
-        _steminaIllusionBarImage.fillAmount = value;
+        _curScore += value;
+        score.text = _curScore.ToString();
+    }
+
+    public int GetScore()
+    {
+        return _curScore;
     }
 }

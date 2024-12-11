@@ -113,6 +113,8 @@ public class Player : CharacterBase
     public static float saveSte = 0;
     public static string curScene;
 
+    private bool isOnUI = false;
+
     protected override void Awake()
     {
         base.Awake();
@@ -203,10 +205,16 @@ public class Player : CharacterBase
             case Define.PlayerState.DIE:
                 IsInvincible = true;
 
-                _view.OnGameoverUI();
+                if (!isOnUI)
+                {
+                    StartDB.CreateScore(View.GetScore());
+                    _view.OnGameoverUI();
+                    isOnUI = true;
+                }
                 Ani.SetBool("IsDie", true);
                 _view.UiEffect.SetActive(false);
                 _cameraController.SetCameraSetting(Define.CameraType.DEAD);
+
                 break;
             case Define.PlayerState.HIT:
                 Ani.SetBool("Hit", true);
